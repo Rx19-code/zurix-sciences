@@ -178,9 +178,9 @@ const Contact = () => {
                 </div>
               </div>
               <ul className="space-y-1 text-gray-700">
-                <li>🇵🇾 Paraguay</li>
-                <li>🇺🇸 United States</li>
-                <li>🇭🇰 Hong Kong</li>
+                <li>Paraguay</li>
+                <li>United States</li>
+                <li>Hong Kong</li>
               </ul>
             </div>
 
