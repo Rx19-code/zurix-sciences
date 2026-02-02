@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException, Query
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -6,10 +6,9 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
-
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -25,46 +24,140 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+# ==================== MODELS ====================
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
+class Product(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    name: str
+    category: str  # GLP-1 Analogs, Peptides, Cognitive Enhancers, Coenzymes
+    product_type: str  # Tirzepatide, BPC-157, Semax, etc.
+    purity: str  # 99% HPLC, etc.
+    dosage: str  # 10mg, 1g, etc.
+    description: str
+    price: float
+    verification_code: str  # CS-ze101208
+    storage_info: str
+    batch_number: str
+    manufacturing_date: str
+    expiry_date: str
+    coa_url: str  # Certificate of Analysis URL
+    featured: bool = False
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
+class Representative(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    country: str
+    region: str
+    name: str
+    whatsapp: str
+    flag_emoji: str
 
-# Add your routes to the router instead of directly to app
+class VerifyProductRequest(BaseModel):
+    code: str
+
+class VerifyProductResponse(BaseModel):
+    success: bool
+    product: Optional[Product] = None
+    message: str
+
+# ==================== ROUTES ====================
+
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "RX Research Sciences API", "version": "1.0.0"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
+# Products endpoints
+@api_router.get("/products", response_model=List[Product])
+async def get_products(
+    category: Optional[str] = None,
+    product_type: Optional[str] = None,
+    search: Optional[str] = None,
+    featured: Optional[bool] = None
+):
+    """Get all products with optional filters"""
+    query = {}
     
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
+    if category:
+        query['category'] = category
+    if product_type:
+        query['product_type'] = product_type
+    if featured is not None:
+        query['featured'] = featured
+    if search:
+        query['$or'] = [
+            {'name': {'$regex': search, '$options': 'i'}},
+            {'description': {'$regex': search, '$options': 'i'}},
+            {'product_type': {'$regex': search, '$options': 'i'}}
+        ]
     
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
+    products = await db.products.find(query, {"_id": 0}).to_list(1000)
+    return products
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
+@api_router.get("/products/{product_id}", response_model=Product)
+async def get_product(product_id: str):
+    """Get a single product by ID"""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@api_router.get("/products/code/{verification_code}", response_model=Product)
+async def get_product_by_code(verification_code: str):
+    """Get a product by verification code"""
+    product = await db.products.find_one({"verification_code": verification_code}, {"_id": 0})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@api_router.get("/categories")
+async def get_categories():
+    """Get all unique categories"""
+    categories = await db.products.distinct("category")
+    return {"categories": categories}
+
+@api_router.get("/product-types")
+async def get_product_types():
+    """Get all unique product types"""
+    types = await db.products.distinct("product_type")
+    return {"types": sorted(types)}
+
+# Representatives endpoints
+@api_router.get("/representatives", response_model=List[Representative])
+async def get_representatives():
+    """Get all representatives"""
+    reps = await db.representatives.find({}, {"_id": 0}).to_list(100)
+    return reps
+
+# Verification endpoint
+@api_router.post("/verify-product", response_model=VerifyProductResponse)
+async def verify_product(request: VerifyProductRequest):
+    """Verify a product by its verification code"""
+    code = request.code.strip().upper()
     
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
+    # Check if code starts with CS-
+    if not code.startswith("CS-"):
+        return VerifyProductResponse(
+            success=False,
+            message="Invalid code format. All genuine RX Research Sciences products have codes starting with 'CS-'"
+        )
     
-    return status_checks
+    # Find product
+    product = await db.products.find_one({"verification_code": code}, {"_id": 0})
+    
+    if not product:
+        return VerifyProductResponse(
+            success=False,
+            message="Product not found. This code may be counterfeit. Please contact support immediately."
+        )
+    
+    return VerifyProductResponse(
+        success=True,
+        product=Product(**product),
+        message="Product authenticated successfully!"
+    )
 
 # Include the router in the main app
 app.include_router(api_router)
