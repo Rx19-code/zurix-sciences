@@ -80,11 +80,11 @@ const Home = () => {
     <div data-testid="home-page">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden" data-testid="hero-section">
-        {/* Background Image with Opacity */}
+        {/* Background Image with Opacity - DNA Helix */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-15"
+          className="absolute inset-0 bg-cover bg-center opacity-10"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1740666387475-548de5c37691?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwyfHxwZXB0aWRlJTIwc3RydWN0dXJlfGVufDB8fHx8MTc3MDA3NTg5Mnww&ixlib=rb-4.1.0&q=85')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1643780668909-580822430155?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxETkElMjBoZWxpeHxlbnwwfHx8fDE3NzAwNzU4OTl8MA&ixlib=rb-4.1.0&q=85')",
             backgroundBlendMode: 'overlay'
           }}
         />
