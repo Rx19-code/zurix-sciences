@@ -79,8 +79,18 @@ const Home = () => {
   return (
     <div data-testid="home-page">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white" data-testid="hero-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden" data-testid="hero-section">
+        {/* Background Image with Opacity */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-15"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1740666387475-548de5c37691?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwyfHxwZXB0aWRlJTIwc3RydWN0dXJlfGVufDB8fHx8MTc3MDA3NTg5Mnww&ixlib=rb-4.1.0&q=85')",
+            backgroundBlendMode: 'overlay'
+          }}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="hero-title">
               Premium Research Compounds
