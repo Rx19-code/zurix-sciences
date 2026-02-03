@@ -48,7 +48,7 @@ const Verify = () => {
             Product Authentication System
           </h1>
           <p className="text-xl text-blue-100">
-            Verify the authenticity of your RX Research Sciences products using the unique verification code on your vial or packaging.
+            Verify the authenticity of your Nexgen Sciences Research products using the unique verification code on your vial or packaging.
           </p>
         </div>
 
