@@ -13,6 +13,7 @@ import Checkout from './pages/Checkout';
 import CheckoutSuccess from './pages/CheckoutSuccess';
 import Representatives from './pages/Representatives';
 import Contact from './pages/Contact';
+import PeptigenLogos from './components/PeptigenLogos';
 import './App.css';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
               <Route path="/checkout/success" element={<CheckoutSuccess />} />
               <Route path="/representatives" element={<Representatives />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/logos" element={<PeptigenLogos />} />
             </Routes>
           </main>
           <Footer />
