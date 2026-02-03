@@ -195,6 +195,105 @@ async def verify_product(request: VerifyProductRequest):
     
     return VerifyProductResponse(
         success=True,
+
+# ==================== MOBILE APP ROUTES ====================
+
+# Protocols endpoints
+@api_router.get("/protocols", response_model=List[Protocol])
+async def get_protocols(category: Optional[str] = None):
+    """Get all protocols"""
+    query = {}
+    if category:
+        query['category'] = category
+    
+    protocols = await db.protocols.find(query, {"_id": 0}).to_list(100)
+    return protocols
+
+@api_router.get("/protocols/{protocol_id}", response_model=Protocol)
+async def get_protocol(protocol_id: str):
+    """Get a single protocol by ID"""
+    protocol = await db.protocols.find_one({"id": protocol_id}, {"_id": 0})
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    return protocol
+
+# Enhanced verification with counter (for mobile app)
+@api_router.post("/verify-scan", response_model=VerifyScanResponse)
+async def verify_scan(request: VerifyScanRequest):
+    """Verify a product and log the verification (for mobile app)"""
+    code = request.code.strip().upper()
+    
+    # Check if code starts with CS-
+    if not code.startswith("CS-"):
+        return VerifyScanResponse(
+            success=False,
+            message="Invalid code format. All genuine Nexgen Sciences Research products have codes starting with 'CS-'",
+            verification_count=0
+        )
+    
+    # Find product
+    product = await db.products.find_one({"verification_code": code}, {"_id": 0})
+    
+    if not product:
+        return VerifyScanResponse(
+            success=False,
+            message="Product not found. This code may be counterfeit. Please contact support immediately.",
+            verification_count=0
+        )
+    
+    # Log verification
+    verification_log = {
+        "id": str(uuid.uuid4()),
+        "verification_code": code,
+        "batch_number": product['batch_number'],
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "device_id": request.device_id
+    }
+    
+    await db.verification_logs.insert_one(verification_log)
+    
+    # Count total verifications for this batch
+    verification_count = await db.verification_logs.count_documents({"batch_number": product['batch_number']})
+    
+    # Warning if verified too many times
+    warning = None
+    if verification_count > 10:
+        warning = f"⚠️ WARNING: This batch has been verified {verification_count} times. This may indicate counterfeiting."
+    elif verification_count > 5:
+        warning = f"Note: This batch has been verified {verification_count} times."
+    
+    return VerifyScanResponse(
+        success=True,
+        product=Product(**product),
+        message="Product authenticated successfully!",
+        verification_count=verification_count,
+        warning=warning
+    )
+
+# Verification history
+@api_router.get("/verification-history")
+async def get_verification_history(device_id: Optional[str] = None, limit: int = 50):
+    """Get verification history"""
+    query = {}
+    if device_id:
+        query['device_id'] = device_id
+    
+    logs = await db.verification_logs.find(query, {"_id": 0}).sort("timestamp", -1).limit(limit).to_list(limit)
+    return {"history": logs, "count": len(logs)}
+
+# Batch verification stats
+@api_router.get("/batch-stats/{batch_number}")
+async def get_batch_stats(batch_number: str):
+    """Get verification statistics for a batch"""
+    count = await db.verification_logs.count_documents({"batch_number": batch_number})
+    logs = await db.verification_logs.find({"batch_number": batch_number}, {"_id": 0}).sort("timestamp", -1).limit(10).to_list(10)
+    
+    return {
+        "batch_number": batch_number,
+        "total_verifications": count,
+        "recent_verifications": logs
+    }
+
         product=Product(**product),
         message="Product authenticated successfully!"
     )
