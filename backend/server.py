@@ -195,6 +195,12 @@ async def verify_product(request: VerifyProductRequest):
     
     return VerifyProductResponse(
         success=True,
+        product=Product(**product),
+        message="Product authenticated successfully!"
+    )
+
+# Include the router in the main app
+app.include_router(api_router)
 
 # ==================== MOBILE APP ROUTES ====================
 
