@@ -141,7 +141,7 @@ async def verify_product(request: VerifyProductRequest):
     if not code.startswith("CS-"):
         return VerifyProductResponse(
             success=False,
-            message="Invalid code format. All genuine RX Research Sciences products have codes starting with 'CS-'"
+            message="Invalid code format. All genuine Nexgen Sciences Research products have codes starting with 'CS-'"
         )
     
     # Find product
