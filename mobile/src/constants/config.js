@@ -1,7 +1,17 @@
 // API Configuration
-export const API_URL = 'http://10.0.2.2:8001/api'; // Android emulator
-// export const API_URL = 'http://localhost:8001/api'; // iOS simulator
-// export const API_URL = 'https://your-production-api.com/api'; // Production
+// Choose the appropriate URL based on your testing environment:
+
+// OPTION 1: Android Emulator
+// export const API_URL = 'http://10.0.2.2:8001/api';
+
+// OPTION 2: iOS Simulator  
+// export const API_URL = 'http://localhost:8001/api';
+
+// OPTION 3: Physical Device (same WiFi) - USE THIS!
+export const API_URL = 'http://10.49.128.55:8001/api';
+
+// OPTION 4: Production (when deployed)
+// export const API_URL = 'https://your-production-api.com/api';
 
 export const COLORS = {
   primary: '#1e40af',
