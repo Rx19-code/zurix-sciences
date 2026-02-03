@@ -10,11 +10,9 @@ const Footer = () => {
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <img 
-                src="/assets/nexgen-logo-new.png" 
-                alt="Nexgen Sciences Research Logo" 
-                className="w-12 h-12"
-              />
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">NS</span>
+              </div>
               <h3 className="text-white font-bold text-lg">Nexgen Sciences</h3>
             </div>
             <p className="text-sm text-gray-400">
