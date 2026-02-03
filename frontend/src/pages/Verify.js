@@ -222,7 +222,7 @@ const Verify = () => {
                 <div>
                   <h3 className="font-bold text-blue-900 mb-2">Important</h3>
                   <p className="text-sm text-blue-800">
-                    Every genuine RX Research Sciences product has a unique verification code starting with "CS-". 
+                    Every genuine Nexgen Sciences Research product has a unique verification code starting with "CS-". 
                     If your product doesn't have one or verification fails, please contact our support team immediately.
                   </p>
                 </div>
