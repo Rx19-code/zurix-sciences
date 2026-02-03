@@ -63,6 +63,46 @@ class VerifyProductResponse(BaseModel):
     product: Optional[Product] = None
     message: str
 
+class Protocol(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    category: str  # Basic or Advanced
+    price: float  # 4.99 or 9.99
+    duration_weeks: int
+    products_needed: List[str]  # List of product names
+    dosage_instructions: str
+    frequency: str
+    expected_results: str
+    side_effects: str
+    contraindications: str
+    storage_tips: str
+    reconstitution_guide: str
+    featured: bool = False
+
+class VerificationLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    verification_code: str
+    batch_number: str
+    timestamp: str
+    device_id: Optional[str] = None
+    location: Optional[str] = None
+
+class VerifyScanRequest(BaseModel):
+    code: str
+    device_id: Optional[str] = None
+
+class VerifyScanResponse(BaseModel):
+    success: bool
+    product: Optional[Product] = None
+    message: str
+    verification_count: int = 0
+    warning: Optional[str] = None
+
 # ==================== ROUTES ====================
 
 @api_router.get("/")
