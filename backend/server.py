@@ -297,10 +297,6 @@ async def get_batch_stats(batch_number: str):
         "recent_verifications": logs
     }
 
-        product=Product(**product),
-        message="Product authenticated successfully!"
-    )
-
 # Include the router in the main app
 app.include_router(api_router)
 
