@@ -10,10 +10,12 @@ const Footer = () => {
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">RX</span>
-              </div>
-              <h3 className="text-white font-bold text-lg">RX Research</h3>
+              <img 
+                src="/assets/nexgen-logo.png" 
+                alt="Nexgen Sciences Research Logo" 
+                className="w-8 h-8"
+              />
+              <h3 className="text-white font-bold text-lg">Nexgen Sciences</h3>
             </div>
             <p className="text-sm text-gray-400">
               Premium research compounds and peptides for scientific studies. Committed to quality and purity.
