@@ -199,9 +199,6 @@ async def verify_product(request: VerifyProductRequest):
         message="Product authenticated successfully!"
     )
 
-# Include the router in the main app
-app.include_router(api_router)
-
 # ==================== MOBILE APP ROUTES ====================
 
 # Protocols endpoints
