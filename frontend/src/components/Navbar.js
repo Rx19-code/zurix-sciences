@@ -30,9 +30,11 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">NS</span>
-                </div>
+                <img 
+                  src="/assets/nexgen-logo-optimized.png" 
+                  alt="Nexgen Sciences Research Logo" 
+                  className="w-10 h-10"
+                />
                 <div className="ml-3">
                   <h1 className="text-lg font-bold text-gray-900">Nexgen Sciences Research</h1>
                   <p className="text-xs text-gray-500">Premium Research Compounds</p>
