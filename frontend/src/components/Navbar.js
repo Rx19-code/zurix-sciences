@@ -28,16 +28,16 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
+            <Link to="/" className="flex items-center space-x-3" data-testid="logo-link">
               <div className="flex items-center">
                 <img 
                   src="/assets/nexgen-logo-new.png" 
                   alt="Nexgen Sciences Research Logo" 
-                  className="w-24 h-24 sm:w-20 sm:h-20"
+                  className="w-32 h-32"
                 />
-                <div className="ml-3">
-                  <h1 className="text-xl font-bold text-gray-900">Nexgen Sciences Research</h1>
-                  <p className="text-xs text-gray-500">Premium Research Compounds</p>
+                <div className="ml-4">
+                  <h1 className="text-2xl font-bold text-gray-900">Nexgen Sciences Research</h1>
+                  <p className="text-sm text-gray-500">Premium Research Compounds</p>
                 </div>
               </div>
             </Link>
