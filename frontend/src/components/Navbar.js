@@ -31,7 +31,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
               <div className="flex items-center">
                 <img 
-                  src="/assets/nexgen-logo.svg" 
+                  src="/assets/nexgen-logo-new.png" 
                   alt="Nexgen Sciences Research Logo" 
                   className="w-24 h-24 sm:w-20 sm:h-20"
                 />
