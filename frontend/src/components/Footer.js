@@ -13,7 +13,7 @@ const Footer = () => {
               <img 
                 src="/assets/nexgen-logo.png" 
                 alt="Nexgen Sciences Research Logo" 
-                className="w-8 h-8"
+                className="w-12 h-12"
               />
               <h3 className="text-white font-bold text-lg">Nexgen Sciences</h3>
             </div>
