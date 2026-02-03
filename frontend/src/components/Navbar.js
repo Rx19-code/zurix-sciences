@@ -33,7 +33,7 @@ const Navbar = () => {
                 <img 
                   src="/assets/nexgen-logo.png" 
                   alt="Nexgen Sciences Research Logo" 
-                  className="w-10 h-10"
+                  className="w-16 h-16"
                 />
                 <div className="ml-3">
                   <h1 className="text-xl font-bold text-gray-900">Nexgen Sciences Research</h1>
