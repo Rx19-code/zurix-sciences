@@ -75,7 +75,7 @@ const Footer = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-800 text-center">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} RX Research Sciences. For research purposes only. Not for human consumption.
+            © {new Date().getFullYear()} Nexgen Sciences Research. For research purposes only. Not for human consumption.
           </p>
         </div>
       </div>
