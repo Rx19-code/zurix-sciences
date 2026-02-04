@@ -1,6 +1,114 @@
 # 🔐 GUIA COMPLETO - DEPLOYMENT ANÔNIMO
 ## Nexgen Sciences Research
 
+**Última atualização:** Dezembro 2024  
+**Nível de Anonimato:** Máximo
+
+---
+
+> ⚠️ **AVISO IMPORTANTE:** Este guia é para fins educacionais e proteção de privacidade. Certifique-se de cumprir as leis do seu país.
+
+---
+
+## 🛡️ FASE 0: PREPARAÇÃO DE OPSEC (CRÍTICO)
+
+### 1. Configurar VPN ANTES de Qualquer Coisa
+
+**NÃO faça nenhum passo deste guia sem VPN ativada!**
+
+**VPNs Recomendadas (aceitam crypto):**
+
+| VPN | Preço | Crypto | Logs | Site |
+|-----|-------|--------|------|------|
+| **Mullvad** | €5/mês | ✅ BTC, XMR | No-logs | mullvad.net |
+| **ProtonVPN** | Grátis/Pago | ✅ BTC | No-logs | protonvpn.com |
+| **IVPN** | $6/mês | ✅ BTC, XMR | No-logs | ivpn.net |
+
+**Setup Mullvad (Recomendado):**
+```bash
+# 1. Acesse: mullvad.net (via Tor Browser)
+# 2. Clique "Generate account" (não precisa email!)
+# 3. Você recebe um número de conta
+# 4. Pague com Bitcoin/Monero
+# 5. Baixe o app e conecte
+
+# Verificar IP mudou:
+curl ifconfig.me
+```
+
+---
+
+### 2. Criar Email Anônimo
+
+**Opções:**
+
+**A) ProtonMail (Recomendado)**
+```
+1. Via Tor Browser: https://proton.me
+2. Criar conta (não precisa telefone)
+3. Usar VPN durante criação
+4. Email: seunome@proton.me
+```
+
+**B) Tutanota**
+```
+1. https://tutanota.com
+2. Grátis, sem telefone
+3. Forte criptografia
+```
+
+**C) Guerrilla Mail (Temporário)**
+```
+1. https://guerrillamail.com
+2. Email descartável
+3. Bom para confirmações rápidas
+```
+
+---
+
+### 3. Carteira de Crypto Anônima
+
+**Para Bitcoin:**
+```bash
+# Opção 1: Electrum (Desktop)
+# - Baixe: electrum.org
+# - Não requer KYC
+# - Use via Tor: electrum --proxy socks5:localhost:9050
+
+# Opção 2: Samourai Wallet (Android)
+# - Foco em privacidade
+# - Suporta CoinJoin
+```
+
+**Para Monero (Máximo anonimato):**
+```bash
+# Monero GUI Wallet
+# - Baixe: getmonero.org
+# - Completamente anônimo
+# - Sem blockchain tracking
+```
+
+**Comprar Crypto sem KYC:**
+- **Bisq** - Exchange P2P descentralizada
+- **LocalMonero** - P2P para Monero
+- **Robosats** - Via Lightning Network (Tor)
+- **Bitcoin ATMs** - Com dinheiro (sem ID em alguns)
+
+---
+
+### 4. Tor Browser Setup
+
+```bash
+# Baixar: https://www.torproject.org
+# Use para:
+# - Criar contas
+# - Pesquisar provedores
+# - Pagamentos
+
+# Verificar Tor funcionando:
+# Acesse: https://check.torproject.org
+```
+
 ---
 
 ## 📋 FASE 1: PREPARAÇÃO (Antes de começar)
