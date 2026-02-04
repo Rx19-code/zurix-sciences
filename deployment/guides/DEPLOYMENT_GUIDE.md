@@ -512,3 +512,264 @@ Se precisar de ajuda:
 ---
 
 **Boa sorte com o deployment! 🚀🔐**
+
+---
+
+## 🔒 APÊNDICE A: ANONIMIZAÇÃO DO MONGODB
+
+### Configurar MongoDB sem Logs Sensíveis
+
+```bash
+# Editar configuração MongoDB
+nano /etc/mongod.conf
+
+# Adicionar/modificar:
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+  # Nível mínimo de log
+  verbosity: 0
+  
+# Desabilitar profiling (queries logging)
+operationProfiling:
+  mode: off
+
+# Reiniciar
+systemctl restart mongod
+```
+
+### Limpar Logs Periodicamente
+
+```bash
+# Adicionar ao cron (crontab -e):
+0 0 * * * echo "" > /var/log/mongodb/mongod.log
+0 0 * * * echo "" > /var/log/nginx/nexgen_access.log
+```
+
+---
+
+## 🔒 APÊNDICE B: HARDENING DO SERVIDOR
+
+### 1. Mudar Porta SSH (Dificulta Scanners)
+
+```bash
+# Editar SSH config
+nano /etc/ssh/sshd_config
+
+# Mudar linha:
+Port 22
+# Para (exemplo):
+Port 2222
+
+# Atualizar firewall
+ufw allow 2222/tcp
+ufw delete allow 22/tcp
+
+# Reiniciar SSH
+systemctl restart sshd
+
+# IMPORTANTE: Conectar agora via:
+ssh -p 2222 root@SEU_VPS_IP
+```
+
+### 2. Desabilitar Login Root com Senha
+
+```bash
+# Criar novo usuário
+adduser nexgenadmin
+usermod -aG sudo nexgenadmin
+
+# Copiar chave SSH para novo usuário
+mkdir -p /home/nexgenadmin/.ssh
+cp ~/.ssh/authorized_keys /home/nexgenadmin/.ssh/
+chown -R nexgenadmin:nexgenadmin /home/nexgenadmin/.ssh
+
+# Desabilitar root password login
+nano /etc/ssh/sshd_config
+# Mudar para:
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+
+systemctl restart sshd
+```
+
+### 3. Instalar Monitoramento de Intrusão
+
+```bash
+# OSSEC (detecção de intrusão)
+apt install ossec-hids-server
+
+# Verificar status
+/var/ossec/bin/ossec-control status
+```
+
+---
+
+## 🔒 APÊNDICE C: PASSO A PASSO - COMPRAR VPS COM CRYPTO
+
+### Exemplo: Njalla com Bitcoin
+
+```
+PASSO 1: PREPARAÇÃO
+☐ VPN ligada
+☐ Tor Browser aberto
+☐ Carteira Bitcoin com saldo
+
+PASSO 2: CRIAR CONTA NJALLA
+1. Acesse: https://njal.la (via Tor)
+2. Clique "Sign Up"
+3. Use email ProtonMail
+4. Senha forte (gerada)
+5. Confirmar email
+
+PASSO 3: COMPRAR VPS
+1. Dashboard → "VPS"
+2. Escolher plano (~$15/mês)
+3. Localização: Suécia
+4. OS: Ubuntu 22.04
+5. Checkout → Bitcoin
+6. Copiar endereço BTC
+7. Enviar da sua carteira
+8. Aguardar confirmação (~30 min)
+
+PASSO 4: COMPRAR DOMÍNIO
+1. Dashboard → "Domains"
+2. Buscar domínio desejado
+3. Checkout → Bitcoin
+4. Aguardar confirmação
+
+PASSO 5: CONFIGURAR DNS
+1. Domains → Seu domínio
+2. DNS Settings
+3. Adicionar registros A (ver Fase 2)
+
+PASSO 6: ACESSAR VPS
+1. Dashboard → VPS
+2. Copiar IP e senha root
+3. ssh root@IP (via VPN!)
+```
+
+---
+
+## 🔒 APÊNDICE D: CHECKLIST COMPLETO DE OPSEC
+
+### Antes de Começar:
+```
+☐ VPN ligada e testada (curl ifconfig.me)
+☐ Tor Browser instalado
+☐ Email anônimo criado (ProtonMail)
+☐ Carteira crypto configurada
+☐ Crypto comprada (sem KYC)
+☐ Nenhuma conta pessoal logada no navegador
+```
+
+### Durante Compras:
+```
+☐ Sempre via VPN + Tor
+☐ Não usar cartão de crédito
+☐ Não usar email pessoal
+☐ Não usar nome real
+☐ Não usar telefone pessoal
+```
+
+### Durante Configuração:
+```
+☐ SSH apenas via VPN
+☐ Senhas geradas (não pessoais)
+☐ Chaves SSH (não senhas)
+☐ Porta SSH alterada
+☐ Fail2ban ativo
+```
+
+### Após Deployment:
+```
+☐ Logs minimizados/desabilitados
+☐ Cloudflare proxy ativo (esconde IP)
+☐ Backups em local separado
+☐ Testar acesso via Tor
+☐ Não compartilhar IP real do servidor
+```
+
+### Manutenção:
+```
+☐ Acessar VPS apenas via VPN
+☐ Renovar domínio/VPS com crypto
+☐ Verificar logs periodicamente
+☐ Atualizar sistema mensalmente
+☐ Manter backups atualizados
+```
+
+---
+
+## 🔒 APÊNDICE E: SCRIPT DE LIMPEZA DE LOGS
+
+Criar arquivo `/root/clean_logs.sh`:
+
+```bash
+#!/bin/bash
+# Script para limpar logs sensíveis
+
+echo "🧹 Limpando logs..."
+
+# Nginx
+echo "" > /var/log/nginx/access.log
+echo "" > /var/log/nginx/error.log
+echo "" > /var/log/nginx/nexgen_access.log 2>/dev/null
+echo "" > /var/log/nginx/nexgen_error.log 2>/dev/null
+
+# MongoDB
+echo "" > /var/log/mongodb/mongod.log
+
+# Sistema
+echo "" > /var/log/auth.log
+echo "" > /var/log/syslog
+journalctl --rotate
+journalctl --vacuum-time=1d
+
+# PM2
+pm2 flush
+
+echo "✅ Logs limpos!"
+```
+
+```bash
+# Tornar executável
+chmod +x /root/clean_logs.sh
+
+# Agendar limpeza diária
+crontab -e
+# Adicionar:
+0 4 * * * /root/clean_logs.sh
+```
+
+---
+
+## 📚 RECURSOS ADICIONAIS
+
+### Links Úteis:
+- **Mullvad VPN:** https://mullvad.net
+- **ProtonMail:** https://proton.me
+- **Njalla:** https://njal.la
+- **Bisq Exchange:** https://bisq.network
+- **Tor Project:** https://www.torproject.org
+
+### Ferramentas de Privacidade:
+- **Have I Been Pwned:** https://haveibeenpwned.com
+- **DNS Leak Test:** https://dnsleaktest.com
+- **IP Leak Test:** https://ipleak.net
+
+---
+
+## ⚠️ DISCLAIMER
+
+Este guia é fornecido apenas para fins educacionais sobre privacidade digital. O usuário é responsável por:
+- Cumprir todas as leis locais e internacionais
+- Usar as informações de forma ética e legal
+- Qualquer uso indevido das técnicas descritas
+
+A privacidade é um direito, mas a responsabilidade é sua.
+
+---
+
+**🔐 Mantenha-se seguro e privado!**
