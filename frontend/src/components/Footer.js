@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
-              <h3 className="text-white font-bold text-lg">Nexgen Sciences</h3>
+              <h3 className="text-white font-bold text-lg">Zurix Science</h3>
             </div>
             <p className="text-sm text-gray-400">
               Premium research compounds and peptides for scientific studies. Committed to quality and purity.
@@ -73,7 +73,7 @@ const Footer = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-800 text-center">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Nexgen Sciences Research. For research purposes only. Not for human consumption.
+            © {new Date().getFullYear()} Zurix Science. For research purposes only. Not for human consumption.
           </p>
         </div>
       </div>

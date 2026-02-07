@@ -34,7 +34,7 @@ const Navbar = () => {
                   <span className="text-white font-bold text-2xl">N</span>
                 </div>
                 <div className="ml-3">
-                  <h1 className="text-lg font-bold text-gray-900">Nexgen Sciences Research</h1>
+                  <h1 className="text-lg font-bold text-gray-900">Zurix Science</h1>
                   <p className="text-xs text-gray-500">Premium Research Compounds</p>
                 </div>
               </div>

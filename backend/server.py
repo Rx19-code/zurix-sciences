@@ -107,7 +107,7 @@ class VerifyScanResponse(BaseModel):
 
 @api_router.get("/")
 async def root():
-    return {"message": "Nexgen Sciences Research API", "version": "1.0.0"}
+    return {"message": "Zurix Science API", "version": "1.0.0"}
 
 # Products endpoints
 @api_router.get("/products", response_model=List[Product])

@@ -46,7 +46,7 @@ const Checkout = () => {
     if (!rep) return;
 
     // Build WhatsApp message
-    let message = `*New Order from Nexgen Sciences Research*\n\n`;
+    let message = `*New Order from Zurix Science*\n\n`;
     message += `*Customer Information:*\n`;
     message += `Name: ${customerName}\n`;
     message += `Email: ${customerEmail}\n\n`;
