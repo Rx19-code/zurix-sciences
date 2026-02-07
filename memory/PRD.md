@@ -1,4 +1,4 @@
-# Nexgen Sciences Research - PRD
+# Zurix Science - PRD
 
 ## Visão Geral
 Site e-commerce para venda de peptídeos para pesquisa científica com sistema de verificação de autenticidade.
@@ -8,12 +8,13 @@ Site e-commerce para venda de peptídeos para pesquisa científica com sistema d
 ### Website (React + FastAPI)
 - [x] Catálogo de 49 produtos com preços e informações
 - [x] Calculadora de dosagem (mg, doses, ml)
-- [x] Sistema de verificação de produtos (código único)
+- [x] Sistema de verificação de produtos (código único - prefixo ZX-)
 - [x] Carrinho de compras
 - [x] Checkout via WhatsApp (3 representantes regionais)
 - [x] Banner regulatório dismissível
 - [x] Background científico no hero
-- [x] Logo genérica "N" (temporária)
+- [x] Logo genérica "Z" (temporária)
+- [x] **Nome atualizado para "Zurix Science"**
 
 ### App Mobile (React Native/Expo)
 - [x] Estrutura inicial criada
@@ -69,9 +70,9 @@ Site e-commerce para venda de peptídeos para pesquisa científica com sistema d
 - [ ] Analytics anônimos
 
 ## Status
-- **Website:** ✅ Completo
+- **Website:** ✅ Completo (Zurix Science)
 - **Deployment Guide:** ✅ Completo
 - **App Mobile:** 🔄 Em progresso (estrutura pronta)
 
 ## Última Atualização
-Dezembro 2024 - Guia de deployment anônimo finalizado
+Dezembro 2024 - Nome alterado para "Zurix Science"
