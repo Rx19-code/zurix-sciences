@@ -6,7 +6,7 @@
 
 set -e
 
-echo "🚀 Iniciando deployment do Nexgen Sciences..."
+echo "🚀 Iniciando deployment do Zurix Sciences..."
 
 # Cores para output
 GREEN='\033[0;32m'
@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 DOMAIN="seu-dominio.com"
 BACKEND_PORT=8001
 FRONTEND_PORT=3000
-APP_DIR="/var/www/nexgen"
+APP_DIR="/var/www/zurix"
 
 # ============================================
 # 1. ATUALIZAR SISTEMA
@@ -54,7 +54,7 @@ echo -e "${BLUE}[4/10] Criando estrutura de diretórios...${NC}"
 mkdir -p $APP_DIR
 mkdir -p $APP_DIR/backend
 mkdir -p $APP_DIR/frontend
-mkdir -p /var/log/nexgen
+mkdir -p /var/log/zurix
 
 # ============================================
 # 5. COPIAR ARQUIVOS (você fará via SCP/SFTP)
@@ -80,7 +80,7 @@ pip3 install -r requirements.txt
 # Criar .env se não existir
 if [ ! -f .env ]; then
     echo "MONGO_URL=mongodb://localhost:27017" > .env
-    echo "DB_NAME=nexgen_db" >> .env
+    echo "DB_NAME=zurix_db" >> .env
     echo "CORS_ORIGINS=https://$DOMAIN,http://$DOMAIN" >> .env
 fi
 
@@ -107,7 +107,7 @@ yarn build
 # 8. CONFIGURAR NGINX
 # ============================================
 echo -e "${BLUE}[8/10] Configurando Nginx...${NC}"
-cat > /etc/nginx/sites-available/nexgen << EOF
+cat > /etc/nginx/sites-available/zurix << EOF
 server {
     listen 80;
     server_name $DOMAIN;
@@ -149,12 +149,12 @@ server {
     }
     
     # Logs mínimos (privacidade)
-    access_log /var/log/nginx/nexgen_access.log;
-    error_log /var/log/nginx/nexgen_error.log;
+    access_log /var/log/nginx/zurix_access.log;
+    error_log /var/log/nginx/zurix_error.log;
 }
 EOF
 
-ln -sf /etc/nginx/sites-available/nexgen /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/zurix /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 nginx -t
 
@@ -168,7 +168,7 @@ cd $APP_DIR/backend
 cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [{
-    name: 'nexgen-backend',
+    name: 'zurix-backend',
     script: 'uvicorn',
     args: 'server:app --host 0.0.0.0 --port $BACKEND_PORT',
     interpreter: 'python3',
