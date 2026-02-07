@@ -31,7 +31,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-2xl">N</span>
+                  <span className="text-white font-bold text-2xl">Z</span>
                 </div>
                 <div className="ml-3">
                   <h1 className="text-lg font-bold text-gray-900">Zurix Science</h1>
