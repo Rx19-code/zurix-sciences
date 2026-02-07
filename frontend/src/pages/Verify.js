@@ -10,7 +10,7 @@ const Verify = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const sampleCodes = ['CS-ZE101208', 'CS-BP050823', 'CS-SE030409', 'CS-FAKE-0001'];
+  const sampleCodes = ['ZX-ZE101208', 'ZX-BP050823', 'ZX-SE030409', 'ZX-FAKE-0001'];
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -71,12 +71,12 @@ const Verify = () => {
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   data-testid="verification-code-input"
-                  placeholder="Enter code (e.g., CS-ZE101208)"
+                  placeholder="Enter code (e.g., ZX-ZE101208)"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-lg"
                   required
                 />
                 <p className="mt-2 text-sm text-gray-500">
-                  Example: CS-ze101208, CS-re10-1220, CS-bc101103
+                  Example: ZX-ze101208, ZX-re10-1220, ZX-bc101103
                 </p>
               </div>
 
