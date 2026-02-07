@@ -230,7 +230,7 @@ async def verify_scan(request: VerifyScanRequest):
     if not code.startswith("CS-"):
         return VerifyScanResponse(
             success=False,
-            message="Invalid code format. All genuine Nexgen Sciences Research products have codes starting with 'CS-'",
+            message="Invalid code format. All genuine Zurix Science products have codes starting with 'ZX-'",
             verification_count=0
         )
     
