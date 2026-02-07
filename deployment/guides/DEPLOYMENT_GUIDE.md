@@ -1,5 +1,5 @@
 # 🔐 GUIA COMPLETO - DEPLOYMENT ANÔNIMO
-## Nexgen Sciences Research
+## Zurix Science
 
 **Última atualização:** Dezembro 2024  
 **Nível de Anonimato:** Máximo
@@ -249,8 +249,8 @@ nano deploy.sh
 # No Emergent, salvar projeto localmente
 
 # 2. Copiar para VPS via SCP
-scp -r /path/to/app/backend root@SEU_VPS_IP:/var/www/nexgen/
-scp -r /path/to/app/frontend root@SEU_VPS_IP:/var/www/nexgen/
+scp -r /path/to/app/backend root@SEU_VPS_IP:/var/www/zurix/
+scp -r /path/to/app/frontend root@SEU_VPS_IP:/var/www/zurix/
 
 # OU via SFTP (mais fácil no Windows)
 # Usar WinSCP ou FileZilla
@@ -304,8 +304,8 @@ curl https://seu-dominio.com/api/
 # Abrir no navegador: https://seu-dominio.com
 
 # Verificar logs
-pm2 logs nexgen-backend
-tail -f /var/log/nginx/nexgen_error.log
+pm2 logs zurix-backend
+tail -f /var/log/nginx/zurix_error.log
 ```
 
 ---
@@ -352,10 +352,10 @@ systemctl restart fail2ban
 
 ```bash
 # Nginx - logs mínimos
-# Editar /etc/nginx/sites-available/nexgen
+# Editar /etc/nginx/sites-available/zurix
 
 # Substituir:
-access_log /var/log/nginx/nexgen_access.log;
+access_log /var/log/nginx/zurix_access.log;
 # Por:
 access_log off;
 # OU logs anônimos:
@@ -379,7 +379,7 @@ mkdir -p $BACKUP_DIR
 mongodump --out $BACKUP_DIR/mongo_$DATE
 
 # Backup arquivos
-tar -czf $BACKUP_DIR/app_$DATE.tar.gz /var/www/nexgen
+tar -czf $BACKUP_DIR/app_$DATE.tar.gz /var/www/zurix
 
 # Manter apenas últimos 7 dias
 find $BACKUP_DIR -mtime +7 -delete
@@ -405,8 +405,8 @@ systemctl status nginx
 systemctl status mongodb
 
 # Ver logs
-pm2 logs nexgen-backend
-tail -f /var/log/nginx/nexgen_error.log
+pm2 logs zurix-backend
+tail -f /var/log/nginx/zurix_error.log
 
 # Uso de recursos
 htop
@@ -432,7 +432,7 @@ systemctl status nginx
 
 # 2. Verificar backend
 pm2 status
-pm2 logs nexgen-backend
+pm2 logs zurix-backend
 
 # 3. Verificar DNS
 ping seu-dominio.com
@@ -446,7 +446,7 @@ ufw status
 
 ```bash
 # Backend não está rodando
-pm2 restart nexgen-backend
+pm2 restart zurix-backend
 pm2 logs
 ```
 
@@ -544,7 +544,7 @@ systemctl restart mongod
 ```bash
 # Adicionar ao cron (crontab -e):
 0 0 * * * echo "" > /var/log/mongodb/mongod.log
-0 0 * * * echo "" > /var/log/nginx/nexgen_access.log
+0 0 * * * echo "" > /var/log/nginx/zurix_access.log
 ```
 
 ---
@@ -577,13 +577,13 @@ ssh -p 2222 root@SEU_VPS_IP
 
 ```bash
 # Criar novo usuário
-adduser nexgenadmin
-usermod -aG sudo nexgenadmin
+adduser zurixadmin
+usermod -aG sudo zurixadmin
 
 # Copiar chave SSH para novo usuário
-mkdir -p /home/nexgenadmin/.ssh
-cp ~/.ssh/authorized_keys /home/nexgenadmin/.ssh/
-chown -R nexgenadmin:nexgenadmin /home/nexgenadmin/.ssh
+mkdir -p /home/zurixadmin/.ssh
+cp ~/.ssh/authorized_keys /home/zurixadmin/.ssh/
+chown -R zurixadmin:zurixadmin /home/zurixadmin/.ssh
 
 # Desabilitar root password login
 nano /etc/ssh/sshd_config
@@ -715,8 +715,8 @@ echo "🧹 Limpando logs..."
 # Nginx
 echo "" > /var/log/nginx/access.log
 echo "" > /var/log/nginx/error.log
-echo "" > /var/log/nginx/nexgen_access.log 2>/dev/null
-echo "" > /var/log/nginx/nexgen_error.log 2>/dev/null
+echo "" > /var/log/nginx/zurix_access.log 2>/dev/null
+echo "" > /var/log/nginx/zurix_error.log 2>/dev/null
 
 # MongoDB
 echo "" > /var/log/mongodb/mongod.log
