@@ -177,11 +177,11 @@ async def verify_product(request: VerifyProductRequest):
     """Verify a product by its verification code"""
     code = request.code.strip().upper()
     
-    # Check if code starts with CS-
-    if not code.startswith("CS-"):
+    # Check if code starts with ZX-
+    if not code.startswith("ZX-"):
         return VerifyProductResponse(
             success=False,
-            message="Invalid code format. All genuine Nexgen Sciences Research products have codes starting with 'CS-'"
+            message="Invalid code format. All genuine Zurix Science products have codes starting with 'ZX-'"
         )
     
     # Find product
