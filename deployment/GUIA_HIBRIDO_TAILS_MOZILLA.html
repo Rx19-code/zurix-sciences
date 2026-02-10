@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Híbrido - Tails + Mozilla VPN - Zurix Science</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #1e40af;
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 18px;
+            color: #1e3a8a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            background: #dbeafe;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        h3 {
+            font-size: 14px;
+            color: #1e40af;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f3f4f6;
+            font-weight: bold;
+        }
+        
+        pre {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            font-size: 11px;
+            white-space: pre-wrap;
+            border-radius: 4px;
+        }
+        
+        .tails-section {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .tails-section h2 {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .mozilla-section {
+            background: #dbeafe;
+            border-left: 5px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .mozilla-section h2 {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .warning {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .important {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .success {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #333;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .input-line {
+            display: inline-block;
+            border-bottom: 1px solid #333;
+            min-width: 250px;
+            height: 20px;
+            margin-left: 5px;
+        }
+        
+        .phase-header {
+            background: linear-gradient(135deg, #1e40af, #7c3aed);
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .time-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .tool-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .badge-tails {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .badge-mozilla {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .notes-section {
+            border: 2px solid #333;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .notes-section table td:first-child {
+            width: 200px;
+            font-weight: bold;
+        }
+        
+        .step-done {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px dashed #ccc;
+            margin: 25px 0;
+        }
+        
+        .switch-alert {
+            background: linear-gradient(135deg, #fef3c7, #dbeafe);
+            border: 3px solid #7c3aed;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .switch-alert h3 {
+            color: #7c3aed;
+            font-size: 18px;
+        }
+        
+        @media print {
+            body { padding: 0; font-size: 11px; }
+            h1 { font-size: 20px; }
+            h2 { font-size: 14px; }
+            pre { font-size: 10px; }
+            .phase-header { page-break-before: always; }
+            .phase-header:first-of-type { page-break-before: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔐 GUIA HÍBRIDO - DEPLOYMENT ANÔNIMO</h1>
+<p style="font-size: 18px; color: #666; margin-bottom: 20px;">
+    <span class="badge-tails">🧅 TAILS</span> para compras + 
+    <span class="badge-mozilla">🦊 MOZILLA+VPN</span> para configuração
+</p>
+
+<div class="time-box">
+    <strong>⏱️ TEMPO TOTAL: 2-4 HORAS</strong><br>
+    <small>Tails (~1h) → Troca → Mozilla+VPN (~1-2h)</small>
+</div>
+
+<table>
+    <tr>
+        <th>Ferramenta</th>
+        <th>Quando usar</th>
+        <th>Por quê</th>
+    </tr>
+    <tr>
+        <td><span class="badge-tails">TAILS</span></td>
+        <td>Compras e cadastros</td>
+        <td>Máximo anonimato via Tor</td>
+    </tr>
+    <tr>
+        <td><span class="badge-mozilla">MOZILLA+VPN</span></td>
+        <td>Configuração do servidor</td>
+        <td>SSH/SCP funcionam melhor</td>
+    </tr>
+</table>
+
+<!-- ==================== PARTE 1: TAILS ==================== -->
+
+<div class="phase-header">🧅 PARTE 1: NO TAILS (Compras Anônimas)</div>
+
+<div class="tails-section">
+<h2>📋 PRÉ-REQUISITOS TAILS</h2>
+
+<h3>Você vai precisar:</h3>
+<p><span class="checkbox"></span> Pendrive com Tails instalado (mín. 8GB)</p>
+<p><span class="checkbox"></span> Computador que inicia por USB</p>
+<p><span class="checkbox"></span> Bitcoin na carteira (ou dinheiro para ATM)</p>
+<p><span class="checkbox"></span> Papel e caneta (para anotar dados)</p>
+
+<h3>Baixar Tails (se não tiver):</h3>
+<p>Site oficial: <strong>https://tails.net</strong></p>
+<p>Grave no pendrive usando: Balena Etcher ou Rufus</p>
+</div>
+
+<h2>1️⃣ INICIAR O TAILS</h2>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Insira o pendrive do Tails</td></tr>
+    <tr><td>2</td><td>Reinicie o computador</td></tr>
+    <tr><td>3</td><td>Entre no Boot Menu (F12, F2, ESC ou DEL)</td></tr>
+    <tr><td>4</td><td>Selecione o pendrive USB</td></tr>
+    <tr><td>5</td><td>Aguarde o Tails iniciar</td></tr>
+    <tr><td>6</td><td>Clique "Start Tails"</td></tr>
+    <tr><td>7</td><td>Aguarde conexão com Tor (pode demorar)</td></tr>
+</table>
+
+<div class="success">✅ Quando o ícone de cebola ficar verde = Tor conectado</div>
+
+<hr>
+
+<h2>2️⃣ CRIAR EMAIL ANÔNIMO (10 min)</h2>
+<span class="badge-tails">TAILS</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Abra o <strong>Tor Browser</strong> (ícone de cebola)</td></tr>
+    <tr><td>2</td><td>Acesse: <strong>https://proton.me</strong></td></tr>
+    <tr><td>3</td><td>Clique <strong>"Create a free account"</strong></td></tr>
+    <tr><td>4</td><td>Escolha um nome de usuário</td></tr>
+    <tr><td>5</td><td>Crie uma senha forte</td></tr>
+    <tr><td>6</td><td>Pule verificação de telefone (se pedir, recarregue)</td></tr>
+    <tr><td>7</td><td><strong>ANOTE NO PAPEL!</strong></td></tr>
+</table>
+
+<div class="important">
+📝 <strong>ANOTE NO PAPEL AGORA:</strong><br><br>
+Email: ________________________________@proton.me<br><br>
+Senha: ________________________________
+</div>
+
+<div class="step-done"><span class="checkbox"></span> Email Criado</div>
+
+<hr>
+
+<h2>3️⃣ CRIAR CONTA NJALLA (15 min)</h2>
+<span class="badge-tails">TAILS</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>No Tor Browser, acesse: <strong>https://njal.la</strong></td></tr>
+    <tr><td>2</td><td>Clique <strong>"Sign Up"</strong></td></tr>
+    <tr><td>3</td><td>Use o email ProtonMail que criou</td></tr>
+    <tr><td>4</td><td>Crie senha <strong>DIFERENTE</strong> do email</td></tr>
+    <tr><td>5</td><td>Complete o cadastro</td></tr>
+    <tr><td>6</td><td>Vá ao ProtonMail e confirme o email</td></tr>
+    <tr><td>7</td><td><strong>ANOTE NO PAPEL!</strong></td></tr>
+</table>
+
+<div class="important">
+📝 <strong>ANOTE NO PAPEL AGORA:</strong><br><br>
+Senha Njalla: ________________________________
+</div>
+
+<div class="step-done"><span class="checkbox"></span> Conta Njalla Criada</div>
+
+<hr>
+
+<h2>4️⃣ COMPRAR VPS COM BITCOIN (20 min)</h2>
+<span class="badge-tails">TAILS</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>No Njalla, vá em <strong>Dashboard → VPS</strong></td></tr>
+    <tr><td>2</td><td>Escolha: <strong>VPS 15</strong> (~$15/mês)</td></tr>
+    <tr><td>3</td><td>Localização: <strong>Sweden</strong></td></tr>
+    <tr><td>4</td><td>Sistema: <strong>Ubuntu 22.04</strong></td></tr>
+    <tr><td>5</td><td>Clique <strong>"Add to cart"</strong></td></tr>
+    <tr><td>6</td><td>Checkout → <strong>Bitcoin</strong></td></tr>
+    <tr><td>7</td><td>Copie o endereço BTC mostrado</td></tr>
+    <tr><td>8</td><td>Envie Bitcoin da sua carteira</td></tr>
+    <tr><td>9</td><td>Aguarde confirmação (10-30 min)</td></tr>
+    <tr><td>10</td><td><strong>ANOTE IP E SENHA NO PAPEL!</strong></td></tr>
+</table>
+
+<div class="warning">
+⚠️ <strong>NÃO FECHE O TAILS</strong> até anotar os dados do VPS!
+</div>
+
+<div class="important">
+📝 <strong>ANOTE NO PAPEL AGORA (CRÍTICO!):</strong><br><br>
+IP do VPS: ______.______.______.______<br><br>
+Senha Root: ________________________________<br><br>
+(Você vai precisar disso no Mozilla!)
+</div>
+
+<div class="step-done"><span class="checkbox"></span> VPS Comprado</div>
+
+<hr>
+
+<h2>5️⃣ COMPRAR DOMÍNIO COM BITCOIN (10 min)</h2>
+<span class="badge-tails">TAILS</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>No Njalla, vá em <strong>Dashboard → Domains</strong></td></tr>
+    <tr><td>2</td><td>Busque o domínio desejado (ex: zurixscience.com)</td></tr>
+    <tr><td>3</td><td>Clique <strong>"Add to cart"</strong></td></tr>
+    <tr><td>4</td><td>Checkout → <strong>Bitcoin</strong></td></tr>
+    <tr><td>5</td><td>Envie Bitcoin</td></tr>
+    <tr><td>6</td><td>Aguarde confirmação</td></tr>
+    <tr><td>7</td><td><strong>ANOTE NO PAPEL!</strong></td></tr>
+</table>
+
+<div class="important">
+📝 <strong>ANOTE NO PAPEL AGORA:</strong><br><br>
+Meu Domínio: ________________________________
+</div>
+
+<div class="step-done"><span class="checkbox"></span> Domínio Comprado</div>
+
+<hr>
+
+<h2>6️⃣ CONFIGURAR DNS (5 min)</h2>
+<span class="badge-tails">TAILS</span>
+
+<p>Ainda no Njalla:</p>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Vá em <strong>Domains → Seu domínio</strong></td></tr>
+    <tr><td>2</td><td>Clique em <strong>"Edit DNS"</strong></td></tr>
+    <tr><td>3</td><td>Adicione os registros abaixo</td></tr>
+</table>
+
+<h3>Adicionar Registro 1:</h3>
+<table>
+    <tr><td><strong>Tipo:</strong></td><td>A</td></tr>
+    <tr><td><strong>Nome:</strong></td><td>@</td></tr>
+    <tr><td><strong>Valor:</strong></td><td>(IP do VPS que você anotou)</td></tr>
+</table>
+
+<h3>Adicionar Registro 2:</h3>
+<table>
+    <tr><td><strong>Tipo:</strong></td><td>A</td></tr>
+    <tr><td><strong>Nome:</strong></td><td>www</td></tr>
+    <tr><td><strong>Valor:</strong></td><td>(IP do VPS que você anotou)</td></tr>
+</table>
+
+<div class="step-done"><span class="checkbox"></span> DNS Configurado</div>
+
+<!-- TROCA DE SISTEMA -->
+
+<div class="switch-alert">
+    <h3>🔄 HORA DE TROCAR!</h3>
+    <p style="font-size: 16px; margin: 10px 0;">
+        <strong>ANTES DE DESLIGAR O TAILS:</strong>
+    </p>
+    <p>Verifique se você anotou TUDO no papel:</p>
+    <p>
+        <span class="checkbox"></span> Email ProtonMail + Senha<br>
+        <span class="checkbox"></span> Senha Njalla<br>
+        <span class="checkbox"></span> <strong>IP do VPS</strong><br>
+        <span class="checkbox"></span> <strong>Senha Root do VPS</strong><br>
+        <span class="checkbox"></span> Nome do domínio
+    </p>
+    <p style="margin-top: 15px;">
+        <strong>Agora:</strong> Desligue o Tails → Reinicie normal → Abra Mozilla + VPN
+    </p>
+</div>
+
+<!-- ==================== PARTE 2: MOZILLA ==================== -->
+
+<div class="phase-header">🦊 PARTE 2: NO MOZILLA + VPN (Configuração)</div>
+
+<div class="mozilla-section">
+<h2>📋 PRÉ-REQUISITOS MOZILLA</h2>
+
+<h3>Você vai precisar:</h3>
+<p><span class="checkbox"></span> VPN instalada (Mullvad ou ProtonVPN)</p>
+<p><span class="checkbox"></span> Firefox/Mozilla instalado</p>
+<p><span class="checkbox"></span> Terminal (Mac/Linux) ou PuTTY (Windows)</p>
+<p><span class="checkbox"></span> Arquivos do site baixados do Emergent</p>
+<p><span class="checkbox"></span> Papel com as anotações do Tails</p>
+</div>
+
+<h2>7️⃣ CONECTAR VPN (5 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Abra o app da VPN (Mullvad ou ProtonVPN)</td></tr>
+    <tr><td>2</td><td>Conecte a um servidor (qualquer país)</td></tr>
+    <tr><td>3</td><td>Verifique se conectou (ícone verde)</td></tr>
+</table>
+
+<div class="warning">
+⚠️ <strong>MANTENHA A VPN LIGADA</strong> durante toda a configuração!
+</div>
+
+<div class="step-done"><span class="checkbox"></span> VPN Conectada</div>
+
+<hr>
+
+<h2>8️⃣ BAIXAR ARQUIVOS DO EMERGENT (5 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>No Emergent, clique <strong>"Download"</strong></td></tr>
+    <tr><td>2</td><td>Baixe o projeto como ZIP</td></tr>
+    <tr><td>3</td><td>Extraia em uma pasta conhecida</td></tr>
+    <tr><td>4</td><td>Anote o caminho da pasta</td></tr>
+</table>
+
+<p><strong>Pasta dos arquivos:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> Arquivos Baixados</div>
+
+<hr>
+
+<h2>9️⃣ CONECTAR AO VPS (5 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<h3>No Mac/Linux - Abra o Terminal:</h3>
+<pre>ssh root@SEU_IP_DO_VPS</pre>
+<p>(Substitua pelo IP que você anotou no papel)</p>
+
+<h3>No Windows - Use PuTTY:</h3>
+<table>
+    <tr><td>Host Name:</td><td>SEU_IP_DO_VPS</td></tr>
+    <tr><td>Port:</td><td>22</td></tr>
+    <tr><td>Clique:</td><td>Open</td></tr>
+</table>
+
+<p>Quando pedir senha, digite a senha root do papel.</p>
+
+<h3>Primeiro comando (trocar senha):</h3>
+<pre>passwd</pre>
+
+<div class="important">
+📝 <strong>ANOTE A NOVA SENHA:</strong><br><br>
+Nova Senha Root: ________________________________
+</div>
+
+<div class="step-done"><span class="checkbox"></span> Conectado ao VPS</div>
+
+<hr>
+
+<h2>🔟 INSTALAR DEPENDÊNCIAS (20 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<p><strong>Copie e cole cada bloco no terminal do VPS:</strong></p>
+
+<h3>Bloco 1 - Atualizar sistema:</h3>
+<pre>apt update && apt upgrade -y</pre>
+
+<h3>Bloco 2 - Instalar programas:</h3>
+<pre>apt install -y nginx python3 python3-pip nodejs npm git curl ufw fail2ban mongodb-server</pre>
+
+<h3>Bloco 3 - Instalar PM2 e Yarn:</h3>
+<pre>npm install -g pm2 yarn</pre>
+
+<h3>Bloco 4 - Iniciar MongoDB:</h3>
+<pre>systemctl start mongodb
+systemctl enable mongodb</pre>
+
+<h3>Bloco 5 - Configurar Firewall:</h3>
+<pre>ufw allow 22
+ufw allow 80
+ufw allow 443
+ufw --force enable</pre>
+
+<h3>Bloco 6 - Criar diretórios:</h3>
+<pre>mkdir -p /var/www/zurix/backend
+mkdir -p /var/www/zurix/frontend</pre>
+
+<div class="step-done"><span class="checkbox"></span> Dependências Instaladas</div>
+
+<hr>
+
+<h2>1️⃣1️⃣ COPIAR ARQUIVOS PARA VPS (10 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<div class="warning">
+⚠️ Execute estes comandos <strong>NO SEU COMPUTADOR</strong>, não no VPS!<br>
+Abra um <strong>NOVO</strong> terminal/janela.
+</div>
+
+<h3>Copiar Backend:</h3>
+<pre>scp -r /CAMINHO/PARA/backend/* root@SEU_IP:/var/www/zurix/backend/</pre>
+
+<h3>Copiar Frontend:</h3>
+<pre>scp -r /CAMINHO/PARA/frontend/* root@SEU_IP:/var/www/zurix/frontend/</pre>
+
+<p>Substitua:</p>
+<ul>
+    <li><code>/CAMINHO/PARA/</code> = pasta onde extraiu os arquivos</li>
+    <li><code>SEU_IP</code> = IP do VPS (do papel)</li>
+</ul>
+
+<div class="step-done"><span class="checkbox"></span> Arquivos Copiados</div>
+
+<hr>
+
+<h2>1️⃣2️⃣ CONFIGURAR BACKEND (10 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<p><strong>Volte para o terminal conectado ao VPS:</strong></p>
+
+<h3>Bloco 1 - Ir para pasta:</h3>
+<pre>cd /var/www/zurix/backend</pre>
+
+<h3>Bloco 2 - Criar .env:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com pelo domínio que você comprou!</div>
+<pre>cat > .env << 'EOF'
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=zurix_db
+CORS_ORIGINS=https://SEUDOMINIO.com
+EOF</pre>
+
+<h3>Bloco 3 - Instalar dependências:</h3>
+<pre>pip3 install -r requirements.txt</pre>
+
+<h3>Bloco 4 - Popular banco:</h3>
+<pre>python3 seed_database.py
+python3 seed_protocols.py</pre>
+
+<h3>Bloco 5 - Iniciar backend:</h3>
+<pre>pm2 start "uvicorn server:app --host 0.0.0.0 --port 8001" --name zurix-backend
+pm2 save
+pm2 startup</pre>
+
+<div class="step-done"><span class="checkbox"></span> Backend Configurado</div>
+
+<hr>
+
+<h2>1️⃣3️⃣ CONFIGURAR FRONTEND (10 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<h3>Bloco 1 - Ir para pasta:</h3>
+<pre>cd /var/www/zurix/frontend</pre>
+
+<h3>Bloco 2 - Criar .env:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com!</div>
+<pre>echo "REACT_APP_BACKEND_URL=https://SEUDOMINIO.com" > .env</pre>
+
+<h3>Bloco 3 - Instalar e buildar:</h3>
+<pre>yarn install
+yarn build</pre>
+
+<div class="step-done"><span class="checkbox"></span> Frontend Configurado</div>
+
+<hr>
+
+<h2>1️⃣4️⃣ CONFIGURAR NGINX (10 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<div class="warning">⚠️ Substitua SEUDOMINIO.com nos DOIS lugares!</div>
+
+<pre>cat > /etc/nginx/sites-available/zurix << 'EOF'
+server {
+    listen 80;
+    server_name SEUDOMINIO.com www.SEUDOMINIO.com;
+    
+    location / {
+        root /var/www/zurix/frontend/build;
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /api {
+        proxy_pass http://localhost:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF</pre>
+
+<h3>Ativar site:</h3>
+<pre>ln -sf /etc/nginx/sites-available/zurix /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
+nginx -t
+systemctl restart nginx</pre>
+
+<div class="step-done"><span class="checkbox"></span> Nginx Configurado</div>
+
+<hr>
+
+<h2>1️⃣5️⃣ INSTALAR SSL/HTTPS (10 min)</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<h3>Bloco 1 - Instalar Certbot:</h3>
+<pre>apt install -y certbot python3-certbot-nginx</pre>
+
+<h3>Bloco 2 - Obter certificado:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com! Use o email ProtonMail quando pedir.</div>
+<pre>certbot --nginx -d SEUDOMINIO.com -d www.SEUDOMINIO.com</pre>
+
+<p>Quando perguntar sobre redirect, escolha opção <strong>2</strong></p>
+
+<h3>Bloco 3 - Reiniciar:</h3>
+<pre>systemctl restart nginx
+pm2 restart all</pre>
+
+<div class="step-done"><span class="checkbox"></span> SSL Instalado</div>
+
+<hr>
+
+<h2>1️⃣6️⃣ TESTAR!</h2>
+<span class="badge-mozilla">MOZILLA+VPN</span>
+
+<h3>Teste 1 - No terminal do VPS:</h3>
+<pre>curl https://SEUDOMINIO.com/api/</pre>
+
+<p><strong>Deve mostrar:</strong></p>
+<pre>{"message": "Zurix Science API", "version": "1.0.0"}</pre>
+
+<h3>Teste 2 - No navegador:</h3>
+<p>Abra: <strong>https://SEUDOMINIO.com</strong></p>
+
+<div class="success">
+🎉 <strong>Se o site abrir, PARABÉNS! Deployment concluído!</strong>
+</div>
+
+<hr>
+
+<h2>✅ CHECKLIST FINAL</h2>
+
+<h3>Feito no Tails:</h3>
+<p><span class="checkbox"></span> Email anônimo criado</p>
+<p><span class="checkbox"></span> Conta Njalla criada</p>
+<p><span class="checkbox"></span> VPS comprado com Bitcoin</p>
+<p><span class="checkbox"></span> Domínio comprado com Bitcoin</p>
+<p><span class="checkbox"></span> DNS configurado</p>
+
+<h3>Feito no Mozilla+VPN:</h3>
+<p><span class="checkbox"></span> VPN conectada</p>
+<p><span class="checkbox"></span> Arquivos copiados para VPS</p>
+<p><span class="checkbox"></span> Backend configurado e rodando</p>
+<p><span class="checkbox"></span> Frontend buildado</p>
+<p><span class="checkbox"></span> Nginx configurado</p>
+<p><span class="checkbox"></span> SSL instalado</p>
+<p><span class="checkbox"></span> Site funcionando!</p>
+
+<hr>
+
+<h2>🆘 SE DER ERRO</h2>
+
+<pre>pm2 logs zurix-backend          # Ver erros do backend
+tail -f /var/log/nginx/error.log  # Ver erros do nginx
+pm2 restart all                   # Reiniciar backend
+systemctl restart nginx           # Reiniciar nginx</pre>
+
+<hr>
+
+<div class="notes-section">
+<h2>📝 MINHAS ANOTAÇÕES (Guardar em local seguro!)</h2>
+<table>
+    <tr><td>Email ProtonMail</td><td></td></tr>
+    <tr><td>Senha Email</td><td></td></tr>
+    <tr><td>Senha Njalla</td><td></td></tr>
+    <tr><td>IP do VPS</td><td></td></tr>
+    <tr><td>Senha Root Original</td><td></td></tr>
+    <tr><td>Senha Root Nova</td><td></td></tr>
+    <tr><td>Meu Domínio</td><td></td></tr>
+    <tr><td>Data Renovação VPS</td><td></td></tr>
+    <tr><td>Data Renovação Domínio</td><td></td></tr>
+</table>
+</div>
+
+<hr>
+
+<p style="text-align: center; color: #666; margin-top: 20px;">
+    <strong>Zurix Science - Deployment Híbrido (Tails + Mozilla)</strong><br>
+    Documento gerado em: ___/___/______
+</p>
+
+</body>
+</html>
