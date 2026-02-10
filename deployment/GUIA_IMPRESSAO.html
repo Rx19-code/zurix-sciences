@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Deployment Anônimo - Zurix Science</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #1e40af;
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            page-break-before: auto;
+        }
+        
+        h2 {
+            font-size: 18px;
+            color: #1e3a8a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            background: #dbeafe;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        h3 {
+            font-size: 14px;
+            color: #1e40af;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        p {
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f3f4f6;
+            font-weight: bold;
+        }
+        
+        code, pre {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+        
+        code {
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+        
+        pre {
+            padding: 12px;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+            font-size: 11px;
+            white-space: pre-wrap;
+        }
+        
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #333;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .input-line {
+            display: inline-block;
+            border-bottom: 1px solid #333;
+            min-width: 250px;
+            height: 20px;
+            margin-left: 5px;
+        }
+        
+        .phase-header {
+            background: #1e40af;
+            color: white;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        
+        .step-done {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .time-box {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .notes-section {
+            border: 2px solid #333;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .notes-section table td:first-child {
+            width: 200px;
+            font-weight: bold;
+        }
+        
+        .notes-section table td:last-child {
+            background: #f9fafb;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+                font-size: 11px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            h2 {
+                font-size: 14px;
+                page-break-after: avoid;
+            }
+            
+            pre {
+                font-size: 10px;
+                page-break-inside: avoid;
+            }
+            
+            .phase-header {
+                page-break-before: always;
+            }
+            
+            .phase-header:first-of-type {
+                page-break-before: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>🚀 GUIA RÁPIDO - DEPLOYMENT ANÔNIMO</h1>
+<h2 style="background: none; color: #666; font-size: 16px;">Zurix Science - Passo a Passo para Impressão</h2>
+
+<div class="time-box">
+    <strong>⏱️ TEMPO TOTAL ESTIMADO: 2-4 HORAS</strong>
+</div>
+
+<!-- FASE 1 -->
+<div class="phase-header">FASE 1: PREPARAÇÃO (30-60 min)</div>
+
+<h2>1️⃣ INSTALAR VPN (10 min)</h2>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Acesse: <strong>https://mullvad.net</strong></td></tr>
+    <tr><td>2</td><td>Clique <strong>"Generate account"</strong></td></tr>
+    <tr><td>3</td><td>Anote o número da conta: <span class="input-line"></span></td></tr>
+    <tr><td>4</td><td>Baixe o app Mullvad para seu sistema</td></tr>
+    <tr><td>5</td><td>Instale e conecte usando o número</td></tr>
+    <tr><td>6</td><td>Pague depois com crypto</td></tr>
+</table>
+
+<div class="step-done"><span class="checkbox"></span> VPN Configurada</div>
+
+<hr>
+
+<h2>2️⃣ CRIAR EMAIL ANÔNIMO (10 min)</h2>
+
+<div class="warning">⚠️ <strong>VPN DEVE ESTAR LIGADA</strong></div>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Acesse: <strong>https://proton.me</strong></td></tr>
+    <tr><td>2</td><td>Clique <strong>"Create account"</strong></td></tr>
+    <tr><td>3</td><td>Escolha email gratuito</td></tr>
+    <tr><td>4</td><td>NÃO precisa telefone</td></tr>
+</table>
+
+<p><strong>Meu Email:</strong> <span class="input-line"></span></p>
+<p><strong>Minha Senha:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> Email Criado</div>
+
+<hr>
+
+<h2>3️⃣ PREPARAR CRYPTO (10-30 min)</h2>
+
+<h3>💰 Quanto você precisa:</h3>
+<ul>
+    <li>VPS: ~$15/mês</li>
+    <li>Domínio: ~$15/ano</li>
+    <li><strong>TOTAL: ~$30 (~0.001 BTC)</strong></li>
+</ul>
+
+<h3>Opções para comprar Bitcoin:</h3>
+<p><span class="checkbox"></span> Já tenho Bitcoin</p>
+<p><span class="checkbox"></span> Bisq (P2P) - https://bisq.network</p>
+<p><span class="checkbox"></span> Bitcoin ATM (dinheiro)</p>
+<p><span class="checkbox"></span> Pedir para amigo enviar</p>
+
+<div class="step-done"><span class="checkbox"></span> Crypto Preparada</div>
+
+<!-- FASE 2 -->
+<div class="phase-header">FASE 2: COMPRAR VPS + DOMÍNIO (30-45 min)</div>
+
+<h2>4️⃣ CRIAR CONTA NJALLA (15 min)</h2>
+
+<div class="warning">⚠️ <strong>VPN DEVE ESTAR LIGADA</strong></div>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Acesse: <strong>https://njal.la</strong></td></tr>
+    <tr><td>2</td><td>Clique <strong>"Sign Up"</strong></td></tr>
+    <tr><td>3</td><td>Use o email ProtonMail</td></tr>
+    <tr><td>4</td><td>Crie senha DIFERENTE do email</td></tr>
+    <tr><td>5</td><td>Confirme email</td></tr>
+</table>
+
+<p><strong>Senha Njalla:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> Conta Njalla Criada</div>
+
+<hr>
+
+<h2>5️⃣ COMPRAR VPS (15 min)</h2>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Dashboard → <strong>VPS</strong></td></tr>
+    <tr><td>2</td><td>Localização: <strong>Sweden</strong></td></tr>
+    <tr><td>3</td><td>Plano: <strong>VPS 15</strong> (~$15/mês)</td></tr>
+    <tr><td>4</td><td>OS: <strong>Ubuntu 22.04</strong></td></tr>
+    <tr><td>5</td><td>Checkout → <strong>Bitcoin</strong></td></tr>
+    <tr><td>6</td><td>Copie endereço BTC e envie</td></tr>
+    <tr><td>7</td><td>Aguarde 10-30 min</td></tr>
+</table>
+
+<p><strong>IP do Servidor:</strong> <span class="input-line"></span></p>
+<p><strong>Senha Root:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> VPS Comprado</div>
+
+<hr>
+
+<h2>6️⃣ COMPRAR DOMÍNIO (10 min)</h2>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>Dashboard → <strong>Domains</strong></td></tr>
+    <tr><td>2</td><td>Busque seu domínio desejado</td></tr>
+    <tr><td>3</td><td>Adicione ao carrinho</td></tr>
+    <tr><td>4</td><td>Checkout → <strong>Bitcoin</strong></td></tr>
+</table>
+
+<p><strong>Meu Domínio:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> Domínio Comprado</div>
+
+<!-- FASE 3 -->
+<div class="phase-header">FASE 3: CONFIGURAR SERVIDOR (45-60 min)</div>
+
+<h2>7️⃣ BAIXAR ARQUIVOS DO EMERGENT (5 min)</h2>
+
+<table>
+    <tr><th>Passo</th><th>Ação</th></tr>
+    <tr><td>1</td><td>No Emergent, clique <strong>"Download"</strong></td></tr>
+    <tr><td>2</td><td>Baixe projeto como ZIP</td></tr>
+    <tr><td>3</td><td>Extraia no computador</td></tr>
+</table>
+
+<div class="step-done"><span class="checkbox"></span> Arquivos Baixados</div>
+
+<hr>
+
+<h2>8️⃣ CONECTAR AO VPS (5 min)</h2>
+
+<div class="warning">⚠️ <strong>VPN DEVE ESTAR LIGADA</strong></div>
+
+<h3>No Terminal (Mac/Linux):</h3>
+<pre>ssh root@SEU_IP_DO_VPS</pre>
+
+<h3>No Windows:</h3>
+<p>Use <strong>PuTTY</strong> - Host: SEU_IP_DO_VPS - Port: 22</p>
+
+<h3>Primeiro comando após conectar (trocar senha):</h3>
+<pre>passwd</pre>
+
+<p><strong>Nova Senha Root:</strong> <span class="input-line"></span></p>
+
+<div class="step-done"><span class="checkbox"></span> Conectado ao VPS</div>
+
+<hr>
+
+<h2>9️⃣ INSTALAR DEPENDÊNCIAS (20 min)</h2>
+
+<p>Copie e cole cada bloco no terminal do VPS:</p>
+
+<h3>Bloco 1 - Atualizar sistema:</h3>
+<pre>apt update && apt upgrade -y</pre>
+
+<h3>Bloco 2 - Instalar programas:</h3>
+<pre>apt install -y nginx python3 python3-pip nodejs npm git curl ufw fail2ban mongodb-server</pre>
+
+<h3>Bloco 3 - Instalar PM2 e Yarn:</h3>
+<pre>npm install -g pm2 yarn</pre>
+
+<h3>Bloco 4 - Iniciar MongoDB:</h3>
+<pre>systemctl start mongodb
+systemctl enable mongodb</pre>
+
+<h3>Bloco 5 - Configurar Firewall:</h3>
+<pre>ufw allow 22
+ufw allow 80
+ufw allow 443
+ufw --force enable</pre>
+
+<h3>Bloco 6 - Criar diretórios:</h3>
+<pre>mkdir -p /var/www/zurix/backend
+mkdir -p /var/www/zurix/frontend</pre>
+
+<div class="step-done"><span class="checkbox"></span> Dependências Instaladas</div>
+
+<hr>
+
+<h2>🔟 COPIAR ARQUIVOS PARA VPS (10 min)</h2>
+
+<div class="warning">⚠️ Execute NO SEU COMPUTADOR (não no VPS) - VPN LIGADA</div>
+
+<h3>Copiar Backend:</h3>
+<pre>scp -r /caminho/para/backend/* root@SEU_IP:/var/www/zurix/backend/</pre>
+
+<h3>Copiar Frontend:</h3>
+<pre>scp -r /caminho/para/frontend/* root@SEU_IP:/var/www/zurix/frontend/</pre>
+
+<div class="step-done"><span class="checkbox"></span> Arquivos Copiados</div>
+
+<hr>
+
+<h2>1️⃣1️⃣ CONFIGURAR BACKEND (10 min)</h2>
+
+<h3>Bloco 1 - Ir para pasta:</h3>
+<pre>cd /var/www/zurix/backend</pre>
+
+<h3>Bloco 2 - Criar arquivo .env:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com pelo seu domínio real!</div>
+<pre>cat > .env << 'EOF'
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=zurix_db
+CORS_ORIGINS=https://SEUDOMINIO.com
+EOF</pre>
+
+<h3>Bloco 3 - Instalar dependências:</h3>
+<pre>pip3 install -r requirements.txt</pre>
+
+<h3>Bloco 4 - Popular banco de dados:</h3>
+<pre>python3 seed_database.py
+python3 seed_protocols.py</pre>
+
+<h3>Bloco 5 - Iniciar backend:</h3>
+<pre>pm2 start "uvicorn server:app --host 0.0.0.0 --port 8001" --name zurix-backend
+pm2 save
+pm2 startup</pre>
+
+<div class="step-done"><span class="checkbox"></span> Backend Configurado</div>
+
+<hr>
+
+<h2>1️⃣2️⃣ CONFIGURAR FRONTEND (10 min)</h2>
+
+<h3>Bloco 1 - Ir para pasta:</h3>
+<pre>cd /var/www/zurix/frontend</pre>
+
+<h3>Bloco 2 - Criar .env:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com pelo seu domínio real!</div>
+<pre>echo "REACT_APP_BACKEND_URL=https://SEUDOMINIO.com" > .env</pre>
+
+<h3>Bloco 3 - Instalar e buildar:</h3>
+<pre>yarn install
+yarn build</pre>
+
+<div class="step-done"><span class="checkbox"></span> Frontend Configurado</div>
+
+<!-- FASE 4 -->
+<div class="phase-header">FASE 4: NGINX + SSL (20-30 min)</div>
+
+<h2>1️⃣3️⃣ CONFIGURAR NGINX (10 min)</h2>
+
+<div class="warning">⚠️ Substitua SEUDOMINIO.com pelo seu domínio em AMBOS os lugares!</div>
+
+<pre>cat > /etc/nginx/sites-available/zurix << 'EOF'
+server {
+    listen 80;
+    server_name SEUDOMINIO.com www.SEUDOMINIO.com;
+    
+    location / {
+        root /var/www/zurix/frontend/build;
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /api {
+        proxy_pass http://localhost:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF</pre>
+
+<h3>Ativar site:</h3>
+<pre>ln -sf /etc/nginx/sites-available/zurix /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
+nginx -t
+systemctl restart nginx</pre>
+
+<div class="step-done"><span class="checkbox"></span> Nginx Configurado</div>
+
+<hr>
+
+<h2>1️⃣4️⃣ CONFIGURAR DNS (5 min)</h2>
+
+<h3>No site da Njalla:</h3>
+<p>Dashboard → Domains → Seu domínio → <strong>DNS Settings</strong></p>
+
+<table>
+    <tr><th>Tipo</th><th>Nome</th><th>Valor</th></tr>
+    <tr><td>A</td><td>@</td><td>SEU_IP_DO_VPS</td></tr>
+    <tr><td>A</td><td>www</td><td>SEU_IP_DO_VPS</td></tr>
+</table>
+
+<p>⏳ <strong>Aguarde 5-15 minutos para propagar</strong></p>
+
+<div class="step-done"><span class="checkbox"></span> DNS Configurado</div>
+
+<hr>
+
+<h2>1️⃣5️⃣ INSTALAR SSL/HTTPS (10 min)</h2>
+
+<h3>Bloco 1 - Instalar Certbot:</h3>
+<pre>apt install -y certbot python3-certbot-nginx</pre>
+
+<h3>Bloco 2 - Obter certificado:</h3>
+<div class="warning">⚠️ Substitua SEUDOMINIO.com - Use email ProtonMail - Escolha opção 2</div>
+<pre>certbot --nginx -d SEUDOMINIO.com -d www.SEUDOMINIO.com</pre>
+
+<h3>Bloco 3 - Reiniciar:</h3>
+<pre>systemctl restart nginx
+pm2 restart all</pre>
+
+<div class="step-done"><span class="checkbox"></span> SSL Instalado</div>
+
+<!-- FASE 5 -->
+<div class="phase-header">FASE 5: TESTAR (10 min)</div>
+
+<h2>1️⃣6️⃣ TESTAR TUDO</h2>
+
+<h3>Teste 1 - Backend (no VPS):</h3>
+<pre>curl https://SEUDOMINIO.com/api/</pre>
+
+<p><strong>Resultado esperado:</strong></p>
+<pre>{"message": "Zurix Science API", "version": "1.0.0"}</pre>
+
+<h3>Teste 2 - Frontend:</h3>
+<p>Abra no navegador: <strong>https://SEUDOMINIO.com</strong></p>
+
+<div class="step-done"><span class="checkbox"></span> Site Funcionando!</div>
+
+<hr>
+
+<h2>✅ CHECKLIST FINAL</h2>
+
+<p><span class="checkbox"></span> VPN ligada durante todo processo</p>
+<p><span class="checkbox"></span> VPS comprado com crypto</p>
+<p><span class="checkbox"></span> Domínio comprado com crypto</p>
+<p><span class="checkbox"></span> DNS apontando para VPS</p>
+<p><span class="checkbox"></span> Backend rodando (pm2 status)</p>
+<p><span class="checkbox"></span> Frontend buildado</p>
+<p><span class="checkbox"></span> Nginx configurado</p>
+<p><span class="checkbox"></span> SSL instalado (HTTPS funciona)</p>
+<p><span class="checkbox"></span> Site acessível</p>
+<p><span class="checkbox"></span> Firewall ativo</p>
+
+<hr>
+
+<h2>🆘 COMANDOS DE EMERGÊNCIA</h2>
+
+<h3>Ver status:</h3>
+<pre>pm2 status
+systemctl status nginx
+systemctl status mongodb</pre>
+
+<h3>Ver logs de erro:</h3>
+<pre>pm2 logs zurix-backend
+tail -f /var/log/nginx/error.log</pre>
+
+<h3>Reiniciar tudo:</h3>
+<pre>pm2 restart all
+systemctl restart nginx
+systemctl restart mongodb</pre>
+
+<hr>
+
+<div class="notes-section">
+<h2>📝 MINHAS ANOTAÇÕES</h2>
+<table>
+    <tr><td>VPN Account</td><td></td></tr>
+    <tr><td>Email ProtonMail</td><td></td></tr>
+    <tr><td>Senha Email</td><td></td></tr>
+    <tr><td>Conta Njalla</td><td></td></tr>
+    <tr><td>Senha Njalla</td><td></td></tr>
+    <tr><td>IP do VPS</td><td></td></tr>
+    <tr><td>Senha Root VPS</td><td></td></tr>
+    <tr><td>Meu Domínio</td><td></td></tr>
+    <tr><td>Data Renovação VPS</td><td></td></tr>
+    <tr><td>Data Renovação Domínio</td><td></td></tr>
+</table>
+</div>
+
+<hr>
+
+<p style="text-align: center; color: #666; margin-top: 20px;">
+    <strong>Zurix Science - Deployment Anônimo</strong><br>
+    Documento gerado em: ___/___/______
+</p>
+
+</body>
+</html>
