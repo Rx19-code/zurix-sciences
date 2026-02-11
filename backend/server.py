@@ -107,7 +107,7 @@ class VerifyScanResponse(BaseModel):
 
 @api_router.get("/")
 async def root():
-    return {"message": "Zurix Science API", "version": "1.0.0"}
+    return {"message": "Zurix Sciences API", "version": "1.0.0"}
 
 # Products endpoints
 @api_router.get("/products", response_model=List[Product])
@@ -181,7 +181,7 @@ async def verify_product(request: VerifyProductRequest):
     if not code.startswith("ZX-"):
         return VerifyProductResponse(
             success=False,
-            message="Invalid code format. All genuine Zurix Science products have codes starting with 'ZX-'"
+            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'"
         )
     
     # Find product
@@ -230,7 +230,7 @@ async def verify_scan(request: VerifyScanRequest):
     if not code.startswith("CS-"):
         return VerifyScanResponse(
             success=False,
-            message="Invalid code format. All genuine Zurix Science products have codes starting with 'ZX-'",
+            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'",
             verification_count=0
         )
     
