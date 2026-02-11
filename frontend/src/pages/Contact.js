@@ -147,8 +147,8 @@ const Contact = () => {
                   <p className="text-sm text-gray-600">Send us an email</p>
                 </div>
               </div>
-              <a href="mailto:info@rxresearch.com" className="text-blue-600 hover:text-blue-700 font-medium">
-                info@rxresearch.com
+              <a href="mailto:info@zxsciences.com" className="text-blue-600 hover:text-blue-700 font-medium">
+                info@zxsciences.com
               </a>
             </div>
 
@@ -163,7 +163,10 @@ const Contact = () => {
                   <p className="text-sm text-gray-600">Chat with us</p>
                 </div>
               </div>
-              <p className="text-gray-700 font-medium">Contact your local representative</p>
+              <a href="https://wa.me/85212345678" className="text-green-600 hover:text-green-700 font-medium">
+                +852 1234 5678
+              </a>
+              <p className="text-sm text-gray-500 mt-2">Or contact your local representative</p>
             </div>
 
             {/* Location */}
