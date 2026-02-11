@@ -25,7 +25,7 @@ const Representatives = () => {
   };
 
   const handleWhatsApp = (whatsapp) => {
-    const message = encodeURIComponent('Hello! I am interested in RX Research Sciences products.');
+    const message = encodeURIComponent('Hello! I am interested in Zurix Sciences products.');
     window.open(`https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${message}`, '_blank');
   };
 
@@ -125,22 +125,28 @@ const Representatives = () => {
 
         {/* Payment Info */}
         <div className="mt-8 bg-white rounded-2xl shadow-sm p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Accepted Payment Methods</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Payment Information</h2>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6">
+            <p className="text-amber-800 text-center">
+              <strong>Important:</strong> Payment methods and terms vary by region and are determined by each local representative.
+            </p>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Common Payment Options</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Bitcoin (BTC)', desc: 'Most popular cryptocurrency' },
-              { name: 'USDT', desc: 'Tether - Stablecoin' },
-              { name: 'Solana (SOL)', desc: 'Fast & low fees' },
-              { name: 'Ethereum (ETH)', desc: 'ERC-20 tokens' }
-            ].map((crypto, index) => (
+              { name: 'Bitcoin (BTC)', desc: 'Cryptocurrency' },
+              { name: 'Monero (XMR)', desc: 'Private cryptocurrency' },
+              { name: 'USDT', desc: 'Stablecoin' },
+              { name: 'Bank Transfer', desc: 'Wire transfer' }
+            ].map((method, index) => (
               <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-                <p className="font-semibold text-gray-900 mb-1">{crypto.name}</p>
-                <p className="text-xs text-gray-600">{crypto.desc}</p>
+                <p className="font-semibold text-gray-900 mb-1">{method.name}</p>
+                <p className="text-xs text-gray-600">{method.desc}</p>
               </div>
             ))}
           </div>
           <p className="text-center text-sm text-gray-500 mt-6">
-            Your representative will provide payment details and wallet addresses
+            Please contact your regional representative for specific payment options, terms, and wallet addresses available in your area.
           </p>
         </div>
       </div>
