@@ -48,7 +48,7 @@ const Verify = () => {
             Product Authentication System
           </h1>
           <p className="text-xl text-blue-100">
-            Verify the authenticity of your Zurix Science products using the unique verification code on your vial or packaging.
+            Verify the authenticity of your Zurix Sciences products using the unique verification code on your vial or packaging.
           </p>
         </div>
 
@@ -222,7 +222,7 @@ const Verify = () => {
                 <div>
                   <h3 className="font-bold text-blue-900 mb-2">Important</h3>
                   <p className="text-sm text-blue-800">
-                    Every genuine Zurix Science product has a unique verification code starting with "ZX-". 
+                    Every genuine Zurix Sciences product has a unique verification code starting with "ZX-". 
                     If your product doesn't have one or verification fails, please contact our support team immediately.
                   </p>
                 </div>
