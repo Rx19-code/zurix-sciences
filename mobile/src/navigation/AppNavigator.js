@@ -1,8 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/config';
-
 import HomeScreen from '../screens/HomeScreen';
 import ScanScreen from '../screens/ScanScreen';
 import ProtocolsScreen from '../screens/ProtocolsScreen';
@@ -17,57 +15,34 @@ const AppNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Scan') {
-            iconName = focused ? 'qr-code' : 'qr-code-outline';
-          } else if (route.name === 'Protocols') {
-            iconName = focused ? 'book' : 'book-outline';
-          } else if (route.name === 'History') {
-            iconName = focused ? 'time' : 'time-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
-          }
-
+          if (route.name === 'Home') iconName = focused ? 'home' : 'home-outline';
+          else if (route.name === 'Scan') iconName = focused ? 'scan-circle' : 'scan-circle-outline';
+          else if (route.name === 'Protocols') iconName = focused ? 'book' : 'book-outline';
+          else if (route.name === 'History') iconName = focused ? 'time' : 'time-outline';
+          else if (route.name === 'Profile') iconName = focused ? 'person' : 'person-outline';
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: COLORS.textLight,
-        headerStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerTintColor: COLORS.white,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
+        tabBarActiveTintColor: '#1e40af',
+        tabBarInactiveTintColor: '#9ca3af',
+        headerStyle: { backgroundColor: '#1e40af' },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: { fontWeight: 'bold' },
+        tabBarStyle: {
+          paddingBottom: 6,
+          paddingTop: 6,
+          height: 60,
+          borderTopWidth: 0,
+          elevation: 10,
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+        }
       })}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen}
-        options={{ title: 'Zurix Sciences' }}
-      />
-      <Tab.Screen 
-        name="Scan" 
-        component={ScanScreen}
-        options={{ title: 'Scan Product' }}
-      />
-      <Tab.Screen 
-        name="Protocols" 
-        component={ProtocolsScreen}
-        options={{ title: 'Protocols' }}
-      />
-      <Tab.Screen 
-        name="History" 
-        component={HistoryScreen}
-        options={{ title: 'History' }}
-      />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen}
-        options={{ title: 'Profile' }}
-      />
+      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Zurix Sciences' }} />
+      <Tab.Screen name="Scan" component={ScanScreen} options={{ title: 'Verify Product' }} />
+      <Tab.Screen name="Protocols" component={ProtocolsScreen} options={{ title: 'Protocols' }} />
+      <Tab.Screen name="History" component={HistoryScreen} options={{ title: 'History' }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
     </Tab.Navigator>
   );
 };
