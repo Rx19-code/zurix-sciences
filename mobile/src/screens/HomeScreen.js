@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
       {/* Header Card */}
       <View style={styles.headerCard}>
         <Text style={styles.welcomeText}>Welcome to</Text>
-        <Text style={styles.brandText}>Nexgen Sciences</Text>
+        <Text style={styles.brandText}>Zurix Sciences</Text>
         <Text style={styles.subtitleText}>Product Verification & Protocols</Text>
       </View>
 

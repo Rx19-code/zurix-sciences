@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Nexgen Verify",
-    "slug": "nexgen-verify",
+    "name": "Zurix Sciences",
+    "slug": "zurix-sciences",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,14 +13,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nexgen.verify"
+      "bundleIdentifier": "com.zurix.sciences"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1e40af"
       },
-      "package": "com.nexgen.verify",
+      "package": "com.zurix.sciences",
       "permissions": ["CAMERA"]
     },
     "web": {
@@ -30,7 +30,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Nexgen to access your camera for QR code scanning."
+          "cameraPermission": "Allow Zurix Sciences to access your camera for QR code scanning."
         }
       ]
     ]

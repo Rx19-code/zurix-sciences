@@ -7,11 +7,11 @@
 // OPTION 2: iOS Simulator  
 // export const API_URL = 'http://localhost:8001/api';
 
-// OPTION 3: Physical Device (same WiFi) - USE THIS!
-export const API_URL = 'http://10.49.128.55:8001/api';
+// OPTION 3: Physical Device (same WiFi)
+// export const API_URL = 'http://YOUR_LOCAL_IP:8001/api';
 
-// OPTION 4: Production (when deployed)
-// export const API_URL = 'https://your-production-api.com/api';
+// OPTION 4: Production
+export const API_URL = 'https://zurixsciences.com/api';
 
 export const COLORS = {
   primary: '#1e40af',

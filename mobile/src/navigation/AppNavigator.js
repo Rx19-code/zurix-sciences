@@ -46,7 +46,7 @@ const AppNavigator = () => {
       <Tab.Screen 
         name="Home" 
         component={HomeScreen}
-        options={{ title: 'Nexgen Verify' }}
+        options={{ title: 'Zurix Sciences' }}
       />
       <Tab.Screen 
         name="Scan" 
