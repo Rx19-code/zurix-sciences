@@ -20,20 +20,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1e40af"
       },
-      "package": "com.zurix.sciences",
-      "permissions": ["CAMERA"],
-      "newArchEnabled": false
+      "package": "com.zurix.sciences"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow Zurix Sciences to access your camera for QR code scanning."
-        }
-      ]
-    ]
+    }
   }
 }
