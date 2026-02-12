@@ -15,6 +15,20 @@ const API_URL = 'https://zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
 const api = axios.create({ baseURL: API_URL, timeout: 10000 });
 
+// Helper function to open URLs safely
+const openURL = async (url) => {
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert('Error', `Cannot open URL: ${url}`);
+    }
+  } catch (error) {
+    Alert.alert('Error', 'Failed to open link. Please try again.');
+  }
+};
+
 // ========== MOCK PROTOCOLS (Simulation) ==========
 const MOCK_PROTOCOLS = [
   {
