@@ -367,7 +367,7 @@ function HomeScreen({ goTo }) {
         <View style={styles.section}>
           <TouchableOpacity 
             style={styles.websiteCard}
-            onPress={() => Linking.openURL('https://zurixsciences.com')}
+            onPress={() => openURL('https://zurixsciences.com')}
             activeOpacity={0.8}
           >
             <View style={styles.websiteCardInner}>
