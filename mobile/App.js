@@ -938,7 +938,7 @@ function ProfileScreen() {
       subtitle: 'zurixsciences.com', 
       icon: 'globe-outline',
       color: T.primary,
-      action: () => Linking.openURL('https://zurixsciences.com')
+      action: () => openURL('https://zurixsciences.com')
     },
     { 
       title: 'Contact Support', 
