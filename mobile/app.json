@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -22,7 +21,8 @@
         "backgroundColor": "#1e40af"
       },
       "package": "com.zurix.sciences",
-      "permissions": ["CAMERA"]
+      "permissions": ["CAMERA"],
+      "newArchEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
