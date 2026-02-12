@@ -1,18 +1,143 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput,
-  Alert, RefreshControl, Dimensions, Linking, ActivityIndicator, Animated, Platform
+  Alert, RefreshControl, Dimensions, Linking, ActivityIndicator, Animated, Platform, Modal
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = 'https://zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
 const api = axios.create({ baseURL: API_URL, timeout: 10000 });
+
+// ========== MOCK PROTOCOLS (Simulation) ==========
+const MOCK_PROTOCOLS = [
+  {
+    id: '1',
+    title: 'BPC-157 Recovery Protocol',
+    description: 'A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation. Ideal for post-injury recovery and joint health optimization.',
+    category: 'Basic',
+    price: 4.99,
+    duration_weeks: 4,
+    products_needed: ['BPC-157 5mg', 'Bacteriostatic Water'],
+    dosage_instructions: '250-500mcg subcutaneously, twice daily',
+    frequency: 'Twice daily (morning and evening)',
+    expected_results: 'Improved healing, reduced inflammation, better joint mobility within 2-4 weeks',
+    side_effects: 'Minimal. Possible injection site irritation',
+    storage_tips: 'Store reconstituted peptide at 2-8°C. Use within 30 days',
+    contraindications: 'Not for use during pregnancy or breastfeeding'
+  },
+  {
+    id: '2',
+    title: 'TB-500 Tissue Repair',
+    description: 'Advanced protocol for deep tissue healing and muscle recovery. Promotes cell migration and blood vessel formation for enhanced repair.',
+    category: 'Advanced',
+    price: 9.99,
+    duration_weeks: 6,
+    products_needed: ['TB-500 5mg', 'Bacteriostatic Water', 'Insulin Syringes'],
+    dosage_instructions: '2.5mg twice weekly for loading phase, then 2.5mg weekly',
+    frequency: 'Twice weekly (loading) then weekly (maintenance)',
+    expected_results: 'Enhanced flexibility, accelerated healing, improved endurance',
+    side_effects: 'Temporary head rush, fatigue during initial phase',
+    storage_tips: 'Refrigerate after reconstitution. Protect from light',
+    contraindications: 'Avoid if history of cancer or tumors'
+  },
+  {
+    id: '3',
+    title: 'CJC-1295 + Ipamorelin Stack',
+    description: 'Synergistic growth hormone secretagogue protocol for enhanced recovery, improved sleep quality, and body composition optimization.',
+    category: 'Advanced',
+    price: 9.99,
+    duration_weeks: 12,
+    products_needed: ['CJC-1295 DAC 2mg', 'Ipamorelin 5mg', 'Bacteriostatic Water'],
+    dosage_instructions: 'CJC-1295: 2mg weekly. Ipamorelin: 200-300mcg 2-3x daily',
+    frequency: 'CJC-1295 weekly, Ipamorelin before meals/bedtime',
+    expected_results: 'Better sleep, increased lean mass, improved recovery, anti-aging benefits',
+    side_effects: 'Water retention, tingling, increased hunger',
+    storage_tips: 'Store peptides separately. Keep refrigerated',
+    contraindications: 'Not for diabetics or those with pituitary disorders'
+  },
+  {
+    id: '4',
+    title: 'Epithalon Anti-Aging',
+    description: 'Telomerase activation protocol for cellular rejuvenation and longevity. Based on decades of research in aging science.',
+    category: 'Advanced',
+    price: 9.99,
+    duration_weeks: 8,
+    products_needed: ['Epithalon 10mg', 'Bacteriostatic Water'],
+    dosage_instructions: '5-10mg daily for 10-20 days, cycle every 4-6 months',
+    frequency: 'Daily injection for cycle duration',
+    expected_results: 'Improved sleep patterns, enhanced skin elasticity, increased energy',
+    side_effects: 'Generally well tolerated. Rare injection site reactions',
+    storage_tips: 'Store lyophilized peptide at room temperature. Refrigerate after reconstitution',
+    contraindications: 'Consult physician if on immunosuppressants'
+  },
+  {
+    id: '5',
+    title: 'Melanotan II Tanning',
+    description: 'Melanogenesis stimulation protocol for enhanced tanning response and skin pigmentation with minimal UV exposure.',
+    category: 'Basic',
+    price: 4.99,
+    duration_weeks: 4,
+    products_needed: ['Melanotan II 10mg', 'Bacteriostatic Water'],
+    dosage_instructions: 'Start with 0.25mg, gradually increase to 0.5-1mg daily',
+    frequency: 'Daily, preferably before UV exposure',
+    expected_results: 'Noticeable tan within 1-2 weeks, enhanced tanning response',
+    side_effects: 'Nausea, facial flushing, increased libido, darkening of moles',
+    storage_tips: 'Protect from light. Refrigerate reconstituted solution',
+    contraindications: 'History of melanoma or skin cancer'
+  },
+  {
+    id: '6',
+    title: 'PT-141 Protocol',
+    description: 'Research protocol for studying melanocortin receptor activation and related physiological responses.',
+    category: 'Basic',
+    price: 4.99,
+    duration_weeks: 2,
+    products_needed: ['PT-141 10mg', 'Bacteriostatic Water'],
+    dosage_instructions: '1-2mg subcutaneously, as needed',
+    frequency: 'As needed, not more than once every 72 hours',
+    expected_results: 'Effects typically observed within 4-6 hours of administration',
+    side_effects: 'Nausea, flushing, headache',
+    storage_tips: 'Refrigerate after reconstitution. Use within 30 days',
+    contraindications: 'Cardiovascular conditions, uncontrolled hypertension'
+  },
+  {
+    id: '7',
+    title: 'Semax Cognitive Enhancement',
+    description: 'Neuroprotective peptide protocol for cognitive enhancement, focus improvement, and mental clarity optimization.',
+    category: 'Basic',
+    price: 4.99,
+    duration_weeks: 4,
+    products_needed: ['Semax 0.1% Nasal Spray'],
+    dosage_instructions: '2-3 drops per nostril, 2-3 times daily',
+    frequency: 'Morning and afternoon, avoid evening use',
+    expected_results: 'Improved focus, better memory recall, enhanced mental clarity',
+    side_effects: 'Mild nasal irritation, rare headache',
+    storage_tips: 'Store at room temperature. Keep away from heat',
+    contraindications: 'Seizure disorders, bipolar disorder'
+  },
+  {
+    id: '8',
+    title: 'GHK-Cu Skin Regeneration',
+    description: 'Copper peptide protocol for skin rejuvenation, wound healing, and collagen synthesis stimulation.',
+    category: 'Advanced',
+    price: 9.99,
+    duration_weeks: 8,
+    products_needed: ['GHK-Cu 50mg', 'Bacteriostatic Water'],
+    dosage_instructions: '1-2mg subcutaneously daily, or topical application',
+    frequency: 'Daily application or injection',
+    expected_results: 'Improved skin texture, reduced fine lines, better wound healing',
+    side_effects: 'Minimal. Possible injection site discoloration',
+    storage_tips: 'Store in cool, dark place. Refrigerate after reconstitution',
+    contraindications: 'Copper sensitivity or Wilson\'s disease'
+  }
+];
 
 // ========== THEME ==========
 const T = {
@@ -53,43 +178,6 @@ const T = {
   gradientDark: ['#0f172a', '#1e293b'],
 };
 
-// ========== ANIMATED GRADIENT CARD ==========
-const GradientCard = ({ colors, children, style }) => (
-  <LinearGradient colors={colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.gradientCard, style]}>
-    {children}
-  </LinearGradient>
-);
-
-// ========== ICON BUTTON ==========
-const IconButton = ({ icon, label, onPress, color = T.primary, size = 'normal' }) => {
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  
-  const handlePressIn = () => {
-    Animated.spring(scaleAnim, { toValue: 0.95, useNativeDriver: true }).start();
-  };
-  
-  const handlePressOut = () => {
-    Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start();
-  };
-  
-  return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-      <TouchableOpacity 
-        style={[styles.iconButton, { backgroundColor: color + '15' }]} 
-        onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        activeOpacity={0.9}
-      >
-        <View style={[styles.iconButtonInner, { borderColor: color + '30' }]}>
-          {icon}
-          {label && <Text style={[styles.iconButtonLabel, { color }]}>{label}</Text>}
-        </View>
-      </TouchableOpacity>
-    </Animated.View>
-  );
-};
-
 // ========== HOME SCREEN ==========
 function HomeScreen({ goTo }) {
   const insets = useSafeAreaInsets();
@@ -102,10 +190,11 @@ function HomeScreen({ goTo }) {
     try {
       const [prods, protos, hist] = await Promise.all([
         api.get('/products').catch(() => ({ data: [] })),
-        api.get('/protocols').catch(() => ({ data: [] })),
+        api.get('/protocols').catch(() => ({ data: MOCK_PROTOCOLS })),
         AsyncStorage.getItem('vh').then(d => d ? JSON.parse(d) : []).catch(() => [])
       ]);
-      setStats({ products: prods.data.length, protocols: protos.data.length, scans: hist.length });
+      const protocolCount = protos.data.length > 0 ? protos.data.length : MOCK_PROTOCOLS.length;
+      setStats({ products: prods.data.length, protocols: protocolCount, scans: hist.length });
     } catch (e) { console.log(e); }
     setLoading(false);
     Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
@@ -123,21 +212,21 @@ function HomeScreen({ goTo }) {
     { 
       title: 'Verify Product', 
       subtitle: 'Scan QR or enter code', 
-      icon: <Ionicons name="shield-checkmark" size={26} color={T.primary} />,
+      iconName: 'shield-checkmark',
       tab: 'Scan',
       gradient: T.gradient1
     },
     { 
       title: 'Research Protocols', 
       subtitle: 'Browse dosage guides', 
-      icon: <MaterialCommunityIcons name="flask" size={26} color={T.secondary} />,
+      iconName: 'flask',
       tab: 'Protocols',
       gradient: T.gradient2
     },
     { 
       title: 'Scan History', 
       subtitle: 'View past verifications', 
-      icon: <Ionicons name="time" size={26} color={T.success} />,
+      iconName: 'time',
       tab: 'History',
       gradient: T.gradient3
     },
@@ -229,7 +318,7 @@ function HomeScreen({ goTo }) {
                 style={styles.actionCardGradient}
               >
                 <View style={[styles.actionIconContainer, { backgroundColor: action.gradient[0] + '20' }]}>
-                  {action.icon}
+                  <Ionicons name={action.iconName} size={26} color={action.gradient[1]} />
                 </View>
                 <View style={styles.actionTextContainer}>
                   <Text style={styles.actionTitle}>{action.title}</Text>
@@ -287,11 +376,14 @@ function ScanScreen() {
   const [code, setCode] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
   const inputRef = useRef(null);
   const resultAnim = useRef(new Animated.Value(0)).current;
+  const scannedRef = useRef(false);
 
-  const verify = async () => {
-    const c = code.trim().toUpperCase();
+  const verify = async (verifyCode) => {
+    const c = (verifyCode || code).trim().toUpperCase();
     if (!c) { 
       Alert.alert('Code Required', 'Please enter a verification code to continue.');
       return; 
@@ -318,10 +410,74 @@ function ScanScreen() {
     setLoading(false);
   };
 
+  const handleBarCodeScanned = ({ type, data }) => {
+    if (scannedRef.current) return;
+    scannedRef.current = true;
+    
+    setShowScanner(false);
+    setCode(data.toUpperCase());
+    
+    // Small delay then verify
+    setTimeout(() => {
+      verify(data);
+      scannedRef.current = false;
+    }, 500);
+  };
+
+  const openScanner = async () => {
+    if (!permission?.granted) {
+      const { granted } = await requestPermission();
+      if (!granted) {
+        Alert.alert('Permission Required', 'Camera access is needed to scan QR codes.');
+        return;
+      }
+    }
+    scannedRef.current = false;
+    setShowScanner(true);
+  };
+
   const sampleCodes = ['ZX-ZE101208', 'ZX-BP050823', 'ZX-SE030409'];
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.screenPadding} showsVerticalScrollIndicator={false}>
+      {/* QR Scanner Modal */}
+      <Modal visible={showScanner} animationType="slide" onRequestClose={() => setShowScanner(false)}>
+        <View style={styles.scannerContainer}>
+          <CameraView
+            style={styles.camera}
+            facing="back"
+            barcodeScannerSettings={{
+              barcodeTypes: ['qr', 'code128', 'code39', 'ean13', 'ean8'],
+            }}
+            onBarcodeScanned={handleBarCodeScanned}
+          >
+            <View style={styles.scannerOverlay}>
+              <View style={styles.scannerHeader}>
+                <TouchableOpacity 
+                  style={styles.scannerCloseBtn} 
+                  onPress={() => setShowScanner(false)}
+                >
+                  <Ionicons name="close" size={28} color={T.white} />
+                </TouchableOpacity>
+                <Text style={styles.scannerTitle}>Scan QR Code</Text>
+                <View style={{ width: 44 }} />
+              </View>
+              
+              <View style={styles.scannerFrame}>
+                <View style={[styles.scannerCorner, styles.scannerCornerTL]} />
+                <View style={[styles.scannerCorner, styles.scannerCornerTR]} />
+                <View style={[styles.scannerCorner, styles.scannerCornerBL]} />
+                <View style={[styles.scannerCorner, styles.scannerCornerBR]} />
+              </View>
+              
+              <Text style={styles.scannerHint}>
+                Position the QR code within the frame
+              </Text>
+            </View>
+          </CameraView>
+        </View>
+      </Modal>
+
       {/* Header */}
       <View style={styles.verifyHeader}>
         <View style={styles.verifyIconContainer}>
@@ -331,13 +487,33 @@ function ScanScreen() {
         </View>
         <Text style={styles.verifyTitle}>Product Verification</Text>
         <Text style={styles.verifySubtitle}>
-          Enter the unique code printed on your product label to verify authenticity
+          Scan QR code or enter verification code to authenticate your product
         </Text>
+      </View>
+
+      {/* Scan QR Button */}
+      <TouchableOpacity 
+        style={styles.scanQRButton}
+        onPress={openScanner}
+        activeOpacity={0.8}
+      >
+        <LinearGradient colors={T.gradient2} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.scanQRButtonGradient}>
+          <Ionicons name="qr-code" size={24} color={T.white} style={{ marginRight: 12 }} />
+          <Text style={styles.scanQRButtonText}>Scan QR Code</Text>
+          <Ionicons name="camera" size={20} color={T.white} style={{ marginLeft: 'auto' }} />
+        </LinearGradient>
+      </TouchableOpacity>
+
+      {/* Divider */}
+      <View style={styles.dividerContainer}>
+        <View style={styles.dividerLine} />
+        <Text style={styles.dividerText}>OR</Text>
+        <View style={styles.dividerLine} />
       </View>
 
       {/* Input Section */}
       <View style={styles.inputSection}>
-        <Text style={styles.inputLabel}>VERIFICATION CODE</Text>
+        <Text style={styles.inputLabel}>ENTER CODE MANUALLY</Text>
         <View style={styles.inputWrapper}>
           <Ionicons name="key-outline" size={20} color={T.textMuted} style={styles.inputIcon} />
           <TextInput
@@ -361,7 +537,7 @@ function ScanScreen() {
       {/* Verify Button */}
       <TouchableOpacity 
         style={[styles.verifyButton, loading && styles.verifyButtonDisabled]} 
-        onPress={verify} 
+        onPress={() => verify()} 
         disabled={loading}
         activeOpacity={0.8}
       >
@@ -464,8 +640,17 @@ function ProtocolsScreen() {
 
   useEffect(() => {
     api.get('/protocols')
-      .then(r => { setProtocols(r.data); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then(r => { 
+        // Use API data if available, otherwise use mock data
+        const data = r.data && r.data.length > 0 ? r.data : MOCK_PROTOCOLS;
+        setProtocols(data); 
+        setLoading(false); 
+      })
+      .catch(() => {
+        // On error, use mock data
+        setProtocols(MOCK_PROTOCOLS);
+        setLoading(false);
+      });
   }, []);
 
   const filtered = filter === 'All' ? protocols : protocols.filter(p => p.category === filter);
@@ -1160,7 +1345,7 @@ const styles = StyleSheet.create({
   // Verify Screen
   verifyHeader: {
     alignItems: 'center',
-    marginBottom: 28,
+    marginBottom: 24,
   },
   verifyIconContainer: {
     marginBottom: 16,
@@ -1184,6 +1369,123 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     paddingHorizontal: 16,
+  },
+
+  // Scan QR Button
+  scanQRButton: {
+    borderRadius: 14,
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  scanQRButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+  },
+  scanQRButtonText: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: T.white,
+  },
+
+  // Divider
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: T.cardBorder,
+  },
+  dividerText: {
+    color: T.textMuted,
+    fontSize: 12,
+    fontWeight: '600',
+    paddingHorizontal: 16,
+  },
+
+  // Scanner
+  scannerContainer: {
+    flex: 1,
+    backgroundColor: T.black,
+  },
+  camera: {
+    flex: 1,
+  },
+  scannerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  scannerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  scannerCloseBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scannerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: T.white,
+  },
+  scannerFrame: {
+    width: 250,
+    height: 250,
+    alignSelf: 'center',
+    marginTop: 40,
+  },
+  scannerCorner: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    borderColor: T.primary,
+  },
+  scannerCornerTL: {
+    top: 0,
+    left: 0,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderTopLeftRadius: 12,
+  },
+  scannerCornerTR: {
+    top: 0,
+    right: 0,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderTopRightRadius: 12,
+  },
+  scannerCornerBL: {
+    bottom: 0,
+    left: 0,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderBottomLeftRadius: 12,
+  },
+  scannerCornerBR: {
+    bottom: 0,
+    right: 0,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderBottomRightRadius: 12,
+  },
+  scannerHint: {
+    color: T.white,
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 30,
+    opacity: 0.8,
   },
 
   // Input Section
@@ -1767,31 +2069,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: T.textSecondary,
     lineHeight: 18,
-  },
-
-  // Gradient Card
-  gradientCard: {
-    borderRadius: 20,
-    padding: 20,
-  },
-
-  // Icon Button
-  iconButton: {
-    borderRadius: 16,
-    padding: 4,
-  },
-  iconButtonInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  iconButtonLabel: {
-    marginLeft: 8,
-    fontSize: 14,
-    fontWeight: '600',
   },
 });
