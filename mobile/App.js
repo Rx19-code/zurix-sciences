@@ -945,7 +945,7 @@ function ProfileScreen() {
       subtitle: 'Get help via WhatsApp', 
       icon: 'logo-whatsapp',
       color: T.success,
-      action: () => Linking.openURL('https://wa.me/85212345678?text=Hello%20Zurix%20Sciences')
+      action: () => openURL('https://wa.me/85212345678?text=Hello%20Zurix%20Sciences')
     },
     { 
       title: 'Clear Scan History', 
