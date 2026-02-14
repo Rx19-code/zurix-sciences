@@ -459,15 +459,15 @@ function ShopScreen({ cart, setCart }) {
                       <Text style={styles.cartItemPrice}>${item.price?.toFixed(2)} each</Text>
                     </View>
                     <View style={styles.cartItemQty}>
-                      <TouchableOpacity onPress={() => updateQty(item._id, -1)} style={styles.qtyBtn}>
+                      <TouchableOpacity onPress={() => updateQty(item.id || item._id, -1)} style={styles.qtyBtn}>
                         <Ionicons name="remove" size={18} color={T.text} />
                       </TouchableOpacity>
                       <Text style={styles.qtyText}>{item.qty}</Text>
-                      <TouchableOpacity onPress={() => updateQty(item._id, 1)} style={styles.qtyBtn}>
+                      <TouchableOpacity onPress={() => updateQty(item.id || item._id, 1)} style={styles.qtyBtn}>
                         <Ionicons name="add" size={18} color={T.text} />
                       </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => removeFromCart(item._id)} style={styles.removeBtn}>
+                    <TouchableOpacity onPress={() => removeFromCart(item.id || item._id)} style={styles.removeBtn}>
                       <Ionicons name="trash-outline" size={20} color={T.danger} />
                     </TouchableOpacity>
                   </View>
