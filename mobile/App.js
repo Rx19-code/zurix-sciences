@@ -10,7 +10,6 @@ import { Ionicons, MaterialCommunityIcons, Feather, FontAwesome5 } from '@expo/v
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'https://www.zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
 
 // Multiple API URLs to try (fallback)
