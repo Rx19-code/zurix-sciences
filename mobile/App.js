@@ -13,31 +13,54 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const API_URL = 'https://www.zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
 
-// API helper using native fetch (more reliable on React Native)
+// Multiple API URLs to try (fallback)
+const API_URLS = [
+  'https://www.zurixsciences.com/api',
+  'https://zurixsciences.com/api',
+];
+
+// API helper with fallback URLs
+const fetchWithFallback = async (endpoint, options = {}) => {
+  let lastError = null;
+  
+  for (const baseUrl of API_URLS) {
+    try {
+      console.log(`Trying: ${baseUrl}${endpoint}`);
+      const response = await fetch(`${baseUrl}${endpoint}`, {
+        ...options,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log(`Success from: ${baseUrl}`);
+      return data;
+    } catch (error) {
+      console.log(`Failed ${baseUrl}: ${error.message}`);
+      lastError = error;
+    }
+  }
+  
+  throw lastError || new Error('All API endpoints failed');
+};
+
 const api = {
   get: async (endpoint) => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const data = await fetchWithFallback(endpoint, { method: 'GET' });
     return { data };
   },
   post: async (endpoint, body) => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const data = await fetchWithFallback(endpoint, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(body),
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
     return { data };
   },
 };
