@@ -1005,7 +1005,7 @@ function ProfileScreen() {
   };
 
   const menuItems = [
-    { title: 'Visit Website', subtitle: 'zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
+    { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
     { title: 'Contact Support', subtitle: 'Switzerland WhatsApp', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_SWITZERLAND, 'Hello Zurix Sciences Support') },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
   ];
