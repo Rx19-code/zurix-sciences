@@ -592,7 +592,7 @@ function VerifyScreen() {
         <LinearGradient colors={T.gradient1} style={styles.verifyButtonGradient}>
           {loading ? <ActivityIndicator color={T.white} /> : (
             <>
-              <Ionicons name="checkmark-shield" size={22} color={T.white} />
+              <Ionicons name="shield-checkmark" size={22} color={T.white} />
               <Text style={styles.verifyButtonText}>Verify Product</Text>
             </>
           )}
