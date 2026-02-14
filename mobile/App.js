@@ -8,12 +8,39 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'https://zurixsciences.com/api';
+const API_URL = 'https://www.zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
-const api = axios.create({ baseURL: API_URL, timeout: 10000 });
+
+// API helper using native fetch (more reliable on React Native)
+const api = {
+  get: async (endpoint) => {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    return { data };
+  },
+  post: async (endpoint, body) => {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    return { data };
+  },
+};
 
 // ========== CONSTANTS ==========
 const WHATSAPP_SWITZERLAND = '+41791234567';
