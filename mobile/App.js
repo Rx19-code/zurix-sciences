@@ -285,7 +285,7 @@ function HomeScreen({ goTo, cartCount }) {
               <Ionicons name="globe-outline" size={24} color={T.primary} />
               <View style={{ flex: 1, marginLeft: 14 }}>
                 <Text style={styles.websiteCardTitle}>Visit Our Website</Text>
-                <Text style={styles.websiteCardUrl}>zurixsciences.com</Text>
+                <Text style={styles.websiteCardUrl}>www.zurixsciences.com</Text>
               </View>
               <Feather name="external-link" size={18} color={T.textMuted} />
             </View>
