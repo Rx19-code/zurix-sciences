@@ -1444,4 +1444,31 @@ const styles = StyleSheet.create({
   disclaimerCard: { borderRadius: 14, overflow: 'hidden', marginTop: 8 },
   disclaimerGradient: { flexDirection: 'row', alignItems: 'flex-start', padding: 16, gap: 12, borderWidth: 1, borderColor: T.warning + '30', borderRadius: 14 },
   disclaimerText: { flex: 1, fontSize: 12, color: T.textSecondary, lineHeight: 18 },
+
+  // Terms Modal
+  termsModal: { backgroundColor: T.card, borderRadius: 24, margin: 20, maxHeight: height * 0.85, padding: 24 },
+  termsHeader: { alignItems: 'center', marginBottom: 20 },
+  termsTitle: { fontSize: 22, fontWeight: '700', color: T.text, marginTop: 12 },
+  termsContent: { maxHeight: height * 0.45 },
+  termsHeading: { fontSize: 16, fontWeight: '800', color: T.warning, marginBottom: 12, textAlign: 'center' },
+  termsText: { fontSize: 14, color: T.textSecondary, lineHeight: 22, marginBottom: 12 },
+  termsBullet: { fontSize: 13, color: T.textMuted, lineHeight: 20, marginBottom: 10, paddingLeft: 8 },
+  acceptTermsBtn: { borderRadius: 14, overflow: 'hidden', marginTop: 20 },
+  acceptTermsBtnGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 16, gap: 10 },
+  acceptTermsBtnText: { fontSize: 16, fontWeight: '700', color: T.white },
+  termsFooter: { fontSize: 11, color: T.textDim, textAlign: 'center', marginTop: 12 },
+
+  // Research Banner
+  researchBanner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: T.warning + '15', paddingVertical: 10, paddingHorizontal: 16, gap: 8 },
+  researchBannerText: { fontSize: 12, color: T.warning, fontWeight: '600' },
+
+  // Cart Disclaimer
+  cartDisclaimer: { fontSize: 11, color: T.textMuted, textAlign: 'center', marginBottom: 12, lineHeight: 16 },
+
+  // Empty Products
+  emptyProducts: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 60, paddingHorizontal: 20 },
+  emptyProductsTitle: { fontSize: 18, fontWeight: '700', color: T.text, marginTop: 16 },
+  emptyProductsText: { fontSize: 14, color: T.textMuted, marginTop: 8, textAlign: 'center' },
+  visitWebsiteBtn: { marginTop: 20, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: T.primary, borderRadius: 12 },
+  visitWebsiteBtnText: { fontSize: 14, fontWeight: '600', color: T.white },
 });
