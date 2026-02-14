@@ -547,7 +547,24 @@ function ShopScreen({ cart, setCart }) {
 
       {/* Products Grid */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.productsGrid}>
-        {filtered.length === 0 ? (
+        {loading ? (
+          <View style={styles.emptyProducts}>
+            <ActivityIndicator size="large" color={T.primary} />
+            <Text style={styles.emptyProductsTitle}>Loading Products...</Text>
+          </View>
+        ) : error ? (
+          <View style={styles.emptyProducts}>
+            <Ionicons name="alert-circle-outline" size={48} color={T.danger} />
+            <Text style={styles.emptyProductsTitle}>Error Loading Products</Text>
+            <Text style={styles.emptyProductsText}>{error}</Text>
+            <TouchableOpacity style={styles.retryBtn} onPress={loadProducts}>
+              <Text style={styles.retryBtnText}>Retry</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.visitWebsiteBtn} onPress={() => openURL('https://www.zurixsciences.com')}>
+              <Text style={styles.visitWebsiteBtnText}>Visit Website Instead</Text>
+            </TouchableOpacity>
+          </View>
+        ) : filtered.length === 0 ? (
           <View style={styles.emptyProducts}>
             <Ionicons name="flask-outline" size={48} color={T.textMuted} />
             <Text style={styles.emptyProductsTitle}>No Products Available</Text>
@@ -558,7 +575,7 @@ function ShopScreen({ cart, setCart }) {
           </View>
         ) : (
           filtered.map((product, i) => (
-            <View key={i} style={styles.productCard}>
+            <View key={product.id || i} style={styles.productCard}>
               <View style={styles.productImagePlaceholder}>
                 <Ionicons name="flask" size={32} color={T.primary} />
               </View>
