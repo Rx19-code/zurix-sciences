@@ -302,12 +302,28 @@ function ShopScreen({ cart, setCart }) {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
   const [showCart, setShowCart] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showTerms, setShowTerms] = useState(true);
 
   useEffect(() => {
+    // Check if user already accepted terms
+    AsyncStorage.getItem('shop_terms_accepted').then(accepted => {
+      if (accepted === 'true') {
+        setAcceptedTerms(true);
+        setShowTerms(false);
+      }
+    });
+    
     api.get('/products')
       .then(r => { setProducts(r.data || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch((err) => { console.log('Products error:', err); setLoading(false); });
   }, []);
+
+  const handleAcceptTerms = async () => {
+    await AsyncStorage.setItem('shop_terms_accepted', 'true');
+    setAcceptedTerms(true);
+    setShowTerms(false);
+  };
 
   const categories = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
   const filtered = filter === 'All' ? products : products.filter(p => p.category === filter);
@@ -345,9 +361,71 @@ function ShopScreen({ cart, setCart }) {
       return;
     }
     const items = cart.map(item => `• ${item.name} x${item.qty} - $${(item.price * item.qty).toFixed(2)}`).join('\n');
-    const message = `🛒 *New Order - Zurix Sciences*\n\n${items}\n\n💰 *Total: $${cartTotal.toFixed(2)}*\n\nPlease confirm availability and payment details.`;
+    const message = `🛒 *New Order Request - Zurix Sciences*\n\n${items}\n\n💰 *Total: $${cartTotal.toFixed(2)}*\n\n⚠️ FOR RESEARCH USE ONLY\n\nPlease confirm availability and payment details.`;
     openWhatsApp(WHATSAPP_ORDER, message);
   };
+
+  // Terms Modal - Must accept before accessing shop
+  if (showTerms && !acceptedTerms) {
+    return (
+      <View style={styles.screen}>
+        <Modal visible={true} transparent animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.termsModal}>
+              <View style={styles.termsHeader}>
+                <Ionicons name="document-text" size={32} color={T.warning} />
+                <Text style={styles.termsTitle}>Terms & Disclaimer</Text>
+              </View>
+              
+              <ScrollView style={styles.termsContent}>
+                <Text style={styles.termsHeading}>FOR RESEARCH USE ONLY</Text>
+                <Text style={styles.termsText}>
+                  By accessing this product catalog, you acknowledge and agree to the following terms:
+                </Text>
+                
+                <Text style={styles.termsBullet}>
+                  • All products listed are intended exclusively for laboratory research and scientific study purposes.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • Products are NOT intended for human consumption, veterinary use, therapeutic applications, or diagnostic purposes.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • You confirm that you are a qualified researcher, scientist, or are purchasing on behalf of a licensed research institution.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • Zurix Sciences acts as a facilitator connecting researchers with authorized distributors. We do not sell products directly.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • All inquiries are forwarded to our authorized representative who will handle your request.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • You agree to comply with all applicable laws and regulations in your jurisdiction regarding the purchase and use of research materials.
+                </Text>
+                <Text style={styles.termsBullet}>
+                  • You assume full responsibility for the proper handling, storage, and use of any products acquired.
+                </Text>
+                
+                <Text style={[styles.termsText, { marginTop: 16, fontWeight: '600' }]}>
+                  By clicking "I Agree & Continue", you confirm that you have read, understood, and agree to be bound by these terms.
+                </Text>
+              </ScrollView>
+
+              <TouchableOpacity style={styles.acceptTermsBtn} onPress={handleAcceptTerms}>
+                <LinearGradient colors={T.gradient1} style={styles.acceptTermsBtnGradient}>
+                  <Ionicons name="checkmark-circle" size={20} color={T.white} />
+                  <Text style={styles.acceptTermsBtnText}>I Agree & Continue</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              
+              <Text style={styles.termsFooter}>
+                Continued access constitutes acceptance of these terms.
+              </Text>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  }
 
   if (loading) {
     return <View style={[styles.screen, styles.center]}><ActivityIndicator size="large" color={T.primary} /></View>;
@@ -402,10 +480,13 @@ function ShopScreen({ cart, setCart }) {
                   <Text style={styles.cartTotalLabel}>Total:</Text>
                   <Text style={styles.cartTotalValue}>${cartTotal.toFixed(2)}</Text>
                 </View>
+                <Text style={styles.cartDisclaimer}>
+                  ⚠️ For research purposes only. You will be connected with our authorized representative.
+                </Text>
                 <TouchableOpacity style={styles.checkoutBtn} onPress={checkout}>
                   <LinearGradient colors={T.gradient3} style={styles.checkoutBtnGradient}>
                     <Ionicons name="logo-whatsapp" size={20} color={T.white} />
-                    <Text style={styles.checkoutBtnText}>Order via WhatsApp</Text>
+                    <Text style={styles.checkoutBtnText}>Contact Representative</Text>
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
@@ -414,9 +495,15 @@ function ShopScreen({ cart, setCart }) {
         </View>
       </Modal>
 
+      {/* Research Banner */}
+      <View style={styles.researchBanner}>
+        <Ionicons name="flask" size={16} color={T.warning} />
+        <Text style={styles.researchBannerText}>Research Products Only • Contact Representative to Order</Text>
+      </View>
+
       {/* Header with Cart Button */}
       <View style={styles.shopHeader}>
-        <Text style={styles.shopTitle}>Products</Text>
+        <Text style={styles.shopTitle}>Product Catalog</Text>
         <TouchableOpacity style={styles.cartButton} onPress={() => setShowCart(true)}>
           <Ionicons name="cart" size={24} color={T.text} />
           {cartCount > 0 && (
@@ -428,38 +515,52 @@ function ShopScreen({ cart, setCart }) {
       </View>
 
       {/* Filter */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
-        {categories.map(cat => (
-          <TouchableOpacity key={cat} style={[styles.filterChip, filter === cat && styles.filterChipActive]} onPress={() => setFilter(cat)}>
-            <Text style={[styles.filterChipText, filter === cat && styles.filterChipTextActive]}>{cat}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {categories.length > 1 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
+          {categories.map(cat => (
+            <TouchableOpacity key={cat} style={[styles.filterChip, filter === cat && styles.filterChipActive]} onPress={() => setFilter(cat)}>
+              <Text style={[styles.filterChipText, filter === cat && styles.filterChipTextActive]}>{cat}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       {/* Products Grid */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.productsGrid}>
-        {filtered.map((product, i) => (
-          <View key={i} style={styles.productCard}>
-            <View style={styles.productImagePlaceholder}>
-              <Ionicons name="flask" size={32} color={T.primary} />
-            </View>
-            <View style={[styles.categoryBadge, { backgroundColor: T.primary + '20', alignSelf: 'flex-start' }]}>
-              <Text style={[styles.categoryBadgeText, { color: T.primary }]}>{product.category}</Text>
-            </View>
-            <Text style={styles.productName} numberOfLines={2}>{product.name}</Text>
-            <Text style={styles.productPurity}>Purity: {product.purity}</Text>
-            <View style={styles.productFooter}>
-              <Text style={styles.productPrice}>${product.price?.toFixed(2)}</Text>
-              <TouchableOpacity style={styles.addToCartBtn} onPress={() => addToCart(product)}>
-                <Ionicons name="add" size={20} color={T.white} />
-              </TouchableOpacity>
-            </View>
+        {filtered.length === 0 ? (
+          <View style={styles.emptyProducts}>
+            <Ionicons name="flask-outline" size={48} color={T.textMuted} />
+            <Text style={styles.emptyProductsTitle}>No Products Available</Text>
+            <Text style={styles.emptyProductsText}>Please check back later or visit our website</Text>
+            <TouchableOpacity style={styles.visitWebsiteBtn} onPress={() => openURL('https://zurixsciences.com')}>
+              <Text style={styles.visitWebsiteBtnText}>Visit Website</Text>
+            </TouchableOpacity>
           </View>
-        ))}
+        ) : (
+          filtered.map((product, i) => (
+            <View key={i} style={styles.productCard}>
+              <View style={styles.productImagePlaceholder}>
+                <Ionicons name="flask" size={32} color={T.primary} />
+              </View>
+              <View style={[styles.categoryBadge, { backgroundColor: T.primary + '20', alignSelf: 'flex-start' }]}>
+                <Text style={[styles.categoryBadgeText, { color: T.primary }]}>{product.category}</Text>
+              </View>
+              <Text style={styles.productName} numberOfLines={2}>{product.name}</Text>
+              <Text style={styles.productPurity}>Purity: {product.purity}</Text>
+              <View style={styles.productFooter}>
+                <Text style={styles.productPrice}>${product.price?.toFixed(2)}</Text>
+                <TouchableOpacity style={styles.addToCartBtn} onPress={() => addToCart(product)}>
+                  <Ionicons name="add" size={20} color={T.white} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        )}
       </ScrollView>
     </View>
   );
 }
+
 
 // ========== VERIFY SCREEN (Anti-Fake Enhanced) ==========
 function VerifyScreen() {
