@@ -280,7 +280,7 @@ function HomeScreen({ goTo, cartCount }) {
 
         {/* Website Link */}
         <View style={styles.section}>
-          <TouchableOpacity style={styles.websiteCard} onPress={() => openURL('https://zurixsciences.com')} activeOpacity={0.8}>
+          <TouchableOpacity style={styles.websiteCard} onPress={() => openURL('https://www.zurixsciences.com')} activeOpacity={0.8}>
             <View style={styles.websiteCardInner}>
               <Ionicons name="globe-outline" size={24} color={T.primary} />
               <View style={{ flex: 1, marginLeft: 14 }}>
@@ -532,7 +532,7 @@ function ShopScreen({ cart, setCart }) {
             <Ionicons name="flask-outline" size={48} color={T.textMuted} />
             <Text style={styles.emptyProductsTitle}>No Products Available</Text>
             <Text style={styles.emptyProductsText}>Please check back later or visit our website</Text>
-            <TouchableOpacity style={styles.visitWebsiteBtn} onPress={() => openURL('https://zurixsciences.com')}>
+            <TouchableOpacity style={styles.visitWebsiteBtn} onPress={() => openURL('https://www.zurixsciences.com')}>
               <Text style={styles.visitWebsiteBtnText}>Visit Website</Text>
             </TouchableOpacity>
           </View>
@@ -1005,7 +1005,7 @@ function ProfileScreen() {
   };
 
   const menuItems = [
-    { title: 'Visit Website', subtitle: 'zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://zurixsciences.com') },
+    { title: 'Visit Website', subtitle: 'zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
     { title: 'Contact Support', subtitle: 'Switzerland WhatsApp', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_SWITZERLAND, 'Hello Zurix Sciences Support') },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
   ];
