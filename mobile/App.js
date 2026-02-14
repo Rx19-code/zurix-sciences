@@ -1508,4 +1508,6 @@ const styles = StyleSheet.create({
   emptyProductsText: { fontSize: 14, color: T.textMuted, marginTop: 8, textAlign: 'center' },
   visitWebsiteBtn: { marginTop: 20, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: T.primary, borderRadius: 12 },
   visitWebsiteBtnText: { fontSize: 14, fontWeight: '600', color: T.white },
+  retryBtn: { marginTop: 16, paddingHorizontal: 32, paddingVertical: 12, backgroundColor: T.success, borderRadius: 12 },
+  retryBtnText: { fontSize: 14, fontWeight: '600', color: T.white },
 });
