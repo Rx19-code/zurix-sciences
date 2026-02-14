@@ -360,9 +360,9 @@ function ShopScreen({ cart, setCart }) {
     setLoading(true);
     setError(null);
     try {
-      console.log('Fetching products from:', API_URL + '/products');
+      console.log('Fetching products...');
       const response = await api.get('/products');
-      console.log('Products response:', response.data?.length, 'items');
+      console.log('Products loaded:', response.data?.length, 'items');
       if (response.data && response.data.length > 0) {
         setProducts(response.data);
       } else {
