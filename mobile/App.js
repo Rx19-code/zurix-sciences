@@ -11,7 +11,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'https://www.zurixsciences.com/api';
+const API_URL = 'https://zurixsciences.com/api';
 const { width, height } = Dimensions.get('window');
 const api = axios.create({ baseURL: API_URL, timeout: 10000 });
 
