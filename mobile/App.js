@@ -329,9 +329,10 @@ function ShopScreen({ cart, setCart }) {
   const filtered = filter === 'All' ? products : products.filter(p => p.category === filter);
 
   const addToCart = (product) => {
-    const existing = cart.find(item => item._id === product._id);
+    const productId = product.id || product._id;
+    const existing = cart.find(item => (item.id || item._id) === productId);
     if (existing) {
-      setCart(cart.map(item => item._id === product._id ? { ...item, qty: item.qty + 1 } : item));
+      setCart(cart.map(item => (item.id || item._id) === productId ? { ...item, qty: item.qty + 1 } : item));
     } else {
       setCart([...cart, { ...product, qty: 1 }]);
     }
@@ -339,12 +340,12 @@ function ShopScreen({ cart, setCart }) {
   };
 
   const removeFromCart = (productId) => {
-    setCart(cart.filter(item => item._id !== productId));
+    setCart(cart.filter(item => (item.id || item._id) !== productId));
   };
 
   const updateQty = (productId, delta) => {
     setCart(cart.map(item => {
-      if (item._id === productId) {
+      if ((item.id || item._id) === productId) {
         const newQty = item.qty + delta;
         return newQty > 0 ? { ...item, qty: newQty } : item;
       }
