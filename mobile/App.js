@@ -300,10 +300,30 @@ function HomeScreen({ goTo, cartCount }) {
 function ShopScreen({ cart, setCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('All');
   const [showCart, setShowCart] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showTerms, setShowTerms] = useState(true);
+
+  const loadProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      console.log('Fetching products from:', API_URL + '/products');
+      const response = await api.get('/products');
+      console.log('Products response:', response.data?.length, 'items');
+      if (response.data && response.data.length > 0) {
+        setProducts(response.data);
+      } else {
+        setError('No products available');
+      }
+    } catch (err) {
+      console.log('Products error:', err.message);
+      setError('Failed to load products: ' + err.message);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     // Check if user already accepted terms
@@ -314,9 +334,8 @@ function ShopScreen({ cart, setCart }) {
       }
     });
     
-    api.get('/products')
-      .then(r => { setProducts(r.data || []); setLoading(false); })
-      .catch((err) => { console.log('Products error:', err); setLoading(false); });
+    // Load products
+    loadProducts();
   }, []);
 
   const handleAcceptTerms = async () => {
