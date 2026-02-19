@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends, Header
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+import hashlib
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -17,6 +18,9 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Admin password (hashed)
+ADMIN_PASSWORD = "Rx050217!"
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -60,8 +64,11 @@ class VerifyProductRequest(BaseModel):
 
 class VerifyProductResponse(BaseModel):
     success: bool
-    product: Optional[Product] = None
+    product: Optional[dict] = None
     message: str
+    verification_count: int = 0
+    first_verified_at: Optional[str] = None
+    warning_level: Optional[str] = None  # "none", "caution", "danger"
 
 class Protocol(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -82,15 +89,41 @@ class Protocol(BaseModel):
     reconstitution_guide: str
     featured: bool = False
 
+# NEW: Unique QR Code model
+class UniqueCode(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    code: str  # ZX-261216-RT10-1-00038A (unique per unit)
+    batch_number: str  # ZX-261216-RT10-1 (shared by batch)
+    product_id: str  # Reference to product
+    product_name: str
+    verification_count: int = 0
+    first_verified_at: Optional[str] = None
+    last_verified_at: Optional[str] = None
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
 class VerificationLog(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    verification_code: str
+    code: str
     batch_number: str
+    product_name: str
     timestamp: str
-    device_id: Optional[str] = None
-    location: Optional[str] = None
+    verification_number: int  # 1st, 2nd, 3rd verification
+    ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+
+# Admin models
+class AdminLoginRequest(BaseModel):
+    password: str
+
+class ImportCodesRequest(BaseModel):
+    product_id: str
+    product_name: str
+    batch_number: str
+    codes: List[str]
 
 class VerifyScanRequest(BaseModel):
     code: str
@@ -98,6 +131,10 @@ class VerifyScanRequest(BaseModel):
 
 class VerifyScanResponse(BaseModel):
     success: bool
+    product: Optional[Product] = None
+    message: str
+    verification_count: int = 0
+    warning: Optional[str] = None
     product: Optional[Product] = None
     message: str
     verification_count: int = 0
