@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import RegulatoryBanner from './components/RegulatoryBanner';
 import Navbar from './components/Navbar';
@@ -14,31 +14,49 @@ import CheckoutSuccess from './pages/CheckoutSuccess';
 import Representatives from './pages/Representatives';
 import Contact from './pages/Contact';
 import PeptigenLogos from './components/PeptigenLogos';
+import Admin from './pages/Admin';
 import './App.css';
+
+// Layout wrapper that hides navbar/footer for admin
+function Layout({ children }) {
+  const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
+  
+  if (isAdmin) {
+    return <>{children}</>;
+  }
+  
+  return (
+    <div className="flex flex-col min-h-screen">
+      <RegulatoryBanner />
+      <Navbar />
+      <main className="flex-grow">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   return (
     <CartProvider>
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <RegulatoryBanner />
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:id" element={<ProductDetail />} />
-              <Route path="/calculator" element={<Calculator />} />
-              <Route path="/verify" element={<Verify />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/checkout/success" element={<CheckoutSuccess />} />
-              <Route path="/representatives" element={<Representatives />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/logos" element={<PeptigenLogos />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/calculator" element={<Calculator />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout/success" element={<CheckoutSuccess />} />
+            <Route path="/representatives" element={<Representatives />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/logos" element={<PeptigenLogos />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </CartProvider>
   );
