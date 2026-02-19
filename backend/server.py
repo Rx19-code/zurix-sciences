@@ -208,33 +208,215 @@ async def get_representatives():
     reps = await db.representatives.find({}, {"_id": 0}).to_list(100)
     return reps
 
-# Verification endpoint
+# Verification endpoint - NEW SYSTEM with unique codes
 @api_router.post("/verify-product", response_model=VerifyProductResponse)
 async def verify_product(request: VerifyProductRequest):
-    """Verify a product by its verification code"""
+    """Verify a product by its unique QR code"""
     code = request.code.strip().upper()
     
     # Check if code starts with ZX-
     if not code.startswith("ZX-"):
         return VerifyProductResponse(
             success=False,
-            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'"
+            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'",
+            verification_count=0,
+            warning_level="none"
         )
     
-    # Find product
+    # First, try to find in unique_codes collection (new system)
+    unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+    
+    if unique_code:
+        # Found in unique codes - update verification count
+        verification_count = unique_code.get('verification_count', 0) + 1
+        first_verified = unique_code.get('first_verified_at')
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # Update the code record
+        update_data = {
+            "verification_count": verification_count,
+            "last_verified_at": now
+        }
+        if not first_verified:
+            update_data["first_verified_at"] = now
+            first_verified = now
+        
+        await db.unique_codes.update_one(
+            {"code": code},
+            {"$set": update_data}
+        )
+        
+        # Log verification
+        log_entry = {
+            "id": str(uuid.uuid4()),
+            "code": code,
+            "batch_number": unique_code.get('batch_number', ''),
+            "product_name": unique_code.get('product_name', ''),
+            "timestamp": now,
+            "verification_number": verification_count
+        }
+        await db.verification_logs.insert_one(log_entry)
+        
+        # Determine warning level and message
+        if verification_count == 1:
+            message = "✅ Product Authenticated! This is the FIRST verification."
+            warning_level = "none"
+        elif verification_count == 2:
+            message = f"⚠️ CAUTION: This code was already verified on {first_verified[:10]}. If this wasn't you, the product may be counterfeit."
+            warning_level = "caution"
+        else:
+            message = f"🚨 ALERT: This code has been verified {verification_count} times! HIGH RISK of counterfeit product."
+            warning_level = "danger"
+        
+        # Get product info
+        product = await db.products.find_one({"id": unique_code.get('product_id')}, {"_id": 0})
+        
+        return VerifyProductResponse(
+            success=True,
+            product=product,
+            message=message,
+            verification_count=verification_count,
+            first_verified_at=first_verified,
+            warning_level=warning_level
+        )
+    
+    # Fallback: try old system (products collection)
     product = await db.products.find_one({"verification_code": code}, {"_id": 0})
     
-    if not product:
+    if product:
         return VerifyProductResponse(
-            success=False,
-            message="Product not found. This code may be counterfeit. Please contact support immediately."
+            success=True,
+            product=product,
+            message="Product authenticated successfully!",
+            verification_count=1,
+            warning_level="none"
         )
     
+    # Not found anywhere
     return VerifyProductResponse(
-        success=True,
-        product=Product(**product),
-        message="Product authenticated successfully!"
+        success=False,
+        message="❌ Code not found. This product may be COUNTERFEIT. Please contact support immediately.",
+        verification_count=0,
+        warning_level="danger"
     )
+
+# ==================== ADMIN ROUTES ====================
+
+@api_router.post("/admin/login")
+async def admin_login(request: AdminLoginRequest):
+    """Admin login"""
+    if request.password == ADMIN_PASSWORD:
+        return {"success": True, "message": "Login successful"}
+    raise HTTPException(status_code=401, detail="Invalid password")
+
+@api_router.post("/admin/import-codes")
+async def import_codes(request: ImportCodesRequest, x_admin_password: str = Header(None)):
+    """Import unique verification codes for a product batch"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    codes = [c.strip().upper() for c in request.codes if c.strip()]
+    
+    if not codes:
+        raise HTTPException(status_code=400, detail="No valid codes provided")
+    
+    # Check for duplicates in database
+    existing = await db.unique_codes.find({"code": {"$in": codes}}, {"code": 1}).to_list(len(codes))
+    existing_codes = {doc['code'] for doc in existing}
+    
+    new_codes = [c for c in codes if c not in existing_codes]
+    
+    if not new_codes:
+        return {
+            "success": False,
+            "message": "All codes already exist in database",
+            "imported": 0,
+            "duplicates": len(codes)
+        }
+    
+    # Prepare documents for insertion
+    now = datetime.now(timezone.utc).isoformat()
+    documents = []
+    for code in new_codes:
+        documents.append({
+            "id": str(uuid.uuid4()),
+            "code": code,
+            "batch_number": request.batch_number.strip().upper(),
+            "product_id": request.product_id,
+            "product_name": request.product_name,
+            "verification_count": 0,
+            "first_verified_at": None,
+            "last_verified_at": None,
+            "created_at": now
+        })
+    
+    # Insert all at once
+    await db.unique_codes.insert_many(documents)
+    
+    return {
+        "success": True,
+        "message": f"Successfully imported {len(new_codes)} codes",
+        "imported": len(new_codes),
+        "duplicates": len(existing_codes)
+    }
+
+@api_router.get("/admin/codes")
+async def get_admin_codes(x_admin_password: str = Header(None), batch_number: Optional[str] = None, limit: int = 100):
+    """Get all unique codes (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    query = {}
+    if batch_number:
+        query["batch_number"] = batch_number.upper()
+    
+    codes = await db.unique_codes.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+    total = await db.unique_codes.count_documents(query)
+    
+    return {"codes": codes, "total": total, "showing": len(codes)}
+
+@api_router.get("/admin/batches")
+async def get_admin_batches(x_admin_password: str = Header(None)):
+    """Get all unique batches (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    pipeline = [
+        {"$group": {
+            "_id": "$batch_number",
+            "product_name": {"$first": "$product_name"},
+            "total_codes": {"$sum": 1},
+            "verified_codes": {"$sum": {"$cond": [{"$gt": ["$verification_count", 0]}, 1, 0]}},
+            "created_at": {"$min": "$created_at"}
+        }},
+        {"$sort": {"created_at": -1}}
+    ]
+    
+    batches = await db.unique_codes.aggregate(pipeline).to_list(100)
+    
+    return {"batches": batches}
+
+@api_router.get("/admin/verification-logs")
+async def get_admin_verification_logs(x_admin_password: str = Header(None), limit: int = 100):
+    """Get verification logs (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    logs = await db.verification_logs.find({}, {"_id": 0}).sort("timestamp", -1).limit(limit).to_list(limit)
+    return {"logs": logs, "total": len(logs)}
+
+@api_router.delete("/admin/batch/{batch_number}")
+async def delete_batch(batch_number: str, x_admin_password: str = Header(None)):
+    """Delete all codes for a batch (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    result = await db.unique_codes.delete_many({"batch_number": batch_number.upper()})
+    
+    return {
+        "success": True,
+        "message": f"Deleted {result.deleted_count} codes from batch {batch_number}"
+    }
 
 # ==================== MOBILE APP ROUTES ====================
 
