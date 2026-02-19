@@ -135,10 +135,6 @@ class VerifyScanResponse(BaseModel):
     message: str
     verification_count: int = 0
     warning: Optional[str] = None
-    product: Optional[Product] = None
-    message: str
-    verification_count: int = 0
-    warning: Optional[str] = None
 
 # ==================== ROUTES ====================
 
@@ -445,51 +441,102 @@ async def verify_scan(request: VerifyScanRequest):
     """Verify a product and log the verification (for mobile app)"""
     code = request.code.strip().upper()
     
-    # Check if code starts with CS-
-    if not code.startswith("CS-"):
-        return VerifyScanResponse(
-            success=False,
-            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'",
-            verification_count=0
-        )
+    # First try unique_codes collection (new system with ZX- prefix)
+    if code.startswith("ZX-"):
+        unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+        
+        if unique_code:
+            # Found in unique codes - update verification count
+            verification_count = unique_code.get('verification_count', 0) + 1
+            first_verified = unique_code.get('first_verified_at')
+            now = datetime.now(timezone.utc).isoformat()
+            
+            # Update the code record
+            update_data = {
+                "verification_count": verification_count,
+                "last_verified_at": now
+            }
+            if not first_verified:
+                update_data["first_verified_at"] = now
+                first_verified = now
+            
+            await db.unique_codes.update_one(
+                {"code": code},
+                {"$set": update_data}
+            )
+            
+            # Log verification
+            log_entry = {
+                "id": str(uuid.uuid4()),
+                "code": code,
+                "batch_number": unique_code.get('batch_number', ''),
+                "product_name": unique_code.get('product_name', ''),
+                "timestamp": now,
+                "verification_number": verification_count,
+                "device_id": request.device_id
+            }
+            await db.verification_logs.insert_one(log_entry)
+            
+            # Get product info
+            product = await db.products.find_one({"id": unique_code.get('product_id')}, {"_id": 0})
+            
+            # Determine warning
+            warning = None
+            if verification_count == 1:
+                message = "✅ Product Authenticated! This is the FIRST verification."
+            elif verification_count == 2:
+                message = f"⚠️ CAUTION: This code was already verified. If this wasn't you, the product may be counterfeit."
+                warning = "caution"
+            else:
+                message = f"🚨 ALERT: This code has been verified {verification_count} times! HIGH RISK of counterfeit product."
+                warning = "danger"
+            
+            return VerifyScanResponse(
+                success=True,
+                product=Product(**product) if product else None,
+                message=message,
+                verification_count=verification_count,
+                warning=warning
+            )
     
-    # Find product
+    # Fallback: Try old system with CS- prefix or ZX- in products collection
     product = await db.products.find_one({"verification_code": code}, {"_id": 0})
     
-    if not product:
+    if product:
+        # Log verification
+        verification_log = {
+            "id": str(uuid.uuid4()),
+            "verification_code": code,
+            "batch_number": product['batch_number'],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "device_id": request.device_id
+        }
+        await db.verification_logs.insert_one(verification_log)
+        
+        # Count total verifications for this batch
+        verification_count = await db.verification_logs.count_documents({"batch_number": product['batch_number']})
+        
+        # Warning if verified too many times
+        warning = None
+        if verification_count > 10:
+            warning = f"⚠️ WARNING: This batch has been verified {verification_count} times. This may indicate counterfeiting."
+        elif verification_count > 5:
+            warning = f"Note: This batch has been verified {verification_count} times."
+        
         return VerifyScanResponse(
-            success=False,
-            message="Product not found. This code may be counterfeit. Please contact support immediately.",
-            verification_count=0
+            success=True,
+            product=Product(**product),
+            message="Product authenticated successfully!",
+            verification_count=verification_count,
+            warning=warning
         )
     
-    # Log verification
-    verification_log = {
-        "id": str(uuid.uuid4()),
-        "verification_code": code,
-        "batch_number": product['batch_number'],
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "device_id": request.device_id
-    }
-    
-    await db.verification_logs.insert_one(verification_log)
-    
-    # Count total verifications for this batch
-    verification_count = await db.verification_logs.count_documents({"batch_number": product['batch_number']})
-    
-    # Warning if verified too many times
-    warning = None
-    if verification_count > 10:
-        warning = f"⚠️ WARNING: This batch has been verified {verification_count} times. This may indicate counterfeiting."
-    elif verification_count > 5:
-        warning = f"Note: This batch has been verified {verification_count} times."
-    
+    # Not found anywhere
     return VerifyScanResponse(
-        success=True,
-        product=Product(**product),
-        message="Product authenticated successfully!",
-        verification_count=verification_count,
-        warning=warning
+        success=False,
+        message="❌ Code not found. This product may be COUNTERFEIT. Please contact support immediately.",
+        verification_count=0,
+        warning="danger"
     )
 
 # Verification history
