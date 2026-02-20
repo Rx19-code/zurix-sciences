@@ -28,12 +28,9 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3" data-testid="logo-link">
-              <div className="bg-gray-900 rounded-lg p-2">
-                <img src="/logo.png" alt="Zurix Sciences" style={{ height: '36px', width: 'auto' }} />
-              </div>
+            <Link to="/" className="flex items-center" data-testid="logo-link">
               <div>
-                <h1 className="text-lg font-bold text-gray-900">Zurix Sciences</h1>
+                <h1 className="text-2xl font-bold text-blue-600">Zurix Sciences</h1>
                 <p className="text-xs text-gray-500">Premium Research Compounds</p>
               </div>
             </Link>
