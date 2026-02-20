@@ -180,44 +180,37 @@ const Home = () => {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16" data-testid="featured-products-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Featured Products</h2>
-            <p className="text-lg text-gray-600">Our most popular research compounds</p>
+      <section className="py-10" data-testid="featured-products-section">
+        <div className="w-full px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-3">
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Featured Products</h2>
+              <p className="text-gray-600">Our most popular research compounds</p>
+            </div>
+            <Link to="/products" className="text-blue-600 font-semibold hover:underline flex items-center gap-2">
+              View All Products <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
           {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-600"></div>
+            <div className="text-center py-8">
+              <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-blue-600"></div>
             </div>
           ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {featuredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-              <div className="text-center">
-                <Link
-                  to="/products"
-                  className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-semibold"
-                  data-testid="view-all-products-link"
-                >
-                  <span>View All Products</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           )}
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-gray-50" data-testid="features-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose Zurix Sciences</h2>
-            <p className="text-lg text-gray-600">Quality, reliability, and scientific excellence in every compound</p>
+      <section className="py-10 bg-gray-50" data-testid="features-section">
+        <div className="w-full px-6 lg:px-12">
+          <div className="mb-6">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Why Choose Zurix Sciences</h2>
+            <p className="text-gray-600">Quality, reliability, and scientific excellence in every compound</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => {
