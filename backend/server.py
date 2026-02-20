@@ -479,7 +479,7 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
                 {"$set": update_data}
             )
             
-            # Log verification
+            # Log verification with IP and device info
             log_entry = {
                 "id": str(uuid.uuid4()),
                 "code": code,
@@ -487,7 +487,9 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
                 "product_name": unique_code.get('product_name', ''),
                 "timestamp": now,
                 "verification_number": verification_count,
-                "device_id": request.device_id
+                "device_id": request.device_id,
+                "client_ip": client_ip,
+                "user_agent": user_agent
             }
             await db.verification_logs.insert_one(log_entry)
             
