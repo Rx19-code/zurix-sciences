@@ -765,7 +765,7 @@ function VerifyScreen() {
         <Text style={styles.inputLabel}>ENTER CODE MANUALLY</Text>
         <View style={styles.inputWrapper}>
           <Ionicons name="key-outline" size={20} color={T.textMuted} />
-          <TextInput style={styles.input} placeholder="e.g. ZX-ZE101208" placeholderTextColor={T.textDim}
+          <TextInput style={styles.input} placeholder="e.g. ZX-261216-RT10-1-00001A" placeholderTextColor={T.textDim}
             value={code} onChangeText={t => { setCode(t.toUpperCase()); setResult(null); }} autoCapitalize="characters" />
           {code.length > 0 && (
             <TouchableOpacity onPress={() => { setCode(''); setResult(null); }}>
@@ -787,16 +787,10 @@ function VerifyScreen() {
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Sample Codes */}
+      {/* Code Format Info */}
       <View style={styles.sampleSection}>
-        <Text style={styles.sampleLabel}>Try sample codes:</Text>
-        <View style={styles.sampleCodesRow}>
-          {['ZX-ZE101208', 'ZX-BP050823'].map((c, i) => (
-            <TouchableOpacity key={i} style={styles.sampleCode} onPress={() => { setCode(c); setResult(null); }}>
-              <Text style={styles.sampleCodeText}>{c}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <Text style={styles.sampleLabel}>Code format: ZX-XXXXXX-XXXX-X-XXXXXX</Text>
+        <Text style={[styles.sampleLabel, { fontSize: 12, marginTop: 4 }]}>Enter the code from your product label</Text>
       </View>
 
       {/* Result */}
