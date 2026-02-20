@@ -65,8 +65,9 @@ const api = {
 };
 
 // ========== CONSTANTS ==========
-const WHATSAPP_SWITZERLAND = '+41791234567';
-const WHATSAPP_ORDER = '+85212345678'; // For orders
+const WHATSAPP_PARAGUAY = '+595974263753';
+const WHATSAPP_USA = '+13025808131';
+const WHATSAPP_ORDER = '+595974263753'; // For orders (Paraguay)
 
 const CRYPTO_WALLETS = {
   USDT: { address: 'TXqHLk8gZ9nKMYhW5v2xPjR3sBfE7cNmD1', network: 'TRC20' },
