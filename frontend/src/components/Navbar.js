@@ -30,7 +30,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
               <div className="flex items-center">
-                <img src="/logo.svg" alt="Zurix Sciences" className="h-12 w-auto" />
+                <img src="/logo.svg" alt="Zurix Sciences" style={{ height: '48px', width: 'auto' }} />
               </div>
             </Link>
 
