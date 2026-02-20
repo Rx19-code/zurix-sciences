@@ -73,10 +73,18 @@ const ProductDetail = () => {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Product Image Placeholder */}
+          {/* Product Image */}
           <div className="bg-white rounded-xl shadow-sm p-8">
-            <div className="aspect-square bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center">
-              <Package className="w-32 h-32 text-blue-300" />
+            <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
+              {product.image_url ? (
+                <img 
+                  src={product.image_url} 
+                  alt={product.name}
+                  className="max-w-full max-h-full object-contain"
+                />
+              ) : (
+                <Package className="w-32 h-32 text-blue-300" />
+              )}
             </div>
           </div>
 
