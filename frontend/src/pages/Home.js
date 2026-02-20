@@ -142,13 +142,18 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-gray-50" data-testid="categories-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Research Categories</h2>
-            <p className="text-lg text-gray-600">Explore our specialized research compounds and peptides</p>
+      <section className="py-12 bg-gray-50" data-testid="categories-section">
+        <div className="w-full px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-4">
+            <div>
+              <h2 className="text-3xl lg:text-4xl font-black text-gray-900">Research Categories</h2>
+              <p className="text-lg text-gray-600">Explore our specialized research compounds and peptides</p>
+            </div>
+            <Link to="/products" className="text-blue-600 font-bold hover:underline flex items-center gap-2">
+              View All Products <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {categories.map((category, index) => {
               const Icon = category.icon;
               return (
@@ -158,14 +163,14 @@ const Home = () => {
                   className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                   data-testid={`category-card-${index}`}
                 >
-                  <div className="p-6">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <div className="p-5">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-sm text-gray-600">{category.description}</p>
+                    <p className="text-gray-600">{category.description}</p>
                   </div>
                 </Link>
               );
