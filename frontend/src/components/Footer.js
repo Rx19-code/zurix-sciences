@@ -10,9 +10,7 @@ const Footer = () => {
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">Z</span>
-              </div>
+              <img src="/logo.svg" alt="Zurix Sciences" className="h-8 w-auto" />
               <h3 className="text-white font-bold text-lg">Zurix Sciences</h3>
             </div>
             <p className="text-sm text-gray-400">
