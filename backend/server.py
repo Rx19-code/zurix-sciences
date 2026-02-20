@@ -248,14 +248,16 @@ async def verify_product(request: VerifyProductRequest, req: Request):
             {"$set": update_data}
         )
         
-        # Log verification
+        # Log verification with IP and device info
         log_entry = {
             "id": str(uuid.uuid4()),
             "code": code,
             "batch_number": unique_code.get('batch_number', ''),
             "product_name": unique_code.get('product_name', ''),
             "timestamp": now,
-            "verification_number": verification_count
+            "verification_number": verification_count,
+            "client_ip": client_ip,
+            "user_agent": user_agent
         }
         await db.verification_logs.insert_one(log_entry)
         
