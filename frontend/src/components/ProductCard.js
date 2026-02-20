@@ -17,6 +17,17 @@ const ProductCard = ({ product }) => {
       className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
       data-testid={`product-card-${product.id}`}
     >
+      {/* Product Image */}
+      {product.image_url && (
+        <div className="h-48 bg-gray-100 overflow-hidden">
+          <img 
+            src={product.image_url} 
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
+      
       <div className="p-6">
         {/* Badge */}
         <div className="flex items-center justify-between mb-3">
