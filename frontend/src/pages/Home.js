@@ -212,16 +212,16 @@ const Home = () => {
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Why Choose Zurix Sciences</h2>
             <p className="text-gray-600">Quality, reliability, and scientific excellence in every compound</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="text-center" data-testid={`feature-${index}`}>
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                    <Icon className="w-8 h-8 text-blue-600" />
+                <div key={index} className="bg-white rounded-lg p-4 shadow-sm" data-testid={`feature-${index}`}>
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-3">
+                    <Icon className="w-6 h-6 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{feature.title}</h3>
+                  <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
               );
             })}
@@ -230,20 +230,24 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white" data-testid="cta-section">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Ready to Start Your Research?</h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Connect with your local representative for personalized service and support.
-          </p>
-          <Link
-            to="/representatives"
-            data-testid="find-representative-btn"
-            className="inline-flex items-center space-x-2 bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
-          >
-            <span>Find Your Representative</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+      <section className="py-10 bg-gradient-to-r from-blue-600 to-blue-800 text-white" data-testid="cta-section">
+        <div className="w-full px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold mb-2">Ready to Start Your Research?</h2>
+              <p className="text-blue-100">
+                Connect with your local representative for personalized service and support.
+              </p>
+            </div>
+            <Link
+              to="/representatives"
+              data-testid="find-representative-btn"
+              className="inline-flex items-center space-x-2 bg-white text-blue-900 font-semibold px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors whitespace-nowrap"
+            >
+              <span>Find Your Representative</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
