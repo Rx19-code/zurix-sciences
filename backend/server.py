@@ -79,6 +79,7 @@ class Product(BaseModel):
     expiry_date: str
     coa_url: str  # Certificate of Analysis URL
     featured: bool = False
+    image_url: Optional[str] = None
 
 class Representative(BaseModel):
     model_config = ConfigDict(extra="ignore")
