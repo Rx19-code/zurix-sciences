@@ -142,14 +142,14 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-12 bg-gray-50" data-testid="categories-section">
+      <section className="py-10 bg-gray-50" data-testid="categories-section">
         <div className="w-full px-6 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-4">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-3">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-black text-gray-900">Research Categories</h2>
-              <p className="text-lg text-gray-600">Explore our specialized research compounds and peptides</p>
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Research Categories</h2>
+              <p className="text-gray-600">Explore our specialized research compounds and peptides</p>
             </div>
-            <Link to="/products" className="text-blue-600 font-bold hover:underline flex items-center gap-2">
+            <Link to="/products" className="text-blue-600 font-semibold hover:underline flex items-center gap-2">
               View All Products <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -160,17 +160,17 @@ const Home = () => {
                 <Link
                   key={index}
                   to={`/products?category=${encodeURIComponent(category.name)}`}
-                  className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+                  className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                   data-testid={`category-card-${index}`}
                 >
-                  <div className="p-5">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6 text-white" />
+                  <div className="p-4">
+                    <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-gray-600">{category.description}</p>
+                    <p className="text-sm text-gray-600">{category.description}</p>
                   </div>
                 </Link>
               );
