@@ -274,11 +274,6 @@ function HomeScreen({ goTo, cartCount }) {
         {/* Hero Section */}
         <LinearGradient colors={['#1e3a8a', '#3b82f6', '#7c3aed']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.heroContainer}>
           <View style={styles.heroContent}>
-            <Image 
-              source={{ uri: 'https://www.zurixsciences.com/logo.png' }} 
-              style={{ width: 120, height: 60, marginBottom: 12 }}
-              resizeMode="contain"
-            />
             <View style={styles.heroBadge}>
               <Ionicons name="diamond" size={12} color={T.white} />
               <Text style={styles.heroBadgeText}>PREMIUM RESEARCH</Text>
