@@ -382,7 +382,7 @@ export default function Admin() {
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
             <h2 className="text-xl font-bold text-white mb-6">Verification Logs</h2>
             <p className="text-gray-400 text-sm mb-4">
-              💡 Se o mesmo IP aparecer em múltiplas verificações, provavelmente foi a mesma pessoa.
+              💡 Same IP/Location = probably same person. Different locations = suspicious.
             </p>
             
             {logs.length === 0 ? (
@@ -394,7 +394,8 @@ export default function Admin() {
                     <tr className="text-left text-gray-400 border-b border-gray-700">
                       <th className="pb-3 font-medium">Code</th>
                       <th className="pb-3 font-medium">Product</th>
-                      <th className="pb-3 font-medium">Verification #</th>
+                      <th className="pb-3 font-medium">#</th>
+                      <th className="pb-3 font-medium">Location</th>
                       <th className="pb-3 font-medium">IP</th>
                       <th className="pb-3 font-medium">Device</th>
                       <th className="pb-3 font-medium">Time</th>
@@ -404,7 +405,7 @@ export default function Admin() {
                     {logs.map((log, i) => (
                       <tr key={i} className="border-b border-gray-700/50">
                         <td className="py-4 text-white font-mono text-sm">{log.code}</td>
-                        <td className="py-4 text-gray-300">{log.product_name}</td>
+                        <td className="py-4 text-gray-300 text-sm">{log.product_name}</td>
                         <td className="py-4">
                           <span className={`px-2 py-1 rounded text-sm ${
                             log.verification_number === 1 
@@ -416,9 +417,16 @@ export default function Admin() {
                             #{log.verification_number}
                           </span>
                         </td>
-                        <td className="py-4 text-gray-400 text-sm font-mono">{log.client_ip || '-'}</td>
-                        <td className="py-4 text-gray-400 text-xs max-w-[150px] truncate" title={log.user_agent}>
-                          {log.user_agent ? (log.user_agent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop') : '-'}
+                        <td className="py-4 text-gray-300 text-sm">
+                          {log.country && log.country !== 'Unknown' ? (
+                            <span title={`${log.city}, ${log.country}`}>
+                              {log.city}, {log.country_code || log.country}
+                            </span>
+                          ) : '-'}
+                        </td>
+                        <td className="py-4 text-gray-400 text-xs font-mono">{log.client_ip || '-'}</td>
+                        <td className="py-4 text-gray-400 text-xs" title={log.user_agent}>
+                          {log.user_agent ? (log.user_agent.includes('Mobile') ? '📱' : '💻') : '-'}
                         </td>
                         <td className="py-4 text-gray-400 text-sm">
                           {new Date(log.timestamp).toLocaleString()}
