@@ -147,26 +147,26 @@ const Contact = () => {
                   <p className="text-sm text-gray-600">Send us an email</p>
                 </div>
               </div>
-              <a href="mailto:info@zxsciences.com" className="text-blue-600 hover:text-blue-700 font-medium">
-                info@zxsciences.com
+              <a href="mailto:RxpeptidesHK@proton.me" className="text-blue-600 hover:text-blue-700 font-medium">
+                RxpeptidesHK@proton.me
               </a>
             </div>
 
-            {/* WhatsApp */}
+            {/* Threema */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                   <MessageCircle className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900">WhatsApp</h3>
-                  <p className="text-sm text-gray-600">Chat with us</p>
+                  <h3 className="font-bold text-gray-900">Threema</h3>
+                  <p className="text-sm text-gray-600">Secure messaging</p>
                 </div>
               </div>
-              <a href="https://wa.me/85212345678" className="text-green-600 hover:text-green-700 font-medium">
-                +852 1234 5678
-              </a>
-              <p className="text-sm text-gray-500 mt-2">Or contact your local representative</p>
+              <p className="text-green-600 font-medium">
+                ID: PENDING
+              </p>
+              <p className="text-sm text-gray-500 mt-2">Switzerland-based secure messenger</p>
             </div>
 
             {/* Location */}
