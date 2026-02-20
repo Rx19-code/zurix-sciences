@@ -183,7 +183,7 @@ const Contact = () => {
               <ul className="space-y-1 text-gray-700">
                 <li>Paraguay</li>
                 <li>United States</li>
-                <li>Hong Kong</li>
+                <li>Switzerland</li>
               </ul>
             </div>
 
