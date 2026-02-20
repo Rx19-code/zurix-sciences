@@ -30,11 +30,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
               <div className="flex items-center">
-                <img src="/logo.svg" alt="Zurix Sciences" className="h-14 w-auto" />
-                <div className="ml-3">
-                  <h1 className="text-xl font-bold text-gray-900">Zurix Sciences</h1>
-                  <p className="text-xs text-gray-500">Premium Research Compounds</p>
-                </div>
+                <img src="/logo.svg" alt="Zurix Sciences" className="h-12 w-auto" />
               </div>
             </Link>
 
