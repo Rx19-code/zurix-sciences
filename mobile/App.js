@@ -1209,7 +1209,6 @@ function MainApp() {
 
   const tabs = [
     { key: 'Home', label: 'Home', icon: 'home' },
-    { key: 'Shop', label: 'Shop', icon: 'cart' },
     { key: 'Verify', label: 'Verify', icon: 'shield-checkmark' },
     { key: 'Protocols', label: 'Protocols', icon: 'flask' },
     { key: 'Profile', label: 'Profile', icon: 'person' },
@@ -1220,7 +1219,6 @@ function MainApp() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'Home': return <HomeScreen goTo={setActiveTab} cartCount={cartCount} />;
-      case 'Shop': return <ShopScreen cart={cart} setCart={setCart} />;
       case 'Verify': return <VerifyScreen />;
       case 'Protocols': return <ProtocolsScreen />;
       case 'Profile': return <ProfileScreen />;
@@ -1253,11 +1251,6 @@ function MainApp() {
             <TouchableOpacity key={tab.key} style={styles.bottomNavItem} onPress={() => setActiveTab(tab.key)}>
               <View style={[styles.bottomNavIconContainer, isActive && styles.bottomNavIconActive]}>
                 <Ionicons name={isActive ? tab.icon : `${tab.icon}-outline`} size={22} color={isActive ? T.primary : T.textMuted} />
-                {tab.key === 'Shop' && cartCount > 0 && (
-                  <View style={styles.navCartBadge}>
-                    <Text style={styles.navCartBadgeText}>{cartCount}</Text>
-                  </View>
-                )}
               </View>
               <Text style={[styles.bottomNavLabel, isActive && styles.bottomNavLabelActive]}>{tab.label}</Text>
             </TouchableOpacity>
