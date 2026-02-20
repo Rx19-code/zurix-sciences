@@ -10,6 +10,7 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
 import hashlib
+import httpx
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -18,6 +19,36 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Geolocation cache to avoid repeated API calls
+geo_cache = {}
+
+async def get_geolocation(ip: str) -> dict:
+    """Get geolocation data for an IP address"""
+    if ip in geo_cache:
+        return geo_cache[ip]
+    
+    # Skip private/local IPs
+    if ip.startswith(('10.', '172.', '192.168.', '127.', 'unknown')):
+        return {"country": "Local", "city": "Local", "country_code": "XX"}
+    
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(f"http://ip-api.com/json/{ip}?fields=status,country,countryCode,city")
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('status') == 'success':
+                    result = {
+                        "country": data.get('country', 'Unknown'),
+                        "city": data.get('city', 'Unknown'),
+                        "country_code": data.get('countryCode', 'XX')
+                    }
+                    geo_cache[ip] = result
+                    return result
+    except Exception as e:
+        logging.error(f"Geolocation error for {ip}: {e}")
+    
+    return {"country": "Unknown", "city": "Unknown", "country_code": "XX"}
 
 # Admin password (hashed)
 ADMIN_PASSWORD = "Rx050217!"
