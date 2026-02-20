@@ -252,9 +252,9 @@ function HomeScreen({ goTo, cartCount }) {
   const refresh = async () => { setRefreshing(true); await load(); setRefreshing(false); };
 
   const quickActions = [
-    { title: 'Shop Products', subtitle: 'Browse & order peptides', iconName: 'cart', tab: 'Shop', gradient: T.gradient3 },
     { title: 'Verify Product', subtitle: 'Scan QR or enter code', iconName: 'shield-checkmark', tab: 'Verify', gradient: T.gradient1 },
     { title: 'Research Protocols', subtitle: 'Premium dosage guides', iconName: 'flask', tab: 'Protocols', gradient: T.gradient2 },
+    { title: 'Visit Website', subtitle: 'Shop products online', iconName: 'globe', tab: 'Website', gradient: T.gradient3 },
   ];
 
   if (loading) {
