@@ -889,7 +889,7 @@ async def seed_representatives():
             "country": "Paraguay",
             "region": "South America",
             "name": "Carlos Rodriguez",
-            "whatsapp": "+595123456789",
+            "whatsapp": "+595974263753",
             "flag_emoji": "🇵🇾"
         },
         {
@@ -897,16 +897,8 @@ async def seed_representatives():
             "country": "United States",
             "region": "North America",
             "name": "Michael Johnson",
-            "whatsapp": "+15551234567",
+            "whatsapp": "+13025808131",
             "flag_emoji": "🇺🇸"
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "country": "Hong Kong",
-            "region": "Asia",
-            "name": "Wei Chen",
-            "whatsapp": "+85212345678",
-            "flag_emoji": "🇭🇰"
         }
     ]
     
