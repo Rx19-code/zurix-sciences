@@ -381,6 +381,9 @@ export default function Admin() {
         {activeTab === 'logs' && (
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
             <h2 className="text-xl font-bold text-white mb-6">Verification Logs</h2>
+            <p className="text-gray-400 text-sm mb-4">
+              💡 Se o mesmo IP aparecer em múltiplas verificações, provavelmente foi a mesma pessoa.
+            </p>
             
             {logs.length === 0 ? (
               <p className="text-gray-400">No verifications yet</p>
@@ -392,6 +395,8 @@ export default function Admin() {
                       <th className="pb-3 font-medium">Code</th>
                       <th className="pb-3 font-medium">Product</th>
                       <th className="pb-3 font-medium">Verification #</th>
+                      <th className="pb-3 font-medium">IP</th>
+                      <th className="pb-3 font-medium">Device</th>
                       <th className="pb-3 font-medium">Time</th>
                     </tr>
                   </thead>
@@ -410,6 +415,10 @@ export default function Admin() {
                           }`}>
                             #{log.verification_number}
                           </span>
+                        </td>
+                        <td className="py-4 text-gray-400 text-sm font-mono">{log.client_ip || '-'}</td>
+                        <td className="py-4 text-gray-400 text-xs max-w-[150px] truncate" title={log.user_agent}>
+                          {log.user_agent ? (log.user_agent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop') : '-'}
                         </td>
                         <td className="py-4 text-gray-400 text-sm">
                           {new Date(log.timestamp).toLocaleString()}
