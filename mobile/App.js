@@ -700,7 +700,7 @@ function VerifyScreen() {
 
   const reportFake = () => {
     const message = `🚨 *COUNTERFEIT REPORT*\n\nCode: ${code}\nProduct: ${result?.product?.name || 'Unknown'}\nVerification Count: ${result?.verification_count || 'N/A'}\n\nI believe this product may be counterfeit.`;
-    openWhatsApp(WHATSAPP_SWITZERLAND, message);
+    openWhatsApp(WHATSAPP_PARAGUAY, message);
   };
 
   const getVerificationWarning = (count) => {
@@ -900,12 +900,12 @@ function ProtocolsScreen() {
     setShowPayment(null);
     
     const message = `💳 *Protocol Purchase Confirmation*\n\nProtocol: ${protocol.title}\nPrice: $${protocol.price}\nPayment: ${selectedCrypto}\n\nPlease confirm my payment to activate access.`;
-    openWhatsApp(WHATSAPP_SWITZERLAND, message);
+    openWhatsApp(WHATSAPP_PARAGUAY, message);
   };
 
   const contactExpert = (protocol) => {
     const message = `👋 *Protocol Support Request*\n\nProtocol: ${protocol.title}\n\nI have questions about this protocol.`;
-    openWhatsApp(WHATSAPP_SWITZERLAND, message);
+    openWhatsApp(WHATSAPP_PARAGUAY, message);
   };
 
   if (loading) return <View style={[styles.screen, styles.center]}><ActivityIndicator size="large" color={T.primary} /></View>;
@@ -1093,7 +1093,7 @@ function ProfileScreen() {
 
   const menuItems = [
     { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
-    { title: 'Contact Support', subtitle: 'Switzerland WhatsApp', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_SWITZERLAND, 'Hello Zurix Sciences Support') },
+    { title: 'Contact Support', subtitle: 'WhatsApp Paraguay', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_PARAGUAY, 'Hello Zurix Sciences Support') },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
   ];
 
