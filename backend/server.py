@@ -206,9 +206,15 @@ async def get_representatives():
 
 # Verification endpoint - NEW SYSTEM with unique codes
 @api_router.post("/verify-product", response_model=VerifyProductResponse)
-async def verify_product(request: VerifyProductRequest):
+async def verify_product(request: VerifyProductRequest, req: Request):
     """Verify a product by its unique QR code"""
     code = request.code.strip().upper()
+    
+    # Get client info for tracking
+    client_ip = req.headers.get("x-forwarded-for", req.client.host if req.client else "unknown")
+    if "," in client_ip:
+        client_ip = client_ip.split(",")[0].strip()
+    user_agent = req.headers.get("user-agent", "unknown")
     
     # Check if code starts with ZX-
     if not code.startswith("ZX-"):
