@@ -10,7 +10,7 @@ const Footer = () => {
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <img src="/logo.svg" alt="Zurix Sciences" className="h-8 w-auto" />
+              <img src="/logo.svg" alt="Zurix Sciences" className="h-12 w-auto" />
               <h3 className="text-white font-bold text-lg">Zurix Sciences</h3>
             </div>
             <p className="text-sm text-gray-400">
