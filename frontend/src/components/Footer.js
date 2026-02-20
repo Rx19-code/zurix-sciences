@@ -9,8 +9,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <img src="/logo.svg" alt="Zurix Sciences" className="h-10 w-auto" />
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="bg-gray-700 rounded-lg p-2">
+                <img src="/logo.png" alt="Zurix Sciences" className="h-8 w-auto" />
+              </div>
+              <h3 className="text-white font-bold text-lg">Zurix Sciences</h3>
             </div>
             <p className="text-sm text-gray-400">
               Premium research compounds and peptides for scientific studies. Committed to quality and purity.
