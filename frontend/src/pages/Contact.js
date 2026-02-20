@@ -164,7 +164,7 @@ const Contact = () => {
                 </div>
               </div>
               <p className="text-green-600 font-medium">
-                ID: PENDING
+                ID: 2D9DAD9R
               </p>
               <p className="text-sm text-gray-500 mt-2">Switzerland-based secure messenger</p>
             </div>
