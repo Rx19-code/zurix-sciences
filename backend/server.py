@@ -445,9 +445,15 @@ async def get_protocol(protocol_id: str):
 
 # Enhanced verification with counter (for mobile app)
 @api_router.post("/verify-scan", response_model=VerifyScanResponse)
-async def verify_scan(request: VerifyScanRequest):
+async def verify_scan(request: VerifyScanRequest, req: Request):
     """Verify a product and log the verification (for mobile app)"""
     code = request.code.strip().upper()
+    
+    # Get client info for tracking
+    client_ip = req.headers.get("x-forwarded-for", req.client.host if req.client else "unknown")
+    if "," in client_ip:
+        client_ip = client_ip.split(",")[0].strip()
+    user_agent = req.headers.get("user-agent", "unknown")
     
     # First try unique_codes collection (new system with ZX- prefix)
     if code.startswith("ZX-"):
