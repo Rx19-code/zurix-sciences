@@ -90,30 +90,52 @@ const Home = () => {
         />
         
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="hero-title">
-              Premium Research Compounds
-            </h1>
-            <p className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              High-purity peptides, GLP-1 analogs, and research chemicals for scientific studies and laboratory research.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/products"
-                data-testid="browse-products-btn"
-                className="inline-flex items-center space-x-2 bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
-              >
-                <span>Browse Products</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/verify"
-                data-testid="verify-product-btn"
-                className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
-              >
-                <span>Verify Product</span>
-              </Link>
+        <div className="relative z-10 w-full px-6 lg:px-12 py-16">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="lg:w-1/2">
+              <h1 className="text-5xl lg:text-7xl font-black mb-4 leading-tight" data-testid="hero-title">
+                Premium Research Compounds
+              </h1>
+              <p className="text-xl lg:text-2xl text-blue-100 mb-6">
+                High-purity peptides, GLP-1 analogs, and research chemicals for scientific studies and laboratory research.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/products"
+                  data-testid="browse-products-btn"
+                  className="inline-flex items-center space-x-2 bg-white text-blue-900 font-bold px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors text-lg"
+                >
+                  <span>Browse Products</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  to="/verify"
+                  data-testid="verify-product-btn"
+                  className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-lg transition-colors text-lg"
+                >
+                  <span>Verify Product</span>
+                </Link>
+              </div>
+            </div>
+            <div className="lg:w-1/2 flex justify-center lg:justify-end">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                  <p className="text-4xl font-black">99%+</p>
+                  <p className="text-blue-200">HPLC Purity</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                  <p className="text-4xl font-black">50+</p>
+                  <p className="text-blue-200">Products</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                  <p className="text-4xl font-black">24/7</p>
+                  <p className="text-blue-200">Support</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                  <p className="text-4xl font-black">BTC</p>
+                  <p className="text-blue-200">Crypto Pay</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
