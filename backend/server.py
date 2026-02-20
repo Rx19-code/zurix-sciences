@@ -502,13 +502,26 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
         client_ip = client_ip.split(",")[0].strip()
     user_agent = req.headers.get("user-agent", "unknown")
     
+    # Get geolocation
+    geo = await get_geolocation(client_ip)
+    
     # First try unique_codes collection (new system with ZX- prefix)
     if code.startswith("ZX-"):
         unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
         
         if unique_code:
+            # Check if code is blocked (3+ verifications)
+            current_count = unique_code.get('verification_count', 0)
+            if current_count >= 3:
+                return VerifyScanResponse(
+                    success=False,
+                    message="🚫 CODE BLOCKED - This code has exceeded the maximum number of verifications. Please contact support immediately.",
+                    verification_count=current_count,
+                    warning="blocked"
+                )
+            
             # Found in unique codes - update verification count
-            verification_count = unique_code.get('verification_count', 0) + 1
+            verification_count = current_count + 1
             first_verified = unique_code.get('first_verified_at')
             now = datetime.now(timezone.utc).isoformat()
             
@@ -526,7 +539,7 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
                 {"$set": update_data}
             )
             
-            # Log verification with IP and device info
+            # Log verification with IP, device info, and geolocation
             log_entry = {
                 "id": str(uuid.uuid4()),
                 "code": code,
@@ -536,7 +549,10 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
                 "verification_number": verification_count,
                 "device_id": request.device_id,
                 "client_ip": client_ip,
-                "user_agent": user_agent
+                "user_agent": user_agent,
+                "country": geo.get('country', 'Unknown'),
+                "city": geo.get('city', 'Unknown'),
+                "country_code": geo.get('country_code', 'XX')
             }
             await db.verification_logs.insert_one(log_entry)
             
@@ -551,7 +567,7 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
                 message = f"⚠️ CAUTION: This code was already verified. If this wasn't you, the product may be counterfeit."
                 warning = "caution"
             else:
-                message = f"🚨 ALERT: This code has been verified {verification_count} times! HIGH RISK of counterfeit product."
+                message = f"🚨 ALERT: This code has been verified {verification_count} times! This code is now BLOCKED."
                 warning = "danger"
             
             return VerifyScanResponse(
