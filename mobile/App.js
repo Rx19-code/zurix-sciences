@@ -303,7 +303,7 @@ function HomeScreen({ goTo, cartCount }) {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           {quickActions.map((action, index) => (
-            <TouchableOpacity key={index} style={styles.actionCard} onPress={() => goTo(action.tab)} activeOpacity={0.7}>
+            <TouchableOpacity key={index} style={styles.actionCard} onPress={() => action.tab === 'Website' ? openURL('https://www.zurixsciences.com') : goTo(action.tab)} activeOpacity={0.7}>
               <LinearGradient colors={[action.gradient[0] + '15', action.gradient[1] + '08']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.actionCardGradient}>
                 <View style={[styles.actionIconContainer, { backgroundColor: action.gradient[0] + '20' }]}>
                   <Ionicons name={action.iconName} size={26} color={action.gradient[1]} />
