@@ -19,11 +19,11 @@ const ProductCard = ({ product }) => {
     >
       {/* Product Image */}
       {product.image_url && (
-        <div className="h-40 bg-gray-50 overflow-hidden flex items-center justify-center p-4">
+        <div className="h-56 bg-gradient-to-b from-gray-50 to-gray-100 overflow-hidden flex items-center justify-center p-4">
           <img 
             src={product.image_url} 
             alt={product.name}
-            className="max-h-full max-w-full object-contain"
+            className="h-48 w-auto object-contain drop-shadow-md"
           />
         </div>
       )}
