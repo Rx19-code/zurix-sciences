@@ -470,6 +470,22 @@ async def delete_batch(batch_number: str, x_admin_password: str = Header(None)):
         "message": f"Deleted {result.deleted_count} codes from batch {batch_number}"
     }
 
+@api_router.delete("/admin/code/{code}")
+async def delete_single_code(code: str, x_admin_password: str = Header(None)):
+    """Delete a single code (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    result = await db.unique_codes.delete_one({"code": code.upper()})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Code not found")
+    
+    return {
+        "success": True,
+        "message": f"Code {code} deleted successfully"
+    }
+
 # ==================== MOBILE APP ROUTES ====================
 
 # Protocols endpoints
