@@ -18,8 +18,10 @@ export default function Admin() {
   // Data views
   const [products, setProducts] = useState([]);
   const [batches, setBatches] = useState([]);
+  const [codes, setCodes] = useState([]);
   const [logs, setLogs] = useState([]);
   const [activeTab, setActiveTab] = useState('import');
+  const [searchCode, setSearchCode] = useState('');
   
   // Check stored password on mount
   useEffect(() => {
