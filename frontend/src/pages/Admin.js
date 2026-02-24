@@ -49,6 +49,15 @@ export default function Admin() {
         setBatches(batchData.batches || []);
       }
       
+      // Load codes
+      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=200`, {
+        headers: { 'x-admin-password': pwd }
+      });
+      if (codesRes.ok) {
+        const codesData = await codesRes.json();
+        setCodes(codesData.codes || []);
+      }
+      
       // Load logs
       const logsRes = await fetch(`${API_URL}/api/admin/verification-logs?limit=50`, {
         headers: { 'x-admin-password': pwd }
