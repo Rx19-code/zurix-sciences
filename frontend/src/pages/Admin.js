@@ -266,6 +266,7 @@ export default function Admin() {
         <div className="flex gap-2 mb-6">
           {[
             { id: 'import', label: 'Import Codes', icon: '📥' },
+            { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
           ].map(tab => (
