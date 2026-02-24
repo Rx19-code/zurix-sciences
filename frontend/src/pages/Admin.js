@@ -162,6 +162,33 @@ export default function Admin() {
     }
   };
   
+  const handleDeleteCode = async (code) => {
+    if (!window.confirm(`Delete code ${code}?`)) {
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${API_URL}/api/admin/code/${encodeURIComponent(code)}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-password': password }
+      });
+      
+      if (res.ok) {
+        loadData(password);
+      } else {
+        alert('Error deleting code');
+      }
+    } catch (err) {
+      alert('Error deleting code');
+    }
+  };
+  
+  const filteredCodes = codes.filter(c => 
+    !searchCode || c.code.toLowerCase().includes(searchCode.toLowerCase()) ||
+    c.product_name?.toLowerCase().includes(searchCode.toLowerCase()) ||
+    c.batch_number?.toLowerCase().includes(searchCode.toLowerCase())
+  );
+  
   // Login screen
   if (!isLoggedIn) {
     return (
