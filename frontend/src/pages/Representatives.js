@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { MessageCircle, Mail, MapPin } from 'lucide-react';
+import { MessageCircle, Mail, MapPin, Shield } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// Country flags mapping
+const countryFlags = {
+  'Paraguay': '🇵🇾',
+  'United States': '🇺🇸',
+  'Brazil': '🇧🇷',
+  'Argentina': '🇦🇷',
+  'Mexico': '🇲🇽',
+  'Colombia': '🇨🇴',
+  'Chile': '🇨🇱',
+  'Peru': '🇵🇪',
+  'Uruguay': '🇺🇾',
+  'Canada': '🇨🇦',
+  'UK': '🇬🇧',
+  'Germany': '🇩🇪',
+  'Spain': '🇪🇸',
+  'France': '🇫🇷',
+  'Italy': '🇮🇹',
+  'Portugal': '🇵🇹',
+  'Australia': '🇦🇺',
+};
 
 const Representatives = () => {
   const [representatives, setRepresentatives] = useState([]);
