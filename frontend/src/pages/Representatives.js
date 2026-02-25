@@ -115,18 +115,24 @@ const Representatives = () => {
                     <button
                       onClick={() => handleWhatsApp(rep.whatsapp)}
                       data-testid={`contact-rep-${rep.country}`}
-                      className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                      className="w-full flex items-center justify-center space-x-2 text-white font-semibold py-3 rounded-lg transition-colors"
+                      style={{ backgroundColor: '#3D3D3D' }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2D2D2D'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3D3D3D'}
                     >
-                      <MessageCircle className="w-5 h-5" />
+                      <MessageCircle className="w-5 h-5 text-green-400" />
                       <span>WhatsApp</span>
                     </button>
                   )}
                   {rep.threema && (
                     <button
                       onClick={() => handleThreema(rep.threema)}
-                      className="w-full flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                      className="w-full flex items-center justify-center space-x-2 text-white font-semibold py-3 rounded-lg transition-colors"
+                      style={{ backgroundColor: '#3D3D3D' }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2D2D2D'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3D3D3D'}
                     >
-                      <Shield className="w-5 h-5" />
+                      <Shield className="w-5 h-5 text-green-400" />
                       <span>Threema</span>
                     </button>
                   )}
