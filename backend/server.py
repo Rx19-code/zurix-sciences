@@ -89,6 +89,7 @@ class Representative(BaseModel):
     region: str
     name: str
     whatsapp: str
+    threema: Optional[str] = None
     flag_emoji: str
 
 class VerifyProductRequest(BaseModel):
