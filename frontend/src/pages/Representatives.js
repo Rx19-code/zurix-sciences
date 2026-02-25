@@ -108,14 +108,16 @@ const Representatives = () => {
 
                 {/* Contact Buttons */}
                 <div className="mt-6 space-y-3">
-                  <button
-                    onClick={() => handleWhatsApp(rep.whatsapp)}
-                    data-testid={`contact-rep-${rep.country}`}
-                    className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    <span>WhatsApp</span>
-                  </button>
+                  {rep.whatsapp && (
+                    <button
+                      onClick={() => handleWhatsApp(rep.whatsapp)}
+                      data-testid={`contact-rep-${rep.country}`}
+                      className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span>WhatsApp</span>
+                    </button>
+                  )}
                   {rep.threema && (
                     <button
                       onClick={() => handleThreema(rep.threema)}
