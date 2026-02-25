@@ -178,39 +178,35 @@ const ProductDetail = () => {
                 </p>
               </div>
 
-              {/* Batch Information */}
+              {/* Label Information */}
               <div>
                 <div className="flex items-center space-x-2 mb-3">
                   <FileText className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Batch Information</h3>
+                  <h3 className="text-lg font-bold text-gray-900">Label Information</h3>
                 </div>
+                <p className="text-gray-500 text-sm mb-3">Each vial label should contain:</p>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Batch Number:</span>
-                    <span className="font-mono font-semibold text-gray-900" data-testid="batch-number">
-                      {product.batch_number}
-                    </span>
+                    <span className="text-gray-600">Product Name:</span>
+                    <span className="font-semibold text-gray-900">{product.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Manufacturing Date:</span>
-                    <span className="font-semibold text-gray-900">{product.manufacturing_date}</span>
+                    <span className="text-gray-600">Dosage:</span>
+                    <span className="font-semibold text-gray-900">{product.dosage}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Verification Code:</span>
+                    <span className="font-mono font-semibold text-blue-600">QR Code (ZX-...)</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Expiry Date:</span>
-                    <span className="font-semibold text-gray-900">{product.expiry_date}</span>
+                    <span className="font-semibold text-gray-900">See label</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Usage Notice:</span>
+                    <span className="font-semibold text-gray-900">For Research Use Only</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Certificate of Analysis */}
-              <div>
-                <div className="flex items-center space-x-2 mb-3">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Certificate of Analysis</h3>
-                </div>
-                <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                  Download COA
-                </button>
               </div>
 
               {/* Warning */}
