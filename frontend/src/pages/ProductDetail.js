@@ -86,6 +86,9 @@ const ProductDetail = () => {
                 <Package className="w-32 h-32 text-blue-300" />
               )}
             </div>
+            <p className="text-xs text-gray-400 text-center mt-3 italic">
+              *Illustrative image. Vial colors may vary by batch.
+            </p>
           </div>
 
           {/* Product Info */}
