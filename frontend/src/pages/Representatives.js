@@ -50,6 +50,10 @@ const Representatives = () => {
     window.open(`https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${message}`, '_blank');
   };
 
+  const handleThreema = (threemaId) => {
+    window.open(`https://threema.id/${threemaId}`, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50" data-testid="representatives-page">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
