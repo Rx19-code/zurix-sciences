@@ -95,14 +95,16 @@ const Representatives = () => {
                     <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
                     <span className="font-semibold" data-testid="rep-name">{rep.name}</span>
                   </div>
-                  <div className="flex items-center space-x-3 text-gray-700">
-                    <MessageCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="font-mono text-sm">{rep.whatsapp}</span>
-                  </div>
+                  {rep.whatsapp && (
+                    <div className="flex items-center space-x-3 text-gray-700">
+                      <MessageCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                      <span className="font-mono text-sm">{rep.whatsapp}</span>
+                    </div>
+                  )}
                   {rep.threema && (
                     <div className="flex items-center space-x-3 text-gray-700">
                       <Shield className="w-5 h-5 text-purple-600 flex-shrink-0" />
-                      <span className="font-mono text-sm">Threema: {rep.threema}</span>
+                      <span className="font-mono text-sm">ID: {rep.threema}</span>
                     </div>
                   )}
                 </div>
