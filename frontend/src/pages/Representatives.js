@@ -79,10 +79,10 @@ const Representatives = () => {
                 className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-8"
                 data-testid={`rep-card-${rep.country}`}
               >
-                {/* Flag */}
+                {/* Country Flag */}
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mb-4">
-                    <span className="text-5xl">{rep.flag_emoji}</span>
+                  <div className="text-7xl mb-4">
+                    {countryFlags[rep.country] || rep.flag_emoji || '🌍'}
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-1" data-testid="rep-country">{rep.country}</h2>
                   <p className="text-gray-600">{rep.region}</p>
@@ -98,17 +98,34 @@ const Representatives = () => {
                     <MessageCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
                     <span className="font-mono text-sm">{rep.whatsapp}</span>
                   </div>
+                  {rep.threema && (
+                    <div className="flex items-center space-x-3 text-gray-700">
+                      <Shield className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                      <span className="font-mono text-sm">Threema: {rep.threema}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Contact Button */}
-                <button
-                  onClick={() => handleWhatsApp(rep.whatsapp)}
-                  data-testid={`contact-rep-${rep.country}`}
-                  className="mt-6 w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span>Contact via WhatsApp</span>
-                </button>
+                {/* Contact Buttons */}
+                <div className="mt-6 space-y-3">
+                  <button
+                    onClick={() => handleWhatsApp(rep.whatsapp)}
+                    data-testid={`contact-rep-${rep.country}`}
+                    className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    <span>WhatsApp</span>
+                  </button>
+                  {rep.threema && (
+                    <button
+                      onClick={() => handleThreema(rep.threema)}
+                      className="w-full flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                    >
+                      <Shield className="w-5 h-5" />
+                      <span>Threema</span>
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
