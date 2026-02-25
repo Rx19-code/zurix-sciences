@@ -9,6 +9,7 @@ const API = `${BACKEND_URL}/api`;
 const countryFlags = {
   'Paraguay': '🇵🇾',
   'United States': '🇺🇸',
+  'Switzerland': '🇨🇭',
   'Brazil': '🇧🇷',
   'Argentina': '🇦🇷',
   'Mexico': '🇲🇽',
