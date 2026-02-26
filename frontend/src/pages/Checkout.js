@@ -45,7 +45,7 @@ const Checkout = () => {
     const rep = representatives.find(r => r.id === selectedRep);
     if (!rep) return;
 
-    // Build WhatsApp message
+    // Build order message
     let message = `*New Order from Zurix Sciences*\n\n`;
     message += `*Customer Information:*\n`;
     message += `Name: ${customerName}\n`;
@@ -67,15 +67,25 @@ const Checkout = () => {
 
     message += `\n_Please confirm availability and payment details._`;
 
-    // Encode message for WhatsApp
+    // Encode message
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${rep.whatsapp.replace(/\D/g, '')}?text=${encodedMessage}`;
+    
+    // Check if rep has WhatsApp or Threema
+    if (rep.whatsapp && rep.whatsapp.trim() !== '') {
+      const whatsappUrl = `https://wa.me/${rep.whatsapp.replace(/\D/g, '')}?text=${encodedMessage}`;
+      window.open(whatsappUrl, '_blank');
+    } else if (rep.threema) {
+      const threemaUrl = `https://threema.id/${rep.threema}?text=${encodedMessage}`;
+      window.open(threemaUrl, '_blank');
+    }
 
     // Clear cart and redirect
     clearCart();
-    window.open(whatsappUrl, '_blank');
     navigate('/checkout/success');
   };
+  
+  // Get selected representative
+  const getSelectedRep = () => representatives.find(r => r.id === selectedRep);
 
   if (loading) {
     return (
