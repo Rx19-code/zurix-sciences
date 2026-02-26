@@ -161,7 +161,7 @@ const Representatives = () => {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Make Contact</h3>
               <p className="text-gray-600 text-sm">
-                Reach out via WhatsApp or email with your order
+                Reach out via WhatsApp or Threema with your order
               </p>
             </div>
             <div className="text-center">
