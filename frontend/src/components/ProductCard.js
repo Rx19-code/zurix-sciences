@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
     >
       {/* Product Image */}
       {product.image_url && (
-        <div className="h-56 overflow-hidden flex items-center justify-center p-4" style={{ backgroundColor: '#E8E8E8' }}>
+        <div className="h-56 bg-white overflow-hidden flex items-center justify-center p-4">
           <img 
             src={product.image_url} 
             alt={product.name}
