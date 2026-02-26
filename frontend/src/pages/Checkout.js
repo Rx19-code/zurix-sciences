@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, MessageCircle, Check } from 'lucide-react';
+import { ShoppingBag, MessageCircle, Check, Shield } from 'lucide-react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 
