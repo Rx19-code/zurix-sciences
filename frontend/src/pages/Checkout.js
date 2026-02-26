@@ -211,18 +211,38 @@ const Checkout = () => {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            data-testid="submit-order-button"
-            className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-lg transition-colors"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Send Order via WhatsApp</span>
-          </button>
+          {(() => {
+            const rep = getSelectedRep();
+            const isThreema = rep && (!rep.whatsapp || rep.whatsapp.trim() === '') && rep.threema;
+            return (
+              <>
+                <button
+                  type="submit"
+                  data-testid="submit-order-button"
+                  className="w-full flex items-center justify-center space-x-2 text-white font-semibold py-4 rounded-lg transition-colors"
+                  style={{ backgroundColor: '#3D3D3D' }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2D2D2D'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3D3D3D'}
+                >
+                  {isThreema ? (
+                    <>
+                      <Shield className="w-5 h-5 text-green-400" />
+                      <span>Send Order via Threema</span>
+                    </>
+                  ) : (
+                    <>
+                      <MessageCircle className="w-5 h-5 text-green-400" />
+                      <span>Send Order via WhatsApp</span>
+                    </>
+                  )}
+                </button>
 
-          <p className="text-sm text-gray-500 text-center">
-            You will be redirected to WhatsApp to complete your order with your representative
-          </p>
+                <p className="text-sm text-gray-500 text-center">
+                  You will be redirected to {isThreema ? 'Threema' : 'WhatsApp'} to complete your order with your representative
+                </p>
+              </>
+            );
+          })()}
         </form>
       </div>
     </div>
