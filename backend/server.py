@@ -489,239 +489,249 @@ async def reset_password(request: PasswordResetConfirm):
     
     return {"success": True, "message": "Password reset successful"}
 
-# ==================== PROTOCOLS WITH PDF ROUTES ====================
+# ==================== PROTOCOLS WITH BATCH VALIDATION ====================
+
+# Protocol to batch mapping - which product batches unlock which protocols
+PROTOCOL_BATCH_MAPPING = {
+    "proto-bpc157": {
+        "title": "BPC-157 Recovery Protocol",
+        "description": "A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation.",
+        "category": "Basic",
+        "duration_weeks": 4,
+        "product_keywords": ["BPC-157", "BPC157"],  # Keywords to match product names
+        "valid_batches": ["ZX-BPC--001"],  # Valid batch numbers
+        "languages": {
+            "en": "bpc157_protocol_en.pdf",
+            "es": "bpc157_protocol_es.pdf",
+            "pt": "bpc157_protocol_pt.pdf"
+        }
+    },
+    "proto-tb500": {
+        "title": "TB-500 Tissue Repair Protocol",
+        "description": "Advanced protocol for deep tissue healing and muscle recovery.",
+        "category": "Basic",
+        "duration_weeks": 6,
+        "product_keywords": ["TB-500", "TB500", "thymosin beta"],
+        "valid_batches": ["ZX-TB-5-001"],
+        "languages": {
+            "en": "tb500_protocol_en.pdf",
+            "es": "tb500_protocol_es.pdf",
+            "pt": "tb500_protocol_pt.pdf"
+        }
+    },
+    "proto-ghkcu": {
+        "title": "GHK-Cu Skin Rejuvenation Protocol",
+        "description": "Protocol for skin repair and anti-aging using copper peptides.",
+        "category": "Basic",
+        "duration_weeks": 8,
+        "product_keywords": ["GHK-Cu", "GHK-CU", "GHKCU"],
+        "valid_batches": ["ZX-GHK--001"],
+        "languages": {
+            "en": "ghkcu_protocol_en.pdf",
+            "es": "ghkcu_protocol_es.pdf",
+            "pt": "ghkcu_protocol_pt.pdf"
+        }
+    }
+}
+
+class ValidateBatchRequest(BaseModel):
+    protocol_id: str
+    batch_number: str
+
+class DownloadProtocolRequest(BaseModel):
+    protocol_id: str
+    batch_number: str
+    language: str  # "en", "es", "pt"
 
 @api_router.get("/protocols-v2")
-async def get_protocols_v2(user: dict = None):
-    """Get all protocols (with PDF info hidden for non-purchasers)"""
-    try:
-        # Try to get user from token if provided
-        user = None
-    except:
-        pass
-    
-    protocols = await db.protocols_v2.find({}, {"_id": 0}).to_list(100)
-    
-    # If no protocols exist, return mock data
-    if not protocols:
-        protocols = [
-            {
-                "id": "proto-1",
-                "title": "BPC-157 Recovery Protocol",
-                "description": "A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation.",
-                "category": "Basic",
-                "price": 4.99,
-                "duration_weeks": 4,
-                "products_needed": ["BPC-157 5mg", "Bacteriostatic Water"],
-                "preview_text": "This protocol covers proper dosing, injection techniques, and cycle recommendations for BPC-157...",
-                "pdf_filename": None,
-                "featured": True
-            },
-            {
-                "id": "proto-2",
-                "title": "TB-500 Tissue Repair",
-                "description": "Advanced protocol for deep tissue healing and muscle recovery.",
-                "category": "Advanced",
-                "price": 9.99,
-                "duration_weeks": 6,
-                "products_needed": ["TB-500 5mg", "Bacteriostatic Water"],
-                "preview_text": "Learn the optimal TB-500 dosing strategy for maximum healing benefits...",
-                "pdf_filename": None,
-                "featured": True
-            },
-            {
-                "id": "proto-3",
-                "title": "GHK-Cu Skin Rejuvenation",
-                "description": "Protocol for skin repair and anti-aging using copper peptides.",
-                "category": "Basic",
-                "price": 4.99,
-                "duration_weeks": 8,
-                "products_needed": ["GHK-Cu 50mg", "Bacteriostatic Water"],
-                "preview_text": "Discover how to use GHK-Cu for optimal skin health and rejuvenation...",
-                "pdf_filename": None,
-                "featured": False
-            }
-        ]
+async def get_protocols_v2():
+    """Get all available protocols"""
+    protocols = []
+    for proto_id, proto_data in PROTOCOL_BATCH_MAPPING.items():
+        protocols.append({
+            "id": proto_id,
+            "title": proto_data["title"],
+            "description": proto_data["description"],
+            "category": proto_data["category"],
+            "duration_weeks": proto_data["duration_weeks"],
+            "languages": list(proto_data["languages"].keys()),
+            "requires_batch": True,
+            "price": 0  # Free with valid batch
+        })
     
     return {"success": True, "protocols": protocols}
 
-@api_router.post("/protocols-v2/purchase")
-async def purchase_protocol(request: PurchaseProtocolRequest, user: dict = Depends(get_current_user)):
-    """Record a protocol purchase after in-app payment verification"""
-    # Verify protocol exists
-    protocol = await db.protocols_v2.find_one({"id": request.protocol_id}, {"_id": 0})
+@api_router.post("/protocols-v2/validate-batch")
+async def validate_batch_for_protocol(request: ValidateBatchRequest):
+    """Validate if a batch number unlocks a specific protocol"""
+    protocol = PROTOCOL_BATCH_MAPPING.get(request.protocol_id)
     if not protocol:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
-    # Check if already purchased
-    if request.protocol_id in user.get("purchased_protocols", []):
-        return {"success": True, "message": "Protocol already purchased"}
+    # Check if batch is in the valid batches list
+    batch_upper = request.batch_number.upper().strip()
     
-    # TODO: Verify transaction with Google Play / Apple Store API
-    # For now, we trust the transaction_id
+    # First check direct match with valid batches
+    if batch_upper in protocol["valid_batches"]:
+        return {
+            "success": True,
+            "valid": True,
+            "message": "Batch validated! You can download the protocol.",
+            "available_languages": [
+                {"code": "en", "name": "English"},
+                {"code": "es", "name": "Español"},
+                {"code": "pt", "name": "Português"}
+            ]
+        }
     
-    # Record purchase
-    purchase = {
-        "id": str(uuid.uuid4()),
-        "user_id": user["id"],
-        "protocol_id": request.protocol_id,
-        "transaction_id": request.transaction_id,
-        "platform": request.platform,
-        "purchased_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.protocol_purchases.insert_one(purchase)
+    # Also check if the batch exists in the database for matching products
+    product = await db.products.find_one({
+        "batch_number": batch_upper
+    }, {"_id": 0})
     
-    # Update user's purchased protocols
-    await db.users.update_one(
-        {"id": user["id"]},
-        {"$addToSet": {"purchased_protocols": request.protocol_id}}
-    )
-    
-    # Send email with PDF automatically
-    pdf_path = None
-    if protocol.get("pdf_filename"):
-        pdf_path = PDF_STORAGE_DIR / protocol["pdf_filename"]
-        if not pdf_path.exists():
-            pdf_path = None
-    
-    # Get user name for email
-    user_name = user.get("name", user.get("email", "Customer").split("@")[0])
-    
-    # Send email asynchronously (don't wait for it)
-    asyncio.create_task(send_protocol_email(
-        user_email=user["email"],
-        user_name=user_name,
-        protocol=protocol,
-        pdf_path=pdf_path
-    ))
+    if product:
+        # Check if product name matches any of the protocol keywords
+        product_name = product.get("name", "").upper()
+        for keyword in protocol["product_keywords"]:
+            if keyword.upper() in product_name:
+                return {
+                    "success": True,
+                    "valid": True,
+                    "message": f"Batch validated for {product.get('name')}! You can download the protocol.",
+                    "available_languages": [
+                        {"code": "en", "name": "English"},
+                        {"code": "es", "name": "Español"},
+                        {"code": "pt", "name": "Português"}
+                    ]
+                }
     
     return {
         "success": True,
-        "message": "Protocol purchased successfully. Confirmation email sent!",
-        "protocol_id": request.protocol_id
+        "valid": False,
+        "message": "Invalid batch number for this protocol. Please enter a valid batch number from the corresponding product."
     }
 
-@api_router.get("/protocols-v2/{protocol_id}/download")
-async def download_protocol_pdf(protocol_id: str, user: dict = Depends(get_current_user)):
-    """Download a purchased protocol PDF"""
-    # Check if user purchased this protocol
-    if protocol_id not in user.get("purchased_protocols", []):
-        raise HTTPException(status_code=403, detail="Protocol not purchased")
-    
-    # Get protocol
-    protocol = await db.protocols_v2.find_one({"id": protocol_id})
+@api_router.get("/protocols-v2/download")
+async def download_protocol_with_batch(
+    protocol_id: str,
+    batch_number: str,
+    language: str
+):
+    """Download protocol PDF after batch validation"""
+    protocol = PROTOCOL_BATCH_MAPPING.get(protocol_id)
     if not protocol:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
-    if not protocol.get("pdf_filename"):
-        raise HTTPException(status_code=404, detail="PDF not available yet")
+    # Validate language
+    if language not in protocol["languages"]:
+        raise HTTPException(status_code=400, detail="Invalid language selected")
     
-    pdf_path = PDF_STORAGE_DIR / protocol["pdf_filename"]
+    # Validate batch again for security
+    batch_upper = batch_number.upper().strip()
+    batch_valid = False
+    
+    if batch_upper in protocol["valid_batches"]:
+        batch_valid = True
+    else:
+        # Check database
+        product = await db.products.find_one({"batch_number": batch_upper}, {"_id": 0})
+        if product:
+            product_name = product.get("name", "").upper()
+            for keyword in protocol["product_keywords"]:
+                if keyword.upper() in product_name:
+                    batch_valid = True
+                    break
+    
+    if not batch_valid:
+        raise HTTPException(status_code=403, detail="Invalid batch number")
+    
+    # Get PDF filename for the selected language
+    pdf_filename = protocol["languages"][language]
+    pdf_path = PDF_STORAGE_DIR / pdf_filename
+    
     if not pdf_path.exists():
-        raise HTTPException(status_code=404, detail="PDF file not found")
+        raise HTTPException(status_code=404, detail=f"PDF not available yet for {language.upper()}. Please contact support.")
+    
+    # Log the download
+    await db.protocol_downloads.insert_one({
+        "protocol_id": protocol_id,
+        "batch_number": batch_upper,
+        "language": language,
+        "downloaded_at": datetime.now(timezone.utc).isoformat()
+    })
     
     return FileResponse(
         path=str(pdf_path),
-        filename=f"{protocol['title']}.pdf",
+        filename=f"{protocol['title']} ({language.upper()}).pdf",
         media_type="application/pdf"
     )
 
-@api_router.get("/user/purchases")
-async def get_user_purchases(user: dict = Depends(get_current_user)):
-    """Get user's purchased protocols"""
-    purchases = await db.protocol_purchases.find(
-        {"user_id": user["id"]},
-        {"_id": 0}
-    ).to_list(100)
-    
-    # Get protocol details
-    protocol_ids = [p["protocol_id"] for p in purchases]
-    protocols = await db.protocols_v2.find(
-        {"id": {"$in": protocol_ids}},
-        {"_id": 0}
-    ).to_list(100)
-    
-    return {
-        "success": True,
-        "purchases": purchases,
-        "protocols": protocols
-    }
-
 # ==================== ADMIN PROTOCOL MANAGEMENT ====================
 
-@api_router.post("/admin/protocols-v2")
-async def create_protocol(
-    title: str,
-    description: str,
-    category: str,
-    price: float,
-    duration_weeks: int,
-    products_needed: str,  # Comma-separated
-    preview_text: str,
-    pdf: UploadFile = File(None),
-    x_admin_password: str = Header(None)
-):
-    """Create a new protocol with optional PDF upload"""
-    if x_admin_password != ADMIN_PASSWORD:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
-    protocol_id = str(uuid.uuid4())
-    pdf_filename = None
-    
-    # Save PDF if provided
-    if pdf:
-        pdf_filename = f"{protocol_id}.pdf"
-        pdf_path = PDF_STORAGE_DIR / pdf_filename
-        content = await pdf.read()
-        with open(pdf_path, "wb") as f:
-            f.write(content)
-    
-    protocol = {
-        "id": protocol_id,
-        "title": title,
-        "description": description,
-        "category": category,
-        "price": price,
-        "duration_weeks": duration_weeks,
-        "products_needed": [p.strip() for p in products_needed.split(",")],
-        "preview_text": preview_text,
-        "pdf_filename": pdf_filename,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "featured": False
-    }
-    
-    await db.protocols_v2.insert_one(protocol)
-    
-    return {"success": True, "protocol": protocol}
-
-@api_router.put("/admin/protocols-v2/{protocol_id}/pdf")
+# Admin endpoint to upload protocol PDFs
+@api_router.post("/admin/protocols/upload-pdf")
 async def upload_protocol_pdf(
     protocol_id: str,
+    language: str,  # "en", "es", "pt"
     pdf: UploadFile = File(...),
-    x_admin_password: str = Header(None)
+    x_admin_password: str = Header(None, alias="X-Admin-Password")
 ):
-    """Upload or update PDF for a protocol"""
+    """Upload a protocol PDF for a specific language"""
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
     
-    protocol = await db.protocols_v2.find_one({"id": protocol_id})
-    if not protocol:
+    if protocol_id not in PROTOCOL_BATCH_MAPPING:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
-    # Save PDF
-    pdf_filename = f"{protocol_id}.pdf"
+    if language not in ["en", "es", "pt"]:
+        raise HTTPException(status_code=400, detail="Invalid language. Use: en, es, or pt")
+    
+    protocol = PROTOCOL_BATCH_MAPPING[protocol_id]
+    pdf_filename = protocol["languages"][language]
     pdf_path = PDF_STORAGE_DIR / pdf_filename
+    
+    # Save PDF
     content = await pdf.read()
     with open(pdf_path, "wb") as f:
         f.write(content)
     
-    # Update protocol
-    await db.protocols_v2.update_one(
-        {"id": protocol_id},
-        {"$set": {"pdf_filename": pdf_filename}}
-    )
+    return {
+        "success": True,
+        "message": f"PDF uploaded successfully for {protocol['title']} ({language.upper()})",
+        "filename": pdf_filename
+    }
+
+@api_router.get("/admin/protocols/status")
+async def get_protocols_status(x_admin_password: str = Header(None, alias="X-Admin-Password")):
+    """Get status of all protocol PDFs"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     
-    return {"success": True, "message": "PDF uploaded successfully"}
+    status = []
+    for proto_id, proto_data in PROTOCOL_BATCH_MAPPING.items():
+        languages_status = {}
+        for lang, filename in proto_data["languages"].items():
+            pdf_path = PDF_STORAGE_DIR / filename
+            languages_status[lang] = {
+                "filename": filename,
+                "uploaded": pdf_path.exists()
+            }
+        
+        status.append({
+            "id": proto_id,
+            "title": proto_data["title"],
+            "valid_batches": proto_data["valid_batches"],
+            "languages": languages_status
+        })
+    
+    # Get download stats
+    downloads = await db.protocol_downloads.count_documents({})
+    
+    return {
+        "success": True,
+        "protocols": status,
+        "total_downloads": downloads
+    }
 
 # Products endpoints
 @api_router.get("/products", response_model=List[Product])

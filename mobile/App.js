@@ -962,116 +962,198 @@ function VerifyScreen() {
 // ========== PROTOCOLS SCREEN (with Paywall) ==========
 function ProtocolsScreen({ user, onLoginRequired }) {
   const [protocols, setProtocols] = useState([]);
-  const [filter, setFilter] = useState('All');
   const [loading, setLoading] = useState(true);
-  const [purchased, setPurchased] = useState([]);
-  const [showPayment, setShowPayment] = useState(null);
-  const [selectedCrypto, setSelectedCrypto] = useState('USDT');
+  const [selectedProtocol, setSelectedProtocol] = useState(null);
+  const [batchNumber, setBatchNumber] = useState('');
+  const [validating, setValidating] = useState(false);
+  const [batchValid, setBatchValid] = useState(null);
+  const [availableLanguages, setAvailableLanguages] = useState([]);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    // Fetch protocols from API v2
     api.get('/protocols-v2').then(r => {
-      setProtocols(r.data?.protocols?.length > 0 ? r.data.protocols : MOCK_PROTOCOLS);
+      setProtocols(r.data?.protocols || []);
       setLoading(false);
-    }).catch(() => { setProtocols(MOCK_PROTOCOLS); setLoading(false); });
-    
-    // Load purchased protocols from user data or local storage
-    if (user && user.purchased_protocols) {
-      setPurchased(user.purchased_protocols);
-    } else {
-      AsyncStorage.getItem('purchased_protocols').then(data => {
-        if (data) setPurchased(JSON.parse(data));
-      });
-    }
-  }, [user]);
+    }).catch(() => { setLoading(false); });
+  }, []);
 
-  const filtered = filter === 'All' ? protocols : protocols.filter(p => p.category === filter);
+  const openProtocol = (protocol) => {
+    setSelectedProtocol(protocol);
+    setBatchNumber('');
+    setBatchValid(null);
+    setAvailableLanguages([]);
+  };
 
-  const isPurchased = (id) => purchased.includes(id);
-
-  const handlePurchase = (protocol) => {
-    // For now, use the old flow - In-App Purchases will be added by the freelancer
-    // when implementing Google Play / Apple Store integration
-    if (!user) {
-      Alert.alert(
-        'Login Required',
-        'Please sign in to purchase protocols',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Sign In', onPress: onLoginRequired }
-        ]
-      );
+  const validateBatch = async () => {
+    if (!batchNumber.trim()) {
+      Alert.alert('Error', 'Please enter a batch number');
       return;
     }
-    setShowPayment(protocol);
-  };
-
-  const confirmPayment = async () => {
-    const protocol = showPayment;
-    const newPurchased = [...purchased, protocol.id];
-    setPurchased(newPurchased);
-    await AsyncStorage.setItem('purchased_protocols', JSON.stringify(newPurchased));
-    setShowPayment(null);
     
-    const message = `💳 *Protocol Purchase Confirmation*\n\nProtocol: ${protocol.title}\nPrice: $${protocol.price}\nPayment: ${selectedCrypto}\n\nPlease confirm my payment to activate access.`;
-    openWhatsApp(WHATSAPP_PARAGUAY, message);
+    setValidating(true);
+    try {
+      const response = await api.post('/protocols-v2/validate-batch', {
+        protocol_id: selectedProtocol.id,
+        batch_number: batchNumber.trim()
+      });
+      
+      if (response.data.valid) {
+        setBatchValid(true);
+        setAvailableLanguages(response.data.available_languages || []);
+      } else {
+        setBatchValid(false);
+        Alert.alert('Invalid Batch', response.data.message);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to validate batch number');
+    }
+    setValidating(false);
   };
 
-  const contactExpert = (protocol) => {
-    const message = `👋 *Protocol Support Request*\n\nProtocol: ${protocol.title}\n\nI have questions about this protocol.`;
-    openWhatsApp(WHATSAPP_PARAGUAY, message);
+  const downloadProtocol = async (language) => {
+    setDownloading(true);
+    try {
+      const API_BASE = API_URLS[0];
+      const url = `${API_BASE}/protocols-v2/download`;
+      
+      // Use Linking to open the download URL (will trigger browser download)
+      const downloadUrl = `${API_BASE}/protocols-v2/download?protocol_id=${selectedProtocol.id}&batch_number=${encodeURIComponent(batchNumber)}&language=${language}`;
+      
+      // For mobile, we'll show instructions
+      Alert.alert(
+        'Download Protocol',
+        `Your ${language.toUpperCase()} protocol will be downloaded.\n\nThe PDF will open in your browser.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { 
+            text: 'Download', 
+            onPress: async () => {
+              try {
+                await Linking.openURL(downloadUrl);
+              } catch (e) {
+                Alert.alert('Error', 'Failed to open download link');
+              }
+            }
+          }
+        ]
+      );
+    } catch (error) {
+      Alert.alert('Error', 'Failed to download protocol');
+    }
+    setDownloading(false);
   };
 
   if (loading) return <View style={[styles.screen, styles.center]}><ActivityIndicator size="large" color={T.primary} /></View>;
 
   return (
     <View style={styles.screen}>
-      {/* Payment Modal */}
-      <Modal visible={!!showPayment} transparent animationType="fade">
+      {/* Protocol Detail Modal */}
+      <Modal visible={!!selectedProtocol} transparent animationType="slide">
         <View style={styles.modalOverlay}>
-          <View style={styles.paymentModal}>
+          <View style={[styles.paymentModal, { maxHeight: '85%' }]}>
             <View style={styles.paymentModalHeader}>
-              <Text style={styles.paymentModalTitle}>Purchase Protocol</Text>
-              <TouchableOpacity onPress={() => setShowPayment(null)}>
+              <Text style={styles.paymentModalTitle}>
+                {selectedProtocol?.title}
+              </Text>
+              <TouchableOpacity onPress={() => setSelectedProtocol(null)}>
                 <Ionicons name="close" size={24} color={T.text} />
               </TouchableOpacity>
             </View>
 
-            {showPayment && (
-              <>
-                <Text style={styles.paymentProtocolName}>{showPayment.title}</Text>
-                <Text style={styles.paymentPrice}>${showPayment.price?.toFixed(2)}</Text>
+            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+              {selectedProtocol && (
+                <>
+                  <Text style={styles.protocolDesc}>{selectedProtocol.description}</Text>
+                  
+                  <View style={[styles.protocolMeta, { marginVertical: 16 }]}>
+                    <View style={styles.protocolMetaItem}>
+                      <Ionicons name="time-outline" size={16} color={T.textMuted} />
+                      <Text style={styles.protocolMetaText}>{selectedProtocol.duration_weeks} weeks</Text>
+                    </View>
+                    <View style={styles.protocolMetaItem}>
+                      <Ionicons name="pricetag-outline" size={16} color={T.success} />
+                      <Text style={[styles.protocolMetaText, { color: T.success }]}>FREE with valid batch</Text>
+                    </View>
+                  </View>
 
-                <Text style={styles.paymentSectionTitle}>Select Cryptocurrency</Text>
-                <View style={styles.cryptoOptions}>
-                  {Object.keys(CRYPTO_WALLETS).map(crypto => (
-                    <TouchableOpacity key={crypto} style={[styles.cryptoOption, selectedCrypto === crypto && styles.cryptoOptionActive]}
-                      onPress={() => setSelectedCrypto(crypto)}>
-                      <View style={[styles.cryptoDot, { backgroundColor: T.crypto[crypto] }]} />
-                      <Text style={[styles.cryptoOptionText, selectedCrypto === crypto && styles.cryptoOptionTextActive]}>{crypto}</Text>
+                  {/* Batch Validation Section */}
+                  <View style={styles.batchSection}>
+                    <Text style={styles.batchTitle}>Enter Product Batch Number</Text>
+                    <Text style={styles.batchSubtitle}>
+                      Find the batch number on your product label (e.g., ZX-BPC--001)
+                    </Text>
+                    
+                    <View style={styles.inputWrapper}>
+                      <Ionicons name="barcode-outline" size={20} color={T.textMuted} />
+                      <TextInput 
+                        style={styles.input} 
+                        placeholder="Enter batch number" 
+                        placeholderTextColor={T.textDim}
+                        value={batchNumber} 
+                        onChangeText={(t) => { setBatchNumber(t.toUpperCase()); setBatchValid(null); }} 
+                        autoCapitalize="characters"
+                      />
+                      {batchNumber.length > 0 && (
+                        <TouchableOpacity onPress={() => { setBatchNumber(''); setBatchValid(null); }}>
+                          <Ionicons name="close-circle" size={20} color={T.textMuted} />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    <TouchableOpacity 
+                      style={[styles.verifyButton, { marginTop: 12 }, validating && { opacity: 0.6 }]} 
+                      onPress={validateBatch}
+                      disabled={validating}
+                    >
+                      <LinearGradient colors={T.gradient1} style={styles.verifyButtonGradient}>
+                        {validating ? <ActivityIndicator color={T.white} /> : (
+                          <>
+                            <Ionicons name="checkmark-circle" size={20} color={T.white} />
+                            <Text style={styles.verifyButtonText}>Validate Batch</Text>
+                          </>
+                        )}
+                      </LinearGradient>
                     </TouchableOpacity>
-                  ))}
-                </View>
+                  </View>
 
-                <View style={styles.walletBox}>
-                  <Text style={styles.walletLabel}>{selectedCrypto} Address ({CRYPTO_WALLETS[selectedCrypto].network})</Text>
-                  <Text style={styles.walletAddress} selectable>{CRYPTO_WALLETS[selectedCrypto].address}</Text>
-                </View>
+                  {/* Language Selection (shows after batch validation) */}
+                  {batchValid && (
+                    <View style={styles.languageSection}>
+                      <View style={styles.successBanner}>
+                        <Ionicons name="checkmark-circle" size={24} color={T.success} />
+                        <Text style={styles.successText}>Batch Validated! Choose your language:</Text>
+                      </View>
+                      
+                      {availableLanguages.map((lang) => (
+                        <TouchableOpacity 
+                          key={lang.code} 
+                          style={styles.languageButton}
+                          onPress={() => downloadProtocol(lang.code)}
+                          disabled={downloading}
+                        >
+                          <View style={styles.languageFlag}>
+                            <Text style={styles.languageFlagText}>
+                              {lang.code === 'en' ? '🇺🇸' : lang.code === 'es' ? '🇪🇸' : '🇧🇷'}
+                            </Text>
+                          </View>
+                          <Text style={styles.languageButtonText}>{lang.name}</Text>
+                          <Ionicons name="download-outline" size={20} color={T.primary} />
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
 
-                <Text style={styles.paymentInstructions}>
-                  1. Send exactly ${showPayment.price?.toFixed(2)} in {selectedCrypto}{'\n'}
-                  2. Click "I've Paid" to notify us{'\n'}
-                  3. Access will be granted within 24h
-                </Text>
-
-                <TouchableOpacity style={styles.paidButton} onPress={confirmPayment}>
-                  <LinearGradient colors={T.gradient3} style={styles.paidButtonGradient}>
-                    <Ionicons name="checkmark-circle" size={20} color={T.white} />
-                    <Text style={styles.paidButtonText}>I've Paid - Notify via WhatsApp</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </>
-            )}
+                  {batchValid === false && (
+                    <View style={styles.errorBanner}>
+                      <Ionicons name="alert-circle" size={20} color={T.danger} />
+                      <Text style={styles.errorText}>
+                        Invalid batch number. Please enter a batch number from a {selectedProtocol.title.split(' ')[0]} product.
+                      </Text>
+                    </View>
+                  )}
+                </>
+              )}
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -1079,105 +1161,67 @@ function ProtocolsScreen({ user, onLoginRequired }) {
       {/* Header */}
       <View style={styles.protocolsHeader}>
         <Text style={styles.protocolsTitle}>Research Protocols</Text>
-        <Text style={styles.protocolsSubtitle}>Premium dosage guides from experts</Text>
-      </View>
-
-      {/* Filter */}
-      <View style={styles.filterContainer}>
-        {['All', 'Basic', 'Advanced'].map(f => (
-          <TouchableOpacity key={f} style={[styles.filterTab, filter === f && styles.filterTabActive]} onPress={() => setFilter(f)}>
-            {filter === f && <LinearGradient colors={T.gradient1} style={StyleSheet.absoluteFill} />}
-            <Text style={[styles.filterTabText, filter === f && styles.filterTabTextActive]}>{f}</Text>
-            {f !== 'All' && <Text style={[styles.filterPrice, filter === f && styles.filterPriceActive]}>{f === 'Basic' ? '$4.99' : '$9.99'}</Text>}
-          </TouchableOpacity>
-        ))}
+        <Text style={styles.protocolsSubtitle}>Free with valid product batch number</Text>
       </View>
 
       {/* Protocols List */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
-        {filtered.map((protocol, index) => {
-          const owned = isPurchased(protocol.id);
-          return (
-            <View key={protocol.id || index} style={styles.protocolCard}>
-              <View style={styles.protocolCardHeader}>
-                <View style={[styles.categoryBadge, { backgroundColor: protocol.category === 'Basic' ? T.success + '20' : T.secondary + '20' }]}>
-                  <Text style={[styles.categoryBadgeText, { color: protocol.category === 'Basic' ? T.success : T.secondary }]}>{protocol.category}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  {!owned && <Ionicons name="lock-closed" size={16} color={T.textMuted} />}
-                  <Text style={styles.protocolPrice}>${protocol.price?.toFixed(2)}</Text>
-                </View>
+        {protocols.map((protocol, index) => (
+          <TouchableOpacity 
+            key={protocol.id || index} 
+            style={styles.protocolCard}
+            onPress={() => openProtocol(protocol)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.protocolCardHeader}>
+              <View style={[styles.categoryBadge, { backgroundColor: T.success + '20' }]}>
+                <Text style={[styles.categoryBadgeText, { color: T.success }]}>{protocol.category}</Text>
               </View>
-
-              <Text style={styles.protocolTitle}>{protocol.title}</Text>
-              <Text style={styles.protocolDesc} numberOfLines={owned ? undefined : 2}>{protocol.description}</Text>
-
-              <View style={styles.protocolMeta}>
-                <View style={styles.protocolMetaItem}>
-                  <Ionicons name="time-outline" size={14} color={T.textMuted} />
-                  <Text style={styles.protocolMetaText}>{protocol.duration_weeks} weeks</Text>
-                </View>
-                <View style={styles.protocolMetaItem}>
-                  <Ionicons name="flask-outline" size={14} color={T.textMuted} />
-                  <Text style={styles.protocolMetaText}>{protocol.products_needed?.length || 0} products</Text>
-                </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Ionicons name="gift-outline" size={16} color={T.success} />
+                <Text style={[styles.protocolPrice, { color: T.success }]}>FREE</Text>
               </View>
-
-              {owned ? (
-                <>
-                  {/* Full Content */}
-                  <View style={styles.protocolExpanded}>
-                    {[
-                      { title: 'Dosage Instructions', text: protocol.dosage_instructions, icon: 'medical' },
-                      { title: 'Frequency', text: protocol.frequency, icon: 'refresh' },
-                      { title: 'Expected Results', text: protocol.expected_results, icon: 'trending-up' },
-                      { title: 'Side Effects', text: protocol.side_effects, icon: 'warning' },
-                      { title: 'Storage Tips', text: protocol.storage_tips, icon: 'snow' },
-                    ].map((item, i) => item.text && (
-                      <View key={i} style={styles.protocolExpandedItem}>
-                        <View style={styles.protocolExpandedHeader}>
-                          <Ionicons name={item.icon} size={16} color={T.primary} />
-                          <Text style={styles.protocolExpandedTitle}>{item.title}</Text>
-                        </View>
-                        <Text style={styles.protocolExpandedText}>{item.text}</Text>
-                      </View>
-                    ))}
-                    
-                    {protocol.products_needed?.length > 0 && (
-                      <View style={styles.protocolExpandedItem}>
-                        <View style={styles.protocolExpandedHeader}>
-                          <Ionicons name="list" size={16} color={T.primary} />
-                          <Text style={styles.protocolExpandedTitle}>Products Needed</Text>
-                        </View>
-                        {protocol.products_needed.map((prod, i) => (
-                          <View key={i} style={styles.productNeededItem}>
-                            <View style={styles.productNeededDot} />
-                            <Text style={styles.protocolExpandedText}>{prod}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
-                  </View>
-
-                  {/* Contact Expert Button */}
-                  <TouchableOpacity style={styles.expertButton} onPress={() => contactExpert(protocol)}>
-                    <Ionicons name="chatbubble-ellipses" size={18} color={T.success} />
-                    <Text style={styles.expertButtonText}>Chat with Expert (WhatsApp)</Text>
-                  </TouchableOpacity>
-                </>
-              ) : (
-                /* Locked - Purchase Button */
-                <TouchableOpacity style={styles.purchaseButton} onPress={() => handlePurchase(protocol)}>
-                  <LinearGradient colors={T.gradient2} style={styles.purchaseButtonGradient}>
-                    <Ionicons name="lock-open" size={18} color={T.white} />
-                    <Text style={styles.purchaseButtonText}>Unlock Protocol - ${protocol.price?.toFixed(2)}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              )}
             </View>
-          );
-        })}
+
+            <Text style={styles.protocolTitle}>{protocol.title}</Text>
+            <Text style={styles.protocolDesc} numberOfLines={2}>{protocol.description}</Text>
+
+            <View style={styles.protocolMeta}>
+              <View style={styles.protocolMetaItem}>
+                <Ionicons name="time-outline" size={14} color={T.textMuted} />
+                <Text style={styles.protocolMetaText}>{protocol.duration_weeks} weeks</Text>
+              </View>
+              <View style={styles.protocolMetaItem}>
+                <Ionicons name="language-outline" size={14} color={T.textMuted} />
+                <Text style={styles.protocolMetaText}>EN | ES | PT</Text>
+              </View>
+            </View>
+
+            <View style={styles.unlockHint}>
+              <Ionicons name="barcode-outline" size={16} color={T.primary} />
+              <Text style={styles.unlockHintText}>Tap to unlock with batch number</Text>
+              <Ionicons name="chevron-forward" size={16} color={T.primary} />
+            </View>
+          </TouchableOpacity>
+        ))}
+
+        {/* Info Card */}
+        <View style={styles.infoCard}>
+          <Ionicons name="information-circle" size={24} color={T.primary} />
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text style={styles.infoCardTitle}>How it works</Text>
+            <Text style={styles.infoCardText}>
+              1. Purchase a Zurix Sciences product{'\n'}
+              2. Find the batch number on the label{'\n'}
+              3. Enter it here to unlock the protocol{'\n'}
+              4. Download in your preferred language
+            </Text>
+          </View>
+        </View>
       </ScrollView>
+    </View>
+  );
+}
     </View>
   );
 }
@@ -1765,6 +1809,33 @@ const styles = StyleSheet.create({
   purchaseButtonText: { fontSize: 15, fontWeight: '700', color: T.white },
   expertButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 14, borderRadius: 12, borderWidth: 1, borderColor: T.success, marginTop: 16, gap: 8 },
   expertButtonText: { fontSize: 14, fontWeight: '600', color: T.success },
+  
+  // Batch Validation
+  batchSection: { marginTop: 20, padding: 16, backgroundColor: T.cardElevated, borderRadius: 12 },
+  batchTitle: { fontSize: 16, fontWeight: '700', color: T.text, marginBottom: 4 },
+  batchSubtitle: { fontSize: 13, color: T.textMuted, marginBottom: 16 },
+  
+  // Language Selection
+  languageSection: { marginTop: 20 },
+  successBanner: { flexDirection: 'row', alignItems: 'center', padding: 12, backgroundColor: T.success + '15', borderRadius: 12, marginBottom: 16, gap: 10 },
+  successText: { flex: 1, fontSize: 14, fontWeight: '600', color: T.success },
+  languageButton: { flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: T.card, borderRadius: 12, marginBottom: 10, borderWidth: 1, borderColor: T.cardBorder },
+  languageFlag: { width: 36, height: 36, borderRadius: 18, backgroundColor: T.cardElevated, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  languageFlagText: { fontSize: 20 },
+  languageButtonText: { flex: 1, fontSize: 16, fontWeight: '600', color: T.text },
+  
+  // Error Banner
+  errorBanner: { flexDirection: 'row', alignItems: 'flex-start', padding: 12, backgroundColor: T.danger + '15', borderRadius: 12, marginTop: 16, gap: 10 },
+  errorText: { flex: 1, fontSize: 13, color: T.danger },
+  
+  // Unlock Hint
+  unlockHint: { flexDirection: 'row', alignItems: 'center', marginTop: 16, paddingTop: 12, borderTopWidth: 1, borderTopColor: T.cardBorder, gap: 8 },
+  unlockHintText: { flex: 1, fontSize: 13, color: T.primary },
+  
+  // Info Card
+  infoCard: { flexDirection: 'row', padding: 16, backgroundColor: T.primaryGlow, borderRadius: 12, marginTop: 8, marginBottom: 20 },
+  infoCardTitle: { fontSize: 15, fontWeight: '700', color: T.text, marginBottom: 6 },
+  infoCardText: { fontSize: 13, color: T.textMuted, lineHeight: 20 },
 
   // Payment Modal
   paymentModal: { backgroundColor: T.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, maxHeight: height * 0.85 },
