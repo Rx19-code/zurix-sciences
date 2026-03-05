@@ -880,45 +880,19 @@ function VerifyScreen() {
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Divider */}
-      <View style={styles.dividerContainer}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>OR</Text>
-        <View style={styles.dividerLine} />
-      </View>
-
-      {/* Manual Input */}
-      <View style={styles.inputSection}>
-        <Text style={styles.inputLabel}>ENTER CODE MANUALLY</Text>
-        <View style={styles.inputWrapper}>
-          <Ionicons name="key-outline" size={20} color={T.textMuted} />
-          <TextInput style={styles.input} placeholder="e.g. ZX-261216-RT10-1-00001A" placeholderTextColor={T.textDim}
-            value={code} onChangeText={t => { setCode(t.toUpperCase()); setResult(null); }} autoCapitalize="characters" />
-          {code.length > 0 && (
-            <TouchableOpacity onPress={() => { setCode(''); setResult(null); }}>
-              <Ionicons name="close-circle" size={20} color={T.textMuted} />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-
-      {/* Verify Button */}
-      <TouchableOpacity style={[styles.verifyButton, loading && { opacity: 0.6 }]} onPress={() => verify()} disabled={loading}>
-        <LinearGradient colors={T.gradient1} style={styles.verifyButtonGradient}>
-          {loading ? <ActivityIndicator color={T.white} /> : (
-            <>
-              <Ionicons name="shield-checkmark" size={22} color={T.white} />
-              <Text style={styles.verifyButtonText}>Verify Product</Text>
-            </>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
-
-      {/* Code Format Info */}
-      <View style={styles.sampleSection}>
-        <Text style={styles.sampleLabel}>Code format: ZX-XXXXXX-XXXX-X-XXXXXX</Text>
-        <Text style={[styles.sampleLabel, { fontSize: 12, marginTop: 4 }]}>Enter the code from your product label</Text>
-      </View>
+      {/* Verify Button - only shows when code scanned */}
+      {code.length > 0 && (
+        <TouchableOpacity style={[styles.verifyButton, loading && { opacity: 0.6 }]} onPress={() => verify()} disabled={loading}>
+          <LinearGradient colors={T.gradient1} style={styles.verifyButtonGradient}>
+            {loading ? <ActivityIndicator color={T.white} /> : (
+              <>
+                <Ionicons name="shield-checkmark" size={22} color={T.white} />
+                <Text style={styles.verifyButtonText}>Verify Product</Text>
+              </>
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
 
       {/* Result */}
       {result && (
