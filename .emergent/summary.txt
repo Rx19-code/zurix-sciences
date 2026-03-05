@@ -3,166 +3,245 @@ The user wants to build a professional e-commerce website (Zurix Sciences) for s
 
 **PRODUCT REQUIREMENTS:**
 - **Website Features:**
-    - Product catalog, shopping cart, and a checkout process that notifies a representative via WhatsApp.
-    - A sophisticated product verification system to combat counterfeiting. Each product unit will have a unique, scannable QR code tied to a specific batch. The system must track how many times each unique code is scanned and display warnings on subsequent scans.
-    - A private admin panel () for the user to import unique verification codes for each product batch.
+    - Product catalog, shopping cart, and a checkout process.
+    - A sophisticated product verification system with unique, scannable QR codes. The system must track scan history (including IP, device, and location) and block codes after a set number of scans.
+    - A private admin panel () for importing and managing unique verification codes.
 - **Mobile App Features:**
-    - A 5-tab layout: Home, Shop, Verify, Protocols, Profile.
-    - **Shop:** Display products from the website, allow adding to a cart, and redirect to WhatsApp for checkout. Must include a legal disclaimer modal that users must accept.
-    - **Verify:** Scan QR codes or enter them manually to use the new verification system.
-    - **Protocols:** Display research protocols behind a paywall. Implement a manual crypto payment screen showing wallet addresses (BTC, USDT, XMR, SOL) for users to purchase access.
-    - **Profile:** Show order history and verification history.
-- **Language:** The mobile app's UI and content must be in English.
+    - A multi-tab layout: Home, Verify, Protocols, Profile.
+    - **(Implemented)** A user authentication system (email/password) is now required.
+    - **Verify:** Scan QR codes or enter them manually.
+    - **Protocols:** Display research protocols, which will be delivered as PDFs after purchase via In-App Purchases (Google/Apple).
+    - **Profile:** Show order history and verification history, now tied to a user account.
 
 **User's preferred language**: Portuguese
 
 **what currently exists?**
-- A full-stack website ( + ) is deployed and functional.
-- A React Native mobile app exists in . The UI has been redesigned with a 5-tab layout, but it is plagued by bugs, most critically the inability to fetch products from the live API.
-- The backend and web frontend have been updated to support a new, advanced verification system with unique codes per product unit and an admin panel for importing these codes. This part is newly implemented and not yet fully tested or integrated into the mobile app.
-- The entire mobile application logic is contained within a single, monolithic file:  (>2000 lines).
+- A full-stack website ( + ) is deployed and functional, managed through Cloudflare.
+- The website includes a full-featured admin panel () for managing products and verification codes, including a new feature to delete individual codes.
+- The QR code verification system is complete, tracking scans and blocking codes after 3 scans.
+- The product catalog on the production database has been curated to a specific list of 32 products, with 12 having updated images.
+- A React Native mobile app exists in . It now has a full user authentication system (register/login/logout) and a new system for handling research protocols as downloadable PDFs.
+- The mobile app's UI has been updated (logo removed from home, new app icon, checkout flow fixed for Threema).
+- The mobile app continues to suffer from a critical, persistent Network request failed error, which prevents it from fetching any data from the API. The agent has added a diagnostic tool to help debug this.
 
 **Last working item**:
-    - **Last item agent was working:** Implementing the new advanced verification system. The agent had just finished writing the code for the backend () to handle unique codes, admin login ( for hashing), and code imports. It also created the web-based admin panel () and updated the public verification page (). The agent was about to test the new  endpoint.
-    - **Status:** IN PROGRESS
-    - **Agent Testing Done:** N
-    - **Which testing method agent to use?** backend testing agent
-    - **User Testing Done:** N
+- **Last item agent was working:** The user reported that the mobile app's home screen has two Visit Website buttons. The agent identified the redundant code in  and was about to remove it.
+- **Status:** IN PROGRESS
+- **Agent Testing Done:** N
+- **Which testing method agent to use?** Frontend testing agent (to test the mobile app UI).
+- **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
-- **Issue 1: Mobile App - Products not loading (P0)**
-- **Issue 2: Mobile App - Website link is broken (P1)**
-- **Issue 3: Mobile App - Invalid Icon Warning (P2)**
+- **Issue 1: Mobile App - Network request failed (P0)**
+- **Issue 2: Mobile App - Redundant Visit Website button on Home Screen (P1)**
+- **Issue 3: User's DNS/Network Problem (P2)**
 
 **Issues Detail:**
-- **Issue 1: Mobile App - Products not loading**
-    - **Attempted fixes:** The agent tried changing the API URL ( vs. non-), switching from  to , correcting the data key from  to uid=0(root) gid=0(root) groups=0(root), and adding extensive logging. The user's logs consistently show  or .
+- **Issue 1: Mobile App - Network request failed**
+    - **Attempted fixes:** The agent implemented multiple potential fixes: added network permissions ( for iOS,  for Android) in , implemented  with a 15-second timeout, and added a Network Diagnostics button to the home screen to help debug connection issues. The user reports the app only loads in Expo Go when using the  flag.
     - **Next debug checklist:**
-        1.  The issue is almost certainly a network problem on the user's end, as they confirmed their PC is on a VPN while the phone is on a separate WiFi network.
-        2.  **Firmly guide the user** to perform a diagnostic test: open the phone's web browser and navigate directly to the API endpoint .
-        3.  Ask the user to report the result of the browser test when connected to their WiFi, and then again when connected to mobile data (4G/5G). This will isolate whether the issue is the WiFi network or the device itself.
-        4.  Do not attempt further code changes until this network diagnosis is complete.
-    - **Why fix this issue and what will be achieved with the fix?** This is a critical blocker. The Shop feature, a primary requirement, is completely non-functional without products.
+        1.  Instruct the user to run the app using .
+        2.  Ask the user to tap the Tap to test network connection button on the app's home screen.
+        3.  Analyze the results shown by the diagnostic tool to determine which API endpoints are failing and why.
+        4.  This is a critical, long-standing bug. If the diagnostic tool doesn't reveal the root cause, the next step must be to refactor the monolithic  file, as its complexity makes further debugging extremely difficult.
+    - **Why fix this issue and what will be achieved with the fix?** The mobile app is completely non-functional without API access. Fixing this unblocks all mobile app development and allows the hired freelancer to proceed.
     - **Status:** BLOCKED
     - **Is recurring issue?** Y
     - **Should Test frontend/backend/both after fix?** Frontend (mobile app)
-    - **Blocked on other issue:** User network diagnosis.
-- **Issue 2: Mobile App - Website link is broken**
-    - **Attempted fixes:** The agent created a helper function  and ensured the URL string was correct. The user still reports it as non-functional.
+- **Issue 2: Mobile App - Redundant Visit Website button on Home Screen**
+    - **Attempted fixes:** The agent viewed  and located the duplicated code block within the  component.
     - **Next debug checklist:**
-        1.  View  and review the  function and the  handler for the Visit Website button.
-        2.  Add a  inside the  handler to confirm it's being triggered.
-        3.  Wrap the  call in a  block and log any errors.
-    - **Why fix this issue and what will be achieved with the fix?** It's a user-reported bug that affects basic functionality and professionalism.
+        1.  Edit .
+        2.  Search for the  functional component.
+        3.  Locate the two  components containing the text Visit Website.
+        4.  Remove the second, redundant one.
+    - **Why fix this issue and what will be achieved with the fix?** Corrects a minor UI defect on the main screen.
     - **Status:** IN PROGRESS
-    - **Is recurring issue?** Y
+    - **Is recurring issue?** N
     - **Should Test frontend/backend/both after fix?** Frontend (mobile app)
-- **Issue 3: Mobile App - Invalid Icon Warning**
-    - **Attempted fixes:** Agent changed  to . However, the user's latest logs still show the warning, indicating the change might not have been pushed or was incorrect.
-    - **Next debug checklist:**
-        1.  Search for  in  to confirm the fix was applied correctly everywhere.
-        2.  Verify the correct icon name in the  directory or documentation.
-    - **Why fix this issue and what will be achieved with the fix?** Cleans up console warnings and ensures UI elements render as intended.
-    - **Status:** IN PROGRESS
+- **Issue 3: User's DNS/Network Problem**
+    - **Attempted fixes:** The agent correctly diagnosed that the user's inability to access  from their network in Paraguay is a local DNS issue, not a server problem. The agent proved the site is online via  and  and provided detailed instructions for the user to flush their DNS cache and change their DNS servers to .
+    - **Next debug checklist:** This is a user-side issue. The agent should only assist if asked but should not spend significant time on it. The focus should be on application development.
+    - **Why fix this issue and what will be achieved with the fix?** This would resolve a major point of confusion and frustration for the user, allowing them to test the production site without a VPN.
+    - **Status:** BLOCKED
     - **Is recurring issue?** Y
-    - **Should Test frontend/backend/both after fix?** Frontend (mobile app)
+    - **Should Test frontend/backend/both after fix?** NA
 
 **In progress Task List**:
-- **Task 1: Complete and Test the New Verification System (P0)**
-    - **Where to resume:** The agent has written the backend and web frontend code. The next step is to test the implementation. Start by using  to test the admin login endpoint: . Then proceed to test the code import and the updated public verification flow on the website.
-    - **What will be achieved with this?** A fully functional admin panel on the website for managing unique product verification codes, and an updated verification page for customers.
-    - **Status:** IN PROGRESS
+- **Task 1: Finalize User Auth & PDF Protocol System (P1)**
+    - **Where to resume:** The core backend and mobile app logic for user authentication (register/login) and the new PDF-based protocol system is implemented. However, it's incomplete.
+        - **Backend:** Needs to be integrated with an email service for password resets and sending purchased PDFs. The agent planned to use **Resend**, but is **blocked waiting for the user to provide an API key**. The admin panel also needs a way to upload the protocol PDFs.
+        - **Frontend (Mobile):** The new authentication and protocol purchasing flow needs to be thoroughly tested. The UI for In-App Purchases (Google/Apple) needs to be integrated by the freelancer.
+    - **What will be achieved with this?** A complete, monetizable content delivery system for the mobile app, with secure user accounts.
+    - **Status:** BLOCKED
     - **Should Test frontend/backend/both after fix?** Both
-    - **Blocked on something:** None.
+    - **Blocked on something:** User needs to provide an API key for an email service (e.g., Resend). The protocol PDF files are also not yet available.
 
 **Upcoming and Future Tasks**
 - **Upcoming Tasks:**
-    - **(P1) Integrate New Verification System into Mobile App:** Update the Verify screen in the mobile app to use the new  endpoint and display the detailed results (e.g., Product Authentic, Warning: Already scanned, Alert: High risk of counterfeit).
-    - **(P2) Refactor the Mobile App:** Break down the monolithic  file into a proper React Native structure with separate folders for , , , , and . This is crucial for maintainability.
-- **Future Tasks:**
-    - **(P2) Implement User Authentication for Mobile App:** Add a login/registration system for mobile app users to persist their verification and order history across devices.
+    - **(P0) Add remaining 20 product images:** The user's designer is creating them. Once provided, the agent should use the established python script pattern to update the  for the products in the production database.
+    - **(P1) Refactor the Mobile App:** This is a critical task for maintainability. The monolithic  (over 1500 lines) must be broken down into a proper folder structure (, , , , etc.).
+- **Future Tasks (for Freelancer):**
+    - Implement In-App Purchases (Google Pay / Apple Pay) for the protocol system.
+    - Build and publish the final application to the Google Play Store and Apple App Store.
+    - Improve the app icon design, as the user was not satisfied with the last version.
 
 **Completed work in this session**
-- Partially redesigned the mobile app UI with a 5-tab navigation structure.
-- Implemented the UI for the Shop, Protocols (with a crypto paywall), and Profile screens in the mobile app (though the Shop is non-functional).
-- Added a legal disclaimer modal to the Shop screen in the mobile app.
-- Implemented the backend logic for a new, advanced verification system with unique codes, scan tracking, and an admin login.
-- Created a new web-based admin panel at  for importing verification codes.
-- Updated the public website verification page to align with the new system's logic.
+- **User Authentication & Protocol System:**
+  - Implemented a full user authentication system (register, login, JWT tokens, password reset) on the backend ().
+  - Updated the mobile app () to include login/registration modals, user session management, and a profile screen that displays user data.
+  - Reworked the Protocols feature to support downloadable PDFs, requiring user login to purchase.
+- **Website & Admin Panel:**
+  - Added a feature to the admin panel to delete individual verification codes.
+  - Updated the Representatives page with country flags, a Threema contact, and standardized button styles.
+  - Corrected the checkout flow to support Threema for orders to the Swiss representative.
+  - Updated the product details page to replace Batch Information with Label Information and added a disclaimer for illustrative images.
+- **Product & Image Management:**
+  - Cleaned the production database to a curated list of 32 products.
+  - Added 12 new product images with white backgrounds, and created python scripts for the user to update the production database directly.
+  - Adjusted the product card CSS to use a white background for a cleaner look.
+- **Mobile App Debugging & Setup:**
+  - Added network permissions to  and a diagnostic tool to the home screen to help solve the Network request failed error.
+  - Updated the app icon, splash screen, and favicon with a new logo provided by the user.
+- **User & Freelancer Support:**
+  - Provided extensive support for user's deployment and DNS issues.
+  - Created a detailed project summary and job description for the user to hire a freelancer, clarifying that a full rebuild is not necessary.
+
+**Earlier issues found/mentioned but not fixed**
+- **Mobile App - Broken Website Link:** Mentioned in the initial handoff, not re-verified. The  function in  should be reviewed.
 
 **Known issue recurrence from previous fork**
-- **Mobile App Instability:** The mobile app continues to be the main source of problems, especially with network requests and dependency-related warnings.
-- **Sync Issues:** The user has repeatedly reported that changes were not visible, often because the Save to GitHub step was missed. The agent must be diligent in confirming this step with the user.
+- **Mobile App Instability:** The Network request failed error remains the primary, unresolved issue, making the app unusable.
+- **User Deployment Confusion:** The user continues to struggle with the server deployment workflow and the distinction between the preview and production environments, requiring repeated, explicit instructions.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
-- **Backend:** FastAPI, MongoDB (Motor),  for password hashing.
-- **Frontend (Web):** React.
+- **Backend:** FastAPI, MongoDB (Motor),  &  for JWT authentication.
+- **Frontend (Web):** React, TailwindCSS.
 - **Frontend (Mobile):** React Native, Expo.
-- **Deployment:** Manual  by the user on their local machine to test the mobile app.
+- **Deployment:** Manual  by the user,  for frontend,  for backend. Python scripts are used for DB migrations.
+- **Infrastructure:** Cloudflare (DNS/Proxy), Njalla (Domain Registrar).
+- **Email:** Resend (Planned, awaiting user API key).
 
 **key DB schema**
-- **products**: 
-- **protocols**: 
-- **unique_codes (new collection)**: 
+- ****: (NEW) 
+- ****: (NEW) 
+- ****: (NEW) 
+- ****: (UPDATED) 
 
 **All files of reference**
-- : The monolithic file for the mobile app, containing multiple critical bugs.
-- : Contains all new backend logic for the verification system.
-- : The new admin panel UI.
-- : The updated public verification UI for the website.
-- : Contains the routing for the new admin panel.
+- : The monolithic file containing all mobile app logic, including the new auth system. The source of the network bug.
+- : Contains all new backend logic for auth and the v2 protocol system.
+- : Location of the new All Codes tab.
+- : Contains the updated checkout logic for Threema.
+- : Contains the new network permissions and icon configuration.
 
 **Areas that need refactoring**:
-- ** is the top priority.** It is a single 2000+ line file that is unmaintainable and difficult to debug. It must be broken down into a standard React Native project structure.
+- ** is the absolute highest priority.** Its monolithic structure (1500+ lines) makes debugging and new feature development nearly impossible. It MUST be broken down into a proper React Native structure (, , , etc.).
 
 **key api endpoints**
-- 
-- 
--  (POST, new)
--  (POST, new)
--  (POST, new logic)
+-  (POST)
+-  (POST)
+-  (GET)
+-  (DELETE)
+-  (POST)
+-  (GET)
+-  (GET)
 
 **Critical Info for New Agent**
-- **The mobile app Network Error is the highest priority.** You must guide the user through network diagnostics on their phone before attempting any more code changes for the product list. Do not get sidetracked.
-- The new verification system is partially implemented (backend/web) but needs to be tested and then integrated into the mobile app.
-- The user is non-technical and requires clear, explicit, copy-paste commands for PowerShell, especially for  and running the app. Always remind them to use the **Save to GitHub** button and confirm they have done so.
-- The  file is a monolith. Any work on it will be difficult. Plan for a full refactor after the critical bugs are fixed.
+- **The user has hired a freelancer to publish the app.** Your role is to support the user, not to do the freelancer's job. A detailed summary has already been provided to the user for this purpose. The primary task for the freelancer is to fix the network bug and publish the app.
+- **The Network request failed bug is the most critical blocker.** Use the newly added diagnostic button in the app to gather more information. Do not proceed with major new features until this is resolved.
+- **Database updates must be done via Python scripts.** The production DB () should not be modified manually. Continue the pattern of creating scripts that the user can run on the server.
+- **The user struggles with deployment.** Always provide clear, numbered, copy-paste commands for usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone     Clone a repository into a new directory
+   init      Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add       Add file contents to the index
+   mv        Move or rename a file, a directory, or a symlink
+   restore   Restore working tree files
+   rm        Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect    Use binary search to find the commit that introduced a bug
+   diff      Show changes between commits, commit and working tree, etc
+   grep      Print lines matching a pattern
+   log       Show commit logs
+   show      Show various types of objects
+   status    Show the working tree status
+
+grow, mark and tweak your common history
+   branch    List, create, or delete branches
+   commit    Record changes to the repository
+   merge     Join two or more development histories together
+   rebase    Reapply commits on top of another base tip
+   reset     Reset current HEAD to the specified state
+   switch    Switch branches
+   tag       Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch     Download objects and refs from another repository
+   pull      Fetch from and integrate with another repository or a local branch
+   push      Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+See 'git help git' for an overview of the system., , building the frontend, and restarting .
+- **The new auth/protocol system is BLOCKED.** It requires an API key for an email service (like Resend) from the user to be fully functional.
+
+**documents and test reports created in this job**
+- The agent created several summaries and a job description for the user to provide to a freelancer. These are in the message history.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User agrees to Option 1 (Admin Panel) and provides a password.** (Status: Completed - Agent started implementation).
-2.  **User asks where the admin panel will be.** (Status: Completed - Agent explained options).
-3.  **User asks which code import option is easiest.** (Status: Completed - Agent recommended the admin panel).
-4.  **User provides a list of 100 unique codes for one batch.** (Status: Completed - Agent understood the new requirement).
-5.  **User asks to adjust the authentication of lots and QR codes.** (Status: In Progress - This kicked off the new verification system feature).
-6.  **User says Olá.** (Status: Responded).
-7.  **User confirms their PC is on a VPN.** (Status: Addressed, led to network diagnosis).
-8.  **User confirms they are on a different WiFi network than the PC.** (Status: Addressed, led to network diagnosis).
-9.  **User reports Network request failed again.** (Status: Pending - This is the main blocker).
-10. **User reports that products are not appearing.** (Status: Pending - Same as above).
+1.  **User:** Requests an update on the app's status for a freelancer. (DONE)
+2.  **User:** Asks for a more detailed summary of the app, its functions, and components. (DONE)
+3.  **User:** Clarifies the anti-counterfeit logic for the Verify tab. (DONE)
+4.  **User:** Requests significant changes: protocols should be PDFs, a user login system is needed, and a logo should be removed from the home screen. (DONE)
+5.  **User:** Confirms the new requirements (email/password login, PDF via download and email) and specifies the logo to remove. (DONE)
+6.  **User:** Asks the agent to implement these changes now. (IN PROGRESS)
+7.  **User:** Provides details for implementation: no email service configured, PDFs are in progress, payment will be via app stores. (Agent proceeds, planning to use Resend).
+8.  **User:** Asks agent to continue with mobile app updates. (DONE)
+9.  **User:** Asks if the network bug can be fixed. (Agent implemented potential fixes).
+10. **User:** Reports the app only opens with . (Agent explained this is a dev workaround and asked to test the new diagnostic tool).
+11. **User:** Reports that the home screen of the app has two Visit Website buttons. (This is the current ).
 
 **Project Health Check:**
-- **Broken:** The mobile application's Shop feature is completely broken due to a persistent network error. Other minor bugs (broken link, icon warnings) also exist.
+- **Broken:** The mobile application is non-functional due to the Network request failed error.
+- **Mocked:** N/A
 
 **3rd Party Integrations**
-- None.
+- **Cloudflare:** Used for DNS, SSL, and as a proxy.
+- **Njalla:** Domain Registrar.
+- **ip-api.com:** Used for geolocation lookup.
+- **Resend:** Planned for sending emails (password resets, PDF protocols). **Blocked: Awaiting API key from the user.**
 
 **Testing status**
 - **Testing agent used after significant changes:** NO
 - **Troubleshoot agent used after agent stuck in loop:** NO
 - **Test files created:** None
-- **Known regressions:** The mobile app is in a state of regression where core features requested by the user are implemented but non-functional due to underlying bugs.
+- **Known regressions:** The mobile app's core functionality (fetching data) remains broken.
 
 **Credentials to test flow:**
 - **Website Domain:** 
 - **Admin Panel Credentials:**
     - **URL:** 
-    - **Username:** 
     - **Password:** 
+- **Server SSH:** 
+- **Test User for Login:** A test user was created during the session. Check agent thoughts for credentials ( / ).
 
 **What agent forgot to execute**
-- The agent did not follow through on removing  from  after deciding to replace it with , leaving an unused dependency.
-- The agent repeatedly implemented large features in the monolithic  file without addressing its structural problems, making debugging progressively harder.
-- The agent did not force the user to complete the network diagnostics, allowing the core Network Error issue to remain unsolved while moving on to other tasks.</analysis>
+- The  file was not updated after installing new dependencies like , , and . This will cause the server setup to fail in a new environment.
+- The agent did not get the Resend API key from the user, leaving the email-sending functionality incomplete.
+- The agent did not create a robust way for the admin to upload protocol PDFs; this was planned but not implemented.</analysis>

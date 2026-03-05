@@ -459,20 +459,6 @@ function HomeScreen({ goTo, cartCount }) {
           </View>
         </View>
 
-        {/* Website Link */}
-        <View style={styles.section}>
-          <TouchableOpacity style={styles.websiteCard} onPress={() => openURL('https://www.zurixsciences.com')} activeOpacity={0.8}>
-            <View style={styles.websiteCardInner}>
-              <Ionicons name="globe-outline" size={24} color={T.primary} />
-              <View style={{ flex: 1, marginLeft: 14 }}>
-                <Text style={styles.websiteCardTitle}>Visit Our Website</Text>
-                <Text style={styles.websiteCardUrl}>www.zurixsciences.com</Text>
-              </View>
-              <Feather name="external-link" size={18} color={T.textMuted} />
-            </View>
-          </TouchableOpacity>
-        </View>
-
         {/* Network Diagnostic Button (for debugging) */}
         <TouchableOpacity 
           style={{ padding: 16, alignItems: 'center' }} 
