@@ -1,16 +1,20 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends, Header, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends, Header, Request, UploadFile, File
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import hashlib
 import httpx
+import bcrypt
+import jwt
+import secrets
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -52,6 +56,15 @@ async def get_geolocation(ip: str) -> dict:
 
 # Admin password (hashed)
 ADMIN_PASSWORD = "Rx050217!"
+
+# JWT Secret for authentication
+JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
+
+# PDF storage directory
+PDF_STORAGE_DIR = Path(__file__).parent / "pdfs"
+PDF_STORAGE_DIR.mkdir(exist_ok=True)
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -158,6 +171,62 @@ class ImportCodesRequest(BaseModel):
     batch_number: str
     codes: List[str]
 
+# ==================== USER AUTHENTICATION MODELS ====================
+
+class UserRegisterRequest(BaseModel):
+    email: str
+    password: str
+    name: str
+
+class UserLoginRequest(BaseModel):
+    email: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: str
+    email: str
+    name: str
+    created_at: str
+    purchased_protocols: List[str] = []
+
+class User(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: str
+    password_hash: str
+    name: str
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    purchased_protocols: List[str] = []  # List of protocol IDs
+    verification_history: List[str] = []  # List of verification IDs
+
+class ProtocolWithPDF(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    category: str  # Basic or Advanced
+    price: float  # 4.99 or 9.99
+    duration_weeks: int
+    products_needed: List[str]
+    pdf_filename: Optional[str] = None  # PDF file name
+    preview_text: str  # Short preview for non-purchasers
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    featured: bool = False
+
+class PurchaseProtocolRequest(BaseModel):
+    protocol_id: str
+    transaction_id: str  # From Google Play or Apple Store
+    platform: str  # "google" or "apple"
+
+class PasswordResetRequest(BaseModel):
+    email: str
+
+class PasswordResetConfirm(BaseModel):
+    token: str
+    new_password: str
+
 class VerifyScanRequest(BaseModel):
     code: str
     device_id: Optional[str] = None
@@ -174,6 +243,399 @@ class VerifyScanResponse(BaseModel):
 @api_router.get("/")
 async def root():
     return {"message": "Zurix Sciences API", "version": "1.0.0"}
+
+# ==================== AUTHENTICATION HELPERS ====================
+
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt"""
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+def verify_password(password: str, password_hash: str) -> bool:
+    """Verify a password against its hash"""
+    return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
+
+def create_jwt_token(user_id: str, email: str) -> str:
+    """Create a JWT token for a user"""
+    payload = {
+        "user_id": user_id,
+        "email": email,
+        "exp": datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRATION_HOURS),
+        "iat": datetime.now(timezone.utc)
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+def decode_jwt_token(token: str) -> dict:
+    """Decode and validate a JWT token"""
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+async def get_current_user(authorization: str = Header(None)) -> dict:
+    """Get the current user from the Authorization header"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization required")
+    
+    token = authorization.replace("Bearer ", "")
+    payload = decode_jwt_token(token)
+    
+    user = await db.users.find_one({"id": payload["user_id"]}, {"_id": 0, "password_hash": 0})
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    
+    return user
+
+# ==================== USER AUTHENTICATION ROUTES ====================
+
+@api_router.post("/auth/register")
+async def register_user(request: UserRegisterRequest):
+    """Register a new user"""
+    # Check if email already exists
+    existing = await db.users.find_one({"email": request.email.lower()})
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Create user
+    user = {
+        "id": str(uuid.uuid4()),
+        "email": request.email.lower(),
+        "password_hash": hash_password(request.password),
+        "name": request.name,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "purchased_protocols": [],
+        "verification_history": []
+    }
+    
+    await db.users.insert_one(user)
+    
+    # Create token
+    token = create_jwt_token(user["id"], user["email"])
+    
+    return {
+        "success": True,
+        "message": "Registration successful",
+        "token": token,
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "name": user["name"],
+            "created_at": user["created_at"],
+            "purchased_protocols": []
+        }
+    }
+
+@api_router.post("/auth/login")
+async def login_user(request: UserLoginRequest):
+    """Login a user"""
+    user = await db.users.find_one({"email": request.email.lower()})
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    if not verify_password(request.password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Create token
+    token = create_jwt_token(user["id"], user["email"])
+    
+    return {
+        "success": True,
+        "message": "Login successful",
+        "token": token,
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "name": user["name"],
+            "created_at": user["created_at"],
+            "purchased_protocols": user.get("purchased_protocols", [])
+        }
+    }
+
+@api_router.get("/auth/me")
+async def get_current_user_info(user: dict = Depends(get_current_user)):
+    """Get current user info"""
+    return {
+        "success": True,
+        "user": user
+    }
+
+@api_router.post("/auth/request-password-reset")
+async def request_password_reset(request: PasswordResetRequest):
+    """Request a password reset (sends email with token)"""
+    user = await db.users.find_one({"email": request.email.lower()})
+    if not user:
+        # Don't reveal if email exists
+        return {"success": True, "message": "If the email exists, a reset link will be sent"}
+    
+    # Create reset token
+    reset_token = secrets.token_urlsafe(32)
+    expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+    
+    await db.password_resets.insert_one({
+        "user_id": user["id"],
+        "token": reset_token,
+        "expires_at": expires_at.isoformat(),
+        "used": False
+    })
+    
+    # TODO: Send email with reset link when email service is configured
+    # For now, return the token (remove in production)
+    return {
+        "success": True,
+        "message": "Password reset requested",
+        "reset_token": reset_token  # Remove this in production
+    }
+
+@api_router.post("/auth/reset-password")
+async def reset_password(request: PasswordResetConfirm):
+    """Reset password with token"""
+    reset = await db.password_resets.find_one({
+        "token": request.token,
+        "used": False
+    })
+    
+    if not reset:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+    
+    # Check expiration
+    expires_at = datetime.fromisoformat(reset["expires_at"].replace("Z", "+00:00"))
+    if datetime.now(timezone.utc) > expires_at:
+        raise HTTPException(status_code=400, detail="Reset token expired")
+    
+    # Update password
+    new_hash = hash_password(request.new_password)
+    await db.users.update_one(
+        {"id": reset["user_id"]},
+        {"$set": {"password_hash": new_hash}}
+    )
+    
+    # Mark token as used
+    await db.password_resets.update_one(
+        {"token": request.token},
+        {"$set": {"used": True}}
+    )
+    
+    return {"success": True, "message": "Password reset successful"}
+
+# ==================== PROTOCOLS WITH PDF ROUTES ====================
+
+@api_router.get("/protocols-v2")
+async def get_protocols_v2(user: dict = None):
+    """Get all protocols (with PDF info hidden for non-purchasers)"""
+    try:
+        # Try to get user from token if provided
+        user = None
+    except:
+        pass
+    
+    protocols = await db.protocols_v2.find({}, {"_id": 0}).to_list(100)
+    
+    # If no protocols exist, return mock data
+    if not protocols:
+        protocols = [
+            {
+                "id": "proto-1",
+                "title": "BPC-157 Recovery Protocol",
+                "description": "A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation.",
+                "category": "Basic",
+                "price": 4.99,
+                "duration_weeks": 4,
+                "products_needed": ["BPC-157 5mg", "Bacteriostatic Water"],
+                "preview_text": "This protocol covers proper dosing, injection techniques, and cycle recommendations for BPC-157...",
+                "pdf_filename": None,
+                "featured": True
+            },
+            {
+                "id": "proto-2",
+                "title": "TB-500 Tissue Repair",
+                "description": "Advanced protocol for deep tissue healing and muscle recovery.",
+                "category": "Advanced",
+                "price": 9.99,
+                "duration_weeks": 6,
+                "products_needed": ["TB-500 5mg", "Bacteriostatic Water"],
+                "preview_text": "Learn the optimal TB-500 dosing strategy for maximum healing benefits...",
+                "pdf_filename": None,
+                "featured": True
+            },
+            {
+                "id": "proto-3",
+                "title": "GHK-Cu Skin Rejuvenation",
+                "description": "Protocol for skin repair and anti-aging using copper peptides.",
+                "category": "Basic",
+                "price": 4.99,
+                "duration_weeks": 8,
+                "products_needed": ["GHK-Cu 50mg", "Bacteriostatic Water"],
+                "preview_text": "Discover how to use GHK-Cu for optimal skin health and rejuvenation...",
+                "pdf_filename": None,
+                "featured": False
+            }
+        ]
+    
+    return {"success": True, "protocols": protocols}
+
+@api_router.post("/protocols-v2/purchase")
+async def purchase_protocol(request: PurchaseProtocolRequest, user: dict = Depends(get_current_user)):
+    """Record a protocol purchase after in-app payment verification"""
+    # Verify protocol exists
+    protocol = await db.protocols_v2.find_one({"id": request.protocol_id})
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    
+    # Check if already purchased
+    if request.protocol_id in user.get("purchased_protocols", []):
+        return {"success": True, "message": "Protocol already purchased"}
+    
+    # TODO: Verify transaction with Google Play / Apple Store API
+    # For now, we trust the transaction_id
+    
+    # Record purchase
+    purchase = {
+        "id": str(uuid.uuid4()),
+        "user_id": user["id"],
+        "protocol_id": request.protocol_id,
+        "transaction_id": request.transaction_id,
+        "platform": request.platform,
+        "purchased_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.protocol_purchases.insert_one(purchase)
+    
+    # Update user's purchased protocols
+    await db.users.update_one(
+        {"id": user["id"]},
+        {"$addToSet": {"purchased_protocols": request.protocol_id}}
+    )
+    
+    # TODO: Send email with PDF when email service is configured
+    
+    return {
+        "success": True,
+        "message": "Protocol purchased successfully",
+        "protocol_id": request.protocol_id
+    }
+
+@api_router.get("/protocols-v2/{protocol_id}/download")
+async def download_protocol_pdf(protocol_id: str, user: dict = Depends(get_current_user)):
+    """Download a purchased protocol PDF"""
+    # Check if user purchased this protocol
+    if protocol_id not in user.get("purchased_protocols", []):
+        raise HTTPException(status_code=403, detail="Protocol not purchased")
+    
+    # Get protocol
+    protocol = await db.protocols_v2.find_one({"id": protocol_id})
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    
+    if not protocol.get("pdf_filename"):
+        raise HTTPException(status_code=404, detail="PDF not available yet")
+    
+    pdf_path = PDF_STORAGE_DIR / protocol["pdf_filename"]
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail="PDF file not found")
+    
+    return FileResponse(
+        path=str(pdf_path),
+        filename=f"{protocol['title']}.pdf",
+        media_type="application/pdf"
+    )
+
+@api_router.get("/user/purchases")
+async def get_user_purchases(user: dict = Depends(get_current_user)):
+    """Get user's purchased protocols"""
+    purchases = await db.protocol_purchases.find(
+        {"user_id": user["id"]},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Get protocol details
+    protocol_ids = [p["protocol_id"] for p in purchases]
+    protocols = await db.protocols_v2.find(
+        {"id": {"$in": protocol_ids}},
+        {"_id": 0}
+    ).to_list(100)
+    
+    return {
+        "success": True,
+        "purchases": purchases,
+        "protocols": protocols
+    }
+
+# ==================== ADMIN PROTOCOL MANAGEMENT ====================
+
+@api_router.post("/admin/protocols-v2")
+async def create_protocol(
+    title: str,
+    description: str,
+    category: str,
+    price: float,
+    duration_weeks: int,
+    products_needed: str,  # Comma-separated
+    preview_text: str,
+    pdf: UploadFile = File(None),
+    x_admin_password: str = Header(None)
+):
+    """Create a new protocol with optional PDF upload"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    protocol_id = str(uuid.uuid4())
+    pdf_filename = None
+    
+    # Save PDF if provided
+    if pdf:
+        pdf_filename = f"{protocol_id}.pdf"
+        pdf_path = PDF_STORAGE_DIR / pdf_filename
+        content = await pdf.read()
+        with open(pdf_path, "wb") as f:
+            f.write(content)
+    
+    protocol = {
+        "id": protocol_id,
+        "title": title,
+        "description": description,
+        "category": category,
+        "price": price,
+        "duration_weeks": duration_weeks,
+        "products_needed": [p.strip() for p in products_needed.split(",")],
+        "preview_text": preview_text,
+        "pdf_filename": pdf_filename,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "featured": False
+    }
+    
+    await db.protocols_v2.insert_one(protocol)
+    
+    return {"success": True, "protocol": protocol}
+
+@api_router.put("/admin/protocols-v2/{protocol_id}/pdf")
+async def upload_protocol_pdf(
+    protocol_id: str,
+    pdf: UploadFile = File(...),
+    x_admin_password: str = Header(None)
+):
+    """Upload or update PDF for a protocol"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    protocol = await db.protocols_v2.find_one({"id": protocol_id})
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    
+    # Save PDF
+    pdf_filename = f"{protocol_id}.pdf"
+    pdf_path = PDF_STORAGE_DIR / pdf_filename
+    content = await pdf.read()
+    with open(pdf_path, "wb") as f:
+        f.write(content)
+    
+    # Update protocol
+    await db.protocols_v2.update_one(
+        {"id": protocol_id},
+        {"$set": {"pdf_filename": pdf_filename}}
+    )
+    
+    return {"success": True, "message": "PDF uploaded successfully"}
 
 # Products endpoints
 @api_router.get("/products", response_model=List[Product])
