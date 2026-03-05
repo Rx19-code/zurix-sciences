@@ -14,9 +14,12 @@ const { width, height } = Dimensions.get('window');
 
 // Multiple API URLs to try (fallback)
 const API_URLS = [
-  'https://www.zurixsciences.com/api',
   'https://zurixsciences.com/api',
+  'https://www.zurixsciences.com/api',
 ];
+
+// Timeout for API requests (in milliseconds)
+const API_TIMEOUT = 15000;
 
 // Auth token storage key
 const AUTH_TOKEN_KEY = 'auth_token';
@@ -67,14 +70,36 @@ const setUserData = async (user) => {
   }
 };
 
-// API helper with fallback URLs
+// Fetch with timeout
+const fetchWithTimeout = (url, options, timeout = API_TIMEOUT) => {
+  return new Promise((resolve, reject) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+      reject(new Error('Request timeout'));
+    }, timeout);
+
+    fetch(url, { ...options, signal: controller.signal })
+      .then(response => {
+        clearTimeout(timeoutId);
+        resolve(response);
+      })
+      .catch(error => {
+        clearTimeout(timeoutId);
+        reject(error);
+      });
+  });
+};
+
+// API helper with fallback URLs and better error handling
 const fetchWithFallback = async (endpoint, options = {}, requireAuth = false) => {
   let lastError = null;
   const token = await getAuthToken();
   
   for (const baseUrl of API_URLS) {
     try {
-      console.log(`Trying: ${baseUrl}${endpoint}`);
+      const url = `${baseUrl}${endpoint}`;
+      console.log(`[API] Trying: ${url}`);
       
       const headers = {
         'Accept': 'application/json',
@@ -86,24 +111,49 @@ const fetchWithFallback = async (endpoint, options = {}, requireAuth = false) =>
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const response = await fetch(`${baseUrl}${endpoint}`, {
+      const response = await fetchWithTimeout(url, {
         ...options,
         headers,
       });
       
+      console.log(`[API] Response status: ${response.status}`);
+      
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        const errorText = await response.text();
+        console.log(`[API] Error response: ${errorText}`);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
       
       const data = await response.json();
-      console.log(`Success from: ${baseUrl}`);
+      console.log(`[API] Success from: ${baseUrl}`);
       return data;
     } catch (error) {
-      console.log(`Failed ${baseUrl}: ${error.message}`);
+      console.log(`[API] Failed ${baseUrl}: ${error.name} - ${error.message}`);
       lastError = error;
+      
+      // If it's an abort error (timeout), try next URL
+      if (error.name === 'AbortError') {
+        console.log('[API] Request was aborted (timeout)');
+        continue;
+      }
+      
+      // If it's a network error, try next URL
+      if (error.message.includes('Network request failed') || 
+          error.message.includes('Failed to fetch') ||
+          error.message.includes('timeout')) {
+        console.log('[API] Network error, trying next URL...');
+        continue;
+      }
+      
+      // For other errors, throw immediately
+      if (error.message.includes('HTTP 4') || error.message.includes('HTTP 5')) {
+        throw error;
+      }
     }
   }
   
+  // Log detailed error for debugging
+  console.log('[API] All endpoints failed. Last error:', lastError?.message);
   throw lastError || new Error('All API endpoints failed');
 };
 
@@ -314,6 +364,34 @@ function HomeScreen({ goTo, cartCount }) {
     { title: 'Visit Website', subtitle: 'Shop products online', iconName: 'globe', tab: 'Website', gradient: T.gradient3 },
   ];
 
+  // Network diagnostic function
+  const runNetworkDiagnostic = async () => {
+    Alert.alert('Network Diagnostic', 'Testing connection to server...', [{ text: 'OK' }]);
+    
+    const results = [];
+    
+    for (const url of API_URLS) {
+      try {
+        const startTime = Date.now();
+        const response = await fetch(`${url}/`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' },
+        });
+        const endTime = Date.now();
+        const data = await response.json();
+        results.push(`✅ ${url}\n   Status: ${response.status}\n   Time: ${endTime - startTime}ms\n   Response: ${JSON.stringify(data).slice(0, 50)}...`);
+      } catch (error) {
+        results.push(`❌ ${url}\n   Error: ${error.name}\n   Message: ${error.message}`);
+      }
+    }
+    
+    Alert.alert(
+      'Network Diagnostic Results',
+      results.join('\n\n'),
+      [{ text: 'OK' }]
+    );
+  };
+
   if (loading) {
     return (
       <View style={[styles.screen, styles.center]}>
@@ -394,6 +472,16 @@ function HomeScreen({ goTo, cartCount }) {
             </View>
           </TouchableOpacity>
         </View>
+
+        {/* Network Diagnostic Button (for debugging) */}
+        <TouchableOpacity 
+          style={{ padding: 16, alignItems: 'center' }} 
+          onPress={runNetworkDiagnostic}
+        >
+          <Text style={{ color: T.textMuted, fontSize: 12 }}>
+            Tap to test network connection
+          </Text>
+        </TouchableOpacity>
       </Animated.View>
     </ScrollView>
   );
