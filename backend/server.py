@@ -15,6 +15,9 @@ import httpx
 import bcrypt
 import jwt
 import secrets
+import resend
+import asyncio
+import base64
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -23,6 +26,77 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Resend email configuration
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
+
+# PDF storage directory
+PDF_STORAGE_DIR = ROOT_DIR / "protocols_pdf"
+PDF_STORAGE_DIR.mkdir(exist_ok=True)
+
+async def send_protocol_email(user_email: str, user_name: str, protocol: dict, pdf_path: Path = None):
+    """Send protocol purchase confirmation email with PDF attachment"""
+    if not RESEND_API_KEY:
+        logging.warning("Resend API key not configured - email not sent")
+        return None
+    
+    # Build email HTML
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #1e3a8a;">Zurix Sciences</h1>
+            <p style="color: #666;">Research Peptides</p>
+        </div>
+        
+        <h2 style="color: #333;">Thank you for your purchase, {user_name}!</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1e3a8a; margin-top: 0;">{protocol['title']}</h3>
+            <p style="color: #666;">{protocol['description']}</p>
+            <p><strong>Category:</strong> {protocol.get('category', 'Basic')}</p>
+            <p><strong>Duration:</strong> {protocol.get('duration_weeks', 4)} weeks</p>
+        </div>
+        
+        {"<p style='color: #333;'><strong>Your protocol PDF is attached to this email.</strong></p>" if pdf_path else "<p style='color: #f59e0b;'><strong>Note:</strong> The PDF for this protocol is being prepared and will be sent separately.</p>"}
+        
+        <p style="color: #666;">You can also download your protocol anytime from the Zurix Sciences app in the Protocols section.</p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <p style="color: #999; font-size: 12px; text-align: center;">
+            This email was sent by Zurix Sciences.<br>
+            For research use only. Not for human consumption.
+        </p>
+    </div>
+    """
+    
+    try:
+        params = {
+            "from": SENDER_EMAIL,
+            "to": [user_email],
+            "subject": f"Your Protocol: {protocol['title']} - Zurix Sciences",
+            "html": html_content
+        }
+        
+        # Add PDF attachment if available
+        if pdf_path and pdf_path.exists():
+            with open(pdf_path, "rb") as f:
+                pdf_content = base64.b64encode(f.read()).decode()
+            params["attachments"] = [{
+                "filename": f"{protocol['title']}.pdf",
+                "content": pdf_content
+            }]
+        
+        # Run sync SDK in thread to keep FastAPI non-blocking
+        email_result = await asyncio.to_thread(resend.Emails.send, params)
+        logging.info(f"Email sent to {user_email} for protocol {protocol['id']}")
+        return email_result
+    except Exception as e:
+        logging.error(f"Failed to send email to {user_email}: {str(e)}")
+        return None
 
 # Geolocation cache to avoid repeated API calls
 geo_cache = {}
@@ -61,10 +135,6 @@ ADMIN_PASSWORD = "Rx050217!"
 JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
-
-# PDF storage directory
-PDF_STORAGE_DIR = Path(__file__).parent / "pdfs"
-PDF_STORAGE_DIR.mkdir(exist_ok=True)
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -479,7 +549,7 @@ async def get_protocols_v2(user: dict = None):
 async def purchase_protocol(request: PurchaseProtocolRequest, user: dict = Depends(get_current_user)):
     """Record a protocol purchase after in-app payment verification"""
     # Verify protocol exists
-    protocol = await db.protocols_v2.find_one({"id": request.protocol_id})
+    protocol = await db.protocols_v2.find_one({"id": request.protocol_id}, {"_id": 0})
     if not protocol:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
@@ -507,11 +577,27 @@ async def purchase_protocol(request: PurchaseProtocolRequest, user: dict = Depen
         {"$addToSet": {"purchased_protocols": request.protocol_id}}
     )
     
-    # TODO: Send email with PDF when email service is configured
+    # Send email with PDF automatically
+    pdf_path = None
+    if protocol.get("pdf_filename"):
+        pdf_path = PDF_STORAGE_DIR / protocol["pdf_filename"]
+        if not pdf_path.exists():
+            pdf_path = None
+    
+    # Get user name for email
+    user_name = user.get("name", user.get("email", "Customer").split("@")[0])
+    
+    # Send email asynchronously (don't wait for it)
+    asyncio.create_task(send_protocol_email(
+        user_email=user["email"],
+        user_name=user_name,
+        protocol=protocol,
+        pdf_path=pdf_path
+    ))
     
     return {
         "success": True,
-        "message": "Protocol purchased successfully",
+        "message": "Protocol purchased successfully. Confirmation email sent!",
         "protocol_id": request.protocol_id
     }
 
@@ -1121,6 +1207,39 @@ async def get_batch_stats(batch_number: str):
         "total_verifications": count,
         "recent_verifications": logs
     }
+
+# Test email endpoint (admin only)
+class TestEmailRequest(BaseModel):
+    email: EmailStr
+
+@api_router.post("/admin/test-email")
+async def send_test_email(request: TestEmailRequest, password: str = Header(..., alias="X-Admin-Password")):
+    """Send a test email to verify Resend configuration"""
+    if password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Invalid admin password")
+    
+    if not RESEND_API_KEY:
+        raise HTTPException(status_code=500, detail="Resend API key not configured")
+    
+    test_protocol = {
+        "id": "test",
+        "title": "Test Protocol",
+        "description": "This is a test email to verify the email system is working correctly.",
+        "category": "Test",
+        "duration_weeks": 1
+    }
+    
+    result = await send_protocol_email(
+        user_email=request.email,
+        user_name="Test User",
+        protocol=test_protocol,
+        pdf_path=None
+    )
+    
+    if result:
+        return {"success": True, "message": f"Test email sent to {request.email}", "email_id": result.get("id")}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to send email")
 
 # Include the router in the main app
 app.include_router(api_router)
