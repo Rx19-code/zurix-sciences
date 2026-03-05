@@ -491,15 +491,14 @@ async def reset_password(request: PasswordResetConfirm):
 
 # ==================== PROTOCOLS WITH BATCH VALIDATION ====================
 
-# Protocol to batch mapping - which product batches unlock which protocols
-PROTOCOL_BATCH_MAPPING = {
+# Protocol definitions - keywords to match batch/product names
+PROTOCOL_DEFINITIONS = {
     "proto-bpc157": {
         "title": "BPC-157 Recovery Protocol",
         "description": "A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation.",
         "category": "Basic",
         "duration_weeks": 4,
-        "product_keywords": ["BPC-157", "BPC157"],  # Keywords to match product names
-        "valid_batches": ["ZX-BPC--001"],  # Valid batch numbers
+        "product_keywords": ["BPC-157", "BPC157", "BPC"],
         "languages": {
             "en": "bpc157_protocol_en.pdf",
             "es": "bpc157_protocol_es.pdf",
@@ -511,8 +510,7 @@ PROTOCOL_BATCH_MAPPING = {
         "description": "Advanced protocol for deep tissue healing and muscle recovery.",
         "category": "Basic",
         "duration_weeks": 6,
-        "product_keywords": ["TB-500", "TB500", "thymosin beta"],
-        "valid_batches": ["ZX-TB-5-001"],
+        "product_keywords": ["TB-500", "TB500", "TB-5", "thymosin beta"],
         "languages": {
             "en": "tb500_protocol_en.pdf",
             "es": "tb500_protocol_es.pdf",
@@ -524,8 +522,7 @@ PROTOCOL_BATCH_MAPPING = {
         "description": "Protocol for skin repair and anti-aging using copper peptides.",
         "category": "Basic",
         "duration_weeks": 8,
-        "product_keywords": ["GHK-Cu", "GHK-CU", "GHKCU"],
-        "valid_batches": ["ZX-GHK--001"],
+        "product_keywords": ["GHK-Cu", "GHK-CU", "GHKCU", "GHK50", "GHK100", "GHK"],
         "languages": {
             "en": "ghkcu_protocol_en.pdf",
             "es": "ghkcu_protocol_es.pdf",
@@ -543,11 +540,63 @@ class DownloadProtocolRequest(BaseModel):
     batch_number: str
     language: str  # "en", "es", "pt"
 
+async def check_batch_matches_protocol(batch_number: str, protocol_id: str) -> dict:
+    """Check if a batch number matches a protocol by searching unique_codes collection"""
+    protocol = PROTOCOL_DEFINITIONS.get(protocol_id)
+    if not protocol:
+        return {"valid": False, "message": "Protocol not found"}
+    
+    batch_upper = batch_number.upper().strip()
+    keywords = protocol["product_keywords"]
+    
+    # Check 1: Search in unique_codes collection (Imported Batches from admin)
+    # The batch_number format is like ZX-260312-GHK50-1
+    unique_code = await db.unique_codes.find_one({
+        "batch_number": batch_upper
+    }, {"_id": 0})
+    
+    if unique_code:
+        # Found the batch - check if it matches the protocol keywords
+        code_batch = unique_code.get("batch_number", "").upper()
+        code_product = unique_code.get("product_name", "").upper()
+        
+        for keyword in keywords:
+            keyword_upper = keyword.upper()
+            if keyword_upper in code_batch or keyword_upper in code_product:
+                return {
+                    "valid": True,
+                    "message": f"Batch validated for {unique_code.get('product_name', 'product')}!",
+                    "product_name": unique_code.get("product_name")
+                }
+        
+        # Batch exists but doesn't match this protocol
+        return {
+            "valid": False,
+            "message": f"This batch is for {unique_code.get('product_name', 'another product')}, not for this protocol."
+        }
+    
+    # Check 2: Check if the batch_number itself contains protocol keywords
+    # e.g., ZX-260209-TB500-1 contains "TB500"
+    for keyword in keywords:
+        if keyword.upper() in batch_upper:
+            # Check if any batch with this number exists
+            exists = await db.unique_codes.find_one({
+                "batch_number": {"$regex": f"^{batch_upper}", "$options": "i"}
+            }, {"_id": 0})
+            if exists:
+                return {
+                    "valid": True,
+                    "message": f"Batch validated for {exists.get('product_name', 'product')}!",
+                    "product_name": exists.get("product_name")
+                }
+    
+    return {"valid": False, "message": "Batch number not found."}
+
 @api_router.get("/protocols-v2")
 async def get_protocols_v2():
     """Get all available protocols"""
     protocols = []
-    for proto_id, proto_data in PROTOCOL_BATCH_MAPPING.items():
+    for proto_id, proto_data in PROTOCOL_DEFINITIONS.items():
         protocols.append({
             "id": proto_id,
             "title": proto_data["title"],
@@ -564,19 +613,18 @@ async def get_protocols_v2():
 @api_router.post("/protocols-v2/validate-batch")
 async def validate_batch_for_protocol(request: ValidateBatchRequest):
     """Validate if a batch number unlocks a specific protocol"""
-    protocol = PROTOCOL_BATCH_MAPPING.get(request.protocol_id)
+    protocol = PROTOCOL_DEFINITIONS.get(request.protocol_id)
     if not protocol:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
-    # Check if batch is in the valid batches list
-    batch_upper = request.batch_number.upper().strip()
+    # Use the dynamic batch checking function
+    result = await check_batch_matches_protocol(request.batch_number, request.protocol_id)
     
-    # First check direct match with valid batches
-    if batch_upper in protocol["valid_batches"]:
+    if result["valid"]:
         return {
             "success": True,
             "valid": True,
-            "message": "Batch validated! You can download the protocol.",
+            "message": result["message"],
             "available_languages": [
                 {"code": "en", "name": "English"},
                 {"code": "es", "name": "Español"},
@@ -584,31 +632,10 @@ async def validate_batch_for_protocol(request: ValidateBatchRequest):
             ]
         }
     
-    # Also check if the batch exists in the database for matching products
-    product = await db.products.find_one({
-        "batch_number": batch_upper
-    }, {"_id": 0})
-    
-    if product:
-        # Check if product name matches any of the protocol keywords
-        product_name = product.get("name", "").upper()
-        for keyword in protocol["product_keywords"]:
-            if keyword.upper() in product_name:
-                return {
-                    "success": True,
-                    "valid": True,
-                    "message": f"Batch validated for {product.get('name')}! You can download the protocol.",
-                    "available_languages": [
-                        {"code": "en", "name": "English"},
-                        {"code": "es", "name": "Español"},
-                        {"code": "pt", "name": "Português"}
-                    ]
-                }
-    
     return {
         "success": True,
         "valid": False,
-        "message": "Invalid batch number for this protocol. Please enter a valid batch number from the corresponding product."
+        "message": result["message"] + " Please enter a valid batch number from your product label."
     }
 
 @api_router.get("/protocols-v2/download")
@@ -618,7 +645,7 @@ async def download_protocol_with_batch(
     language: str
 ):
     """Download protocol PDF after batch validation"""
-    protocol = PROTOCOL_BATCH_MAPPING.get(protocol_id)
+    protocol = PROTOCOL_DEFINITIONS.get(protocol_id)
     if not protocol:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
@@ -626,23 +653,10 @@ async def download_protocol_with_batch(
     if language not in protocol["languages"]:
         raise HTTPException(status_code=400, detail="Invalid language selected")
     
-    # Validate batch again for security
-    batch_upper = batch_number.upper().strip()
-    batch_valid = False
+    # Validate batch using the dynamic function
+    result = await check_batch_matches_protocol(batch_number, protocol_id)
     
-    if batch_upper in protocol["valid_batches"]:
-        batch_valid = True
-    else:
-        # Check database
-        product = await db.products.find_one({"batch_number": batch_upper}, {"_id": 0})
-        if product:
-            product_name = product.get("name", "").upper()
-            for keyword in protocol["product_keywords"]:
-                if keyword.upper() in product_name:
-                    batch_valid = True
-                    break
-    
-    if not batch_valid:
+    if not result["valid"]:
         raise HTTPException(status_code=403, detail="Invalid batch number")
     
     # Get PDF filename for the selected language
