@@ -18,20 +18,77 @@ const API_URLS = [
   'https://zurixsciences.com/api',
 ];
 
+// Auth token storage key
+const AUTH_TOKEN_KEY = 'auth_token';
+const USER_DATA_KEY = 'user_data';
+
+// Get stored auth token
+const getAuthToken = async () => {
+  try {
+    return await AsyncStorage.getItem(AUTH_TOKEN_KEY);
+  } catch {
+    return null;
+  }
+};
+
+// Store auth token
+const setAuthToken = async (token) => {
+  try {
+    if (token) {
+      await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
+    } else {
+      await AsyncStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+  } catch (error) {
+    console.error('Error storing token:', error);
+  }
+};
+
+// Get stored user data
+const getUserData = async () => {
+  try {
+    const data = await AsyncStorage.getItem(USER_DATA_KEY);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
+};
+
+// Store user data
+const setUserData = async (user) => {
+  try {
+    if (user) {
+      await AsyncStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
+    } else {
+      await AsyncStorage.removeItem(USER_DATA_KEY);
+    }
+  } catch (error) {
+    console.error('Error storing user:', error);
+  }
+};
+
 // API helper with fallback URLs
-const fetchWithFallback = async (endpoint, options = {}) => {
+const fetchWithFallback = async (endpoint, options = {}, requireAuth = false) => {
   let lastError = null;
+  const token = await getAuthToken();
   
   for (const baseUrl of API_URLS) {
     try {
       console.log(`Trying: ${baseUrl}${endpoint}`);
+      
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        ...options.headers,
+      };
+      
+      if (requireAuth && token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch(`${baseUrl}${endpoint}`, {
         ...options,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
+        headers,
       });
       
       if (!response.ok) {
@@ -51,15 +108,15 @@ const fetchWithFallback = async (endpoint, options = {}) => {
 };
 
 const api = {
-  get: async (endpoint) => {
-    const data = await fetchWithFallback(endpoint, { method: 'GET' });
+  get: async (endpoint, requireAuth = false) => {
+    const data = await fetchWithFallback(endpoint, { method: 'GET' }, requireAuth);
     return { data };
   },
-  post: async (endpoint, body) => {
+  post: async (endpoint, body, requireAuth = false) => {
     const data = await fetchWithFallback(endpoint, {
       method: 'POST',
       body: JSON.stringify(body),
-    });
+    }, requireAuth);
     return { data };
   },
 };
@@ -855,7 +912,7 @@ function VerifyScreen() {
 }
 
 // ========== PROTOCOLS SCREEN (with Paywall) ==========
-function ProtocolsScreen() {
+function ProtocolsScreen({ user, onLoginRequired }) {
   const [protocols, setProtocols] = useState([]);
   const [filter, setFilter] = useState('All');
   const [loading, setLoading] = useState(true);
@@ -864,21 +921,40 @@ function ProtocolsScreen() {
   const [selectedCrypto, setSelectedCrypto] = useState('USDT');
 
   useEffect(() => {
-    api.get('/protocols').then(r => {
-      setProtocols(r.data?.length > 0 ? r.data : MOCK_PROTOCOLS);
+    // Fetch protocols from API v2
+    api.get('/protocols-v2').then(r => {
+      setProtocols(r.data?.protocols?.length > 0 ? r.data.protocols : MOCK_PROTOCOLS);
       setLoading(false);
     }).catch(() => { setProtocols(MOCK_PROTOCOLS); setLoading(false); });
     
-    AsyncStorage.getItem('purchased_protocols').then(data => {
-      if (data) setPurchased(JSON.parse(data));
-    });
-  }, []);
+    // Load purchased protocols from user data or local storage
+    if (user && user.purchased_protocols) {
+      setPurchased(user.purchased_protocols);
+    } else {
+      AsyncStorage.getItem('purchased_protocols').then(data => {
+        if (data) setPurchased(JSON.parse(data));
+      });
+    }
+  }, [user]);
 
   const filtered = filter === 'All' ? protocols : protocols.filter(p => p.category === filter);
 
   const isPurchased = (id) => purchased.includes(id);
 
   const handlePurchase = (protocol) => {
+    // For now, use the old flow - In-App Purchases will be added by the freelancer
+    // when implementing Google Play / Apple Store integration
+    if (!user) {
+      Alert.alert(
+        'Login Required',
+        'Please sign in to purchase protocols',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Sign In', onPress: onLoginRequired }
+        ]
+      );
+      return;
+    }
     setShowPayment(protocol);
   };
 
@@ -1059,15 +1135,67 @@ function ProtocolsScreen() {
 }
 
 // ========== PROFILE SCREEN ==========
-function ProfileScreen() {
+function ProfileScreen({ user, onLogin, onLogout }) {
   const [orderHistory, setOrderHistory] = useState([]);
   const [verifyHistory, setVerifyHistory] = useState([]);
   const [activeTab, setActiveTab] = useState('orders');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem('order_history').then(d => setOrderHistory(d ? JSON.parse(d) : []));
     AsyncStorage.getItem('vh').then(d => setVerifyHistory(d ? JSON.parse(d) : []));
   }, []);
+
+  const handleAuth = async () => {
+    if (authMode === 'login') {
+      if (!authEmail || !authPassword) {
+        Alert.alert('Error', 'Please fill in all fields');
+        return;
+      }
+    } else {
+      if (!authEmail || !authPassword || !authName) {
+        Alert.alert('Error', 'Please fill in all fields');
+        return;
+      }
+    }
+
+    setAuthLoading(true);
+    try {
+      const endpoint = authMode === 'login' ? '/auth/login' : '/auth/register';
+      const body = authMode === 'login' 
+        ? { email: authEmail, password: authPassword }
+        : { email: authEmail, password: authPassword, name: authName };
+      
+      const response = await api.post(endpoint, body);
+      
+      if (response.data.success) {
+        onLogin(response.data.token, response.data.user);
+        setShowAuthModal(false);
+        setAuthEmail('');
+        setAuthPassword('');
+        setAuthName('');
+        Alert.alert('Success', authMode === 'login' ? 'Welcome back!' : 'Account created successfully!');
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message || 'Authentication failed');
+    }
+    setAuthLoading(false);
+  };
+
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Logout', style: 'destructive', onPress: () => {
+        onLogout();
+        Alert.alert('Success', 'You have been logged out');
+      }}
+    ]);
+  };
 
   const clearAllData = () => {
     Alert.alert('Clear All Data', 'This will remove all local data including orders and verifications.', [
@@ -1081,7 +1209,14 @@ function ProfileScreen() {
     ]);
   };
 
-  const menuItems = [
+  const menuItems = user ? [
+    { title: 'My Purchases', subtitle: 'View purchased protocols', icon: 'document-text-outline', color: T.primary, action: () => Alert.alert('Coming Soon', 'Purchase history will be available soon') },
+    { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
+    { title: 'Contact Support', subtitle: 'WhatsApp Paraguay', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_PARAGUAY, 'Hello Zurix Sciences Support') },
+    { title: 'Logout', subtitle: 'Sign out of your account', icon: 'log-out-outline', color: T.warning, action: handleLogout },
+    { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
+  ] : [
+    { title: 'Sign In / Register', subtitle: 'Access your account', icon: 'person-add-outline', color: T.primary, action: () => setShowAuthModal(true) },
     { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
     { title: 'Contact Support', subtitle: 'WhatsApp Paraguay', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_PARAGUAY, 'Hello Zurix Sciences Support') },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
@@ -1094,106 +1229,180 @@ function ProfileScreen() {
   };
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.screenPadding}>
-      {/* Profile Header */}
-      <View style={styles.profileHeader}>
-        <LinearGradient colors={T.gradient1} style={styles.profileAvatar}>
-          <Text style={styles.profileAvatarText}>Z</Text>
-        </LinearGradient>
-        <Text style={styles.profileName}>Zurix Sciences</Text>
-        <Text style={styles.profileTagline}>Premium Peptide Research</Text>
-        <View style={styles.profileVersionBadge}>
-          <Text style={styles.profileVersion}>v1.0.0</Text>
-        </View>
-      </View>
-
-      {/* History Tabs */}
-      <View style={styles.historyTabs}>
-        <TouchableOpacity style={[styles.historyTab, activeTab === 'orders' && styles.historyTabActive]} onPress={() => setActiveTab('orders')}>
-          <Ionicons name="receipt-outline" size={18} color={activeTab === 'orders' ? T.primary : T.textMuted} />
-          <Text style={[styles.historyTabText, activeTab === 'orders' && styles.historyTabTextActive]}>Orders</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.historyTab, activeTab === 'verify' && styles.historyTabActive]} onPress={() => setActiveTab('verify')}>
-          <Ionicons name="shield-checkmark-outline" size={18} color={activeTab === 'verify' ? T.primary : T.textMuted} />
-          <Text style={[styles.historyTabText, activeTab === 'verify' && styles.historyTabTextActive]}>Verifications</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* History Content */}
-      {activeTab === 'verify' && (
-        <>
-          <View style={styles.statsContainer}>
-            {[
-              { label: 'Total', value: verifyStats.total, color: T.primary, icon: 'scan' },
-              { label: 'Verified', value: verifyStats.verified, color: T.success, icon: 'checkmark-circle' },
-              { label: 'Failed', value: verifyStats.failed, color: T.danger, icon: 'close-circle' },
-            ].map((stat, i) => (
-              <View key={i} style={styles.statCard}>
-                <View style={[styles.statIconContainer, { backgroundColor: stat.color + '20' }]}>
-                  <Ionicons name={stat.icon} size={18} color={stat.color} />
-                </View>
-                <Text style={[styles.statValue, { color: stat.color }]}>{stat.value}</Text>
-                <Text style={styles.statLabel}>{stat.label}</Text>
-              </View>
-            ))}
+    <>
+      <ScrollView style={styles.screen} contentContainerStyle={styles.screenPadding}>
+        {/* Profile Header */}
+        <View style={styles.profileHeader}>
+          <LinearGradient colors={T.gradient1} style={styles.profileAvatar}>
+            <Text style={styles.profileAvatarText}>{user ? user.name.charAt(0).toUpperCase() : 'Z'}</Text>
+          </LinearGradient>
+          <Text style={styles.profileName}>{user ? user.name : 'Guest User'}</Text>
+          <Text style={styles.profileTagline}>{user ? user.email : 'Sign in to access all features'}</Text>
+          <View style={styles.profileVersionBadge}>
+            <Text style={styles.profileVersion}>v1.0.0</Text>
           </View>
-
-          {verifyHistory.length === 0 ? (
-            <View style={styles.emptyState}>
-              <Ionicons name="time-outline" size={48} color={T.textMuted} />
-              <Text style={styles.emptyTitle}>No Verifications Yet</Text>
-            </View>
-          ) : (
-            verifyHistory.slice(0, 10).map((item, i) => (
-              <View key={i} style={styles.historyCard}>
-                <View style={[styles.historyStatusIndicator, { backgroundColor: item.success ? T.success : T.danger }]} />
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.historyProductName}>{item.product?.name || 'Unknown'}</Text>
-                  <Text style={styles.historyCode}>{item.code}</Text>
-                  <Text style={styles.historyTime}>{new Date(item.timestamp).toLocaleString()}</Text>
-                </View>
-                <View style={[styles.historyStatusBadge, { backgroundColor: item.success ? T.successDim : T.dangerDim }]}>
-                  <Text style={[styles.historyStatusText, { color: item.success ? T.success : T.danger }]}>{item.success ? 'OK' : 'FAIL'}</Text>
-                </View>
-              </View>
-            ))
-          )}
-        </>
-      )}
-
-      {activeTab === 'orders' && (
-        <View style={styles.emptyState}>
-          <Ionicons name="receipt-outline" size={48} color={T.textMuted} />
-          <Text style={styles.emptyTitle}>No Orders Yet</Text>
-          <Text style={styles.emptyText}>Your order history will appear here</Text>
         </View>
-      )}
 
-      {/* Menu Items */}
-      <View style={styles.menuSection}>
-        <Text style={styles.menuSectionTitle}>Settings & Support</Text>
-        {menuItems.map((item, i) => (
-          <TouchableOpacity key={i} style={styles.menuItem} onPress={item.action}>
-            <View style={[styles.menuIconContainer, { backgroundColor: item.color + '20' }]}>
-              <Ionicons name={item.icon} size={20} color={item.color} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.menuItemTitle}>{item.title}</Text>
-              <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={T.textMuted} />
+        {/* History Tabs */}
+        <View style={styles.historyTabs}>
+          <TouchableOpacity style={[styles.historyTab, activeTab === 'orders' && styles.historyTabActive]} onPress={() => setActiveTab('orders')}>
+            <Ionicons name="receipt-outline" size={18} color={activeTab === 'orders' ? T.primary : T.textMuted} />
+            <Text style={[styles.historyTabText, activeTab === 'orders' && styles.historyTabTextActive]}>Orders</Text>
           </TouchableOpacity>
-        ))}
-      </View>
+          <TouchableOpacity style={[styles.historyTab, activeTab === 'verify' && styles.historyTabActive]} onPress={() => setActiveTab('verify')}>
+            <Ionicons name="shield-checkmark-outline" size={18} color={activeTab === 'verify' ? T.primary : T.textMuted} />
+            <Text style={[styles.historyTabText, activeTab === 'verify' && styles.historyTabTextActive]}>Verifications</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* Disclaimer */}
-      <View style={styles.disclaimerCard}>
-        <LinearGradient colors={['#f59e0b15', '#f59e0b08']} style={styles.disclaimerGradient}>
-          <Ionicons name="warning" size={20} color={T.warning} />
-          <Text style={styles.disclaimerText}>FOR RESEARCH USE ONLY - All products are intended for laboratory research only.</Text>
-        </LinearGradient>
-      </View>
-    </ScrollView>
+        {/* History Content */}
+        {activeTab === 'verify' && (
+          <>
+            <View style={styles.statsContainer}>
+              {[
+                { label: 'Total', value: verifyStats.total, color: T.primary, icon: 'scan' },
+                { label: 'Verified', value: verifyStats.verified, color: T.success, icon: 'checkmark-circle' },
+                { label: 'Failed', value: verifyStats.failed, color: T.danger, icon: 'close-circle' },
+              ].map((stat, i) => (
+                <View key={i} style={styles.statCard}>
+                  <View style={[styles.statIconContainer, { backgroundColor: stat.color + '20' }]}>
+                    <Ionicons name={stat.icon} size={18} color={stat.color} />
+                  </View>
+                  <Text style={[styles.statValue, { color: stat.color }]}>{stat.value}</Text>
+                  <Text style={styles.statLabel}>{stat.label}</Text>
+                </View>
+              ))}
+            </View>
+
+            {verifyHistory.length === 0 ? (
+              <View style={styles.emptyState}>
+                <Ionicons name="time-outline" size={48} color={T.textMuted} />
+                <Text style={styles.emptyTitle}>No Verifications Yet</Text>
+              </View>
+            ) : (
+              verifyHistory.slice(0, 10).map((item, i) => (
+                <View key={i} style={styles.historyCard}>
+                  <View style={[styles.historyStatusIndicator, { backgroundColor: item.success ? T.success : T.danger }]} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.historyProductName}>{item.product?.name || 'Unknown'}</Text>
+                    <Text style={styles.historyCode}>{item.code}</Text>
+                    <Text style={styles.historyTime}>{new Date(item.timestamp).toLocaleString()}</Text>
+                  </View>
+                  <View style={[styles.historyStatusBadge, { backgroundColor: item.success ? T.successDim : T.dangerDim }]}>
+                    <Text style={[styles.historyStatusText, { color: item.success ? T.success : T.danger }]}>{item.success ? 'OK' : 'FAIL'}</Text>
+                  </View>
+                </View>
+              ))
+            )}
+          </>
+        )}
+
+        {activeTab === 'orders' && (
+          <View style={styles.emptyState}>
+            <Ionicons name="receipt-outline" size={48} color={T.textMuted} />
+            <Text style={styles.emptyTitle}>No Orders Yet</Text>
+            <Text style={styles.emptyText}>Your order history will appear here</Text>
+          </View>
+        )}
+
+        {/* Menu Items */}
+        <View style={styles.menuSection}>
+          <Text style={styles.menuSectionTitle}>Settings & Support</Text>
+          {menuItems.map((item, i) => (
+            <TouchableOpacity key={i} style={styles.menuItem} onPress={item.action}>
+              <View style={[styles.menuIconContainer, { backgroundColor: item.color + '20' }]}>
+                <Ionicons name={item.icon} size={20} color={item.color} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.menuItemTitle}>{item.title}</Text>
+                <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={T.textMuted} />
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Disclaimer */}
+        <View style={styles.disclaimerCard}>
+          <LinearGradient colors={['#f59e0b15', '#f59e0b08']} style={styles.disclaimerGradient}>
+            <Ionicons name="warning" size={20} color={T.warning} />
+            <Text style={styles.disclaimerText}>FOR RESEARCH USE ONLY - All products are intended for laboratory research only.</Text>
+          </LinearGradient>
+        </View>
+      </ScrollView>
+
+      {/* Auth Modal */}
+      <Modal visible={showAuthModal} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.authModal}>
+            <View style={styles.authModalHeader}>
+              <Text style={styles.authModalTitle}>{authMode === 'login' ? 'Sign In' : 'Create Account'}</Text>
+              <TouchableOpacity onPress={() => setShowAuthModal(false)}>
+                <Ionicons name="close" size={24} color={T.textMuted} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.authModalContent}>
+              {authMode === 'register' && (
+                <View style={styles.authInputContainer}>
+                  <Text style={styles.authInputLabel}>NAME</Text>
+                  <TextInput
+                    style={styles.authInput}
+                    placeholder="Your name"
+                    placeholderTextColor={T.textMuted}
+                    value={authName}
+                    onChangeText={setAuthName}
+                    autoCapitalize="words"
+                  />
+                </View>
+              )}
+
+              <View style={styles.authInputContainer}>
+                <Text style={styles.authInputLabel}>EMAIL</Text>
+                <TextInput
+                  style={styles.authInput}
+                  placeholder="your@email.com"
+                  placeholderTextColor={T.textMuted}
+                  value={authEmail}
+                  onChangeText={setAuthEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <View style={styles.authInputContainer}>
+                <Text style={styles.authInputLabel}>PASSWORD</Text>
+                <TextInput
+                  style={styles.authInput}
+                  placeholder="Your password"
+                  placeholderTextColor={T.textMuted}
+                  value={authPassword}
+                  onChangeText={setAuthPassword}
+                  secureTextEntry
+                />
+              </View>
+
+              <TouchableOpacity style={styles.authSubmitBtn} onPress={handleAuth} disabled={authLoading}>
+                <LinearGradient colors={T.gradient1} style={styles.authSubmitBtnGradient}>
+                  {authLoading ? (
+                    <ActivityIndicator color={T.white} />
+                  ) : (
+                    <Text style={styles.authSubmitBtnText}>{authMode === 'login' ? 'Sign In' : 'Create Account'}</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.authSwitchMode} onPress={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}>
+                <Text style={styles.authSwitchModeText}>
+                  {authMode === 'login' ? "Don't have an account? " : "Already have an account? "}
+                  <Text style={styles.authSwitchModeLink}>{authMode === 'login' ? 'Sign Up' : 'Sign In'}</Text>
+                </Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
 
@@ -1202,6 +1411,47 @@ function MainApp() {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('Home');
   const [cart, setCart] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Check for existing auth on startup
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const token = await getAuthToken();
+      const userData = await getUserData();
+      if (token && userData) {
+        setIsAuthenticated(true);
+        setUser(userData);
+      }
+    } catch (error) {
+      console.log('Auth check error:', error);
+    }
+    setCheckingAuth(false);
+  };
+
+  const handleLogin = async (token, userData) => {
+    await setAuthToken(token);
+    await setUserData(userData);
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = async () => {
+    await setAuthToken(null);
+    await setUserData(null);
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  const handleSkipAuth = () => {
+    setIsAuthenticated(true);
+    setUser(null); // Guest user
+  };
 
   const tabs = [
     { key: 'Home', label: 'Home', icon: 'home' },
@@ -1212,12 +1462,24 @@ function MainApp() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
+  // Show loading while checking auth
+  if (checkingAuth) {
+    return (
+      <View style={[styles.container, styles.center, { backgroundColor: T.bg }]}>
+        <ActivityIndicator size="large" color={T.primary} />
+      </View>
+    );
+  }
+
+  // Show auth screen if not authenticated (removed for now - will be handled by Profile)
+  // Users can use the app without login, but need to login for purchases
+
   const renderScreen = () => {
     switch (activeTab) {
       case 'Home': return <HomeScreen goTo={setActiveTab} cartCount={cartCount} />;
       case 'Verify': return <VerifyScreen />;
-      case 'Protocols': return <ProtocolsScreen />;
-      case 'Profile': return <ProfileScreen />;
+      case 'Protocols': return <ProtocolsScreen user={user} onLoginRequired={() => setActiveTab('Profile')} />;
+      case 'Profile': return <ProfileScreen user={user} onLogin={handleLogin} onLogout={handleLogout} />;
       default: return <HomeScreen goTo={setActiveTab} />;
     }
   };
@@ -1543,4 +1805,22 @@ const styles = StyleSheet.create({
   visitWebsiteBtnText: { fontSize: 14, fontWeight: '600', color: T.white },
   retryBtn: { marginTop: 16, paddingHorizontal: 32, paddingVertical: 12, backgroundColor: T.success, borderRadius: 12 },
   retryBtnText: { fontSize: 14, fontWeight: '600', color: T.white },
+
+  // Auth Modal
+  authModal: { backgroundColor: T.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, maxHeight: height * 0.75 },
+  authModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  authModalTitle: { fontSize: 22, fontWeight: '700', color: T.text },
+  authModalContent: { paddingBottom: 20 },
+  authInputContainer: { marginBottom: 20 },
+  authInputLabel: { fontSize: 12, fontWeight: '700', color: T.textMuted, letterSpacing: 1, marginBottom: 10 },
+  authInput: { backgroundColor: T.cardElevated, borderRadius: 14, borderWidth: 1, borderColor: T.cardBorder, paddingHorizontal: 16, paddingVertical: 16, fontSize: 16, color: T.text },
+  authSubmitBtn: { borderRadius: 14, overflow: 'hidden', marginTop: 10 },
+  authSubmitBtnGradient: { alignItems: 'center', justifyContent: 'center', paddingVertical: 16 },
+  authSubmitBtnText: { fontSize: 16, fontWeight: '700', color: T.white },
+  authSwitchMode: { alignItems: 'center', marginTop: 20 },
+  authSwitchModeText: { fontSize: 14, color: T.textMuted },
+  authSwitchModeLink: { color: T.primary, fontWeight: '600' },
+  
+  // Center style
+  center: { alignItems: 'center', justifyContent: 'center' },
 });
