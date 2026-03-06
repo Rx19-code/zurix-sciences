@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Shield, CheckCircle, XCircle, AlertTriangle, Camera, Keyboard, X } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 
@@ -9,19 +9,9 @@ const Verify = () => {
   const [code, setCode] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const scannerRef = useRef(null);
-
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(mobile);
-    };
-    checkMobile();
-  }, []);
 
   // Start QR Scanner
   const startScanner = async () => {
@@ -202,37 +192,30 @@ const Verify = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Verify Product</h2>
             
-            {/* Mobile: Show scan/manual toggle */}
-            {isMobile && (
-              <div className="mb-6">
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={startScanner}
-                    className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl transition-colors"
-                  >
-                    <Camera className="w-8 h-8 text-blue-600 mb-2" />
-                    <span className="text-sm font-semibold text-blue-900">Scan QR Code</span>
-                  </button>
-                  <button
-                    onClick={() => document.getElementById('code-input')?.focus()}
-                    className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl transition-colors"
-                  >
-                    <Keyboard className="w-8 h-8 text-gray-600 mb-2" />
-                    <span className="text-sm font-semibold text-gray-900">Enter Code</span>
-                  </button>
-                </div>
-                {cameraError && (
-                  <p className="mt-3 text-sm text-red-600">{cameraError}</p>
-                )}
+            {/* Show scan/manual options - Both visible for all users */}
+            <div className="mb-6">
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={startScanner}
+                  data-testid="scan-qr-button"
+                  className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl transition-colors"
+                >
+                  <Camera className="w-8 h-8 text-blue-600 mb-2" />
+                  <span className="text-sm font-semibold text-blue-900">Scan QR Code</span>
+                </button>
+                <button
+                  onClick={() => document.getElementById('code-input')?.focus()}
+                  data-testid="enter-code-button"
+                  className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl transition-colors"
+                >
+                  <Keyboard className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-semibold text-gray-900">Enter Code</span>
+                </button>
               </div>
-            )}
-
-            {/* Desktop: Show info about QR */}
-            {!isMobile && (
-              <p className="text-gray-600 mb-6">
-                Enter the unique code from your product label or scan the QR code with your phone
-              </p>
-            )}
+              {cameraError && (
+                <p className="mt-3 text-sm text-red-600" data-testid="camera-error">{cameraError}</p>
+              )}
+            </div>
 
             <form id="verify-form" onSubmit={handleVerify} className="space-y-6">
               <div>

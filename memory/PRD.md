@@ -1,79 +1,94 @@
 # Zurix Sciences - Product Requirements Document
 
 ## Original Problem Statement
-Build a professional e-commerce website for selling peptide research products and a companion mobile application for Zurix Sciences.
+Build a professional e-commerce website (Zurix Sciences) for selling peptide research products. The project pivoted from native mobile app to a Progressive Web App (PWA) approach.
 
-## Core Features
+## Core Requirements
 
-### Website
-- Product catalog with shopping cart and checkout
-- QR code product verification system (tracks scans, blocks after 3 scans)
-- Private admin panel (`/admin`) for managing products and verification codes
-- Representatives page with international contacts
+### Website & PWA Features
+- Product catalog, shopping cart, and checkout process
+- Product verification system with QR code scanning (mobile) and manual entry (desktop)
+- Free research protocols gated by batch number validation
+- Multi-language protocol downloads (EN, ES, PT)
+- Automated email system for purchase confirmations
+- Admin panel for managing products, verification codes, and logs
 
-### Mobile App (React Native/Expo)
-- Multi-tab layout: Home, Verify, Protocols, Profile
-- User authentication system (email/password)
-- QR code scanning for product verification
-- Research protocols as downloadable PDFs (In-App Purchase)
-- Order and verification history
+### Mobile App (ON HOLD)
+- React Native app in `mobile/` directory preserved for future development
 
-## Tech Stack
-- **Backend:** FastAPI, MongoDB (Motor), JWT authentication
-- **Frontend (Web):** React, TailwindCSS
-- **Frontend (Mobile):** React Native, Expo
-- **Deployment:** Cloudflare (DNS/Proxy), PM2, manual git pull
-- **Domain:** zurixsciences.com (via Njalla)
+## User Personas
+- **Researchers**: Need to verify product authenticity and access research protocols
+- **Administrators**: Manage products, codes, and view system logs
 
-## Current Status
+## Technical Architecture
 
-### ✅ Completed
-- Full website with product catalog, cart, checkout
-- Admin panel with code management (import/delete)
-- QR verification system with scan tracking
-- User authentication backend (register/login/JWT)
-- Mobile app with auth modals and profile screen
-- Protocol system (PDF-based) structure
-- 12 product images updated
-- Representatives page with Threema support
+### Stack
+- **Backend**: FastAPI, MongoDB (Motor), Resend (emails)
+- **Frontend**: React, TailwindCSS, PWA, html5-qrcode
+- **Mobile (ON HOLD)**: React Native, Expo
 
-### 🚧 In Progress / Blocked
-- **P0 - Mobile Network Bug:** "Network request failed" prevents API access
-- **Blocked:** Email service (Resend) - awaiting API key
-- **Blocked:** Protocol PDFs - awaiting content
-- **Blocked:** 20 remaining product images - awaiting designer
+### Key Endpoints
+- `/api/verify-product` - Product verification
+- `/api/protocols-v2/validate-batch` - Batch validation for protocols
+- `/api/protocols-v2/download` - Protocol PDF download
+- `/api/admin/codes` - Server-side search for codes
+- `/api/admin/test-email` - Test email via Resend
 
-### 📋 Backlog (Freelancer)
-- Implement In-App Purchases (Google/Apple)
-- Publish to app stores
-- Improve app icon design
+### Database Schema
+- `users`: `{email, hashed_password}`
+- `unique_codes`: `{code, product_name, batch_number, ...}`
+- `protocols_v2`: Protocol definitions with language-specific PDFs
 
-## Key Files
-- `mobile/App.js` - Monolithic file (1500+ lines), needs refactoring
-- `backend/server.py` - All API routes including auth
-- `frontend/src/pages/Admin.js` - Admin panel
-- `mobile/app.json` - App configuration and permissions
+## What's Been Implemented
 
-## API Endpoints
-- `/api/auth/register` (POST)
-- `/api/auth/login` (POST)
-- `/api/products` (GET)
-- `/api/verify-product` (POST)
-- `/api/protocols-v2` (GET)
-- `/api/admin/codes/{code_id}` (DELETE)
+### Completed (March 2026)
+- [x] Full-stack website (FastAPI + React) deployed
+- [x] PWA conversion with manifest and icons
+- [x] QR code scanner on `/verify` page for all users
+- [x] Dynamic protocol system with batch validation
+- [x] Multi-language protocol downloads (9 PDFs uploaded)
+- [x] Resend email integration with verified domain
+- [x] Server-side admin search (scalable)
+- [x] Mobile app network bug fixed (app on hold)
 
-## Database Collections
-- `products` - Product catalog
-- `verification_codes` - QR codes with scan history
-- `users` - User accounts (email, hashed_password)
-- `protocols_v2` - Protocol metadata (name, price, pdf_filename)
-- `user_purchases` - Purchase records
+### Code Cleanup (March 6, 2026)
+- [x] Removed unused `isMobile` state from Verify.js
+- [x] Added data-testid attributes for testing
+- [x] Both QR scan and manual entry visible for all users
 
-## Credentials
-- **Admin Panel:** `/admin` - Password: `Rx050217!`
-- **Server SSH:** `ssh -i "$HOME\.ssh\njalla_key" root@80.78.19.40`
+## Prioritized Backlog
 
-## Notes for Development
-- Production DB updates must use Python scripts (pattern established)
-- Mobile app works only with `--tunnel` flag (network issue)
-- User struggles with deployment - provide clear numbered commands
+### P0 - Critical (Done)
+- ~~QR Scanner not visible on Android~~ → Code fixed, needs production deploy
+
+### P1 - High Priority
+- [ ] Implement paid "Advanced Protocols" ($4.99) - Stripe integration
+
+### P2 - Medium Priority
+- [ ] Add remaining 20 product images (waiting for designer)
+- [ ] Resume native mobile app development
+
+## Credentials & Access
+
+### Production Server
+- **Domain**: zurixsciences.com
+- **SSH**: `ssh -i "$HOME\.ssh\njalla_key" root@80.78.19.40`
+
+### Admin Panel
+- **URL**: `/admin`
+- **Password**: `Rx050217!`
+
+### Test Data
+- **Valid Batch Numbers**: 
+  - `ZX-260312-GHK50-1` (GHK-Cu)
+  - `ZX-260209-TB500-1` (TB-500)
+
+## Known Issues
+- User has recurring DNS/VPN/network issues (local to their network in Paraguay)
+- Workarounds: disconnect VPN, use mobile data, change DNS to 8.8.8.8
+
+## Files of Reference
+- `frontend/src/pages/Verify.js` - QR scanner and verification
+- `frontend/public/manifest.json` - PWA config
+- `backend/server.py` - API endpoints
+- `backend/protocols_pdf/` - Protocol PDF files
