@@ -1222,9 +1222,6 @@ function ProtocolsScreen({ user, onLoginRequired }) {
     </View>
   );
 }
-    </View>
-  );
-}
 
 // ========== PROFILE SCREEN ==========
 function ProfileScreen({ user, onLogin, onLogout }) {
