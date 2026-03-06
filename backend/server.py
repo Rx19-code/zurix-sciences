@@ -986,7 +986,12 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
     }
 
 @api_router.get("/admin/codes")
-async def get_admin_codes(x_admin_password: str = Header(None), batch_number: Optional[str] = None, limit: int = 100):
+async def get_admin_codes(
+    x_admin_password: str = Header(None), 
+    batch_number: Optional[str] = None, 
+    search: Optional[str] = None,
+    limit: int = 500
+):
     """Get all unique codes (admin only)"""
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -995,8 +1000,17 @@ async def get_admin_codes(x_admin_password: str = Header(None), batch_number: Op
     if batch_number:
         query["batch_number"] = batch_number.upper()
     
+    # Search by code, product_name, or batch_number
+    if search:
+        search_upper = search.upper()
+        query["$or"] = [
+            {"code": {"$regex": search_upper, "$options": "i"}},
+            {"product_name": {"$regex": search, "$options": "i"}},
+            {"batch_number": {"$regex": search_upper, "$options": "i"}}
+        ]
+    
     codes = await db.unique_codes.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
-    total = await db.unique_codes.count_documents(query)
+    total = await db.unique_codes.count_documents(query if not search else {})
     
     return {"codes": codes, "total": total, "showing": len(codes)}
 

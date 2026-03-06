@@ -22,6 +22,7 @@ export default function Admin() {
   const [logs, setLogs] = useState([]);
   const [activeTab, setActiveTab] = useState('import');
   const [searchCode, setSearchCode] = useState('');
+  const [searching, setSearching] = useState(false);
   
   // Check stored password on mount
   useEffect(() => {
@@ -32,6 +33,32 @@ export default function Admin() {
       loadData(storedPassword);
     }
   }, []);
+  
+  // Search codes with debounce
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const timer = setTimeout(async () => {
+      if (searchCode.length >= 2) {
+        setSearching(true);
+        try {
+          const res = await fetch(`${API_URL}/api/admin/codes?search=${encodeURIComponent(searchCode)}&limit=500`, {
+            headers: { 'x-admin-password': password }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setCodes(data.codes || []);
+          }
+        } catch (err) {
+          console.error('Search error:', err);
+        }
+        setSearching(false);
+      } else if (searchCode.length === 0) {
+        // Reload all codes when search is cleared
+        loadData(password);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchCode, isLoggedIn, password]);
   
   const loadData = async (pwd) => {
     try {
@@ -50,7 +77,7 @@ export default function Admin() {
       }
       
       // Load codes
-      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=200`, {
+      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=1000`, {
         headers: { 'x-admin-password': pwd }
       });
       if (codesRes.ok) {
@@ -183,11 +210,8 @@ export default function Admin() {
     }
   };
   
-  const filteredCodes = codes.filter(c => 
-    !searchCode || c.code.toLowerCase().includes(searchCode.toLowerCase()) ||
-    c.product_name?.toLowerCase().includes(searchCode.toLowerCase()) ||
-    c.batch_number?.toLowerCase().includes(searchCode.toLowerCase())
-  );
+  // Use codes directly since search is server-side now
+  const filteredCodes = codes;
   
   // Login screen
   if (!isLoggedIn) {
@@ -367,18 +391,21 @@ export default function Admin() {
         {activeTab === 'codes' && (
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">All Codes ({codes.length})</h2>
+              <h2 className="text-xl font-bold text-white">
+                All Codes ({codes.length})
+                {searching && <span className="ml-2 text-blue-400 text-sm">Searching...</span>}
+              </h2>
               <input
                 type="text"
                 value={searchCode}
                 onChange={(e) => setSearchCode(e.target.value)}
-                placeholder="Search code, product or batch..."
-                className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-blue-500 w-64"
+                placeholder="Search code, product or batch (min 2 chars)..."
+                className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-blue-500 w-72"
               />
             </div>
             
             {filteredCodes.length === 0 ? (
-              <p className="text-gray-400">No codes found</p>
+              <p className="text-gray-400">{searching ? 'Searching...' : 'No codes found'}</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
