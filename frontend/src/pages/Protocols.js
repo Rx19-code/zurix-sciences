@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Clock, Download, X, CheckCircle, Globe, Lock, Unlock } from 'lucide-react';
+import { FileText, Clock, X, CheckCircle, Globe, Lock, Unlock, Mail, Phone, User, Send, Loader2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -11,7 +11,15 @@ const Protocols = () => {
   const [batchNumber, setBatchNumber] = useState('');
   const [validationResult, setValidationResult] = useState(null);
   const [validating, setValidating] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  
+  // Email form state
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState(null);
 
   useEffect(() => {
     fetchProtocols();
@@ -35,12 +43,24 @@ const Protocols = () => {
     setSelectedProtocol(protocol);
     setBatchNumber('');
     setValidationResult(null);
+    setEmail('');
+    setPhone('');
+    setName('');
+    setSelectedLanguage(null);
+    setEmailSent(false);
+    setEmailError(null);
   };
 
   const closeModal = () => {
     setSelectedProtocol(null);
     setBatchNumber('');
     setValidationResult(null);
+    setEmail('');
+    setPhone('');
+    setName('');
+    setSelectedLanguage(null);
+    setEmailSent(false);
+    setEmailError(null);
   };
 
   const validateBatch = async () => {
@@ -72,15 +92,38 @@ const Protocols = () => {
     }
   };
 
-  const downloadProtocol = async (language) => {
-    setDownloading(true);
+  const sendProtocolEmail = async () => {
+    if (!email.trim() || !selectedLanguage) return;
+    
+    setSending(true);
+    setEmailError(null);
+    
     try {
-      const downloadUrl = `${API}/protocols-v2/download?protocol_id=${selectedProtocol.id}&batch_number=${encodeURIComponent(batchNumber.trim())}&language=${language}`;
-      window.open(downloadUrl, '_blank');
+      const response = await fetch(`${API}/protocols-v2/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          protocol_id: selectedProtocol.id,
+          batch_number: batchNumber.trim(),
+          language: selectedLanguage,
+          email: email.trim(),
+          phone: phone.trim() || null,
+          name: name.trim() || null
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        setEmailSent(true);
+      } else {
+        setEmailError(data.detail || 'Failed to send email. Please try again.');
+      }
     } catch (error) {
-      console.error('Error downloading protocol:', error);
+      console.error('Error sending protocol email:', error);
+      setEmailError('Network error. Please check your connection and try again.');
     } finally {
-      setDownloading(false);
+      setSending(false);
     }
   };
 
@@ -115,7 +158,7 @@ const Protocols = () => {
             Research Protocols
           </h1>
           <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Access detailed research protocols for Zurix Sciences peptides. Free download with a valid product batch number.
+            Access detailed research protocols for Zurix Sciences peptides. Free with a valid product batch number.
           </p>
         </div>
       </div>
@@ -127,7 +170,7 @@ const Protocols = () => {
             <Lock className="w-5 h-5" />
             How to Access Protocols
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="flex items-start gap-3">
               <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
               <div>
@@ -139,14 +182,21 @@ const Protocols = () => {
               <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium text-blue-900">Find Batch Number</p>
-                <p className="text-sm text-blue-700">Located on product label (ZX-XXXXXX...)</p>
+                <p className="text-sm text-blue-700">Located on product label</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
               <div>
-                <p className="font-medium text-blue-900">Download Protocol</p>
-                <p className="text-sm text-blue-700">Enter batch to unlock free PDF</p>
+                <p className="font-medium text-blue-900">Enter Your Info</p>
+                <p className="text-sm text-blue-700">Email and phone number</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <div>
+                <p className="font-medium text-blue-900">Receive Protocol</p>
+                <p className="text-sm text-blue-700">PDF sent to your email</p>
               </div>
             </div>
           </div>
@@ -190,8 +240,8 @@ const Protocols = () => {
               
               <div className="px-6 py-3 bg-gray-50 border-t border-gray-100">
                 <button className="w-full text-blue-600 font-semibold text-sm hover:text-blue-700 flex items-center justify-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Access Protocol
+                  <Mail className="w-4 h-4" />
+                  Get Protocol via Email
                 </button>
               </div>
             </div>
@@ -224,84 +274,193 @@ const Protocols = () => {
 
             {/* Modal Content */}
             <div className="p-6">
-              <p className="text-gray-600 mb-4">{selectedProtocol.description}</p>
-              
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Clock className="w-4 h-4" />
-                  <span>{selectedProtocol.duration_weeks} weeks</span>
-                </div>
-                <span className="text-green-600 font-semibold text-sm">FREE with valid batch</span>
-              </div>
-
-              {/* Batch Validation */}
-              <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Enter Product Batch Number
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={batchNumber}
-                    onChange={(e) => setBatchNumber(e.target.value.toUpperCase())}
-                    placeholder="ZX-XXXXXX-XXXX-X"
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
-                    data-testid="batch-number-input"
-                  />
+              {/* Success State */}
+              {emailSent ? (
+                <div className="text-center py-8" data-testid="email-sent-success">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Protocol Sent!</h3>
+                  <p className="text-gray-600 mb-4">
+                    Check your email at <strong>{email}</strong> for the protocol PDF.
+                  </p>
+                  <p className="text-sm text-gray-500 mb-6">
+                    Don't see it? Check your spam folder.
+                  </p>
                   <button
-                    onClick={validateBatch}
-                    disabled={validating || !batchNumber.trim()}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold rounded-lg transition-colors whitespace-nowrap"
-                    data-testid="validate-batch-button"
+                    onClick={closeModal}
+                    className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
                   >
-                    {validating ? 'Checking...' : 'Validate'}
+                    Close
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-gray-500">
-                  Find the batch number on your product label
-                </p>
-              </div>
+              ) : (
+                <>
+                  <p className="text-gray-600 mb-4">{selectedProtocol.description}</p>
+                  
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <Clock className="w-4 h-4" />
+                      <span>{selectedProtocol.duration_weeks} weeks</span>
+                    </div>
+                    <span className="text-green-600 font-semibold text-sm">FREE with valid batch</span>
+                  </div>
 
-              {/* Validation Result */}
-              {validationResult && (
-                <div className={`rounded-xl p-4 mb-4 ${validationResult.valid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`} data-testid="validation-result">
-                  <div className="flex items-start gap-3">
-                    {validationResult.valid ? (
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    ) : (
-                      <X className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    )}
-                    <div>
-                      <p className={`font-medium ${validationResult.valid ? 'text-green-800' : 'text-red-800'}`}>
-                        {validationResult.valid ? 'Batch Validated!' : 'Validation Failed'}
-                      </p>
-                      <p className={`text-sm ${validationResult.valid ? 'text-green-700' : 'text-red-700'}`}>
-                        {validationResult.message}
-                      </p>
+                  {/* Step 1: Batch Validation */}
+                  <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                      <label className="text-sm font-medium text-gray-700">Product Batch Number</label>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={batchNumber}
+                        onChange={(e) => setBatchNumber(e.target.value.toUpperCase())}
+                        placeholder="ZX-XXXXXX-XXXX-X"
+                        disabled={validationResult?.valid}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm disabled:bg-gray-100"
+                        data-testid="batch-number-input"
+                      />
+                      {!validationResult?.valid && (
+                        <button
+                          onClick={validateBatch}
+                          disabled={validating || !batchNumber.trim()}
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold rounded-lg transition-colors whitespace-nowrap"
+                          data-testid="validate-batch-button"
+                        >
+                          {validating ? 'Checking...' : 'Validate'}
+                        </button>
+                      )}
                     </div>
                   </div>
-                </div>
-              )}
 
-              {/* Download Options */}
-              {validationResult?.valid && (
-                <div className="space-y-3" data-testid="download-options">
-                  <p className="font-medium text-gray-900">Select Language:</p>
-                  <div className="grid grid-cols-3 gap-3">
-                    {validationResult.available_languages?.map((lang) => (
+                  {/* Validation Result */}
+                  {validationResult && (
+                    <div className={`rounded-xl p-4 mb-4 ${validationResult.valid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`} data-testid="validation-result">
+                      <div className="flex items-start gap-3">
+                        {validationResult.valid ? (
+                          <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <X className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        )}
+                        <div>
+                          <p className={`font-medium ${validationResult.valid ? 'text-green-800' : 'text-red-800'}`}>
+                            {validationResult.valid ? 'Batch Validated!' : 'Validation Failed'}
+                          </p>
+                          <p className={`text-sm ${validationResult.valid ? 'text-green-700' : 'text-red-700'}`}>
+                            {validationResult.message}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 2 & 3: Contact Info (only shown after batch validation) */}
+                  {validationResult?.valid && (
+                    <>
+                      {/* Contact Info */}
+                      <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                          <label className="text-sm font-medium text-gray-700">Your Contact Info</label>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              placeholder="your@email.com *"
+                              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                              data-testid="email-input"
+                              required
+                            />
+                          </div>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                              type="tel"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              placeholder="+1 (555) 000-0000"
+                              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                              data-testid="phone-input"
+                            />
+                          </div>
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                              type="text"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              placeholder="Your name (optional)"
+                              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                              data-testid="name-input"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Language Selection */}
+                      <div className="bg-gray-50 rounded-xl p-4 mb-4" data-testid="language-selection">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                          <label className="text-sm font-medium text-gray-700">Select Language</label>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          {validationResult.available_languages?.map((lang) => (
+                            <button
+                              key={lang.code}
+                              onClick={() => setSelectedLanguage(lang.code)}
+                              className={`p-3 rounded-lg border-2 transition-colors text-center ${
+                                selectedLanguage === lang.code
+                                  ? 'border-blue-600 bg-blue-50 text-blue-700'
+                                  : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                              }`}
+                              data-testid={`lang-${lang.code}`}
+                            >
+                              <Globe className="w-5 h-5 mx-auto mb-1" />
+                              <span className="text-sm font-medium">{lang.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Error Message */}
+                      {emailError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                          <p className="text-sm text-red-700">{emailError}</p>
+                        </div>
+                      )}
+
+                      {/* Send Button */}
                       <button
-                        key={lang.code}
-                        onClick={() => downloadProtocol(lang.code)}
-                        disabled={downloading}
-                        className="flex flex-col items-center gap-2 p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition-colors"
-                        data-testid={`download-${lang.code}`}
+                        onClick={sendProtocolEmail}
+                        disabled={sending || !email.trim() || !selectedLanguage}
+                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                        data-testid="send-email-button"
                       >
-                        <Download className="w-6 h-6 text-blue-600" />
-                        <span className="text-sm font-semibold text-blue-900">{lang.name}</span>
+                        {sending ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Sending...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            <span>Send Protocol to Email</span>
+                          </>
+                        )}
                       </button>
-                    ))}
-                  </div>
-                </div>
+                      
+                      <p className="mt-3 text-xs text-gray-500 text-center">
+                        By submitting, you agree to receive the protocol and occasional updates from Zurix Sciences.
+                      </p>
+                    </>
+                  )}
+                </>
               )}
             </div>
           </div>

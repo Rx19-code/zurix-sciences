@@ -64,6 +64,9 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - [x] Download options in 3 languages (EN, ES, PT)
 - [x] Added "Protocols" link to navigation menu
 - [x] Responsive design for mobile and desktop
+- [x] **Lead collection system** - email, phone, name saved to database
+- [x] **Email delivery via Resend** - protocol PDFs sent as attachments
+- [x] Multi-language email templates (EN, ES, PT)
 
 ## Prioritized Backlog
 

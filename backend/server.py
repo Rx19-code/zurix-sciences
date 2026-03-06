@@ -540,6 +540,14 @@ class DownloadProtocolRequest(BaseModel):
     batch_number: str
     language: str  # "en", "es", "pt"
 
+class SendProtocolEmailRequest(BaseModel):
+    protocol_id: str
+    batch_number: str
+    language: str  # "en", "es", "pt"
+    email: str
+    phone: Optional[str] = None
+    name: Optional[str] = None
+
 async def check_batch_matches_protocol(batch_number: str, protocol_id: str) -> dict:
     """Check if a batch number matches a protocol by searching unique_codes collection"""
     protocol = PROTOCOL_DEFINITIONS.get(protocol_id)
@@ -680,6 +688,156 @@ async def download_protocol_with_batch(
         media_type="application/pdf"
     )
 
+@api_router.post("/protocols-v2/send-email")
+async def send_protocol_via_email(request: SendProtocolEmailRequest):
+    """Send protocol PDF via email and save customer data"""
+    protocol = PROTOCOL_DEFINITIONS.get(request.protocol_id)
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    
+    # Validate language
+    if request.language not in protocol["languages"]:
+        raise HTTPException(status_code=400, detail="Invalid language selected")
+    
+    # Validate batch using the dynamic function
+    result = await check_batch_matches_protocol(request.batch_number, request.protocol_id)
+    
+    if not result["valid"]:
+        raise HTTPException(status_code=403, detail="Invalid batch number")
+    
+    # Get PDF path
+    pdf_filename = protocol["languages"][request.language]
+    pdf_path = PDF_STORAGE_DIR / pdf_filename
+    
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail=f"PDF not available yet for {request.language.upper()}. Please contact support.")
+    
+    # Save customer data to database
+    customer_data = {
+        "email": request.email.lower().strip(),
+        "phone": request.phone.strip() if request.phone else None,
+        "name": request.name.strip() if request.name else None,
+        "protocol_id": request.protocol_id,
+        "protocol_title": protocol["title"],
+        "batch_number": request.batch_number.upper().strip(),
+        "language": request.language,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source": "website_protocols"
+    }
+    
+    # Insert or update customer record
+    await db.protocol_leads.update_one(
+        {"email": customer_data["email"]},
+        {"$set": customer_data, "$inc": {"download_count": 1}},
+        upsert=True
+    )
+    
+    # Send email with PDF attachment
+    if not RESEND_API_KEY:
+        raise HTTPException(status_code=500, detail="Email service not configured")
+    
+    # Build language-specific content
+    lang_content = {
+        "en": {
+            "subject": f"Your Research Protocol: {protocol['title']}",
+            "greeting": f"Hello{' ' + request.name if request.name else ''}!",
+            "intro": "Thank you for your interest in Zurix Sciences research protocols.",
+            "attached": "Your requested protocol is attached to this email as a PDF.",
+            "duration": f"Protocol Duration: {protocol['duration_weeks']} weeks",
+            "footer": "For research use only. Not for human consumption."
+        },
+        "es": {
+            "subject": f"Tu Protocolo de Investigación: {protocol['title']}",
+            "greeting": f"¡Hola{' ' + request.name if request.name else ''}!",
+            "intro": "Gracias por tu interés en los protocolos de investigación de Zurix Sciences.",
+            "attached": "Tu protocolo solicitado está adjunto a este correo como PDF.",
+            "duration": f"Duración del Protocolo: {protocol['duration_weeks']} semanas",
+            "footer": "Solo para uso en investigación. No para consumo humano."
+        },
+        "pt": {
+            "subject": f"Seu Protocolo de Pesquisa: {protocol['title']}",
+            "greeting": f"Olá{' ' + request.name if request.name else ''}!",
+            "intro": "Obrigado pelo seu interesse nos protocolos de pesquisa da Zurix Sciences.",
+            "attached": "Seu protocolo solicitado está anexado a este email em PDF.",
+            "duration": f"Duração do Protocolo: {protocol['duration_weeks']} semanas",
+            "footer": "Apenas para uso em pesquisa. Não para consumo humano."
+        }
+    }
+    
+    content = lang_content.get(request.language, lang_content["en"])
+    
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #1e3a8a;">Zurix Sciences</h1>
+            <p style="color: #666;">Premium Research Compounds</p>
+        </div>
+        
+        <h2 style="color: #333;">{content['greeting']}</h2>
+        
+        <p style="color: #666;">{content['intro']}</p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1e3a8a; margin-top: 0;">{protocol['title']}</h3>
+            <p style="color: #666;">{protocol['description']}</p>
+            <p><strong>{content['duration']}</strong></p>
+        </div>
+        
+        <p style="color: #333; background: #e8f5e9; padding: 15px; border-radius: 8px;">
+            <strong>✓</strong> {content['attached']}
+        </p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <p style="color: #999; font-size: 12px; text-align: center;">
+            {content['footer']}<br>
+            © Zurix Sciences - zurixsciences.com
+        </p>
+    </div>
+    """
+    
+    try:
+        # Read PDF for attachment
+        with open(pdf_path, "rb") as f:
+            pdf_content = base64.b64encode(f.read()).decode()
+        
+        params = {
+            "from": SENDER_EMAIL,
+            "to": [request.email],
+            "subject": content["subject"],
+            "html": html_content,
+            "attachments": [{
+                "filename": f"{protocol['title']} ({request.language.upper()}).pdf",
+                "content": pdf_content
+            }]
+        }
+        
+        # Send email
+        email_result = await asyncio.to_thread(resend.Emails.send, params)
+        
+        # Log the email send
+        await db.protocol_downloads.insert_one({
+            "protocol_id": request.protocol_id,
+            "batch_number": request.batch_number.upper().strip(),
+            "language": request.language,
+            "email": request.email.lower().strip(),
+            "phone": request.phone,
+            "sent_via": "email",
+            "downloaded_at": datetime.now(timezone.utc).isoformat()
+        })
+        
+        logging.info(f"Protocol email sent to {request.email} for {protocol['title']}")
+        
+        return {
+            "success": True,
+            "message": f"Protocol sent to {request.email}",
+            "email_id": email_result.get("id") if email_result else None
+        }
+        
+    except Exception as e:
+        logging.error(f"Failed to send protocol email: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
 # ==================== ADMIN PROTOCOL MANAGEMENT ====================
 
 # Admin endpoint to upload protocol PDFs
@@ -694,13 +852,13 @@ async def upload_protocol_pdf(
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
     
-    if protocol_id not in PROTOCOL_BATCH_MAPPING:
+    if protocol_id not in PROTOCOL_DEFINITIONS:
         raise HTTPException(status_code=404, detail="Protocol not found")
     
     if language not in ["en", "es", "pt"]:
         raise HTTPException(status_code=400, detail="Invalid language. Use: en, es, or pt")
     
-    protocol = PROTOCOL_BATCH_MAPPING[protocol_id]
+    protocol = PROTOCOL_DEFINITIONS[protocol_id]
     pdf_filename = protocol["languages"][language]
     pdf_path = PDF_STORAGE_DIR / pdf_filename
     
@@ -722,7 +880,7 @@ async def get_protocols_status(x_admin_password: str = Header(None, alias="X-Adm
         raise HTTPException(status_code=401, detail="Unauthorized")
     
     status = []
-    for proto_id, proto_data in PROTOCOL_BATCH_MAPPING.items():
+    for proto_id, proto_data in PROTOCOL_DEFINITIONS.items():
         languages_status = {}
         for lang, filename in proto_data["languages"].items():
             pdf_path = PDF_STORAGE_DIR / filename
@@ -1168,7 +1326,7 @@ async def verify_scan(request: VerifyScanRequest, req: Request):
             if verification_count == 1:
                 message = "✅ Product Authenticated! This is the FIRST verification."
             elif verification_count == 2:
-                message = f"⚠️ CAUTION: This code was already verified. If this wasn't you, the product may be counterfeit."
+                message = "⚠️ CAUTION: This code was already verified. If this wasn't you, the product may be counterfeit."
                 warning = "caution"
             else:
                 message = f"🚨 ALERT: This code has been verified {verification_count} times! This code is now BLOCKED."
