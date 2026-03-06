@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Shield, CheckCircle, XCircle, AlertTriangle, Camera, Keyboard, X } from 'lucide-react';
+import { Html5Qrcode } from 'html5-qrcode';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -11,9 +12,7 @@ const Verify = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [cameraError, setCameraError] = useState(null);
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const streamRef = useRef(null);
+  const scannerRef = useRef(null);
 
   // Detect mobile device
   useEffect(() => {
@@ -22,79 +21,51 @@ const Verify = () => {
       setIsMobile(mobile);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // QR Scanner functions
+  // Start QR Scanner
   const startScanner = async () => {
     setCameraError(null);
     setShowScanner(true);
     
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      });
+      const html5QrCode = new Html5Qrcode("qr-reader");
+      scannerRef.current = html5QrCode;
       
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        scanQRCode();
-      }
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          handleQRCodeDetected(decodedText);
+        },
+        (errorMessage) => {
+          // Ignore scan errors
+        }
+      );
     } catch (err) {
       console.error('Camera error:', err);
-      setCameraError('Could not access camera. Please allow camera permission or enter code manually.');
+      setCameraError('Não foi possível acessar a câmera. Permita o acesso ou digite o código manualmente.');
       setShowScanner(false);
     }
   };
 
-  const stopScanner = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
+  const stopScanner = async () => {
+    if (scannerRef.current) {
+      try {
+        await scannerRef.current.stop();
+        scannerRef.current = null;
+      } catch (err) {
+        console.error('Error stopping scanner:', err);
+      }
     }
     setShowScanner(false);
   };
 
-  const scanQRCode = () => {
-    if (!videoRef.current || !canvasRef.current || !showScanner) return;
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      
-      // Use jsQR library if available, otherwise use BarcodeDetector API
-      if (window.BarcodeDetector) {
-        const barcodeDetector = new window.BarcodeDetector({ formats: ['qr_code'] });
-        barcodeDetector.detect(canvas)
-          .then(barcodes => {
-            if (barcodes.length > 0) {
-              const qrCode = barcodes[0].rawValue;
-              handleQRCodeDetected(qrCode);
-            }
-          })
-          .catch(err => console.error('Barcode detection error:', err));
-      }
-    }
-
-    if (showScanner) {
-      requestAnimationFrame(scanQRCode);
-    }
-  };
-
-  const handleQRCodeDetected = (qrCode) => {
-    // Extract code from QR - might be URL or direct code
+  const handleQRCodeDetected = async (qrCode) => {
+    // Extract code from QR
     let extractedCode = qrCode;
     
-    // If QR contains URL, extract the code parameter
+    // If QR contains URL, extract the code
     if (qrCode.includes('verify') || qrCode.includes('code=')) {
       const urlParams = new URLSearchParams(qrCode.split('?')[1]);
       extractedCode = urlParams.get('code') || qrCode;
@@ -107,12 +78,15 @@ const Verify = () => {
     }
     
     setCode(extractedCode.toUpperCase());
-    stopScanner();
+    await stopScanner();
     
-    // Auto-verify after detecting
+    // Auto-verify
     setTimeout(() => {
-      document.getElementById('verify-form')?.dispatchEvent(new Event('submit', { bubbles: true }));
-    }, 500);
+      const form = document.getElementById('verify-form');
+      if (form) {
+        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      }
+    }, 300);
   };
 
   const handleVerify = async (e) => {
@@ -200,28 +174,12 @@ const Verify = () => {
               <X className="w-6 h-6" />
             </button>
           </div>
-          <div className="flex-1 relative">
-            <video 
-              ref={videoRef} 
-              className="absolute inset-0 w-full h-full object-cover"
-              playsInline
-              autoPlay
-              muted
-            />
-            <canvas ref={canvasRef} className="hidden" />
-            {/* Scan overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-64 h-64 border-2 border-white rounded-lg relative">
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-blue-500 rounded-tl-lg"></div>
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-blue-500 rounded-tr-lg"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-blue-500 rounded-bl-lg"></div>
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-blue-500 rounded-br-lg"></div>
-              </div>
-            </div>
-            <p className="absolute bottom-8 left-0 right-0 text-center text-white text-sm">
-              Position the QR code inside the frame
-            </p>
+          <div className="flex-1 relative flex items-center justify-center">
+            <div id="qr-reader" style={{ width: '100%', maxWidth: '500px' }}></div>
           </div>
+          <p className="p-4 text-center text-white text-sm bg-black/80">
+            Posicione o QR code dentro do quadro
+          </p>
         </div>
       )}
 
