@@ -669,7 +669,7 @@ async def download_protocol_with_batch(
     # Log the download
     await db.protocol_downloads.insert_one({
         "protocol_id": protocol_id,
-        "batch_number": batch_upper,
+        "batch_number": batch_number.upper().strip(),
         "language": language,
         "downloaded_at": datetime.now(timezone.utc).isoformat()
     })
