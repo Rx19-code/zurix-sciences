@@ -990,7 +990,7 @@ async def get_admin_codes(
     x_admin_password: str = Header(None), 
     batch_number: Optional[str] = None, 
     search: Optional[str] = None,
-    limit: int = 500
+    limit: int = 10000
 ):
     """Get all unique codes (admin only)"""
     if x_admin_password != ADMIN_PASSWORD:
@@ -1010,7 +1010,7 @@ async def get_admin_codes(
         ]
     
     codes = await db.unique_codes.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
-    total = await db.unique_codes.count_documents(query if not search else {})
+    total = await db.unique_codes.count_documents({})
     
     return {"codes": codes, "total": total, "showing": len(codes)}
 

@@ -76,8 +76,8 @@ export default function Admin() {
         setBatches(batchData.batches || []);
       }
       
-      // Load codes
-      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=1000`, {
+      // Load codes (all codes, no limit for initial load)
+      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=10000`, {
         headers: { 'x-admin-password': pwd }
       });
       if (codesRes.ok) {
