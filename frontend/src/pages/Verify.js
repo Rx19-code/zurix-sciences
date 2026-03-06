@@ -18,12 +18,38 @@ const Verify = () => {
     setCameraError(null);
     setShowScanner(true);
     
+    // Wait for DOM element to be ready
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     try {
+      // First, explicitly request camera permission
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: "environment" } 
+      });
+      // Stop the stream immediately - we just needed permission
+      stream.getTracks().forEach(track => track.stop());
+      
       const html5QrCode = new Html5Qrcode("qr-reader");
       scannerRef.current = html5QrCode;
       
+      // Try to get available cameras
+      const cameras = await Html5Qrcode.getCameras();
+      
+      let cameraConfig;
+      if (cameras && cameras.length > 0) {
+        // Prefer back camera
+        const backCamera = cameras.find(c => 
+          c.label.toLowerCase().includes('back') || 
+          c.label.toLowerCase().includes('rear') ||
+          c.label.toLowerCase().includes('environment')
+        );
+        cameraConfig = backCamera ? { deviceId: backCamera.id } : { facingMode: "environment" };
+      } else {
+        cameraConfig = { facingMode: "environment" };
+      }
+      
       await html5QrCode.start(
-        { facingMode: "environment" },
+        cameraConfig,
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
           handleQRCodeDetected(decodedText);
@@ -34,7 +60,17 @@ const Verify = () => {
       );
     } catch (err) {
       console.error('Camera error:', err);
-      setCameraError('Could not access camera. Please allow access or enter the code manually.');
+      let errorMsg = 'Could not access camera. ';
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorMsg += 'Please allow camera access in your browser settings.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorMsg += 'No camera found on this device.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errorMsg += 'Camera is being used by another application.';
+      } else {
+        errorMsg += 'Please enter the code manually.';
+      }
+      setCameraError(errorMsg);
       setShowScanner(false);
     }
   };
