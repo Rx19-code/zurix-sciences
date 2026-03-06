@@ -503,7 +503,9 @@ PROTOCOL_DEFINITIONS = {
             "en": "bpc157_protocol_en.pdf",
             "es": "bpc157_protocol_es.pdf",
             "pt": "bpc157_protocol_pt.pdf"
-        }
+        },
+        "price": 0,
+        "requires_batch": True
     },
     "proto-tb500": {
         "title": "TB-500 Tissue Repair Protocol",
@@ -515,7 +517,9 @@ PROTOCOL_DEFINITIONS = {
             "en": "tb500_protocol_en.pdf",
             "es": "tb500_protocol_es.pdf",
             "pt": "tb500_protocol_pt.pdf"
-        }
+        },
+        "price": 0,
+        "requires_batch": True
     },
     "proto-ghkcu": {
         "title": "GHK-Cu Skin Rejuvenation Protocol",
@@ -527,9 +531,58 @@ PROTOCOL_DEFINITIONS = {
             "en": "ghkcu_protocol_en.pdf",
             "es": "ghkcu_protocol_es.pdf",
             "pt": "ghkcu_protocol_pt.pdf"
-        }
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    # Advanced Protocols - Paid
+    "proto-advanced-stack": {
+        "title": "Advanced Peptide Stack Protocol",
+        "description": "Comprehensive stacking protocol combining multiple peptides for maximum synergistic effects. Includes dosing schedules, timing, and cycling guidelines.",
+        "category": "Advanced",
+        "duration_weeks": 12,
+        "product_keywords": [],
+        "languages": {
+            "en": "advanced_stack_protocol_en.pdf",
+            "es": "advanced_stack_protocol_es.pdf",
+            "pt": "advanced_stack_protocol_pt.pdf"
+        },
+        "price": 4.99,
+        "requires_batch": False
+    },
+    "proto-advanced-healing": {
+        "title": "Advanced Injury Recovery Protocol",
+        "description": "Professional-grade recovery protocol for serious injuries. Detailed protocols for tendons, ligaments, and tissue repair with optimized dosing.",
+        "category": "Advanced",
+        "duration_weeks": 16,
+        "product_keywords": [],
+        "languages": {
+            "en": "advanced_healing_protocol_en.pdf",
+            "es": "advanced_healing_protocol_es.pdf",
+            "pt": "advanced_healing_protocol_pt.pdf"
+        },
+        "price": 4.99,
+        "requires_batch": False
+    },
+    "proto-advanced-antiaging": {
+        "title": "Advanced Anti-Aging Protocol",
+        "description": "Complete longevity and anti-aging protocol using peptide combinations. Includes skin, cognitive, and cellular rejuvenation strategies.",
+        "category": "Advanced",
+        "duration_weeks": 24,
+        "product_keywords": [],
+        "languages": {
+            "en": "advanced_antiaging_protocol_en.pdf",
+            "es": "advanced_antiaging_protocol_es.pdf",
+            "pt": "advanced_antiaging_protocol_pt.pdf"
+        },
+        "price": 4.99,
+        "requires_batch": False
     }
 }
+
+# USDT Payment Configuration (TRC20 - Tron Network)
+USDT_WALLET_ADDRESS = "TJKuseoNmGw1TnwskKjaBCw5FrYUynAP9m"
+TRON_API_URL = "https://apilist.tronscanapi.com/api"
 
 class ValidateBatchRequest(BaseModel):
     protocol_id: str
@@ -547,6 +600,74 @@ class SendProtocolEmailRequest(BaseModel):
     email: str
     phone: Optional[str] = None
     name: Optional[str] = None
+
+# USDT Payment Models
+class CreatePaymentRequest(BaseModel):
+    protocol_id: str
+    email: str
+    language: str
+    phone: Optional[str] = None
+    name: Optional[str] = None
+
+class VerifyPaymentRequest(BaseModel):
+    order_id: str
+    txid: str
+
+async def verify_tron_transaction(txid: str, expected_amount: float, wallet_address: str) -> dict:
+    """Verify a USDT TRC20 transaction on Tron network"""
+    try:
+        # Query TronScan API for transaction details
+        async with httpx.AsyncClient(timeout=30) as client:
+            # Get transaction info
+            response = await client.get(
+                f"{TRON_API_URL}/transaction-info",
+                params={"hash": txid}
+            )
+            
+            if response.status_code != 200:
+                return {"valid": False, "message": "Could not verify transaction. Please try again."}
+            
+            tx_data = response.json()
+            
+            # Check if transaction exists
+            if not tx_data or "contractRet" not in tx_data:
+                return {"valid": False, "message": "Transaction not found. Please check the TXID."}
+            
+            # Check if transaction was successful
+            if tx_data.get("contractRet") != "SUCCESS":
+                return {"valid": False, "message": "Transaction failed or pending."}
+            
+            # Check TRC20 token transfers
+            token_transfers = tx_data.get("trc20TransferInfo", [])
+            
+            for transfer in token_transfers:
+                to_address = transfer.get("to_address", "")
+                amount_str = transfer.get("amount_str", "0")
+                decimals = int(transfer.get("decimals", 6))
+                symbol = transfer.get("symbol", "")
+                
+                # Check if it's USDT to our wallet
+                if to_address == wallet_address and symbol == "USDT":
+                    amount = float(amount_str) / (10 ** decimals)
+                    
+                    if amount >= expected_amount:
+                        return {
+                            "valid": True,
+                            "message": "Payment verified!",
+                            "amount": amount,
+                            "txid": txid
+                        }
+                    else:
+                        return {
+                            "valid": False,
+                            "message": f"Amount too low. Expected ${expected_amount}, received ${amount:.2f}"
+                        }
+            
+            return {"valid": False, "message": "No USDT transfer found to our wallet in this transaction."}
+            
+    except Exception as e:
+        logging.error(f"Error verifying Tron transaction: {str(e)}")
+        return {"valid": False, "message": "Error verifying transaction. Please try again or contact support."}
 
 async def check_batch_matches_protocol(batch_number: str, protocol_id: str) -> dict:
     """Check if a batch number matches a protocol by searching unique_codes collection"""
@@ -602,7 +723,7 @@ async def check_batch_matches_protocol(batch_number: str, protocol_id: str) -> d
 
 @api_router.get("/protocols-v2")
 async def get_protocols_v2():
-    """Get all available protocols"""
+    """Get all available protocols (free and paid)"""
     protocols = []
     for proto_id, proto_data in PROTOCOL_DEFINITIONS.items():
         protocols.append({
@@ -612,8 +733,8 @@ async def get_protocols_v2():
             "category": proto_data["category"],
             "duration_weeks": proto_data["duration_weeks"],
             "languages": list(proto_data["languages"].keys()),
-            "requires_batch": True,
-            "price": 0  # Free with valid batch
+            "requires_batch": proto_data.get("requires_batch", True),
+            "price": proto_data.get("price", 0)
         })
     
     return {"success": True, "protocols": protocols}
@@ -837,6 +958,238 @@ async def send_protocol_via_email(request: SendProtocolEmailRequest):
     except Exception as e:
         logging.error(f"Failed to send protocol email: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
+# ==================== USDT PAYMENT ENDPOINTS ====================
+
+@api_router.get("/payment/wallet-info")
+async def get_wallet_info():
+    """Get USDT wallet address for payment"""
+    return {
+        "success": True,
+        "wallet_address": USDT_WALLET_ADDRESS,
+        "network": "TRC20 (Tron)",
+        "currency": "USDT"
+    }
+
+@api_router.post("/payment/create-order")
+async def create_payment_order(request: CreatePaymentRequest):
+    """Create a new payment order for a paid protocol"""
+    protocol = PROTOCOL_DEFINITIONS.get(request.protocol_id)
+    if not protocol:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    
+    price = protocol.get("price", 0)
+    if price <= 0:
+        raise HTTPException(status_code=400, detail="This protocol is free. Use batch validation instead.")
+    
+    # Generate unique order ID
+    order_id = f"ORD-{uuid.uuid4().hex[:12].upper()}"
+    
+    # Create order in database
+    order = {
+        "order_id": order_id,
+        "protocol_id": request.protocol_id,
+        "protocol_title": protocol["title"],
+        "price": price,
+        "email": request.email.lower().strip(),
+        "phone": request.phone.strip() if request.phone else None,
+        "name": request.name.strip() if request.name else None,
+        "language": request.language,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "txid": None,
+        "paid_at": None
+    }
+    
+    await db.protocol_orders.insert_one(order)
+    
+    return {
+        "success": True,
+        "order_id": order_id,
+        "protocol_title": protocol["title"],
+        "price": price,
+        "wallet_address": USDT_WALLET_ADDRESS,
+        "network": "TRC20 (Tron)",
+        "instructions": f"Send exactly ${price} USDT to the wallet address above. After payment, enter the transaction ID (TXID) to verify."
+    }
+
+@api_router.post("/payment/verify")
+async def verify_payment(request: VerifyPaymentRequest):
+    """Verify a USDT payment and deliver the protocol"""
+    # Find the order
+    order = await db.protocol_orders.find_one({"order_id": request.order_id}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    if order["status"] == "completed":
+        return {
+            "success": True,
+            "already_paid": True,
+            "message": "This order has already been paid and the protocol was sent."
+        }
+    
+    # Check if TXID was already used
+    existing_txid = await db.protocol_orders.find_one({"txid": request.txid, "status": "completed"})
+    if existing_txid:
+        raise HTTPException(status_code=400, detail="This transaction has already been used for another order.")
+    
+    # Verify the transaction on Tron network
+    verification = await verify_tron_transaction(
+        txid=request.txid,
+        expected_amount=order["price"],
+        wallet_address=USDT_WALLET_ADDRESS
+    )
+    
+    if not verification["valid"]:
+        return {
+            "success": False,
+            "message": verification["message"]
+        }
+    
+    # Payment verified! Update order
+    await db.protocol_orders.update_one(
+        {"order_id": request.order_id},
+        {"$set": {
+            "status": "completed",
+            "txid": request.txid,
+            "paid_at": datetime.now(timezone.utc).isoformat(),
+            "verified_amount": verification.get("amount")
+        }}
+    )
+    
+    # Get protocol details
+    protocol = PROTOCOL_DEFINITIONS.get(order["protocol_id"])
+    if not protocol:
+        raise HTTPException(status_code=500, detail="Protocol configuration error")
+    
+    # Send protocol via email
+    pdf_filename = protocol["languages"].get(order["language"], protocol["languages"]["en"])
+    pdf_path = PDF_STORAGE_DIR / pdf_filename
+    
+    if not pdf_path.exists():
+        # Still mark as paid, but notify about PDF
+        return {
+            "success": True,
+            "message": "Payment verified! However, the PDF is being prepared. You will receive it by email within 24 hours.",
+            "paid": True,
+            "email_sent": False
+        }
+    
+    # Build email content
+    lang_content = {
+        "en": {
+            "subject": f"Your Purchased Protocol: {protocol['title']}",
+            "greeting": f"Hello{' ' + order.get('name', '') if order.get('name') else ''}!",
+            "intro": "Thank you for your purchase! Your advanced protocol is attached.",
+            "attached": "Your protocol PDF is attached to this email.",
+            "footer": "For research use only. Not for human consumption."
+        },
+        "es": {
+            "subject": f"Tu Protocolo Comprado: {protocol['title']}",
+            "greeting": f"¡Hola{' ' + order.get('name', '') if order.get('name') else ''}!",
+            "intro": "¡Gracias por tu compra! Tu protocolo avanzado está adjunto.",
+            "attached": "Tu protocolo PDF está adjunto a este correo.",
+            "footer": "Solo para uso en investigación. No para consumo humano."
+        },
+        "pt": {
+            "subject": f"Seu Protocolo Comprado: {protocol['title']}",
+            "greeting": f"Olá{' ' + order.get('name', '') if order.get('name') else ''}!",
+            "intro": "Obrigado pela sua compra! Seu protocolo avançado está anexado.",
+            "attached": "Seu protocolo PDF está anexado a este email.",
+            "footer": "Apenas para uso em pesquisa. Não para consumo humano."
+        }
+    }
+    
+    content = lang_content.get(order["language"], lang_content["en"])
+    
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #1e3a8a;">Zurix Sciences</h1>
+            <p style="color: #666;">Premium Research Compounds</p>
+        </div>
+        
+        <h2 style="color: #333;">{content['greeting']}</h2>
+        
+        <p style="color: #666;">{content['intro']}</p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1e3a8a; margin-top: 0;">{protocol['title']}</h3>
+            <p style="color: #666;">{protocol['description']}</p>
+            <p><strong>Duration: {protocol['duration_weeks']} weeks</strong></p>
+        </div>
+        
+        <p style="color: #333; background: #e8f5e9; padding: 15px; border-radius: 8px;">
+            <strong>✓</strong> {content['attached']}
+        </p>
+        
+        <div style="background: #f0f0f0; padding: 10px; border-radius: 4px; margin: 15px 0;">
+            <p style="color: #666; font-size: 12px; margin: 0;">
+                Order ID: {order['order_id']}<br>
+                Transaction: {request.txid[:20]}...
+            </p>
+        </div>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <p style="color: #999; font-size: 12px; text-align: center;">
+            {content['footer']}<br>
+            © Zurix Sciences - zurixsciences.com
+        </p>
+    </div>
+    """
+    
+    try:
+        with open(pdf_path, "rb") as f:
+            pdf_content = base64.b64encode(f.read()).decode()
+        
+        params = {
+            "from": SENDER_EMAIL,
+            "to": [order["email"]],
+            "subject": content["subject"],
+            "html": html_content,
+            "attachments": [{
+                "filename": f"{protocol['title']} ({order['language'].upper()}).pdf",
+                "content": pdf_content
+            }]
+        }
+        
+        await asyncio.to_thread(resend.Emails.send, params)
+        logging.info(f"Paid protocol sent to {order['email']} for order {order['order_id']}")
+        
+        return {
+            "success": True,
+            "message": f"Payment verified! Protocol sent to {order['email']}",
+            "paid": True,
+            "email_sent": True
+        }
+        
+    except Exception as e:
+        logging.error(f"Failed to send paid protocol email: {str(e)}")
+        return {
+            "success": True,
+            "message": "Payment verified! There was an issue sending the email. Please contact support.",
+            "paid": True,
+            "email_sent": False,
+            "error": str(e)
+        }
+
+@api_router.get("/payment/order/{order_id}")
+async def get_order_status(order_id: str):
+    """Check order status"""
+    order = await db.protocol_orders.find_one({"order_id": order_id}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    return {
+        "success": True,
+        "order_id": order["order_id"],
+        "status": order["status"],
+        "protocol_title": order["protocol_title"],
+        "price": order["price"],
+        "created_at": order["created_at"],
+        "paid_at": order.get("paid_at")
+    }
 
 # ==================== ADMIN PROTOCOL MANAGEMENT ====================
 
