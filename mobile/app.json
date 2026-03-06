@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0a0f1a"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#0a0f1a"
+        "backgroundColor": "#000000"
       },
       "package": "com.zurix.sciences",
       "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"],
