@@ -1,30 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { MessageCircle, Mail, MapPin, Shield } from 'lucide-react';
+import { MessageCircle, MapPin, Shield } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Country flags mapping
-const countryFlags = {
-  'Paraguay': '🇵🇾',
-  'United States': '🇺🇸',
-  'Switzerland': '🇨🇭',
-  'Brazil': '🇧🇷',
-  'Argentina': '🇦🇷',
-  'Mexico': '🇲🇽',
-  'Colombia': '🇨🇴',
-  'Chile': '🇨🇱',
-  'Peru': '🇵🇪',
-  'Uruguay': '🇺🇾',
-  'Canada': '🇨🇦',
-  'UK': '🇬🇧',
-  'Germany': '🇩🇪',
-  'Spain': '🇪🇸',
-  'France': '🇫🇷',
-  'Italy': '🇮🇹',
-  'Portugal': '🇵🇹',
-  'Australia': '🇦🇺',
+// Country codes for flag images (ISO 3166-1 alpha-2)
+const countryCodeMap = {
+  'Paraguay': 'py',
+  'United States': 'us',
+  'Switzerland': 'ch',
+  'Brazil': 'br',
+  'Argentina': 'ar',
+  'Mexico': 'mx',
+  'Colombia': 'co',
+  'Chile': 'cl',
+  'Peru': 'pe',
+  'Uruguay': 'uy',
+  'Canada': 'ca',
+  'UK': 'gb',
+  'Germany': 'de',
+  'Spain': 'es',
+  'France': 'fr',
+  'Italy': 'it',
+  'Portugal': 'pt',
+  'Australia': 'au',
+  'Netherlands': 'nl',
+  'Belgium': 'be',
+  'Japan': 'jp',
+  'South Korea': 'kr',
+  'China': 'cn',
+  'India': 'in',
+  'Russia': 'ru',
+  'South Africa': 'za',
+};
+
+// Flag component using flagcdn.com
+const FlagIcon = ({ country, size = 80 }) => {
+  const countryCode = countryCodeMap[country]?.toLowerCase() || 'un';
+  
+  return (
+    <img
+      src={`https://flagcdn.com/w${size}/${countryCode}.png`}
+      srcSet={`https://flagcdn.com/w${size * 2}/${countryCode}.png 2x`}
+      width={size}
+      height={Math.round(size * 0.75)}
+      alt={`${country} flag`}
+      className="rounded shadow-sm mx-auto"
+      style={{ objectFit: 'cover' }}
+      onError={(e) => {
+        // Fallback to a placeholder if flag not found
+        e.target.style.display = 'none';
+      }}
+    />
+  );
 };
 
 const Representatives = () => {
@@ -82,8 +111,8 @@ const Representatives = () => {
               >
                 {/* Country Flag */}
                 <div className="text-center mb-6">
-                  <div className="text-7xl mb-4">
-                    {countryFlags[rep.country] || rep.flag_emoji || '🌍'}
+                  <div className="mb-4">
+                    <FlagIcon country={rep.country} size={80} />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-1" data-testid="rep-country">{rep.country}</h2>
                   <p className="text-gray-600">{rep.region}</p>
