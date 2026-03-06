@@ -1697,7 +1697,7 @@ const styles = StyleSheet.create({
   addToCartBtn: { backgroundColor: T.primary, width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
 
   // Cart Modal
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'flex-end' },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', padding: 16 },
   cartModal: { backgroundColor: T.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: height * 0.7 },
   cartModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, borderBottomWidth: 1, borderBottomColor: T.cardBorder },
   cartModalTitle: { fontSize: 20, fontWeight: '700', color: T.text },
@@ -1835,7 +1835,7 @@ const styles = StyleSheet.create({
   infoCardText: { fontSize: 13, color: T.textMuted, lineHeight: 20 },
 
   // Payment Modal
-  paymentModal: { backgroundColor: T.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, maxHeight: height * 0.85 },
+  paymentModal: { backgroundColor: T.card, borderRadius: 24, padding: 20, maxHeight: height * 0.8 },
   paymentModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   paymentModalTitle: { fontSize: 20, fontWeight: '700', color: T.text },
   paymentProtocolName: { fontSize: 18, fontWeight: '600', color: T.text, textAlign: 'center' },
