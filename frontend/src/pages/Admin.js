@@ -44,7 +44,7 @@ export default function Admin() {
       if (searchCode.length >= 2) {
         setSearching(true);
         try {
-          const res = await fetch(`${API_URL}/api/admin/codes?search=${encodeURIComponent(searchCode)}&limit=100`, {
+          const res = await fetch(`${API_URL}/api/admin/codes?search=${encodeURIComponent(searchCode)}&limit=250`, {
             headers: { 'x-admin-password': password }
           });
           if (res.ok) {
@@ -67,7 +67,7 @@ export default function Admin() {
   
   const loadCodes = async (pwd, skip = 0, reset = false) => {
     try {
-      const res = await fetch(`${API_URL}/api/admin/codes?limit=100&skip=${skip}`, {
+      const res = await fetch(`${API_URL}/api/admin/codes?limit=250&skip=${skip}`, {
         headers: { 'x-admin-password': pwd }
       });
       if (res.ok) {
