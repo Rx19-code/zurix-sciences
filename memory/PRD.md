@@ -55,6 +55,15 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - [x] Removed unused `isMobile` state from Verify.js
 - [x] Added data-testid attributes for testing
 - [x] Both QR scan and manual entry visible for all users
+- [x] Translated QR scanner error messages to English
+
+### New Features (March 6, 2026)
+- [x] Created `/protocols` page with full protocol system
+- [x] Protocol cards with category, duration, and languages
+- [x] Batch number validation modal
+- [x] Download options in 3 languages (EN, ES, PT)
+- [x] Added "Protocols" link to navigation menu
+- [x] Responsive design for mobile and desktop
 
 ## Prioritized Backlog
 
