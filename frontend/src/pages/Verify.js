@@ -34,7 +34,7 @@ const Verify = () => {
       );
     } catch (err) {
       console.error('Camera error:', err);
-      setCameraError('Não foi possível acessar a câmera. Permita o acesso ou digite o código manualmente.');
+      setCameraError('Could not access camera. Please allow access or enter the code manually.');
       setShowScanner(false);
     }
   };
@@ -168,7 +168,7 @@ const Verify = () => {
             <div id="qr-reader" style={{ width: '100%', maxWidth: '500px' }}></div>
           </div>
           <p className="p-4 text-center text-white text-sm bg-black/80">
-            Posicione o QR code dentro do quadro
+            Position the QR code inside the frame
           </p>
         </div>
       )}
