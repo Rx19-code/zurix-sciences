@@ -1148,9 +1148,10 @@ async def get_admin_codes(
     x_admin_password: str = Header(None), 
     batch_number: Optional[str] = None, 
     search: Optional[str] = None,
-    limit: int = 10000
+    limit: int = 100,
+    skip: int = 0
 ):
-    """Get all unique codes (admin only)"""
+    """Get unique codes with pagination (admin only)"""
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
     
@@ -1167,10 +1168,21 @@ async def get_admin_codes(
             {"batch_number": {"$regex": search_upper, "$options": "i"}}
         ]
     
-    codes = await db.unique_codes.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
-    total = await db.unique_codes.count_documents({})
+    # Get total count for the query
+    total_matching = await db.unique_codes.count_documents(query)
+    total_all = await db.unique_codes.count_documents({})
     
-    return {"codes": codes, "total": total, "showing": len(codes)}
+    # Get paginated results
+    codes = await db.unique_codes.find(query, {"_id": 0}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    
+    return {
+        "codes": codes, 
+        "total": total_all, 
+        "total_matching": total_matching,
+        "showing": len(codes),
+        "skip": skip,
+        "has_more": skip + len(codes) < total_matching
+    }
 
 @api_router.get("/admin/batches")
 async def get_admin_batches(x_admin_password: str = Header(None)):

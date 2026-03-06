@@ -23,6 +23,9 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('import');
   const [searchCode, setSearchCode] = useState('');
   const [searching, setSearching] = useState(false);
+  const [codesTotal, setCodesTotal] = useState(0);
+  const [hasMoreCodes, setHasMoreCodes] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   
   // Check stored password on mount
   useEffect(() => {
@@ -41,24 +44,52 @@ export default function Admin() {
       if (searchCode.length >= 2) {
         setSearching(true);
         try {
-          const res = await fetch(`${API_URL}/api/admin/codes?search=${encodeURIComponent(searchCode)}&limit=500`, {
+          const res = await fetch(`${API_URL}/api/admin/codes?search=${encodeURIComponent(searchCode)}&limit=100`, {
             headers: { 'x-admin-password': password }
           });
           if (res.ok) {
             const data = await res.json();
             setCodes(data.codes || []);
+            setCodesTotal(data.total_matching || 0);
+            setHasMoreCodes(data.has_more || false);
           }
         } catch (err) {
           console.error('Search error:', err);
         }
         setSearching(false);
       } else if (searchCode.length === 0) {
-        // Reload all codes when search is cleared
-        loadData(password);
+        // Reload codes when search is cleared
+        loadCodes(password, 0, true);
       }
     }, 300);
     return () => clearTimeout(timer);
   }, [searchCode, isLoggedIn, password]);
+  
+  const loadCodes = async (pwd, skip = 0, reset = false) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/codes?limit=100&skip=${skip}`, {
+        headers: { 'x-admin-password': pwd }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (reset) {
+          setCodes(data.codes || []);
+        } else {
+          setCodes(prev => [...prev, ...(data.codes || [])]);
+        }
+        setCodesTotal(data.total || 0);
+        setHasMoreCodes(data.has_more || false);
+      }
+    } catch (err) {
+      console.error('Error loading codes:', err);
+    }
+  };
+  
+  const loadMoreCodes = async () => {
+    setLoadingMore(true);
+    await loadCodes(password, codes.length, false);
+    setLoadingMore(false);
+  };
   
   const loadData = async (pwd) => {
     try {
@@ -76,14 +107,8 @@ export default function Admin() {
         setBatches(batchData.batches || []);
       }
       
-      // Load codes (all codes, no limit for initial load)
-      const codesRes = await fetch(`${API_URL}/api/admin/codes?limit=10000`, {
-        headers: { 'x-admin-password': pwd }
-      });
-      if (codesRes.ok) {
-        const codesData = await codesRes.json();
-        setCodes(codesData.codes || []);
-      }
+      // Load codes with pagination (only first 100)
+      await loadCodes(pwd, 0, true);
       
       // Load logs
       const logsRes = await fetch(`${API_URL}/api/admin/verification-logs?limit=50`, {
@@ -392,7 +417,7 @@ export default function Admin() {
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">
-                All Codes ({codes.length})
+                All Codes ({codes.length} of {codesTotal})
                 {searching && <span className="ml-2 text-blue-400 text-sm">Searching...</span>}
               </h2>
               <input
@@ -407,19 +432,20 @@ export default function Admin() {
             {filteredCodes.length === 0 ? (
               <p className="text-gray-400">{searching ? 'Searching...' : 'No codes found'}</p>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="text-left text-gray-400 border-b border-gray-700">
-                      <th className="pb-3 font-medium">Code</th>
-                      <th className="pb-3 font-medium">Product</th>
-                      <th className="pb-3 font-medium">Batch</th>
-                      <th className="pb-3 font-medium">Scans</th>
-                      <th className="pb-3 font-medium">Status</th>
-                      <th className="pb-3 font-medium">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <>
+                <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                  <table className="w-full">
+                    <thead className="sticky top-0 bg-gray-800">
+                      <tr className="text-left text-gray-400 border-b border-gray-700">
+                        <th className="pb-3 font-medium">Code</th>
+                        <th className="pb-3 font-medium">Product</th>
+                        <th className="pb-3 font-medium">Batch</th>
+                        <th className="pb-3 font-medium">Scans</th>
+                        <th className="pb-3 font-medium">Status</th>
+                        <th className="pb-3 font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     {filteredCodes.map((code, i) => (
                       <tr key={i} className="border-b border-gray-700/50">
                         <td className="py-3 text-white font-mono text-sm">{code.code}</td>
@@ -459,7 +485,21 @@ export default function Admin() {
                     ))}
                   </tbody>
                 </table>
-              </div>
+                </div>
+                
+                {/* Load More Button */}
+                {hasMoreCodes && !searchCode && (
+                  <div className="mt-4 text-center">
+                    <button
+                      onClick={loadMoreCodes}
+                      disabled={loadingMore}
+                      className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold px-6 py-2 rounded-lg transition"
+                    >
+                      {loadingMore ? 'Loading...' : `Load More (${codesTotal - codes.length} remaining)`}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
