@@ -1,86 +1,72 @@
 # Zurix Sciences - Product Requirements Document
 
 ## Original Problem Statement
-Build a professional e-commerce website (Zurix Sciences) for selling peptide research products. The project pivoted from native mobile app to a Progressive Web App (PWA) approach.
+Build a professional e-commerce website (Zurix Sciences) for selling peptide research products with PWA capabilities and product verification system.
 
-## Core Requirements
+## What's Been Implemented
 
-### Website & PWA Features
-- Product catalog, shopping cart, and checkout process
-- Product verification system with QR code scanning (mobile) and manual entry (desktop)
-- Free research protocols gated by batch number validation
-- Multi-language protocol downloads (EN, ES, PT)
-- Automated email system for purchase confirmations
-- Admin panel for managing products, verification codes, and logs
+### March 6, 2026 - Major Updates
+- [x] QR Code Scanner fixed for Android/iOS (camera permission handling)
+- [x] `/protocols` page with free and paid protocols
+- [x] Lead collection system (email, phone, name) saved to `protocol_leads` collection
+- [x] Email delivery via Resend with PDF attachments
+- [x] **USDT Payment System (TRC20)** - Automatic blockchain verification
+- [x] 3 Advanced Protocols at $4.99 each (paid via USDT)
+- [x] Flag images for Representatives page (using flagcdn.com)
+- [x] Admin "All Codes" pagination (250 per page)
+- [x] Protocols link added to navbar and footer
 
-### Mobile App (ON HOLD)
-- React Native app in `mobile/` directory preserved for future development
-
-## User Personas
-- **Researchers**: Need to verify product authenticity and access research protocols
-- **Administrators**: Manage products, codes, and view system logs
+### Previous Implementations
+- [x] Full-stack website (FastAPI + React)
+- [x] PWA conversion with manifest and icons
+- [x] Product verification with QR scanner
+- [x] Dynamic protocol system with batch validation
+- [x] Multi-language protocol downloads (EN, ES, PT)
+- [x] Resend email integration
+- [x] Server-side admin search
 
 ## Technical Architecture
 
 ### Stack
-- **Backend**: FastAPI, MongoDB (Motor), Resend (emails)
+- **Backend**: FastAPI, MongoDB (Motor), Resend, httpx (Tron API)
 - **Frontend**: React, TailwindCSS, PWA, html5-qrcode
-- **Mobile (ON HOLD)**: React Native, Expo
+- **Payments**: USDT TRC20 via Tron blockchain
 
 ### Key Endpoints
-- `/api/verify-product` - Product verification
-- `/api/protocols-v2/validate-batch` - Batch validation for protocols
-- `/api/protocols-v2/download` - Protocol PDF download
-- `/api/admin/codes` - Server-side search for codes
-- `/api/admin/test-email` - Test email via Resend
+- `/api/protocols-v2` - List all protocols (free + paid)
+- `/api/protocols-v2/validate-batch` - Validate batch for free protocols
+- `/api/protocols-v2/send-email` - Send free protocol via email
+- `/api/payment/create-order` - Create paid protocol order
+- `/api/payment/verify` - Verify USDT payment on Tron blockchain
+- `/api/admin/codes` - Paginated codes list
 
-### Database Schema
-- `users`: `{email, hashed_password}`
-- `unique_codes`: `{code, product_name, batch_number, ...}`
-- `protocols_v2`: Protocol definitions with language-specific PDFs
+### Database Collections
+- `users` - User accounts
+- `unique_codes` - Product verification codes
+- `protocol_leads` - Collected leads from protocol downloads
+- `protocol_orders` - Paid protocol orders
+- `protocol_downloads` - Download logs
 
-## What's Been Implemented
-
-### Completed (March 2026)
-- [x] Full-stack website (FastAPI + React) deployed
-- [x] PWA conversion with manifest and icons
-- [x] QR code scanner on `/verify` page for all users
-- [x] Dynamic protocol system with batch validation
-- [x] Multi-language protocol downloads (9 PDFs uploaded)
-- [x] Resend email integration with verified domain
-- [x] Server-side admin search (scalable)
-- [x] Mobile app network bug fixed (app on hold)
-
-### Code Cleanup (March 6, 2026)
-- [x] Removed unused `isMobile` state from Verify.js
-- [x] Added data-testid attributes for testing
-- [x] Both QR scan and manual entry visible for all users
-- [x] Translated QR scanner error messages to English
-
-### New Features (March 6, 2026)
-- [x] Created `/protocols` page with full protocol system
-- [x] Protocol cards with category, duration, and languages
-- [x] Batch number validation modal
-- [x] Download options in 3 languages (EN, ES, PT)
-- [x] Added "Protocols" link to navigation menu
-- [x] Responsive design for mobile and desktop
-- [x] **Lead collection system** - email, phone, name saved to database
-- [x] **Email delivery via Resend** - protocol PDFs sent as attachments
-- [x] Multi-language email templates (EN, ES, PT)
+### USDT Wallet
+- **Address**: TJKuseoNmGw1TnwskKjaBCw5FrYUynAP9m
+- **Network**: TRC20 (Tron)
 
 ## Prioritized Backlog
 
-### P0 - Critical (Done)
-- ~~QR Scanner not visible on Android~~ → Code fixed, needs production deploy
+### P0 - Done
+- ~~QR Scanner fix~~
+- ~~Protocols page~~
+- ~~USDT payment system~~
 
-### P1 - High Priority
-- [ ] Implement paid "Advanced Protocols" ($4.99) - Stripe integration
+### P1 - Next
+- [ ] Admin panel for viewing/exporting leads
+- [ ] Create 9 Advanced Protocol PDFs
 
-### P2 - Medium Priority
-- [ ] Add remaining 20 product images (waiting for designer)
-- [ ] Resume native mobile app development
+### P2 - Future
+- [ ] Add 20 product images (waiting for designer)
+- [ ] Resume mobile app development
 
-## Credentials & Access
+## Credentials
 
 ### Production Server
 - **Domain**: zurixsciences.com
@@ -91,16 +77,11 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - **Password**: `Rx050217!`
 
 ### Test Data
-- **Valid Batch Numbers**: 
-  - `ZX-260312-GHK50-1` (GHK-Cu)
-  - `ZX-260209-TB500-1` (TB-500)
+- **Valid Batch Numbers**: `ZX-260312-GHK50-1`, `ZX-260209-TB500-1`
 
-## Known Issues
-- User has recurring DNS/VPN/network issues (local to their network in Paraguay)
-- Workarounds: disconnect VPN, use mobile data, change DNS to 8.8.8.8
-
-## Files of Reference
-- `frontend/src/pages/Verify.js` - QR scanner and verification
-- `frontend/public/manifest.json` - PWA config
-- `backend/server.py` - API endpoints
-- `backend/protocols_pdf/` - Protocol PDF files
+## Files Reference
+- `frontend/src/pages/Protocols.js` - Protocols page with payment flow
+- `frontend/src/pages/Verify.js` - QR scanner
+- `frontend/src/pages/Admin.js` - Admin panel
+- `frontend/src/pages/Representatives.js` - Flag images
+- `backend/server.py` - All API endpoints including payment verification
