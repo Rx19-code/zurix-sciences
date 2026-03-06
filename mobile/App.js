@@ -1304,13 +1304,13 @@ function ProfileScreen({ user, onLogin, onLogout }) {
   const menuItems = user ? [
     { title: 'My Purchases', subtitle: 'View purchased protocols', icon: 'document-text-outline', color: T.primary, action: () => Alert.alert('Coming Soon', 'Purchase history will be available soon') },
     { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
-    { title: 'Contact Support', subtitle: 'WhatsApp Paraguay', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_PARAGUAY, 'Hello Zurix Sciences Support') },
+    { title: 'Contact Support', subtitle: 'Threema', icon: 'chatbubbles', color: '#3fe669', action: () => openURL('https://threema.id/2D9DAD9R') },
     { title: 'Logout', subtitle: 'Sign out of your account', icon: 'log-out-outline', color: T.warning, action: handleLogout },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
   ] : [
     { title: 'Sign In / Register', subtitle: 'Access your account', icon: 'person-add-outline', color: T.primary, action: () => setShowAuthModal(true) },
     { title: 'Visit Website', subtitle: 'www.zurixsciences.com', icon: 'globe-outline', color: T.primary, action: () => openURL('https://www.zurixsciences.com') },
-    { title: 'Contact Support', subtitle: 'WhatsApp Paraguay', icon: 'logo-whatsapp', color: T.success, action: () => openWhatsApp(WHATSAPP_PARAGUAY, 'Hello Zurix Sciences Support') },
+    { title: 'Contact Support', subtitle: 'Threema', icon: 'chatbubbles', color: '#3fe669', action: () => openURL('https://threema.id/2D9DAD9R') },
     { title: 'Clear All Data', subtitle: 'Remove local data', icon: 'trash-outline', color: T.danger, action: clearAllData },
   ];
 
