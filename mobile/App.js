@@ -1050,7 +1050,7 @@ function ProtocolsScreen({ user, onLoginRequired }) {
       {/* Protocol Detail Modal */}
       <Modal visible={!!selectedProtocol} transparent animationType="slide">
         <View style={styles.modalOverlay}>
-          <View style={[styles.paymentModal, { maxHeight: '85%' }]}>
+          <View style={[styles.paymentModal, { minHeight: 400 }]}>
             <View style={styles.paymentModalHeader}>
               <Text style={styles.paymentModalTitle}>
                 {selectedProtocol?.title}
@@ -1060,7 +1060,7 @@ function ProtocolsScreen({ user, onLoginRequired }) {
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
               {selectedProtocol && (
                 <>
                   <Text style={styles.protocolDesc}>{selectedProtocol.description}</Text>
