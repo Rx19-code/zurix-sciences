@@ -29,6 +29,12 @@ export default function Admin() {
   const [hasMoreCodes, setHasMoreCodes] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   
+  // Edit batch modal
+  const [editingBatch, setEditingBatch] = useState(null);
+  const [editPurity, setEditPurity] = useState('');
+  const [editExpiryDate, setEditExpiryDate] = useState('');
+  const [savingBatch, setSavingBatch] = useState(false);
+  
   // Check stored password on mount
   useEffect(() => {
     const storedPassword = sessionStorage.getItem('admin_password');
@@ -91,6 +97,41 @@ export default function Admin() {
     setLoadingMore(true);
     await loadCodes(password, codes.length, false);
     setLoadingMore(false);
+  };
+  
+  const openEditBatch = (batch) => {
+    setEditingBatch(batch._id);
+    setEditPurity(batch.purity || '');
+    setEditExpiryDate(batch.expiry_date || '');
+  };
+  
+  const saveEditBatch = async () => {
+    setSavingBatch(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/batch/update`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': password
+        },
+        body: JSON.stringify({
+          batch_number: editingBatch,
+          purity: editPurity || null,
+          expiry_date: editExpiryDate || null
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(`Updated ${data.updated} codes!`);
+        setEditingBatch(null);
+        loadData(password); // Reload data
+      } else {
+        alert(data.detail || 'Error updating batch');
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+    setSavingBatch(false);
   };
   
   const loadData = async (pwd) => {
@@ -545,17 +586,20 @@ export default function Admin() {
                     <tr className="text-left text-gray-400 border-b border-gray-700">
                       <th className="pb-3 font-medium">Batch Number</th>
                       <th className="pb-3 font-medium">Product</th>
-                      <th className="pb-3 font-medium">Total Codes</th>
+                      <th className="pb-3 font-medium">Purity</th>
+                      <th className="pb-3 font-medium">Expiry Date</th>
+                      <th className="pb-3 font-medium">Total</th>
                       <th className="pb-3 font-medium">Verified</th>
-                      <th className="pb-3 font-medium">Created</th>
                       <th className="pb-3 font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {batches.map((batch, i) => (
                       <tr key={i} className="border-b border-gray-700/50">
-                        <td className="py-4 text-white font-mono">{batch._id}</td>
-                        <td className="py-4 text-gray-300">{batch.product_name}</td>
+                        <td className="py-4 text-white font-mono text-sm">{batch._id}</td>
+                        <td className="py-4 text-gray-300 text-sm">{batch.product_name}</td>
+                        <td className="py-4 text-gray-300 text-sm">{batch.purity || '-'}</td>
+                        <td className="py-4 text-gray-300 text-sm">{batch.expiry_date || '-'}</td>
                         <td className="py-4 text-gray-300">{batch.total_codes}</td>
                         <td className="py-4">
                           <span className={`px-2 py-1 rounded text-sm ${
@@ -564,10 +608,13 @@ export default function Admin() {
                             {batch.verified_codes}
                           </span>
                         </td>
-                        <td className="py-4 text-gray-400 text-sm">
-                          {batch.created_at ? new Date(batch.created_at).toLocaleDateString() : '-'}
-                        </td>
-                        <td className="py-4">
+                        <td className="py-4 space-x-2">
+                          <button
+                            onClick={() => openEditBatch(batch)}
+                            className="text-blue-400 hover:text-blue-300 text-sm"
+                          >
+                            Edit
+                          </button>
                           <button
                             onClick={() => handleDeleteBatch(batch._id)}
                             className="text-red-400 hover:text-red-300 text-sm"
@@ -579,6 +626,54 @@ export default function Admin() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+            
+            {/* Edit Batch Modal */}
+            {editingBatch && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md border border-gray-700">
+                  <h3 className="text-lg font-bold text-white mb-4">Edit Batch: {editingBatch}</h3>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-gray-400 text-sm mb-2">Purity</label>
+                      <input
+                        type="text"
+                        value={editPurity}
+                        onChange={(e) => setEditPurity(e.target.value)}
+                        placeholder="e.g. ≥99%"
+                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 text-sm mb-2">Expiry Date</label>
+                      <input
+                        type="date"
+                        value={editExpiryDate}
+                        onChange={(e) => setEditExpiryDate(e.target.value)}
+                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3 mt-6">
+                    <button
+                      onClick={() => setEditingBatch(null)}
+                      className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={saveEditBatch}
+                      disabled={savingBatch}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg disabled:opacity-50"
+                    >
+                      {savingBatch ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

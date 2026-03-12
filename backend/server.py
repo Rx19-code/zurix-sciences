@@ -243,6 +243,11 @@ class ImportCodesRequest(BaseModel):
     purity: Optional[str] = "≥99%"
     expiry_date: Optional[str] = None
 
+class UpdateBatchRequest(BaseModel):
+    batch_number: str
+    purity: Optional[str] = None
+    expiry_date: Optional[str] = None
+
 # ==================== USER AUTHENTICATION MODELS ====================
 
 class UserRegisterRequest(BaseModel):
@@ -1532,6 +1537,35 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
         "duplicates": len(existing_codes)
     }
 
+@api_router.put("/admin/batch/update")
+async def update_batch_info(request: UpdateBatchRequest, x_admin_password: str = Header(None)):
+    """Update purity and expiry_date for all codes in a batch"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    update_fields = {}
+    if request.purity:
+        update_fields["purity"] = request.purity
+    if request.expiry_date:
+        update_fields["expiry_date"] = request.expiry_date
+    
+    if not update_fields:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    
+    result = await db.unique_codes.update_many(
+        {"batch_number": request.batch_number.upper()},
+        {"$set": update_fields}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail=f"Batch '{request.batch_number}' not found")
+    
+    return {
+        "success": True,
+        "message": f"Updated {result.modified_count} codes in batch {request.batch_number}",
+        "updated": result.modified_count
+    }
+
 @api_router.get("/admin/codes")
 async def get_admin_codes(
     x_admin_password: str = Header(None), 
@@ -1583,6 +1617,8 @@ async def get_admin_batches(x_admin_password: str = Header(None)):
         {"$group": {
             "_id": "$batch_number",
             "product_name": {"$first": "$product_name"},
+            "purity": {"$first": "$purity"},
+            "expiry_date": {"$first": "$expiry_date"},
             "total_codes": {"$sum": 1},
             "verified_codes": {"$sum": {"$cond": [{"$gt": ["$verification_count", 0]}, 1, 0]}},
             "created_at": {"$min": "$created_at"}
