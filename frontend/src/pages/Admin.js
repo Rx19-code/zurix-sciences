@@ -12,6 +12,8 @@ export default function Admin() {
   const [productId, setProductId] = useState('');
   const [productName, setProductName] = useState('');
   const [batchNumber, setBatchNumber] = useState('');
+  const [purity, setPurity] = useState('≥99%');
+  const [expiryDate, setExpiryDate] = useState('');
   const [codesText, setCodesText] = useState('');
   const [importResult, setImportResult] = useState(null);
   
@@ -178,6 +180,8 @@ export default function Admin() {
           product_id: productId,
           product_name: productName,
           batch_number: batchNumber,
+          purity: purity,
+          expiry_date: expiryDate,
           codes: codes
         })
       });
@@ -365,6 +369,29 @@ export default function Admin() {
                     value={batchNumber}
                     onChange={(e) => setBatchNumber(e.target.value.toUpperCase())}
                     placeholder="e.g. ZX-261216-RT10-1"
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Purity</label>
+                  <input
+                    type="text"
+                    value={purity}
+                    onChange={(e) => setPurity(e.target.value)}
+                    placeholder="e.g. ≥99%"
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Expiry Date</label>
+                  <input
+                    type="date"
+                    value={expiryDate}
+                    onChange={(e) => setExpiryDate(e.target.value)}
                     className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>

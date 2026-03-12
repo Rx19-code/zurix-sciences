@@ -240,6 +240,8 @@ class ImportCodesRequest(BaseModel):
     product_name: str
     batch_number: str
     codes: List[str]
+    purity: Optional[str] = "≥99%"
+    expiry_date: Optional[str] = None
 
 # ==================== USER AUTHENTICATION MODELS ====================
 
@@ -1512,6 +1514,8 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
             "batch_number": request.batch_number.strip().upper(),
             "product_id": request.product_id,
             "product_name": request.product_name,
+            "purity": request.purity or "≥99%",
+            "expiry_date": request.expiry_date,
             "verification_count": 0,
             "first_verified_at": None,
             "last_verified_at": None,
