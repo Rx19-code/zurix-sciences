@@ -1323,11 +1323,18 @@ async def update_product_image(request: UpdateProductImageRequest, x_admin_passw
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
     
-    # Find and update product by name (case-insensitive)
+    # First try exact match, then regex match
     result = await db.products.update_one(
-        {"name": {"$regex": f"^{request.product_name}$", "$options": "i"}},
+        {"name": request.product_name},
         {"$set": {"image_url": request.image_url}}
     )
+    
+    if result.matched_count == 0:
+        # Try case-insensitive partial match
+        result = await db.products.update_one(
+            {"name": {"$regex": request.product_name, "$options": "i"}},
+            {"$set": {"image_url": request.image_url}}
+        )
     
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail=f"Product '{request.product_name}' not found")
