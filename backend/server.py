@@ -1313,6 +1313,31 @@ async def get_product_types():
     types = await db.products.distinct("product_type")
     return {"types": sorted(types)}
 
+class UpdateProductImageRequest(BaseModel):
+    product_name: str
+    image_url: str
+
+@api_router.put("/admin/products/update-image")
+async def update_product_image(request: UpdateProductImageRequest, x_admin_password: str = Header(None)):
+    """Update product image URL (admin only)"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    # Find and update product by name (case-insensitive)
+    result = await db.products.update_one(
+        {"name": {"$regex": f"^{request.product_name}$", "$options": "i"}},
+        {"$set": {"image_url": request.image_url}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail=f"Product '{request.product_name}' not found")
+    
+    return {
+        "success": True,
+        "message": f"Image updated for '{request.product_name}'",
+        "image_url": request.image_url
+    }
+
 # Representatives endpoints
 @api_router.get("/representatives", response_model=List[Representative])
 async def get_representatives():
