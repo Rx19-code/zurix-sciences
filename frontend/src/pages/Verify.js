@@ -22,9 +22,13 @@ const Verify = () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     try {
-      // First, explicitly request camera permission
+      // First, explicitly request camera permission with higher resolution for small QR codes
       const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: "environment" } 
+        video: { 
+          facingMode: "environment",
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        } 
       });
       // Stop the stream immediately - we just needed permission
       stream.getTracks().forEach(track => track.stop());
@@ -48,9 +52,18 @@ const Verify = () => {
         cameraConfig = { facingMode: "environment" };
       }
       
+      // Optimized settings for small QR codes
       await html5QrCode.start(
         cameraConfig,
-        { fps: 10, qrbox: { width: 250, height: 250 } },
+        { 
+          fps: 15,  // Higher FPS for faster detection
+          qrbox: { width: 180, height: 180 },  // Smaller scan area - forces user to get closer
+          aspectRatio: 1.0,
+          disableFlip: false,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true  // Use native detector if available
+          }
+        },
         (decodedText) => {
           handleQRCodeDetected(decodedText);
         },
