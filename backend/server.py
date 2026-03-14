@@ -37,8 +37,9 @@ SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
 
-# PDF storage directory
-PDF_STORAGE_DIR = ROOT_DIR / "protocols_pdf"
+# PDF storage directory - production path takes priority
+PRODUCTION_PDF_DIR = Path("/var/www/zurix/assets/protocols")
+PDF_STORAGE_DIR = PRODUCTION_PDF_DIR if PRODUCTION_PDF_DIR.exists() else ROOT_DIR / "protocols_pdf"
 PDF_STORAGE_DIR.mkdir(exist_ok=True)
 
 
