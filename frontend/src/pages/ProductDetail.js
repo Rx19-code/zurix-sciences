@@ -119,12 +119,6 @@ const ProductDetail = () => {
                   <span className="text-gray-600">Dosage:</span>
                   <span className="font-semibold text-gray-900">{product.dosage}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b">
-                  <span className="text-gray-600">Verification Code:</span>
-                  <span className="font-mono text-sm font-semibold text-blue-600" data-testid="verification-code">
-                    {product.verification_code}
-                  </span>
-                </div>
               </div>
 
               {/* Price and Add to Cart */}
@@ -196,10 +190,6 @@ const ProductDetail = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Dosage:</span>
                     <span className="font-semibold text-gray-900">{product.dosage}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Verification Code:</span>
-                    <span className="font-mono font-semibold text-blue-600">QR Code (ZX-...)</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Expiry Date:</span>
