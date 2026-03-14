@@ -11,8 +11,17 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - [x] **PDF watermarking** with "ZURIX SCIENCES - FOR RESEARCH ONLY" + "Downloaded by: [email]"
 - [x] Single-use enforcement: each code allows only one protocol download
 - [x] New endpoints: `POST /api/protocols-v2/validate-code`, `POST /api/protocols-v2/send-protocol`
-- [x] Frontend redesigned: inline code validation flow (no more modal for free protocols)
+- [x] Frontend redesigned: inline code validation flow with protocol cards display
 - [x] Lead data saved to `protocol_leads` with verification code tracking
+- [x] **All 8 free protocols with 24 PDFs** (8 protocols x 3 languages: EN/ES/PT):
+  1. GHK-Cu 50mg
+  2. GHK-Cu 100mg
+  3. TB-500 (Thymosin Beta-4)
+  4. Glow Blend 70mg
+  5. IGF-1 LR3 1mg
+  6. Klow Blend 80mg
+  7. Oxytocin 10mg
+  8. Retatrutide 10mg
 - [x] Backward compatibility: old batch validation endpoints still functional
 
 ### March 6, 2026 - Previous Major Updates
@@ -25,7 +34,6 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - [x] Flag images for Representatives page (using flagcdn.com)
 - [x] Admin "All Codes" pagination (250 per page)
 - [x] Admin batch editing (purity, expiry_date)
-- [x] Protocols link added to navbar and footer
 
 ### Previous Implementations
 - [x] Full-stack website (FastAPI + React)
@@ -52,21 +60,31 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - `/api/admin/codes` - Paginated codes list
 
 ### Database Collections
-- `unique_codes` - Product verification codes (now with `protocol_downloaded_at`, `protocol_downloaded_by`, `protocol_language`)
-- `protocol_leads` - Collected leads from protocol downloads (now with `verification_code` field)
+- `unique_codes` - Product verification codes (with `protocol_downloaded_at`, `protocol_downloaded_by`, `protocol_language`)
+- `protocol_leads` - Collected leads from protocol downloads (with `verification_code` field)
 - `protocol_orders` - Paid protocol orders
-- `protocol_downloads` - Download logs (now with `verification_code`, `watermarked` fields)
+- `protocol_downloads` - Download logs (with `verification_code`, `watermarked` fields)
+
+### PDF Storage Structure
+```
+/app/backend/protocols_pdf/
+├── en/  (8 PDFs)
+├── es/  (8 PDFs)
+└── pt/  (8 PDFs)
+```
+Production: `/var/www/zurix/assets/protocols/{lang}/`
 
 ## Prioritized Backlog
 
 ### P0 - Done
 - ~~Protocol system refactor (single-use code + watermarking)~~
+- ~~All 8 protocols with 24 PDFs configured~~
 - ~~QR Scanner fix~~
 - ~~USDT payment system~~
 
 ### P1 - Next
 - [ ] Admin panel - Leads tab (view/export collected contacts from protocol downloads)
-- [ ] Clarify paid "Advanced Protocols" with user (keep or remove USDT UI)
+- [ ] Clarify paid "Advanced Protocols" (keep or update USDT UI)
 
 ### P2 - Future
 - [ ] Complete 5 missing product images (waiting on user assets)
@@ -83,7 +101,7 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 - **Password**: `Rx050217!`
 
 ### Test Data
-- **Valid Test Codes**: `ZX-260312-GHK50-1-TEST01` (GHK-Cu), `ZX-260209-TB500-1-TEST01` (TB-500), `ZX-260115-BPC157-1-TEST01` (BPC-157)
+- **Valid Test Codes**: `ZX-260312-GHK50-1-TEST01` (GHK-Cu 50mg), `ZX-260209-TB500-1-TEST01` (TB-500), `ZX-260115-BPC157-1-TEST01` (BPC-157 - no protocol PDF)
 
 ## Files Reference
 - `frontend/src/pages/Protocols.js` - Protocols page with code validation + paid protocols

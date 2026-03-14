@@ -557,44 +557,114 @@ async def reset_password(request: PasswordResetConfirm):
 
 # Protocol definitions - keywords to match batch/product names
 PROTOCOL_DEFINITIONS = {
-    "proto-bpc157": {
-        "title": "BPC-157 Recovery Protocol",
-        "description": "A comprehensive healing protocol designed to accelerate tissue repair and reduce inflammation.",
+    "proto-ghkcu50": {
+        "title": "GHK-Cu 50mg Protocol",
+        "description": "Protocol for skin repair and anti-aging using GHK-Cu 50mg copper peptides.",
         "category": "Basic",
-        "duration_weeks": 4,
-        "product_keywords": ["BPC-157", "BPC157", "BPC"],
+        "duration_weeks": 8,
+        "product_keywords": ["GHK-Cu 50", "GHK50"],
         "languages": {
-            "en": "bpc157_protocol_en.pdf",
-            "es": "bpc157_protocol_es.pdf",
-            "pt": "bpc157_protocol_pt.pdf"
+            "en": "en/ghk-cu-50mg.pdf",
+            "es": "es/ghk-cu-50mg.pdf",
+            "pt": "pt/ghk-cu-50mg.pdf"
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    "proto-ghkcu100": {
+        "title": "GHK-Cu 100mg Protocol",
+        "description": "Advanced skin rejuvenation and anti-aging protocol using GHK-Cu 100mg copper peptides.",
+        "category": "Basic",
+        "duration_weeks": 8,
+        "product_keywords": ["GHK-Cu 100", "GHK100", "AHK-Cu"],
+        "languages": {
+            "en": "en/ghk-cu-100mg.pdf",
+            "es": "es/ghk-cu-100mg.pdf",
+            "pt": "pt/ghk-cu-100mg.pdf"
         },
         "price": 0,
         "requires_batch": True
     },
     "proto-tb500": {
         "title": "TB-500 Tissue Repair Protocol",
-        "description": "Advanced protocol for deep tissue healing and muscle recovery.",
+        "description": "Advanced protocol for deep tissue healing and muscle recovery using Thymosin Beta-4.",
         "category": "Basic",
         "duration_weeks": 6,
-        "product_keywords": ["TB-500", "TB500", "TB-5", "thymosin beta"],
+        "product_keywords": ["TB-500", "TB500", "TB-5", "thymosin beta", "TB4"],
         "languages": {
-            "en": "tb500_protocol_en.pdf",
-            "es": "tb500_protocol_es.pdf",
-            "pt": "tb500_protocol_pt.pdf"
+            "en": "en/tb500.pdf",
+            "es": "es/tb500.pdf",
+            "pt": "pt/tb500.pdf"
         },
         "price": 0,
         "requires_batch": True
     },
-    "proto-ghkcu": {
-        "title": "GHK-Cu Skin Rejuvenation Protocol",
-        "description": "Protocol for skin repair and anti-aging using copper peptides.",
+    "proto-glow-blend": {
+        "title": "Glow Blend 70mg Protocol",
+        "description": "Comprehensive skin glow and rejuvenation protocol using the Glow Blend peptide combination.",
         "category": "Basic",
         "duration_weeks": 8,
-        "product_keywords": ["GHK-Cu", "GHK-CU", "GHKCU", "GHK50", "GHK100", "GHK"],
+        "product_keywords": ["Glow Blend", "Glow"],
         "languages": {
-            "en": "ghkcu_protocol_en.pdf",
-            "es": "ghkcu_protocol_es.pdf",
-            "pt": "ghkcu_protocol_pt.pdf"
+            "en": "en/glow-blend-70mg.pdf",
+            "es": "es/glow-blend-70mg.pdf",
+            "pt": "pt/glow-blend-70mg.pdf"
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    "proto-igf1": {
+        "title": "IGF-1 LR3 1mg Protocol",
+        "description": "Research protocol for IGF-1 LR3, a growth factor peptide for muscle and tissue research.",
+        "category": "Basic",
+        "duration_weeks": 4,
+        "product_keywords": ["IGF-1", "IGF1", "LR3"],
+        "languages": {
+            "en": "en/igf1-lr3-1mg.pdf",
+            "es": "es/igf1-lr3-1mg.pdf",
+            "pt": "pt/igf1-lr3-1mg.pdf"
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    "proto-klow-blend": {
+        "title": "Klow Blend 80mg Protocol",
+        "description": "Protocol for the Klow Blend peptide combination for advanced research applications.",
+        "category": "Basic",
+        "duration_weeks": 8,
+        "product_keywords": ["Klow Blend", "Klow"],
+        "languages": {
+            "en": "en/klow-blend-80mg.pdf",
+            "es": "es/klow-blend-80mg.pdf",
+            "pt": "pt/klow-blend-80mg.pdf"
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    "proto-oxytocin": {
+        "title": "Oxytocin 10mg Protocol",
+        "description": "Research protocol for Oxytocin peptide applications and dosing guidelines.",
+        "category": "Basic",
+        "duration_weeks": 4,
+        "product_keywords": ["Oxytocin"],
+        "languages": {
+            "en": "en/oxytocin-10mg.pdf",
+            "es": "es/oxytocin-10mg.pdf",
+            "pt": "pt/oxytocin-10mg.pdf"
+        },
+        "price": 0,
+        "requires_batch": True
+    },
+    "proto-retatrutide": {
+        "title": "Retatrutide 10mg Protocol",
+        "description": "Research protocol for Retatrutide, a triple GLP-1/GIP/Glucagon receptor agonist.",
+        "category": "Basic",
+        "duration_weeks": 12,
+        "product_keywords": ["Retatrutide", "Retatrutida"],
+        "languages": {
+            "en": "en/retatrutide-10mg.pdf",
+            "es": "es/retatrutide-10mg.pdf",
+            "pt": "pt/retatrutide-10mg.pdf"
         },
         "price": 0,
         "requires_batch": True
