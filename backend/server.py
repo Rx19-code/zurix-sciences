@@ -5,6 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import io
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
@@ -18,6 +19,9 @@ import secrets
 import resend
 import asyncio
 import base64
+from PyPDF2 import PdfReader, PdfWriter
+from reportlab.pdfgen import canvas as rl_canvas
+from reportlab.lib.colors import Color
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -36,6 +40,59 @@ if RESEND_API_KEY:
 # PDF storage directory
 PDF_STORAGE_DIR = ROOT_DIR / "protocols_pdf"
 PDF_STORAGE_DIR.mkdir(exist_ok=True)
+
+
+def create_watermarked_pdf(pdf_path: Path, email: str) -> bytes:
+    """Add watermark text to each page of a PDF"""
+    reader = PdfReader(str(pdf_path))
+    writer = PdfWriter()
+
+    for page in reader.pages:
+        width = float(page.mediabox.width)
+        height = float(page.mediabox.height)
+
+        # Create watermark overlay
+        packet = io.BytesIO()
+        c = rl_canvas.Canvas(packet, pagesize=(width, height))
+
+        # Footer watermark - semi-transparent
+        c.setFillColor(Color(0.4, 0.4, 0.4, alpha=0.4))
+        c.setFont("Helvetica-Bold", 8)
+        c.drawString(20, 15, f"ZURIX SCIENCES - FOR RESEARCH ONLY  |  Downloaded by: {email}")
+
+        # Diagonal center watermark (very light)
+        c.saveState()
+        c.translate(width / 2, height / 2)
+        c.rotate(45)
+        c.setFillColor(Color(0.7, 0.7, 0.7, alpha=0.08))
+        c.setFont("Helvetica-Bold", 48)
+        c.drawCentredString(0, 0, "ZURIX SCIENCES")
+        c.restoreState()
+
+        c.save()
+        packet.seek(0)
+
+        # Merge watermark onto page
+        watermark_page = PdfReader(packet).pages[0]
+        page.merge_page(watermark_page)
+        writer.add_page(page)
+
+    output = io.BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
+def find_protocol_for_product(product_name: str):
+    """Auto-detect which protocol matches a product based on its name"""
+    product_upper = product_name.upper()
+    for proto_id, proto_data in PROTOCOL_DEFINITIONS.items():
+        if not proto_data.get("requires_batch", True):
+            continue
+        for keyword in proto_data["product_keywords"]:
+            if keyword.upper() in product_upper:
+                return proto_id, proto_data
+    return None, None
+
 
 async def send_protocol_email(user_email: str, user_name: str, protocol: dict, pdf_path: Path = None):
     """Send protocol purchase confirmation email with PDF attachment"""
@@ -608,6 +665,17 @@ class SendProtocolEmailRequest(BaseModel):
     phone: Optional[str] = None
     name: Optional[str] = None
 
+# NEW: Single-use code validation models
+class ValidateUniqueCodeRequest(BaseModel):
+    code: str
+
+class SendProtocolByCodeRequest(BaseModel):
+    code: str
+    language: str
+    email: str
+    phone: Optional[str] = None
+    name: Optional[str] = None
+
 # USDT Payment Models
 class CreatePaymentRequest(BaseModel):
     protocol_id: str
@@ -774,7 +842,225 @@ async def validate_batch_for_protocol(request: ValidateBatchRequest):
         "message": result["message"] + " Please enter a valid batch number from your product label."
     }
 
-@api_router.get("/protocols-v2/download")
+# ==================== NEW: SINGLE-USE CODE PROTOCOL SYSTEM ====================
+
+@api_router.post("/protocols-v2/validate-code")
+async def validate_unique_code(request: ValidateUniqueCodeRequest):
+    """Validate a unique verification code and auto-detect the matching protocol"""
+    code = request.code.strip().upper()
+
+    unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+
+    if not unique_code:
+        return {
+            "success": True,
+            "valid": False,
+            "message": "Code not found. Please check your verification code and try again."
+        }
+
+    if unique_code.get("protocol_downloaded_at"):
+        return {
+            "success": True,
+            "valid": False,
+            "message": "This code has already been used to download a protocol. Each code can only be used once.",
+            "already_used": True
+        }
+
+    product_name = unique_code.get("product_name", "")
+    proto_id, proto_data = find_protocol_for_product(product_name)
+
+    if not proto_id:
+        return {
+            "success": True,
+            "valid": False,
+            "message": f"No research protocol available for '{product_name}' at this time."
+        }
+
+    return {
+        "success": True,
+        "valid": True,
+        "message": f"Code validated! Protocol available for {product_name}.",
+        "protocol_id": proto_id,
+        "protocol_title": proto_data["title"],
+        "protocol_description": proto_data["description"],
+        "duration_weeks": proto_data["duration_weeks"],
+        "product_name": product_name,
+        "available_languages": [
+            {"code": "en", "name": "English"},
+            {"code": "es", "name": "Español"},
+            {"code": "pt", "name": "Português"}
+        ]
+    }
+
+
+@api_router.post("/protocols-v2/send-protocol")
+async def send_protocol_by_code(request: SendProtocolByCodeRequest):
+    """Send watermarked protocol PDF via email using a single-use unique code"""
+    code = request.code.strip().upper()
+
+    unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+
+    if not unique_code:
+        raise HTTPException(status_code=404, detail="Verification code not found.")
+
+    if unique_code.get("protocol_downloaded_at"):
+        raise HTTPException(status_code=403, detail="This code has already been used to download a protocol.")
+
+    product_name = unique_code.get("product_name", "")
+    proto_id, proto_data = find_protocol_for_product(product_name)
+
+    if not proto_id:
+        raise HTTPException(status_code=404, detail=f"No protocol available for '{product_name}'.")
+
+    if request.language not in proto_data["languages"]:
+        raise HTTPException(status_code=400, detail="Invalid language selected.")
+
+    pdf_filename = proto_data["languages"][request.language]
+    pdf_path = PDF_STORAGE_DIR / pdf_filename
+
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail=f"PDF not available yet for {request.language.upper()}. Please contact support.")
+
+    # Create watermarked PDF
+    watermarked_pdf_bytes = create_watermarked_pdf(pdf_path, request.email.lower().strip())
+
+    # Save lead data
+    customer_data = {
+        "email": request.email.lower().strip(),
+        "phone": request.phone.strip() if request.phone else None,
+        "name": request.name.strip() if request.name else None,
+        "protocol_id": proto_id,
+        "protocol_title": proto_data["title"],
+        "verification_code": code,
+        "product_name": product_name,
+        "batch_number": unique_code.get("batch_number", ""),
+        "language": request.language,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source": "website_protocols_v3"
+    }
+
+    await db.protocol_leads.update_one(
+        {"email": customer_data["email"], "verification_code": code},
+        {"$set": customer_data, "$inc": {"download_count": 1}},
+        upsert=True
+    )
+
+    if not RESEND_API_KEY:
+        raise HTTPException(status_code=500, detail="Email service not configured.")
+
+    lang_content = {
+        "en": {
+            "subject": f"Your Research Protocol: {proto_data['title']}",
+            "greeting": f"Hello{' ' + request.name if request.name else ''}!",
+            "intro": "Thank you for your interest in Zurix Sciences research protocols.",
+            "attached": "Your personalized protocol is attached to this email as a PDF.",
+            "duration": f"Protocol Duration: {proto_data['duration_weeks']} weeks",
+            "footer": "For research use only. Not for human consumption."
+        },
+        "es": {
+            "subject": f"Tu Protocolo de Investigaci&oacute;n: {proto_data['title']}",
+            "greeting": f"&iexcl;Hola{' ' + request.name if request.name else ''}!",
+            "intro": "Gracias por tu inter&eacute;s en los protocolos de investigaci&oacute;n de Zurix Sciences.",
+            "attached": "Tu protocolo personalizado est&aacute; adjunto a este correo como PDF.",
+            "duration": f"Duraci&oacute;n del Protocolo: {proto_data['duration_weeks']} semanas",
+            "footer": "Solo para uso en investigaci&oacute;n. No para consumo humano."
+        },
+        "pt": {
+            "subject": f"Seu Protocolo de Pesquisa: {proto_data['title']}",
+            "greeting": f"Ol&aacute;{' ' + request.name if request.name else ''}!",
+            "intro": "Obrigado pelo seu interesse nos protocolos de pesquisa da Zurix Sciences.",
+            "attached": "Seu protocolo personalizado est&aacute; anexado a este email em PDF.",
+            "duration": f"Dura&ccedil;&atilde;o do Protocolo: {proto_data['duration_weeks']} semanas",
+            "footer": "Apenas para uso em pesquisa. N&atilde;o para consumo humano."
+        }
+    }
+
+    content = lang_content.get(request.language, lang_content["en"])
+
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #1e3a8a;">Zurix Sciences</h1>
+            <p style="color: #666;">Premium Research Compounds</p>
+        </div>
+
+        <h2 style="color: #333;">{content['greeting']}</h2>
+
+        <p style="color: #666;">{content['intro']}</p>
+
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1e3a8a; margin-top: 0;">{proto_data['title']}</h3>
+            <p style="color: #666;">{proto_data['description']}</p>
+            <p><strong>{content['duration']}</strong></p>
+        </div>
+
+        <p style="color: #333; background: #e8f5e9; padding: 15px; border-radius: 8px;">
+            <strong>&#10003;</strong> {content['attached']}
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <p style="color: #999; font-size: 12px; text-align: center;">
+            {content['footer']}<br>
+            &copy; Zurix Sciences - zurixsciences.com
+        </p>
+    </div>
+    """
+
+    try:
+        pdf_b64 = base64.b64encode(watermarked_pdf_bytes).decode()
+
+        params = {
+            "from": SENDER_EMAIL,
+            "to": [request.email],
+            "subject": content["subject"],
+            "html": html_content,
+            "attachments": [{
+                "filename": f"{proto_data['title']} ({request.language.upper()}).pdf",
+                "content": pdf_b64
+            }]
+        }
+
+        email_result = await asyncio.to_thread(resend.Emails.send, params)
+
+        # Mark code as used - CRITICAL single-use enforcement
+        await db.unique_codes.update_one(
+            {"code": code},
+            {"$set": {
+                "protocol_downloaded_at": datetime.now(timezone.utc).isoformat(),
+                "protocol_downloaded_by": request.email.lower().strip(),
+                "protocol_language": request.language
+            }}
+        )
+
+        # Log download
+        await db.protocol_downloads.insert_one({
+            "protocol_id": proto_id,
+            "verification_code": code,
+            "batch_number": unique_code.get("batch_number", ""),
+            "language": request.language,
+            "email": request.email.lower().strip(),
+            "phone": request.phone,
+            "name": request.name,
+            "watermarked": True,
+            "sent_via": "email",
+            "downloaded_at": datetime.now(timezone.utc).isoformat()
+        })
+
+        logging.info(f"Watermarked protocol sent to {request.email} for code {code}")
+
+        return {
+            "success": True,
+            "message": f"Protocol sent to {request.email}!",
+            "protocol_title": proto_data["title"],
+            "email_id": email_result.get("id") if email_result else None
+        }
+
+    except Exception as e:
+        logging.error(f"Failed to send watermarked protocol: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
+
 async def download_protocol_with_batch(
     protocol_id: str,
     batch_number: str,
