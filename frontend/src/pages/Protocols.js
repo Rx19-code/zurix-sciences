@@ -213,6 +213,7 @@ const Protocols = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const freeProtocols = protocols.filter(p => p.price === 0 || p.requires_batch);
   const paidProtocols = protocols.filter(p => p.price > 0 && !p.requires_batch);
 
   if (loading) {
@@ -240,7 +241,7 @@ const Protocols = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Free Protocol Access Section */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-6">
@@ -254,7 +255,41 @@ const Protocols = () => {
             </p>
           </div>
 
+          {/* Available Free Protocols Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {freeProtocols.map((protocol) => (
+              <div
+                key={protocol.id}
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-5"
+                data-testid={`protocol-card-${protocol.id}`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                    {protocol.category}
+                  </span>
+                  <span className="text-green-600 font-bold text-xs flex items-center gap-1">
+                    <Unlock className="w-3.5 h-3.5" />
+                    FREE
+                  </span>
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-1.5">{protocol.title}</h3>
+                <p className="text-gray-500 text-xs mb-3 line-clamp-2">{protocol.description}</p>
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>{protocol.duration_weeks} weeks</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>EN | ES | PT</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Success State */}
+          <div className="max-w-2xl mx-auto">
           {emailSent ? (
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center" data-testid="email-sent-success">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -471,6 +506,7 @@ const Protocols = () => {
               )}
             </div>
           )}
+          </div>
         </div>
 
         {/* Paid Protocols Section */}
