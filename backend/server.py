@@ -137,6 +137,11 @@ PRODUCTION_PDF_DIR = Path("/var/www/zurix/assets/protocols")
 PDF_STORAGE_DIR = PRODUCTION_PDF_DIR if PRODUCTION_PDF_DIR.exists() else ROOT_DIR / "protocols_pdf"
 PDF_STORAGE_DIR.mkdir(exist_ok=True)
 
+# Product images directory - production path takes priority
+PRODUCTION_IMG_DIR = Path("/var/www/zurix/assets/images/products")
+PRODUCT_IMG_DIR = PRODUCTION_IMG_DIR if PRODUCTION_IMG_DIR.exists() else ROOT_DIR / "product_images"
+PRODUCT_IMG_DIR.mkdir(exist_ok=True)
+
 
 def create_watermarked_pdf(pdf_path: Path, email: str) -> bytes:
     """Add watermark text to each page of a PDF"""
@@ -1784,6 +1789,19 @@ async def get_categories():
     """Get all unique categories"""
     categories = await db.products.distinct("category")
     return {"categories": categories}
+
+@api_router.get("/images/products/{filename}")
+async def serve_product_image(filename: str):
+    """Serve product images from local storage"""
+    safe_filename = Path(filename).name
+    file_path = PRODUCT_IMG_DIR / safe_filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Image not found")
+    return FileResponse(
+        file_path,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400"}
+    )
 
 @api_router.get("/product-types")
 async def get_product_types():
