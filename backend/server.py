@@ -22,6 +22,9 @@ import base64
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas as rl_canvas
 from reportlab.lib.colors import Color
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -186,16 +189,21 @@ async def get_geolocation(ip: str) -> dict:
     
     return {"country": "Unknown", "city": "Unknown", "country_code": "XX"}
 
-# Admin password (hashed)
-ADMIN_PASSWORD = "Rx050217!"
+# Admin password from env
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 
-# JWT Secret for authentication
-JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))
+# JWT Secret from env (fixed, does not change on restart)
+JWT_SECRET = os.environ.get('JWT_SECRET')
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
 
 # Create the main app without a prefix
 app = FastAPI()
+
+# Rate limiter setup
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -426,19 +434,20 @@ async def get_current_user(authorization: str = Header(None)) -> dict:
 # ==================== USER AUTHENTICATION ROUTES ====================
 
 @api_router.post("/auth/register")
-async def register_user(request: UserRegisterRequest):
+@limiter.limit("5/minute")
+async def register_user(request: Request, body: UserRegisterRequest):
     """Register a new user"""
     # Check if email already exists
-    existing = await db.users.find_one({"email": request.email.lower()})
+    existing = await db.users.find_one({"email": body.email.lower()})
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
     
     # Create user
     user = {
         "id": str(uuid.uuid4()),
-        "email": request.email.lower(),
-        "password_hash": hash_password(request.password),
-        "name": request.name,
+        "email": body.email.lower(),
+        "password_hash": hash_password(body.password),
+        "name": body.name,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "purchased_protocols": [],
         "verification_history": []
@@ -463,13 +472,15 @@ async def register_user(request: UserRegisterRequest):
     }
 
 @api_router.post("/auth/login")
-async def login_user(request: UserLoginRequest):
+@limiter.limit("10/minute")
+async def login_user(request: Request, body: UserLoginRequest):
     """Login a user"""
-    user = await db.users.find_one({"email": request.email.lower()})
+    user = await db.users.find_one({"email": body.email.lower()})
     if not user:
+        logging.warning(f"Failed login attempt for email: {body.email}")
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
-    if not verify_password(request.password, user["password_hash"]):
+    if not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
     # Create token
@@ -497,9 +508,10 @@ async def get_current_user_info(user: dict = Depends(get_current_user)):
     }
 
 @api_router.post("/auth/request-password-reset")
-async def request_password_reset(request: PasswordResetRequest):
+@limiter.limit("3/minute")
+async def request_password_reset(request: Request, body: PasswordResetRequest):
     """Request a password reset (sends email with token)"""
-    user = await db.users.find_one({"email": request.email.lower()})
+    user = await db.users.find_one({"email": body.email.lower()})
     if not user:
         # Don't reveal if email exists
         return {"success": True, "message": "If the email exists, a reset link will be sent"}
@@ -716,7 +728,7 @@ PROTOCOL_DEFINITIONS = {
 }
 
 # USDT Payment Configuration (TRC20 - Tron Network)
-USDT_WALLET_ADDRESS = "TJKuseoNmGw1TnwskKjaBCw5FrYUynAP9m"
+USDT_WALLET_ADDRESS = os.environ.get('USDT_WALLET_ADDRESS')
 TRON_API_URL = "https://apilist.tronscanapi.com/api"
 
 class ValidateBatchRequest(BaseModel):
@@ -916,9 +928,10 @@ async def validate_batch_for_protocol(request: ValidateBatchRequest):
 # ==================== NEW: SINGLE-USE CODE PROTOCOL SYSTEM ====================
 
 @api_router.post("/protocols-v2/validate-code")
-async def validate_unique_code(request: ValidateUniqueCodeRequest):
+@limiter.limit("20/minute")
+async def validate_unique_code(request: Request, body: ValidateUniqueCodeRequest):
     """Validate a unique verification code and auto-detect the matching protocol"""
-    code = request.code.strip().upper()
+    code = body.code.strip().upper()
 
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
 
@@ -965,9 +978,10 @@ async def validate_unique_code(request: ValidateUniqueCodeRequest):
 
 
 @api_router.post("/protocols-v2/send-protocol")
-async def send_protocol_by_code(request: SendProtocolByCodeRequest):
+@limiter.limit("5/minute")
+async def send_protocol_by_code(request: Request, body: SendProtocolByCodeRequest):
     """Send watermarked protocol PDF via email using a single-use unique code"""
-    code = request.code.strip().upper()
+    code = body.code.strip().upper()
 
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
 
@@ -983,29 +997,29 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
     if not proto_id:
         raise HTTPException(status_code=404, detail=f"No protocol available for '{product_name}'.")
 
-    if request.language not in proto_data["languages"]:
+    if body.language not in proto_data["languages"]:
         raise HTTPException(status_code=400, detail="Invalid language selected.")
 
-    pdf_filename = proto_data["languages"][request.language]
+    pdf_filename = proto_data["languages"][body.language]
     pdf_path = PDF_STORAGE_DIR / pdf_filename
 
     if not pdf_path.exists():
-        raise HTTPException(status_code=404, detail=f"PDF not available yet for {request.language.upper()}. Please contact support.")
+        raise HTTPException(status_code=404, detail=f"PDF not available yet for {body.language.upper()}. Please contact support.")
 
     # Create watermarked PDF
-    watermarked_pdf_bytes = create_watermarked_pdf(pdf_path, request.email.lower().strip())
+    watermarked_pdf_bytes = create_watermarked_pdf(pdf_path, body.email.lower().strip())
 
     # Save lead data
     customer_data = {
-        "email": request.email.lower().strip(),
-        "phone": request.phone.strip() if request.phone else None,
-        "name": request.name.strip() if request.name else None,
+        "email": body.email.lower().strip(),
+        "phone": body.phone.strip() if body.phone else None,
+        "name": body.name.strip() if body.name else None,
         "protocol_id": proto_id,
         "protocol_title": proto_data["title"],
         "verification_code": code,
         "product_name": product_name,
         "batch_number": unique_code.get("batch_number", ""),
-        "language": request.language,
+        "language": body.language,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "source": "website_protocols_v3"
     }
@@ -1022,7 +1036,7 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
     lang_content = {
         "en": {
             "subject": f"Your Research Protocol: {proto_data['title']}",
-            "greeting": f"Hello{' ' + request.name if request.name else ''}!",
+            "greeting": f"Hello{' ' + body.name if body.name else ''}!",
             "intro": "Thank you for your interest in Zurix Sciences research protocols.",
             "attached": "Your personalized protocol is attached to this email as a PDF.",
             "duration": f"Protocol Duration: {proto_data['duration_weeks']} weeks",
@@ -1030,7 +1044,7 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
         },
         "es": {
             "subject": f"Tu Protocolo de Investigaci&oacute;n: {proto_data['title']}",
-            "greeting": f"&iexcl;Hola{' ' + request.name if request.name else ''}!",
+            "greeting": f"&iexcl;Hola{' ' + body.name if body.name else ''}!",
             "intro": "Gracias por tu inter&eacute;s en los protocolos de investigaci&oacute;n de Zurix Sciences.",
             "attached": "Tu protocolo personalizado est&aacute; adjunto a este correo como PDF.",
             "duration": f"Duraci&oacute;n del Protocolo: {proto_data['duration_weeks']} semanas",
@@ -1038,7 +1052,7 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
         },
         "pt": {
             "subject": f"Seu Protocolo de Pesquisa: {proto_data['title']}",
-            "greeting": f"Ol&aacute;{' ' + request.name if request.name else ''}!",
+            "greeting": f"Ol&aacute;{' ' + body.name if body.name else ''}!",
             "intro": "Obrigado pelo seu interesse nos protocolos de pesquisa da Zurix Sciences.",
             "attached": "Seu protocolo personalizado est&aacute; anexado a este email em PDF.",
             "duration": f"Dura&ccedil;&atilde;o do Protocolo: {proto_data['duration_weeks']} semanas",
@@ -1046,7 +1060,7 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
         }
     }
 
-    content = lang_content.get(request.language, lang_content["en"])
+    content = lang_content.get(body.language, lang_content["en"])
 
     html_content = f"""
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -1083,11 +1097,11 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
 
         params = {
             "from": SENDER_EMAIL,
-            "to": [request.email],
+            "to": [body.email],
             "subject": content["subject"],
             "html": html_content,
             "attachments": [{
-                "filename": f"{proto_data['title']} ({request.language.upper()}).pdf",
+                "filename": f"{proto_data['title']} ({body.language.upper()}).pdf",
                 "content": pdf_b64
             }]
         }
@@ -1099,8 +1113,8 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
             {"code": code},
             {"$set": {
                 "protocol_downloaded_at": datetime.now(timezone.utc).isoformat(),
-                "protocol_downloaded_by": request.email.lower().strip(),
-                "protocol_language": request.language
+                "protocol_downloaded_by": body.email.lower().strip(),
+                "protocol_language": body.language
             }}
         )
 
@@ -1109,20 +1123,20 @@ async def send_protocol_by_code(request: SendProtocolByCodeRequest):
             "protocol_id": proto_id,
             "verification_code": code,
             "batch_number": unique_code.get("batch_number", ""),
-            "language": request.language,
-            "email": request.email.lower().strip(),
-            "phone": request.phone,
-            "name": request.name,
+            "language": body.language,
+            "email": body.email.lower().strip(),
+            "phone": body.phone,
+            "name": body.name,
             "watermarked": True,
             "sent_via": "email",
             "downloaded_at": datetime.now(timezone.utc).isoformat()
         })
 
-        logging.info(f"Watermarked protocol sent to {request.email} for code {code}")
+        logging.info(f"Watermarked protocol sent to {body.email} for code {code}")
 
         return {
             "success": True,
-            "message": f"Protocol sent to {request.email}!",
+            "message": f"Protocol sent to {body.email}!",
             "protocol_title": proto_data["title"],
             "email_id": email_result.get("id") if email_result else None
         }
@@ -1718,15 +1732,16 @@ async def get_representatives():
 
 # Verification endpoint - NEW SYSTEM with unique codes
 @api_router.post("/verify-product", response_model=VerifyProductResponse)
-async def verify_product(request: VerifyProductRequest, req: Request):
+@limiter.limit("30/minute")
+async def verify_product(request: Request, body: VerifyProductRequest):
     """Verify a product by its unique QR code"""
-    code = request.code.strip().upper()
+    code = body.code.strip().upper()
     
     # Get client info for tracking
-    client_ip = req.headers.get("x-forwarded-for", req.client.host if req.client else "unknown")
+    client_ip = request.headers.get("x-forwarded-for", request.client.host if request.client else "unknown")
     if "," in client_ip:
         client_ip = client_ip.split(",")[0].strip()
-    user_agent = req.headers.get("user-agent", "unknown")
+    user_agent = request.headers.get("user-agent", "unknown")
     
     # Get geolocation
     geo = await get_geolocation(client_ip)
@@ -1835,10 +1850,12 @@ async def verify_product(request: VerifyProductRequest, req: Request):
 # ==================== ADMIN ROUTES ====================
 
 @api_router.post("/admin/login")
-async def admin_login(request: AdminLoginRequest):
+@limiter.limit("5/minute")
+async def admin_login(request: Request, body: AdminLoginRequest):
     """Admin login"""
-    if request.password == ADMIN_PASSWORD:
+    if body.password == ADMIN_PASSWORD:
         return {"success": True, "message": "Login successful"}
+    logging.warning(f"Failed admin login attempt from {get_remote_address(request)}")
     raise HTTPException(status_code=401, detail="Invalid password")
 
 @api_router.post("/admin/import-codes")
@@ -2048,15 +2065,15 @@ async def get_protocol(protocol_id: str):
 
 # Enhanced verification with counter (for mobile app)
 @api_router.post("/verify-scan", response_model=VerifyScanResponse)
-async def verify_scan(request: VerifyScanRequest, req: Request):
+async def verify_scan(request: Request, body: VerifyScanRequest):
     """Verify a product and log the verification (for mobile app)"""
-    code = request.code.strip().upper()
+    code = body.code.strip().upper()
     
     # Get client info for tracking
-    client_ip = req.headers.get("x-forwarded-for", req.client.host if req.client else "unknown")
+    client_ip = request.headers.get("x-forwarded-for", request.client.host if request.client else "unknown")
     if "," in client_ip:
         client_ip = client_ip.split(",")[0].strip()
-    user_agent = req.headers.get("user-agent", "unknown")
+    user_agent = request.headers.get("user-agent", "unknown")
     
     # Get geolocation
     geo = await get_geolocation(client_ip)

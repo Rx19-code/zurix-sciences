@@ -5,106 +5,58 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 
 ## What's Been Implemented
 
-### February 2026 - Protocol System V3 (Single-Use Code + Watermarking)
-- [x] Refactored protocol system: validation by **single-use unique QR code** (not batch number)
-- [x] Auto-detects matching protocol from product name in QR code
-- [x] **PDF watermarking** with "ZURIX SCIENCES - FOR RESEARCH ONLY" + "Downloaded by: [email]"
-- [x] Single-use enforcement: each code allows only one protocol download
-- [x] New endpoints: `POST /api/protocols-v2/validate-code`, `POST /api/protocols-v2/send-protocol`
-- [x] Frontend redesigned: inline code validation flow with protocol cards display
-- [x] Lead data saved to `protocol_leads` with verification code tracking
-- [x] **All 8 free protocols with 24 PDFs** (8 protocols x 3 languages: EN/ES/PT):
-  1. GHK-Cu 50mg
-  2. GHK-Cu 100mg
-  3. TB-500 (Thymosin Beta-4)
-  4. Glow Blend 70mg
-  5. IGF-1 LR3 1mg
-  6. Klow Blend 80mg
-  7. Oxytocin 10mg
-  8. Retatrutide 10mg
-- [x] Backward compatibility: old batch validation endpoints still functional
+### March 14, 2026 - Security Hardening
+- [x] **Credentials moved to .env**: Admin password, JWT secret, USDT wallet address removed from code
+- [x] **Rate limiting** (slowapi) on sensitive endpoints:
+  - Login: 10/min, Register: 5/min, Password reset: 3/min
+  - Admin login: 5/min, Protocol validate: 20/min, Protocol send: 5/min
+  - Product verification: 30/min
+- [x] **CORS restricted** to zurixsciences.com in production .env
+- [x] **JWT secret fixed** in .env (doesn't change on restart, tokens persist)
+- [x] **Failed auth logging** for admin and user login attempts
 
-### March 6, 2026 - Previous Major Updates
-- [x] QR Code Scanner fixed for Android/iOS (camera permission handling)
-- [x] `/protocols` page with free and paid protocols
-- [x] Lead collection system (email, phone, name) saved to `protocol_leads` collection
-- [x] Email delivery via Resend with PDF attachments
-- [x] **USDT Payment System (TRC20)** - Automatic blockchain verification
-- [x] 3 Advanced Protocols at $4.99 each (paid via USDT)
-- [x] Flag images for Representatives page (using flagcdn.com)
-- [x] Admin "All Codes" pagination (250 per page)
-- [x] Admin batch editing (purity, expiry_date)
+### March 14, 2026 - Protocol System V3 (Single-Use Code + Watermarking)
+- [x] Refactored protocol system: validation by single-use unique QR code
+- [x] Auto-detects matching protocol from product name
+- [x] PDF watermarking with "ZURIX SCIENCES - FOR RESEARCH ONLY" + "Downloaded by: [email]"
+- [x] All 8 free protocols with 24 PDFs (8 x 3 languages: EN/ES/PT)
+- [x] New endpoints: validate-code, send-protocol
 
 ### Previous Implementations
-- [x] Full-stack website (FastAPI + React)
-- [x] PWA conversion with manifest and icons
+- [x] Full-stack website (FastAPI + React PWA)
 - [x] Product verification with QR scanner
-- [x] Multi-language protocol downloads (EN, ES, PT)
+- [x] USDT Payment System (TRC20) for Advanced Protocols
+- [x] Admin panel with pagination, batch editing
 - [x] Resend email integration
-- [x] Server-side admin search
 - [x] 27 product images uploaded
-
-## Technical Architecture
-
-### Stack
-- **Backend**: FastAPI, MongoDB (Motor), Resend, PyPDF2, reportlab, httpx (Tron API)
-- **Frontend**: React, TailwindCSS, PWA, html5-qrcode
-- **Payments**: USDT TRC20 via Tron blockchain
-
-### Key Endpoints
-- `/api/protocols-v2/validate-code` - Validate unique QR code & auto-detect protocol
-- `/api/protocols-v2/send-protocol` - Send watermarked PDF via email (single-use)
-- `/api/protocols-v2` - List all protocols (free + paid)
-- `/api/payment/create-order` - Create paid protocol order
-- `/api/payment/verify` - Verify USDT payment on Tron blockchain
-- `/api/admin/codes` - Paginated codes list
-
-### Database Collections
-- `unique_codes` - Product verification codes (with `protocol_downloaded_at`, `protocol_downloaded_by`, `protocol_language`)
-- `protocol_leads` - Collected leads from protocol downloads (with `verification_code` field)
-- `protocol_orders` - Paid protocol orders
-- `protocol_downloads` - Download logs (with `verification_code`, `watermarked` fields)
-
-### PDF Storage Structure
-```
-/app/backend/protocols_pdf/
-├── en/  (8 PDFs)
-├── es/  (8 PDFs)
-└── pt/  (8 PDFs)
-```
-Production: `/var/www/zurix/assets/protocols/{lang}/`
 
 ## Prioritized Backlog
 
-### P0 - Done
-- ~~Protocol system refactor (single-use code + watermarking)~~
-- ~~All 8 protocols with 24 PDFs configured~~
-- ~~QR Scanner fix~~
-- ~~USDT payment system~~
-
 ### P1 - Next
-- [ ] Admin panel - Leads tab (view/export collected contacts from protocol downloads)
-- [ ] Clarify paid "Advanced Protocols" (keep or update USDT UI)
+- [ ] Admin panel - Leads tab (view/export collected contacts)
+- [ ] Clarify paid "Advanced Protocols" future
 
 ### P2 - Future
-- [ ] Complete 5 missing product images (waiting on user assets)
-- [ ] Resume mobile app development
+- [ ] Complete 5 missing product images
+- [ ] Mobile app (on hold)
+- [ ] MongoDB authentication (currently local-only access)
+- [ ] Automated database backups
 
-## Credentials
+## Production Deploy Notes
 
-### Production Server
-- **Domain**: zurixsciences.com
-- **SSH**: `ssh -i "$HOME\.ssh\njalla_key" root@80.78.19.40`
-
-### Admin Panel
-- **URL**: `/admin`
-- **Password**: `Rx050217!`
+### .env for production server must include:
+```
+ADMIN_PASSWORD=Rx050217!
+JWT_SECRET=8f5c0afc04ecbf3b9421e7413437f786a9f7ea5d7a5f795b91ee6d7399fc14cd
+USDT_WALLET_ADDRESS=TJKuseoNmGw1TnwskKjaBCw5FrYUynAP9m
+CORS_ORIGINS=https://zurixsciences.com,https://www.zurixsciences.com
+```
 
 ### Test Data
-- **Valid Test Codes**: `ZX-260312-GHK50-1-TEST01` (GHK-Cu 50mg), `ZX-260209-TB500-1-TEST01` (TB-500), `ZX-260115-BPC157-1-TEST01` (BPC-157 - no protocol PDF)
+- **Valid Test Codes**: ZX-260312-GHK50-1-TEST01, ZX-260209-TB500-1-TEST01, ZX-260115-BPC157-1-TEST01
 
 ## Files Reference
-- `frontend/src/pages/Protocols.js` - Protocols page with code validation + paid protocols
-- `frontend/src/pages/Verify.js` - QR scanner
-- `frontend/src/pages/Admin.js` - Admin panel
 - `backend/server.py` - All API endpoints
+- `backend/.env` - All credentials (NOT in code)
+- `frontend/src/pages/Protocols.js` - Protocols page
+- `frontend/src/pages/Admin.js` - Admin panel
