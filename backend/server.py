@@ -25,9 +25,101 @@ from reportlab.lib.colors import Color
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
+from collections import defaultdict
+import time
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# ==================== SECURITY MIDDLEWARE ====================
+
+# IP block tracker: blocks IPs after too many failed auth attempts
+ip_fail_tracker = defaultdict(lambda: {"count": 0, "blocked_until": 0})
+IP_BLOCK_THRESHOLD = 15  # block after 15 failed attempts
+IP_BLOCK_DURATION = 900  # block for 15 minutes (seconds)
+
+# In-memory cache for frequently accessed data
+_cache = {}
+CACHE_TTL = 60  # 60 seconds
+
+
+def get_cache(key):
+    """Get cached value if not expired"""
+    if key in _cache:
+        value, expires_at = _cache[key]
+        if time.time() < expires_at:
+            return value
+        del _cache[key]
+    return None
+
+
+def set_cache(key, value, ttl=CACHE_TTL):
+    """Set cache with TTL"""
+    _cache[key] = (value, time.time() + ttl)
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Add security headers to all responses"""
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        return response
+
+
+class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
+    """Reject requests larger than max_size bytes"""
+    MAX_SIZE = 1_048_576  # 1MB
+
+    async def dispatch(self, request, call_next):
+        content_length = request.headers.get("content-length")
+        if content_length and int(content_length) > self.MAX_SIZE:
+            return JSONResponse(
+                status_code=413,
+                content={"detail": "Request too large. Maximum size is 1MB."}
+            )
+        return await call_next(request)
+
+
+class IPBlockMiddleware(BaseHTTPMiddleware):
+    """Block IPs that have too many failed authentication attempts"""
+    async def dispatch(self, request, call_next):
+        client_ip = request.headers.get("x-forwarded-for", "")
+        if client_ip and "," in client_ip:
+            client_ip = client_ip.split(",")[0].strip()
+        if not client_ip:
+            client_ip = request.client.host if request.client else "unknown"
+
+        tracker = ip_fail_tracker[client_ip]
+        now = time.time()
+
+        if tracker["blocked_until"] > now:
+            remaining = int(tracker["blocked_until"] - now)
+            return JSONResponse(
+                status_code=403,
+                content={"detail": f"IP temporarily blocked. Try again in {remaining} seconds."}
+            )
+
+        response = await call_next(request)
+
+        # Track failed auth attempts (401 on auth/admin endpoints)
+        path = request.url.path
+        is_auth_endpoint = "/auth/login" in path or "/admin/login" in path
+        if is_auth_endpoint and response.status_code == 401:
+            tracker["count"] += 1
+            if tracker["count"] >= IP_BLOCK_THRESHOLD:
+                tracker["blocked_until"] = now + IP_BLOCK_DURATION
+                logging.warning(f"IP {client_ip} blocked after {tracker['count']} failed attempts")
+        elif is_auth_endpoint and response.status_code == 200:
+            # Reset on successful login
+            ip_fail_tracker[client_ip] = {"count": 0, "blocked_until": 0}
+
+        return response
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -1645,6 +1737,12 @@ async def get_products(
     featured: Optional[bool] = None
 ):
     """Get all products with optional filters"""
+    # Cache key based on query params
+    cache_key = f"products:{category}:{product_type}:{search}:{featured}"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     query = {}
     
     if category:
@@ -1661,7 +1759,9 @@ async def get_products(
         ]
     
     products = await db.products.find(query, {"_id": 0}).to_list(1000)
-    return products
+    result = products
+    set_cache(cache_key, result)
+    return result
 
 @api_router.get("/products/{product_id}", response_model=Product)
 async def get_product(product_id: str):
@@ -2251,6 +2351,7 @@ async def send_test_email(request: TestEmailRequest, password: str = Header(...,
 # Include the router in the main app
 app.include_router(api_router)
 
+# Middleware stack (order matters - last added = first executed)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -2258,6 +2359,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RequestSizeLimitMiddleware)
+app.add_middleware(IPBlockMiddleware)
 
 # Configure logging
 logging.basicConfig(
@@ -2265,6 +2369,53 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# ==================== HEALTH CHECK ====================
+
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint for monitoring"""
+    try:
+        await db.command("ping")
+        db_status = "connected"
+    except Exception:
+        db_status = "disconnected"
+
+    return {
+        "status": "ok" if db_status == "connected" else "degraded",
+        "database": db_status,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
+# ==================== GLOBAL ERROR HANDLER ====================
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    """Catch unhandled exceptions to prevent server crashes"""
+    logging.error(f"Unhandled error on {request.url.path}: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error. Please try again later."}
+    )
+
+# ==================== DB INDEXES ON STARTUP ====================
+
+@app.on_event("startup")
+async def create_indexes():
+    """Create MongoDB indexes for performance"""
+    try:
+        await db.unique_codes.create_index("code", unique=True)
+        await db.unique_codes.create_index("batch_number")
+        await db.unique_codes.create_index("product_name")
+        await db.products.create_index("name")
+        await db.protocol_leads.create_index("email")
+        await db.protocol_leads.create_index("verification_code")
+        await db.users.create_index("email", unique=True)
+        await db.verification_logs.create_index("code")
+        await db.verification_logs.create_index("verified_at")
+        logging.info("MongoDB indexes created successfully")
+    except Exception as e:
+        logging.warning(f"Index creation warning: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
