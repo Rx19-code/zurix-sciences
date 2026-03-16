@@ -22,6 +22,11 @@ export default function Admin() {
   const [batches, setBatches] = useState([]);
   const [codes, setCodes] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [leads, setLeads] = useState([]);
+  const [leadsTotal, setLeadsTotal] = useState(0);
+  const [leadsSearch, setLeadsSearch] = useState('');
+  const [leadsFilter, setLeadsFilter] = useState('');
+  const [loadingLeads, setLoadingLeads] = useState(false);
   const [activeTab, setActiveTab] = useState('import');
   const [searchCode, setSearchCode] = useState('');
   const [searching, setSearching] = useState(false);
@@ -280,6 +285,49 @@ export default function Admin() {
     }
   };
   
+  // Load leads
+  const loadLeads = async (pwd, search = '', filter = '') => {
+    setLoadingLeads(true);
+    try {
+      let url = `${API_URL}/api/admin/leads?limit=200`;
+      if (search) url += `&search=${encodeURIComponent(search)}`;
+      if (filter) url += `&protocol_id=${encodeURIComponent(filter)}`;
+      const res = await fetch(url, { headers: { 'x-admin-password': pwd } });
+      if (res.ok) {
+        const data = await res.json();
+        setLeads(data.leads || []);
+        setLeadsTotal(data.total || 0);
+      }
+    } catch (err) {
+      console.error('Error loading leads:', err);
+    }
+    setLoadingLeads(false);
+  };
+
+  // Leads search debounce
+  useEffect(() => {
+    if (!isLoggedIn || activeTab !== 'leads') return;
+    const timer = setTimeout(() => {
+      loadLeads(password, leadsSearch, leadsFilter);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [leadsSearch, leadsFilter, activeTab, isLoggedIn]);
+
+  const exportLeadsCSV = () => {
+    let url = `${API_URL}/api/admin/leads/export`;
+    if (leadsFilter) url += `?protocol_id=${encodeURIComponent(leadsFilter)}`;
+    // Need to add header - use fetch + blob
+    fetch(url, { headers: { 'x-admin-password': password } })
+      .then(res => res.blob())
+      .then(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'zurix_leads.csv';
+        link.click();
+      })
+      .catch(err => alert('Export error: ' + err.message));
+  };
+
   // Use codes directly since search is server-side now
   const filteredCodes = codes;
   
@@ -362,6 +410,7 @@ export default function Admin() {
             { id: 'import', label: 'Import Codes', icon: '📥' },
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
+            { id: 'leads', label: 'Leads', icon: '📊' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
           ].map(tab => (
             <button
@@ -679,6 +728,97 @@ export default function Admin() {
           </div>
         )}
         
+        {/* Leads Tab */}
+        {activeTab === 'leads' && (
+          <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+              <h2 className="text-xl font-bold text-white" data-testid="leads-title">
+                Protocol Leads ({leadsTotal})
+              </h2>
+              <div className="flex items-center gap-3 flex-wrap">
+                <input
+                  type="text"
+                  value={leadsSearch}
+                  onChange={(e) => setLeadsSearch(e.target.value)}
+                  placeholder="Search name, email, phone..."
+                  data-testid="leads-search-input"
+                  className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-blue-500 w-64"
+                />
+                <select
+                  value={leadsFilter}
+                  onChange={(e) => setLeadsFilter(e.target.value)}
+                  data-testid="leads-filter-select"
+                  className="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+                >
+                  <option value="">All Protocols</option>
+                  <option value="proto-ghkcu50">GHK-Cu 50mg</option>
+                  <option value="proto-ghkcu100">GHK-Cu 100mg</option>
+                  <option value="proto-tb500">TB-500</option>
+                  <option value="proto-glow-blend">Glow Blend</option>
+                  <option value="proto-igf1">IGF-1 LR3</option>
+                  <option value="proto-klow-blend">Klow Blend</option>
+                  <option value="proto-oxytocin">Oxytocin</option>
+                  <option value="proto-retatrutide">Retatrutide</option>
+                </select>
+                <button
+                  onClick={exportLeadsCSV}
+                  data-testid="leads-export-btn"
+                  className="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+                >
+                  Export CSV
+                </button>
+              </div>
+            </div>
+
+            {loadingLeads ? (
+              <p className="text-gray-400">Loading leads...</p>
+            ) : leads.length === 0 ? (
+              <p className="text-gray-400" data-testid="leads-empty">No leads found</p>
+            ) : (
+              <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                <table className="w-full" data-testid="leads-table">
+                  <thead className="sticky top-0 bg-gray-800">
+                    <tr className="text-left text-gray-400 border-b border-gray-700">
+                      <th className="pb-3 font-medium">Name</th>
+                      <th className="pb-3 font-medium">Email</th>
+                      <th className="pb-3 font-medium">Phone</th>
+                      <th className="pb-3 font-medium">Protocol</th>
+                      <th className="pb-3 font-medium">Lang</th>
+                      <th className="pb-3 font-medium">Source</th>
+                      <th className="pb-3 font-medium">Downloads</th>
+                      <th className="pb-3 font-medium">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leads.map((lead, i) => (
+                      <tr key={i} className="border-b border-gray-700/50" data-testid={`lead-row-${i}`}>
+                        <td className="py-3 text-white text-sm">{lead.name || '-'}</td>
+                        <td className="py-3 text-blue-400 text-sm">{lead.email}</td>
+                        <td className="py-3 text-gray-300 text-sm">{lead.phone || '-'}</td>
+                        <td className="py-3 text-gray-300 text-sm">{lead.protocol_title || '-'}</td>
+                        <td className="py-3 text-gray-400 text-sm uppercase">{lead.language || '-'}</td>
+                        <td className="py-3">
+                          <span className={`px-2 py-1 rounded text-xs ${
+                            lead.source === 'website_protocols_v3'
+                              ? 'bg-blue-900/50 text-blue-400'
+                              : 'bg-gray-700 text-gray-400'
+                          }`}>
+                            {lead.source === 'website_protocols_v3' ? 'V3 Code' : lead.source === 'website_protocols' ? 'V2 Batch' : lead.source || '-'}
+                          </span>
+                        </td>
+                        <td className="py-3 text-gray-300 text-sm text-center">{lead.download_count || 0}</td>
+                        <td className="py-3 text-gray-400 text-sm">
+                          {lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '-'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Logs Tab */}
         {activeTab === 'logs' && (
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">

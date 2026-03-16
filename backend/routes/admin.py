@@ -263,3 +263,78 @@ async def send_test_email(request: TestEmailRequest, password: str = Header(...,
         return {"success": True, "message": f"Test email sent to {request.email}", "email_id": result.get("id")}
     else:
         raise HTTPException(status_code=500, detail="Failed to send email")
+
+
+@router.get("/admin/leads")
+async def get_admin_leads(
+    x_admin_password: str = Header(None),
+    search: Optional[str] = None,
+    protocol_id: Optional[str] = None,
+    limit: int = 200,
+    skip: int = 0
+):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    query = {}
+    if search:
+        query["$or"] = [
+            {"email": {"$regex": search, "$options": "i"}},
+            {"name": {"$regex": search, "$options": "i"}},
+            {"phone": {"$regex": search, "$options": "i"}},
+        ]
+    if protocol_id:
+        query["protocol_id"] = protocol_id
+
+    total = await db.protocol_leads.count_documents(query)
+    leads = await db.protocol_leads.find(query, {"_id": 0}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+
+    return {
+        "leads": leads,
+        "total": total,
+        "showing": len(leads),
+        "skip": skip,
+        "has_more": skip + len(leads) < total
+    }
+
+
+@router.get("/admin/leads/export")
+async def export_leads_csv(
+    x_admin_password: str = Header(None),
+    protocol_id: Optional[str] = None
+):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    query = {}
+    if protocol_id:
+        query["protocol_id"] = protocol_id
+
+    leads = await db.protocol_leads.find(query, {"_id": 0}).sort("created_at", -1).to_list(5000)
+
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Name", "Email", "Phone", "Protocol", "Language", "Source", "Downloads", "Date"])
+
+    for lead in leads:
+        writer.writerow([
+            lead.get("name", ""),
+            lead.get("email", ""),
+            lead.get("phone", ""),
+            lead.get("protocol_title", ""),
+            lead.get("language", ""),
+            lead.get("source", ""),
+            lead.get("download_count", 0),
+            lead.get("created_at", "")[:19] if lead.get("created_at") else "",
+        ])
+
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=zurix_leads.csv"}
+    )
