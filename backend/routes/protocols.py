@@ -106,7 +106,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/tissue-regeneration.pdf", "pt": "advanced/pt/tissue-regeneration.pdf"},
+        "languages": {"en": "advanced/en/tissue-regeneration.pdf", "pt": "advanced/pt/tissue-regeneration.pdf", "es": "advanced/es/tissue-regeneration.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -116,7 +116,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/body-composition.pdf", "pt": "advanced/pt/body-composition.pdf"},
+        "languages": {"en": "advanced/en/body-composition.pdf", "pt": "advanced/pt/body-composition.pdf", "es": "advanced/es/body-composition.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -126,7 +126,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/cognitive-support.pdf", "pt": "advanced/pt/cognitive-support.pdf"},
+        "languages": {"en": "advanced/en/cognitive-support.pdf", "pt": "advanced/pt/cognitive-support.pdf", "es": "advanced/es/cognitive-support.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -146,7 +146,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/rejuvenation-skin.pdf"},
+        "languages": {"en": "advanced/en/rejuvenation-skin.pdf", "pt": "advanced/pt/rejuvenation-skin.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -156,7 +156,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/metabolic-support.pdf"},
+        "languages": {"en": "advanced/en/metabolic-support.pdf", "pt": "advanced/pt/metabolic-support.pdf"},
         "price": 4.99,
         "requires_batch": False
     }
