@@ -106,7 +106,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/tissue-regeneration.pdf"},
+        "languages": {"en": "advanced/en/tissue-regeneration.pdf", "pt": "advanced/pt/tissue-regeneration.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -116,7 +116,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/body-composition.pdf"},
+        "languages": {"en": "advanced/en/body-composition.pdf", "pt": "advanced/pt/body-composition.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -126,7 +126,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/cognitive-support.pdf"},
+        "languages": {"en": "advanced/en/cognitive-support.pdf", "pt": "advanced/pt/cognitive-support.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -136,7 +136,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/sexual-health.pdf"},
+        "languages": {"en": "advanced/en/sexual-health.pdf", "pt": "advanced/pt/sexual-health.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -147,6 +147,16 @@ PROTOCOL_DEFINITIONS = {
         "duration_weeks": 12,
         "product_keywords": [],
         "languages": {"en": "advanced/en/rejuvenation-skin.pdf"},
+        "price": 4.99,
+        "requires_batch": False
+    },
+    "proto-adv-metabolic": {
+        "title": "Advanced Protocol: Metabolic Support & Weight Control",
+        "description": "Advanced protocol for metabolic optimization, weight management and body composition control using research peptides.",
+        "category": "Advanced",
+        "duration_weeks": 12,
+        "product_keywords": [],
+        "languages": {"en": "advanced/en/metabolic-support.pdf"},
         "price": 4.99,
         "requires_batch": False
     }
