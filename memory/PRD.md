@@ -5,59 +5,71 @@ Build a professional e-commerce website (Zurix Sciences) for selling peptide res
 
 ## What's Been Implemented
 
-### March 15, 2026 - Admin Leads Tab
-- [x] **New "Leads" tab** in admin panel showing protocol download contacts
-- [x] Table with: Name, Email, Phone, Protocol, Language, Source, Downloads, Date
-- [x] Search by name/email/phone, filter by protocol
-- [x] Export CSV functionality
-- [x] Backend endpoints: `GET /api/admin/leads`, `GET /api/admin/leads/export`
+### March 16, 2026 - Advanced Protocols (5 new paid protocols)
+- [x] Removed 3 old placeholder advanced protocols
+- [x] Added 5 new advanced protocols at $4.99 each (English only for now):
+  1. Tissue Regeneration & Wound Healing
+  2. Body Composition & Physical Performance
+  3. Cognitive Support & Stress Reduction
+  4. Sexual Health & Libido
+  5. Rejuvenation & Skin Health
+- [x] PDFs stored at `protocols_pdf/advanced/en/`
+- [x] Frontend shows correct available languages per protocol
+- [x] Payment flow via USDT (TRC20) active
 
-### March 15, 2026 - Server.py Refactoring
-- [x] Refactored `server.py` (2441 lines) into 11 modular files
-- [x] 100% test pass rate (21 backend tests, all frontend pages)
+### March 15, 2026 - Admin Leads Tab
+- [x] Leads tab with search, filter by protocol, CSV export
+
+### March 15, 2026 - Server Refactoring
+- [x] Refactored server.py (2441 lines) into 11 modular files
 
 ### March 15, 2026 - Product Images Complete
-- [x] All 32 products have local images served via `/api/images/products/{filename}`
+- [x] All 32 products with local images
 
 ### Previous Implementations
-- [x] Full-stack website (FastAPI + React PWA)
+- [x] Full-stack PWA (FastAPI + React)
 - [x] Product verification with QR scanner
 - [x] Protocol system V3 (single-use code + watermarking + email)
-- [x] Security hardening (rate limiting, IP blocking, security headers)
-- [x] Admin panel (products, batches, codes, leads management)
-- [x] USDT Payment System for Advanced Protocols
+- [x] Security hardening (rate limiting, IP blocking, headers)
+- [x] Admin panel (codes, batches, logs, leads)
 - [x] Resend email integration
 
 ## Architecture
 ```
 backend/
-├── server.py              # App init, middleware, health check
-├── database.py            # MongoDB + cache + env config
-├── models.py              # All Pydantic models
-├── routes/
-│   ├── auth.py            # Login, register, password reset
-│   ├── products.py        # Catalog, images, categories
-│   ├── protocols.py       # Protocol definitions + validation + email
-│   ├── payments.py        # USDT payment system
-│   ├── admin.py           # Admin panel + leads endpoints
-│   └── verification.py    # Product verification (web + mobile)
-├── utils/
-│   ├── security.py        # Middleware, JWT, password helpers
-│   └── email.py           # Email, watermark PDF, geolocation
-├── product_images/        # 32 local product images
-└── protocols_pdf/         # 24 PDFs (8 protocols x 3 languages)
+├── server.py              # App init (~100 lines)
+├── database.py            # MongoDB + cache
+├── models.py              # Pydantic models
+├── routes/                # auth, products, protocols, payments, admin, verification
+├── utils/                 # security, email
+├── product_images/        # 32 product images
+└── protocols_pdf/
+    ├── en/, es/, pt/      # 8 basic protocols x 3 languages
+    └── advanced/en/       # 5 advanced protocols (EN only for now)
 ```
 
 ## Prioritized Backlog
 
+### P0 - Pending User Action
+- [ ] Deploy to production (update .env + git pull + pm2 restart)
+- [ ] Upload ES and PT versions of advanced protocol PDFs
+
 ### P1 - Next
-- [ ] Deploy all changes to production (guide user: update .env + git pull + pm2 restart)
-- [ ] Clarify paid "Advanced Protocols" future (USDT payment - keep or remove?)
+- [ ] Add ES/PT PDFs for advanced protocols when user provides them
 
 ### P2 - Future
-- [ ] Mobile app (on hold, code in /mobile/)
+- [ ] Mobile app (on hold)
 - [ ] MongoDB authentication
 - [ ] Automated database backups
+
+## Advanced Protocols Configuration
+| ID | Title | Price | Languages |
+|---|---|---|---|
+| proto-adv-tissue | Tissue Regeneration & Wound Healing | $4.99 | EN |
+| proto-adv-body | Body Composition & Physical Performance | $4.99 | EN |
+| proto-adv-cognitive | Cognitive Support & Stress Reduction | $4.99 | EN |
+| proto-adv-sexual | Sexual Health & Libido | $4.99 | EN |
+| proto-adv-skin | Rejuvenation & Skin Health | $4.99 | EN |
 
 ## Test Data
 - **Admin Password:** Rx050217!

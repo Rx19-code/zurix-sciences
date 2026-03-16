@@ -100,33 +100,53 @@ PROTOCOL_DEFINITIONS = {
         "price": 0,
         "requires_batch": True
     },
-    "proto-advanced-stack": {
-        "title": "Advanced Peptide Stack Protocol",
-        "description": "Comprehensive stacking protocol combining multiple peptides for maximum synergistic effects.",
+    "proto-adv-tissue": {
+        "title": "Advanced Protocol: Tissue Regeneration & Wound Healing",
+        "description": "Advanced protocol for deep tissue regeneration, accelerated wound healing and injury recovery using peptide combinations.",
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced_stack_protocol_en.pdf", "es": "advanced_stack_protocol_es.pdf", "pt": "advanced_stack_protocol_pt.pdf"},
+        "languages": {"en": "advanced/en/tissue-regeneration.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
-    "proto-advanced-healing": {
-        "title": "Advanced Injury Recovery Protocol",
-        "description": "Professional-grade recovery protocol for serious injuries.",
+    "proto-adv-body": {
+        "title": "Advanced Protocol: Body Composition & Physical Performance",
+        "description": "Comprehensive protocol for improving body composition, muscle growth and physical performance through peptide synergy.",
         "category": "Advanced",
-        "duration_weeks": 16,
+        "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced_healing_protocol_en.pdf", "es": "advanced_healing_protocol_es.pdf", "pt": "advanced_healing_protocol_pt.pdf"},
+        "languages": {"en": "advanced/en/body-composition.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
-    "proto-advanced-antiaging": {
-        "title": "Advanced Anti-Aging Protocol",
-        "description": "Complete longevity and anti-aging protocol using peptide combinations.",
+    "proto-adv-cognitive": {
+        "title": "Advanced Protocol: Cognitive Support & Stress Reduction",
+        "description": "Protocol designed to enhance cognitive function, reduce stress and support neurological health with targeted peptides.",
         "category": "Advanced",
-        "duration_weeks": 24,
+        "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced_antiaging_protocol_en.pdf", "es": "advanced_antiaging_protocol_es.pdf", "pt": "advanced_antiaging_protocol_pt.pdf"},
+        "languages": {"en": "advanced/en/cognitive-support.pdf"},
+        "price": 4.99,
+        "requires_batch": False
+    },
+    "proto-adv-sexual": {
+        "title": "Advanced Protocol: Sexual Health & Libido",
+        "description": "Specialized protocol for sexual health enhancement and libido optimization using research-grade peptides.",
+        "category": "Advanced",
+        "duration_weeks": 12,
+        "product_keywords": [],
+        "languages": {"en": "advanced/en/sexual-health.pdf"},
+        "price": 4.99,
+        "requires_batch": False
+    },
+    "proto-adv-skin": {
+        "title": "Advanced Protocol: Rejuvenation & Skin Health",
+        "description": "Advanced anti-aging and skin rejuvenation protocol combining multiple peptides for comprehensive skin health.",
+        "category": "Advanced",
+        "duration_weeks": 12,
+        "product_keywords": [],
+        "languages": {"en": "advanced/en/rejuvenation-skin.pdf"},
         "price": 4.99,
         "requires_batch": False
     }

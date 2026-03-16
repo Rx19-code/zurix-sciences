@@ -281,7 +281,7 @@ const Protocols = () => {
                   </div>
                   <div className="flex items-center gap-1">
                     <Globe className="w-3.5 h-3.5" />
-                    <span>EN | ES | PT</span>
+                    <span>{(protocol.languages || ['en','es','pt']).map(l => l.toUpperCase()).join(' | ')}</span>
                   </div>
                 </div>
               </div>
@@ -550,7 +550,7 @@ const Protocols = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Globe className="w-4 h-4" />
-                        <span>EN | ES | PT</span>
+                        <span>{(protocol.languages || ['en']).map(l => l.toUpperCase()).join(' | ')}</span>
                       </div>
                     </div>
                   </div>
@@ -739,7 +739,7 @@ const Protocols = () => {
                         { code: 'en', label: 'English' },
                         { code: 'es', label: 'Espanol' },
                         { code: 'pt', label: 'Portugues' }
-                      ].map((lang) => (
+                      ].filter(lang => selectedPaidProtocol?.languages?.includes(lang.code)).map((lang) => (
                         <button
                           key={lang.code}
                           onClick={() => setPaidLanguage(lang.code)}
