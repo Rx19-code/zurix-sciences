@@ -136,7 +136,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/sexual-health.pdf", "pt": "advanced/pt/sexual-health.pdf"},
+        "languages": {"en": "advanced/en/sexual-health.pdf", "pt": "advanced/pt/sexual-health.pdf", "es": "advanced/es/sexual-health.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -146,7 +146,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/rejuvenation-skin.pdf", "pt": "advanced/pt/rejuvenation-skin.pdf"},
+        "languages": {"en": "advanced/en/rejuvenation-skin.pdf", "pt": "advanced/pt/rejuvenation-skin.pdf", "es": "advanced/es/rejuvenation-skin.pdf"},
         "price": 4.99,
         "requires_batch": False
     },
@@ -156,7 +156,7 @@ PROTOCOL_DEFINITIONS = {
         "category": "Advanced",
         "duration_weeks": 12,
         "product_keywords": [],
-        "languages": {"en": "advanced/en/metabolic-support.pdf", "pt": "advanced/pt/metabolic-support.pdf"},
+        "languages": {"en": "advanced/en/metabolic-support.pdf", "pt": "advanced/pt/metabolic-support.pdf", "es": "advanced/es/metabolic-support.pdf"},
         "price": 4.99,
         "requires_batch": False
     }
