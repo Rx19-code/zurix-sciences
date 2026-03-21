@@ -174,37 +174,95 @@ const Calculator = () => {
                     <p className="text-xs text-gray-500 mt-1">Mark on a 100 UI syringe</p>
                   </div>
                   {/* Syringe Visual */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4" data-testid="syringe-visual">
-                    <p className="text-sm font-medium text-gray-700 mb-3">Syringe Reference (100 UI)</p>
-                    <div className="relative">
-                      {/* Syringe body */}
-                      <div className="relative bg-gray-100 rounded-full h-8 border border-gray-300 overflow-hidden">
-                        {/* Fill level */}
-                        <div
-                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full transition-all duration-500"
-                          style={{ width: `${Math.min(parseFloat(result.syringeUnits), 100)}%` }}
-                        />
-                        {/* Marker line */}
-                        <div
-                          className="absolute top-0 h-full w-0.5 bg-red-500 z-10"
-                          style={{ left: `${Math.min(parseFloat(result.syringeUnits), 100)}%` }}
-                        />
-                      </div>
-                      {/* Scale marks */}
-                      <div className="flex justify-between mt-1 px-0.5">
-                        {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((mark) => (
-                          <div key={mark} className="flex flex-col items-center">
-                            <div className="w-px h-2 bg-gray-400" />
-                            <span className="text-[9px] text-gray-500 mt-0.5">{mark}</span>
-                          </div>
-                        ))}
-                      </div>
-                      {/* Dose indicator */}
-                      <div className="text-center mt-2">
-                        <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">
-                          Draw to {result.syringeUnits} UI mark
-                        </span>
-                      </div>
+                  <div className="bg-white border border-gray-200 rounded-lg p-5" data-testid="syringe-visual">
+                    <p className="text-sm font-medium text-gray-700 mb-4">Insulin Syringe 100 UI - Draw to <span className="text-red-600 font-bold">{result.syringeUnits} UI</span></p>
+                    <div className="flex justify-center">
+                      <svg viewBox="0 0 120 340" className="w-28 h-80">
+                        {/* Needle */}
+                        <line x1="60" y1="0" x2="60" y2="35" stroke="#999" strokeWidth="1.5" />
+                        <polygon points="59.2,0 60.8,0 60,−5" fill="#999" />
+                        
+                        {/* Needle hub */}
+                        <rect x="52" y="32" width="16" height="12" rx="2" fill="#333" />
+                        
+                        {/* Barrel top cap */}
+                        <rect x="42" y="44" width="36" height="8" rx="3" fill="#e5e7eb" stroke="#d1d5db" />
+                        
+                        {/* Barrel body */}
+                        <rect x="38" y="52" width="44" height="220" rx="4" fill="white" stroke="#d1d5db" strokeWidth="1.5" />
+                        
+                        {/* Liquid fill - from bottom up */}
+                        {(() => {
+                          const units = Math.min(parseFloat(result.syringeUnits), 100);
+                          const barrelTop = 52;
+                          const barrelHeight = 220;
+                          const fillHeight = (units / 100) * barrelHeight;
+                          const fillY = barrelTop + barrelHeight - fillHeight;
+                          return (
+                            <rect
+                              x="40"
+                              y={fillY}
+                              width="40"
+                              height={fillHeight}
+                              rx="2"
+                              fill="rgba(59, 130, 246, 0.25)"
+                            />
+                          );
+                        })()}
+                        
+                        {/* Scale markings - 0 at top, 100 at bottom */}
+                        {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((mark) => {
+                          const y = 52 + (mark / 100) * 220;
+                          return (
+                            <g key={mark}>
+                              <line x1="38" y1={y} x2="48" y2={y} stroke="#374151" strokeWidth="1" />
+                              <line x1="72" y1={y} x2="82" y2={y} stroke="#374151" strokeWidth="1" />
+                              <text x="86" y={y + 3.5} fontSize="9" fill="#374151" fontWeight="bold">{mark}</text>
+                            </g>
+                          );
+                        })}
+                        
+                        {/* Minor tick marks (every 5 units) */}
+                        {[5, 15, 25, 35, 45, 55, 65, 75, 85, 95].map((mark) => {
+                          const y = 52 + (mark / 100) * 220;
+                          return (
+                            <g key={mark}>
+                              <line x1="38" y1={y} x2="44" y2={y} stroke="#9ca3af" strokeWidth="0.5" />
+                              <line x1="76" y1={y} x2="82" y2={y} stroke="#9ca3af" strokeWidth="0.5" />
+                            </g>
+                          );
+                        })}
+                        
+                        {/* Minor tick marks (every 2 units) */}
+                        {Array.from({length: 50}, (_, i) => i * 2).filter(m => m % 5 !== 0 && m % 10 !== 0).map((mark) => {
+                          const y = 52 + (mark / 100) * 220;
+                          return (
+                            <line key={mark} x1="38" y1={y} x2="42" y2={y} stroke="#d1d5db" strokeWidth="0.5" />
+                          );
+                        })}
+                        
+                        {/* Dose indicator line - RED */}
+                        {(() => {
+                          const units = Math.min(parseFloat(result.syringeUnits), 100);
+                          const y = 52 + (units / 100) * 220;
+                          return (
+                            <g>
+                              <line x1="30" y1={y} x2="90" y2={y} stroke="#ef4444" strokeWidth="2" />
+                              <polygon points={`30,${y - 4} 30,${y + 4} 36,${y}`} fill="#ef4444" />
+                            </g>
+                          );
+                        })()}
+                        
+                        {/* Barrel bottom */}
+                        <rect x="42" y="272" width="36" height="6" rx="2" fill="#e5e7eb" stroke="#d1d5db" />
+                        
+                        {/* Plunger rod */}
+                        <rect x="56" y="278" width="8" height="40" rx="2" fill="#e5e7eb" stroke="#d1d5db" />
+                        
+                        {/* Plunger handle (finger grips) */}
+                        <rect x="40" y="318" width="40" height="6" rx="3" fill="#d1d5db" stroke="#9ca3af" />
+                        <rect x="46" y="324" width="28" height="10" rx="2" fill="#e5e7eb" stroke="#d1d5db" />
+                      </svg>
                     </div>
                   </div>
                 </div>
