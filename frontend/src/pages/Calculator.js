@@ -31,7 +31,8 @@ const Calculator = () => {
     setResult({
       concentration: concentration.toFixed(2),
       mlNeeded: mlNeeded.toFixed(3),
-      totalDoses: Math.floor(totalDoses)
+      totalDoses: Math.floor(totalDoses),
+      syringeUnits: (mlNeeded * 100).toFixed(1)
     });
   };
 
@@ -165,6 +166,47 @@ const Calculator = () => {
                       {result.totalDoses} doses
                     </p>
                   </div>
+                  <div className="bg-orange-50 rounded-lg p-4" data-testid="syringe-units-result">
+                    <p className="text-sm text-gray-600 mb-1">Insulin Syringe (100 UI)</p>
+                    <p className="text-2xl font-bold text-orange-600">
+                      {result.syringeUnits} UI
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">Mark on a 100 UI syringe</p>
+                  </div>
+                  {/* Syringe Visual */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4" data-testid="syringe-visual">
+                    <p className="text-sm font-medium text-gray-700 mb-3">Syringe Reference (100 UI)</p>
+                    <div className="relative">
+                      {/* Syringe body */}
+                      <div className="relative bg-gray-100 rounded-full h-8 border border-gray-300 overflow-hidden">
+                        {/* Fill level */}
+                        <div
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min(parseFloat(result.syringeUnits), 100)}%` }}
+                        />
+                        {/* Marker line */}
+                        <div
+                          className="absolute top-0 h-full w-0.5 bg-red-500 z-10"
+                          style={{ left: `${Math.min(parseFloat(result.syringeUnits), 100)}%` }}
+                        />
+                      </div>
+                      {/* Scale marks */}
+                      <div className="flex justify-between mt-1 px-0.5">
+                        {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((mark) => (
+                          <div key={mark} className="flex flex-col items-center">
+                            <div className="w-px h-2 bg-gray-400" />
+                            <span className="text-[9px] text-gray-500 mt-0.5">{mark}</span>
+                          </div>
+                        ))}
+                      </div>
+                      {/* Dose indicator */}
+                      <div className="text-center mt-2">
+                        <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">
+                          Draw to {result.syringeUnits} UI mark
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -197,7 +239,7 @@ const Calculator = () => {
                 10mg vial + 2ml water = 5mg/ml concentration
               </p>
               <p className="text-sm text-gray-600">
-                For 0.5mg dose: inject 0.1ml (20 total doses)
+                For 0.5mg dose: inject 0.1ml = <strong>10 UI</strong> on a 100 UI syringe (20 total doses)
               </p>
             </div>
           </div>
