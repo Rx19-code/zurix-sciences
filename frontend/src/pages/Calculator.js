@@ -177,81 +177,74 @@ const Calculator = () => {
                   <div className="bg-white border border-gray-200 rounded-lg p-5" data-testid="syringe-visual">
                     <p className="text-sm font-medium text-gray-700 mb-4">Insulin Syringe 100 UI - Draw to <span className="text-red-600 font-bold">{result.syringeUnits} UI</span></p>
                     <div className="flex justify-center">
-                      <svg viewBox="0 0 380 60" className="w-full max-w-md h-16">
+                      <svg viewBox="0 0 420 80" className="w-full max-w-lg h-20">
                         {/* Plunger handle */}
-                        <rect x="2" y="18" width="6" height="24" rx="2" fill="#d1d5db" stroke="#9ca3af" strokeWidth="0.5" />
-                        <rect x="8" y="22" width="4" height="16" rx="1" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
+                        <rect x="2" y="22" width="8" height="28" rx="3" fill="#d1d5db" stroke="#9ca3af" strokeWidth="0.8" />
+                        <rect x="10" y="28" width="6" height="16" rx="1.5" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
                         
                         {/* Plunger rod */}
-                        <rect x="12" y="27" width="40" height="6" rx="1" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
+                        <rect x="16" y="33" width="52" height="6" rx="1" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
                         
-                        {/* Barrel bottom cap */}
-                        <rect x="50" y="20" width="6" height="20" rx="2" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
+                        {/* Barrel left cap */}
+                        <rect x="66" y="24" width="6" height="24" rx="2" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
                         
                         {/* Barrel body */}
-                        <rect x="56" y="18" width="260" height="24" rx="3" fill="white" stroke="#bbb" strokeWidth="1" />
+                        <rect x="72" y="22" width="280" height="28" rx="3" fill="white" stroke="#aaa" strokeWidth="1.2" />
                         
-                        {/* Liquid fill - from left */}
+                        {/* Liquid fill - from needle side (right) */}
                         {(() => {
                           const units = Math.min(parseFloat(result.syringeUnits), 100);
-                          const fillWidth = (units / 100) * 258;
+                          const barrelRight = 72 + 280;
+                          const fillWidth = (units / 100) * 278;
                           return (
-                            <rect x="57" y="19" width={fillWidth} height="22" rx="2" fill="rgba(59, 130, 246, 0.2)" />
+                            <rect x={barrelRight - fillWidth - 1} y="23" width={fillWidth} height="26" rx="2" fill="rgba(59, 130, 246, 0.25)" />
                           );
                         })()}
                         
-                        {/* Scale markings - 100 at left, 0 at right */}
+                        {/* Scale: 100 at left (plunger), 0 at right (needle) */}
                         {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((mark) => {
-                          const x = 56 + ((100 - mark) / 100) * 260;
+                          const x = 72 + ((100 - mark) / 100) * 280;
                           return (
                             <g key={mark}>
-                              <line x1={x} y1="18" x2={x} y2="26" stroke="#374151" strokeWidth="0.8" />
-                              <line x1={x} y1="34" x2={x} y2="42" stroke="#374151" strokeWidth="0.8" />
-                              <text x={x} y="52" fontSize="7" fill="#374151" fontWeight="bold" textAnchor="middle">{mark}</text>
+                              <line x1={x} y1="22" x2={x} y2="32" stroke="#333" strokeWidth="0.8" />
+                              <line x1={x} y1="40" x2={x} y2="50" stroke="#333" strokeWidth="0.8" />
+                              <text x={x} y="66" fontSize="10" fill="#111" fontWeight="600" textAnchor="middle">{mark}</text>
                             </g>
                           );
                         })}
                         
                         {/* Minor ticks every 5 */}
                         {[5, 15, 25, 35, 45, 55, 65, 75, 85, 95].map((mark) => {
-                          const x = 56 + ((100 - mark) / 100) * 260;
+                          const x = 72 + ((100 - mark) / 100) * 280;
                           return (
                             <g key={mark}>
-                              <line x1={x} y1="18" x2={x} y2="23" stroke="#9ca3af" strokeWidth="0.5" />
-                              <line x1={x} y1="37" x2={x} y2="42" stroke="#9ca3af" strokeWidth="0.5" />
+                              <line x1={x} y1="22" x2={x} y2="28" stroke="#666" strokeWidth="0.5" />
+                              <line x1={x} y1="44" x2={x} y2="50" stroke="#666" strokeWidth="0.5" />
                             </g>
-                          );
-                        })}
-                        
-                        {/* Minor ticks every 2 */}
-                        {Array.from({length: 50}, (_, i) => i * 2).filter(m => m % 5 !== 0).map((mark) => {
-                          const x = 56 + ((100 - mark) / 100) * 260;
-                          return (
-                            <line key={mark} x1={x} y1="18" x2={x} y2="21" stroke="#d1d5db" strokeWidth="0.4" />
                           );
                         })}
                         
                         {/* Dose indicator - RED line */}
                         {(() => {
                           const units = Math.min(parseFloat(result.syringeUnits), 100);
-                          const x = 56 + ((100 - units) / 100) * 260;
+                          const x = 72 + ((100 - units) / 100) * 280;
                           return (
                             <g>
-                              <line x1={x} y1="14" x2={x} y2="46" stroke="#ef4444" strokeWidth="2" />
-                              <polygon points={`${x - 4},14 ${x + 4},14 ${x},18`} fill="#ef4444" />
+                              <line x1={x} y1="16" x2={x} y2="56" stroke="#ef4444" strokeWidth="2.5" />
+                              <polygon points={`${x - 5},16 ${x + 5},16 ${x},22`} fill="#ef4444" />
                             </g>
                           );
                         })()}
                         
-                        {/* Barrel top cap */}
-                        <rect x="316" y="22" width="8" height="16" rx="2" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
+                        {/* Barrel right cap */}
+                        <rect x="352" y="28" width="10" height="16" rx="2" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="0.5" />
                         
                         {/* Needle hub */}
-                        <rect x="324" y="25" width="14" height="10" rx="2" fill="#333" />
+                        <rect x="362" y="30" width="16" height="12" rx="2" fill="#333" />
                         
                         {/* Needle */}
-                        <line x1="338" y1="30" x2="378" y2="30" stroke="#999" strokeWidth="1" />
-                        <polygon points="378,29 378,31 380,30" fill="#999" />
+                        <line x1="378" y1="36" x2="418" y2="36" stroke="#999" strokeWidth="1.2" />
+                        <polygon points="418,35 418,37 420,36" fill="#999" />
                       </svg>
                     </div>
                   </div>
