@@ -1,178 +1,156 @@
-<analysis>**original_problem_statement:**
-The user wants to build a professional e-commerce website (Zurix Sciences) for selling peptide research products. The initial plan included a companion mobile application. However, due to difficulties with app store publication, the user has pivoted.
+<analysis>**original_problem_statement**: 
+The user wants to build a professional e-commerce website (Zurix Sciences) for selling peptide research products. The project requires a PWA with a product catalog, shopping cart, checkout process, a product verification system (QR code scanner), and a system for free/paid downloadable research protocols. PDF protocols must be automatically watermarked and emailed using single-use unique codes. It also requires an Admin panel for managing products, codes, and leads.
 
-The new primary goal is to enhance the existing website to incorporate the key mobile app features and transform it into a Progressive Web App (PWA). The native mobile app development is now on hold.
+**PRODUCT REQUIREMENTS**:
+- Full e-commerce catalog with local image hosting.
+- Peptide reconstitution calculator with visual syringe representation.
+- Product verification system () via unique codes.
+- Automated watermarking (PyPDF2/reportlab) and emailing (Resend) of protocols.
+- Private admin panel () to track codes, batches, and downloaded leads (with CSV export).
+- Free (Basic) and Paid (Advanced - .99) protocol tiers with multi-language support (EN, PT, ES).
+- High security: IP blocking, rate limiting, and JWT authentication.
 
-**PRODUCT REQUIREMENTS:**
-- **Website & PWA Features:**
-    - A product catalog, shopping cart, and checkout process.
-    - A sophisticated product verification system on the  page that:
-        - Allows users on mobile devices to scan QR codes directly using their camera.
-        - Retains the manual code entry for desktop users.
-    - A system to provide free, downloadable research protocols (in PDF format) to customers.
-        - Access is gated by validating a valid product batch number, which is entered by the user.
-        - The validation must be dynamic, checking against the batches imported in the admin panel in real-time.
-        - Protocols are available in multiple languages (English, Spanish, Portuguese), and the user can choose which one to download.
-    - An automated email system to send purchase confirmations and/or protocols.
-    - A private admin panel () for managing products, verification codes, and viewing logs. The search functionality must be scalable and handle thousands of codes.
-- **Mobile App (On Hold):**
-    - The existing React Native mobile app in the  directory should be preserved for potential future development but is not the current focus.
+**User's preferred language**: Portuguese (INSTRUCT NEXT AGENT: You MUST respond to the user in Portuguese).
 
-**User's preferred language**: Portuguese
+**what currently exists?** 
+A robust, fully functional React PWA and FastAPI backend. The application features a 28-product catalog (all with local images), a peptide calculator with a dynamic UI syringe, a verification system, and a comprehensive protocol delivery system with 8 free and 6 paid protocols in 3 languages. The backend was recently completely refactored from a monolithic  into a clean, modular architecture. The Admin panel tracks unique codes, batches, and features a Leads tab with CSV export. The production environment is hosted on an Ubuntu server using Nginx, PM2, and Cloudflare.
 
-**what currently exists?**
-- A full-stack website (FastAPI + React) is deployed and functional.
-- The website has been converted into a Progressive Web App (PWA), with a manifest file and icons.
-- The product verification page () has been updated to include a QR code scanner for mobile users, using the  library. Desktop users still have the manual input field.
-- A new, dynamic system for accessing free protocols has been fully implemented on the backend and frontend. Users can validate a product batch number to get access to download the corresponding protocol in one of three languages (EN, ES, PT).
-- All 9 required PDF files for the protocols have been uploaded to the production server.
-- An automated email system using Resend is fully configured and working, with the user's domain verified and a  sender address.
-- The admin panel's All Codes search functionality has been refactored to be a scalable, server-side search, capable of handling thousands of records.
-- The previously critical Network request failed bug in the mobile app was successfully diagnosed and resolved by updating the production server. The mobile app is now functional but is on hold per the user's request.
+**Last working item**: 
+- **Last item agent was working**: The agent was waiting for the user to execute terminal commands on their live production server to synchronize the latest development changes. Specifically, deleting 4 redundant products from the production MongoDB and pulling/rebuilding the React frontend to deploy the new Syringe Calculator UI.
+- **Status**: USER VERIFICATION PENDING
+- **Agent Testing Done**: Y
+- **Which testing method agent to use?** NA (Testing already done via screenshot tool for the calculator UI in dev).
+- **User Testing Done**: N
 
-**Last working item**:
-- **Last item agent was working:** The user successfully deployed the new PWA and QR scanner functionality to the website. However, when testing on an Android phone, the Scan QR Code button was not appearing on the  page. The agent was in the process of debugging this frontend issue.
-- **Status:** IN PROGRESS
-- **Agent Testing Done:** N
-- **Which testing method agent to use?** Frontend testing agent (to test the PWA on different mobile devices and browsers) or manual testing via screenshot tool on a mobile viewport.
-- **User Testing Done:** N
-
-**All Pending/In progress Issue list**:
-- **Issue 1: PWA QR Scanner button not visible on Android (P0)**
-- **Issue 2: User's recurring DNS/VPN/Network issues (P2)**
-
-**Issues Detail:**
-- **Issue 1: PWA QR Scanner button not visible on Android**
-    - **Attempted fixes:** The agent had implemented the logic in  to conditionally render the Scan QR Code button based on whether the device is mobile. This logic appears to be failing on the user's Android device. The user confirmed the camera permission was granted.
-    - **Next debug checklist:**
-        1. Review the device detection logic in . The current implementation might be . This can be unreliable. Consider a more robust method, like checking .
-        2. As a quick fix to unblock the user, temporarily remove the conditional rendering and show both the Scan QR Code and Enter Code options to all users, regardless of device.
-        3. Add console logs within the  component to check the values of  and the result of the  check when the user accesses the page.
-    - **Why fix this issue and what will be achieved with the fix?** This is the core part of the new PWA functionality. Fixing it will allow mobile users to scan QR codes, completing the pivot from the native app.
-    - **Status:** IN PROGRESS
-    - **Is recurring issue?** N
-    - **Should Test frontend/backend/both after fix?** Frontend
-    - **Blocked on other issue:** None
-- **Issue 2: User's recurring DNS/VPN/Network issues**
-    - **Attempted fixes:** This has been extensively debugged. The issue is confirmed to be on the user's local network in Paraguay and/or their ProtonVPN client. The site is globally accessible. The user was able to access the site after disconnecting the VPN.
-    - **Next debug checklist:** This is an environmental issue on the user's side. The agent should not spend more time on it unless directly asked. The established workarounds are: disconnecting the VPN, using mobile data, or changing local DNS servers to .
-    - **Why fix this issue and what will be achieved with the fix?** Resolves a major source of frustration for the user, allowing them to test without workarounds.
-    - **Status:** BLOCKED (User-side issue)
-    - **Is recurring issue?** Y
-    - **Should Test frontend/backend/both after fix?** NA
+**All Pending/In progress Issue list**: 
+  Issue 1: P0 - Sync Development Changes to Production Server
+  Issue 2: P1 - Cloudflare Blocking South American Users
+  
+  Issues Detail:
+  - Issue 1: Sync Development Changes to Production Server
+     - Attempted fixes: The agent provided the commands to the user, but the user requested to resume the pending adjustments they hadn't executed yet.
+     - Next debug checklist: 
+       1. Provide the user with the exact Python script to delete the 4 products ('TB-500/thymosin beta 20mg', 'BPC-157 10mg', 'BPC157,TB4 Blend 5mg+5mg', 'Tesamorelin 20mg') from the *production* MongoDB.
+       2. Provide the commands to pull the latest GitHub changes and run  in the production frontend directory.
+     - Why fix this issue and what will be achieved with the fix? This ensures the live site matches the development environment, specifically removing duplicate products and publishing the new Calculator Syringe UI.
+     - Status: USER VERIFICATION PENDING
+     - Is recurring issue? N
+     - Should Test frontend/backend/both after fix? Frontend (Verify production calculator)
+     - Blocked on other issue: None
+  - Issue 2: Cloudflare Blocking South American Users
+     - Attempted fixes: The agent analyzed Cloudflare DNS and security settings and identified the Browser Integrity Check or WAF rules as the likely culprit for blocking valid users.
+     - Next debug checklist: 
+       1. Ask the user if disabling the Browser Integrity Check in Cloudflare resolved the access issue.
+       2. If not, guide the user to check Cloudflare -> Security -> Events to see exactly which rule is blocking the traffic.
+     - Why fix this issue and what will be achieved with the fix? Ensures all target customers can access the e-commerce platform without false-positive security blocks.
+     - Status: IN PROGRESS
+     - Is recurring issue? Y
+     - Should Test frontend/backend/both after fix? Network/Frontend
+     - Blocked on other issue: None
 
 **In progress Task List**:
-- None.
+  Task 1: P2 - Finalize Advanced Protocols (USDT Payment Flow)
+  
+ Task Detail:
+  - Task 1: Finalize Advanced Protocols (USDT Payment Flow)
+     - Where to resume: The 6 advanced protocols are configured at .99, but the actual checkout/payment flow via USDT needs final validation or user decision on how they want to handle the gateway.
+     - What will be achieved with this? Monetization of advanced protocols.
+     - Status: TESTING PENDING
+     - Should Test frontend/backend/both after fix? Both
+     - Blocked on something: User business decision on the USDT payment gateway.
 
 **Upcoming and Future Tasks**
-- **Upcoming Tasks:**
-    - **(P1) Implement Advanced Protocols as a paid feature:** The user mentioned wanting to add paid protocols for .99 each. This will require integrating a payment gateway (like Stripe) and re-introducing purchase logic.
-- **Future Tasks:**
-    - **(P2) Revisit Native Mobile App:** The code in  is preserved. The user may want to resume development in the future. The  monolith still needs refactoring.
-    - **(P2) Add remaining 20 product images:** This is pending delivery from the user's designer.
+    Upcoming Tasks:
+    - (P2) Automated MongoDB Backups: Implement a cron job or script to automatically back up the database.
+    - (P3) MongoDB Authentication: Secure the database connection with credentials (currently relying on local-only access).
+    Future Tasks:
+    - (P3) React Native Mobile App: Resume development on the mobile app located in  once the PWA is fully stabilized.
 
 **Completed work in this session**
-- **PWA Conversion & QR Scanner:**
-  - Converted the React website into a full Progressive Web App (PWA) with a manifest and icons.
-  - Integrated a QR code scanner () into the  page for mobile users.
-- **Protocol System Major Overhaul:**
-  - Pivoted the protocol system from a paid model to a free model, gated by product batch number validation.
-  - Implemented dynamic, server-side batch number validation against the production database, making the system scalable for new batches ().
-  - Rewrote the mobile app's  and created new backend endpoints (, ) to support the new flow.
-  - Uploaded and configured all 9 protocol PDFs (3 protocols x 3 languages) on the production server.
-- **Critical Bug Fixes & Deployments:**
-  - **Resolved the long-standing mobile app Network request failed bug.**
-  - Successfully guided the user through multiple complex production deployments, resolving issues with , package versions, and git conflicts.
-  - Fixed a  bug in the backend PDF download endpoint.
-- **Admin Panel & UI Improvements:**
-  - Refactored the Admin Panel's All Codes page to use scalable, server-side search.
-  - Fixed multiple mobile app UI bugs, including a syntax error causing a crash, a broken modal, and removing redundant/unwanted elements.
-  - Configured the final, correct icon for the mobile app after a long debugging process.
-- **Email Integration:**
-  - Fully implemented and tested an automated email system using Resend, including guiding the user through domain verification on Cloudflare.
+- Local Image Storage mapped for all products (DONE)
+- Backend  Massive Refactoring into  (DONE)
+- Admin Panel: Leads tab with CSV export (DONE)
+- Advanced Protocols Configuration (6 new protocols, 18 PDFs in EN/PT/ES) (DONE)
+- Nginx Production Configuration Fixes for Image Serving (DONE)
+- Calculator Syringe SVG UI with IU mapping (DONE)
+- Removed 4 duplicate products from Dev DB (DONE)
 
 **Earlier issues found/mentioned but not fixed**
-- **Mobile App - Broken Website Link:** Mentioned in the initial handoff. This is now irrelevant as the mobile app is on hold.
+None.
 
 **Known issue recurrence from previous fork**
-- **User's DNS/Network/VPN problems:** This remains a recurring environmental issue that complicates testing for the user. It has been confirmed to be a local issue on their end.
+  - Issue recurrence in previous fork: DNS/Cloudflare configuration blocking users.
+  - Recurrence count: 2
+  - Status: IN PROGRESS
 
 **Code Architecture**
-resendhtml5-qrcode
+
 
 **Key Technical Concepts**
-- **Backend:** FastAPI, MongoDB (Motor), Resend (for emails).
-- **Frontend (Web):** React, TailwindCSS, **PWA**, **html5-qrcode**.
-- **Frontend (Mobile):** React Native, Expo (On Hold).
-- **Deployment:** Manual , , .
+- Frontend: React, TailwindCSS, HTML5-QRCode, PWA
+- Backend: FastAPI, Motor (Async MongoDB), Resend API, PyPDF2, Reportlab, SlowAPI
+- Architecture: Modular FastAPI Routers
+- Server/Deployment: Ubuntu, PM2, Nginx, Cloudflare
 
 **key DB schema**
-- : 
-- :  (Now used for protocol validation)
-- : Static definitions of protocols, filenames now point to language-specific PDFs.
+  - products: 
+  - unique_codes: 
+  - protocol_leads: 
 
-**All files of reference**
-- : The file for the current primary task of fixing the QR scanner.
-- : PWA configuration.
-- : PWA entry point.
-- : Contains the protocol validation and email logic.
-- : (For future reference) Monolithic mobile app code.
+**changes in tech stack**
+  - None, but a massive structural refactor occurred in the backend.
 
-**Areas that need refactoring**:
--  remains a monolithic file that needs a major breakdown into components and screens if development on it ever resumes.
+**All files of reference** 
+  -  - Updated with new advanced protocols.
+  -  - Updated with the Syringe UI.
+  -  - Updated with the Leads tab.
+  -  - API for fetching leads.
+
+**Areas that need refactoring**: 
+Code is currently very clean due to the recent refactoring of  into the  directory.
 
 **key api endpoints**
--  (POST): Validates a batch number for a given protocol.
--  (GET): Downloads the protocol PDF.
--  (GET): Now supports  and  for server-side search.
--  (POST): Sends a test email via Resend.
+  - 
+  - 
+  - 
 
-**Critical Info for New Agent**
-- **PIVOT TO PWA:** The project has pivoted away from the native mobile app. The main focus is now the website, which has been converted into a PWA. Do not work on the  directory unless the user explicitly asks to resume it.
-- **CURRENT BUG:** The immediate task is to fix the QR scanner on , which is not showing the Scan QR Code button for the user on their Android device.
-- **USER'S NETWORK:** The user has persistent network/DNS/VPN issues on their end. Be prepared to guide them through workarounds (disconnecting VPN, using mobile data). Do not assume the server is down if the user can't access it. Always verify with  from the agent environment first.
-- **DYNAMIC SYSTEMS:** The protocol validation and admin search are now dynamic and scalable. New batches added to the admin panel will work automatically for protocol downloads.
+**Critical Info for New Agent** 
+The user manages a live production server via SSH ( on Njalla). Because they are not deeply technical, you must provide EXACT, copy-pasteable terminal commands (often chained with ) for any production deployments. The development environment () is out of sync with production regarding the latest Calculator UI and the deletion of 4 duplicate products. Your immediate priority is guiding the user to apply these dev changes to their live server.
 
-**documents and test reports created in this job**
-- 9 Protocol PDFs were uploaded by the user and saved to . They are also deployed on the production server at .
+**documents and test reports created in this job** 
+  - /app/memory/PRD.md
+  - /app/test_reports/iteration_3.json
+  - /app/test_reports/iteration_4.json
 
-**Last 10 User Messages and any pending HUMAN messages**
-1.  **User:** Tries to run the server, has dependency conflicts. (Resolved)
-2.  **Agent:** Provides the correct sequence of commands to fix dependencies and build.
-3.  **User:** Reports the build is done.
-4.  **Agent:** Confirms the build is done and asks the user to test the PWA.
-5.  **User:** Reports the site won't open on their phone (server not found). (DNS issue)
-6.  **Agent:** Confirms the server is online and suggests network workarounds (mobile data).
-7.  **User:** Reports the site opened, but they get a could not access camera error.
-8.  **Agent:** Instructs the user on how to grant camera permissions in their mobile browser.
-9.  **User:** Reports that on Android, the Scan QR Code option doesn't even appear. (Current bug)
-10. **Agent:** Acknowledges the new bug and is about to start investigating .
-11. **User:** pode seguir (you can proceed) - approval to fix the bug.
+**Last 10 User Messages and any pending HUMAN messages** 
+1. **User:** Asking for a visual syringe representation in the calculator.
+2. **Agent:** Implemented an SVG syringe and IU values.
+3. **User:** Requested to make the syringe thinner and horizontal.
+4. **Agent:** Adjusted the SVG.
+5. **User:** Pointed out numbers were hard to read and the liquid was on the wrong side of the syringe.
+6. **Agent:** Fixed the liquid direction and increased number sizes.
+7. **User:** Reported that some users in South America are getting cannot reach server errors.
+8. **Agent:** Diagnosed Cloudflare DNS and security settings; suggested disabling Browser Integrity Check.
+9. **User:** Hello, lets resume the previous adjustments that I havent done yet
+10. **User:** Continue
+- *Pending Action:* Provide the exact terminal commands for the user to delete the 4 products from their production DB and rebuild their production frontend for the calculator.
 
 **Project Health Check:**
-- **Broken:** The QR code scanner functionality on the website's  page is not working correctly for the user on Android (the scan button is not visible).
-- **Mocked:** N/A
+- Broken: Cloudflare blocking some regional traffic.
+- Mocked: Advanced Protocol Payment logic (USDT) is built but acting partially as a placeholder until fully tested by the user.
 
-**3rd Party Integrations**
-- **Cloudflare:** DNS, SSL, Proxy.
-- **Njalla:** Domain Registrar.
-- **ip-api.com:** Geolocation lookup.
-- **Resend:** Implemented and working for sending emails.
-- **html5-qrcode:** Newly added for QR code scanning on the website.
+**3rd Party Integrations** 
+  • Resend (Email) — requires User API Key (present in .env)
+  • Cloudflare (DNS/WAF) — managed by User
 
 **Testing status**
-- **Testing agent used after significant changes:** NO
-- **Troubleshoot agent used after agent stuck in loop:** NO
-- **Test files created:** None
-- **Known regressions:** None.
+  - Testing agent used after significant changes: YES (Iteration 4 for backend refactor).
+  - Troubleshoot agent used after agent stuck in loop: NO
+  - Test files created: None
+  - Known regressions: None
 
 **Credentials to test flow:**
-- **Website Domain:** 
-- **Admin Panel:**
-    - **URL:** 
-    - **Password:** 
-- **Server SSH:** 
-- **Valid Batch Numbers for Testing:**  (for GHK-Cu),  (for TB-500).
+Use values from . (ADMIN_PASSWORD, JWT_SECRET).
 
 **What agent forgot to execute**
-- The  on the server required  to work, indicating dependency conflicts. While the agent got it working on the server, the  and  in the git repository might be in an inconsistent state and could cause issues for the next developer setting up the project locally. This should be addressed by running  locally, resolving conflicts, and committing the updated .</analysis>
+Nothing was forgotten in dev, but the agent must finish guiding the user to execute the final cleanup and build commands on the production SSH terminal.</analysis>

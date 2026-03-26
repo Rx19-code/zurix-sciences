@@ -8,7 +8,7 @@ import os
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://zurix-verify.preview.emergentagent.com"
+    BASE_URL = "https://peptide-catalog-3.preview.emergentagent.com"
 
 API_URL = f"{BASE_URL}/api"
 
