@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zurix Sciences - Biblioteca de Protocolos (Mockup)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Inter', sans-serif; background: #0a0e1a; color: #fff; }
+.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+.card-hover { transition: all 0.3s ease; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.pro-glow { box-shadow: 0 0 20px rgba(234,179,8,0.15); }
+.filter-active { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+.cta-gradient { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e3a5f 100%); }
+.kiwify-btn { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.usdt-btn { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.badge-free { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.badge-pro { background: rgba(234,179,8,0.15); color: #fbbf24; border: 1px solid rgba(234,179,8,0.3); }
+.badge-cat { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+.badge-cat-green { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+.badge-cat-purple { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+.badge-cat-orange { background: rgba(249,115,22,0.12); color: #fb923c; border: 1px solid rgba(249,115,22,0.2); }
+.badge-cat-pink { background: rgba(236,72,153,0.12); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
+.badge-cat-teal { background: rgba(20,184,166,0.12); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.2); }
+.search-glow:focus { box-shadow: 0 0 0 2px rgba(59,130,246,0.4); }
+</style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<div class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-blue-900/30 to-transparent"></div>
+  <div class="max-w-7xl mx-auto px-6 pt-12 pb-8 relative">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-blue-300 text-sm mb-5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+        70+ Peptídeos Catalogados
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">
+        Biblioteca de <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Protocolos</span>
+      </h1>
+      <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+        Protocolos completos com dosagens, referências científicas e sinergias
+      </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-xl mx-auto mb-8">
+      <div class="relative">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" placeholder="Buscar peptídeo por nome..." class="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none search-glow transition-all">
+      </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap justify-center gap-2 mb-4">
+      <button class="px-4 py-2 rounded-lg text-sm font-medium filter-active transition-all">Todos</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Anti-aging</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Recuperação</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Emagrecimento</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Hormonal</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Performance</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Cognitivo</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Estética</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">Imunidade</button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium glass text-gray-300 hover:text-white transition-all">GH/Secretagogos</button>
+    </div>
+
+    <p class="text-center text-sm text-gray-500 mb-8">8 de 70 peptídeos acessíveis</p>
+  </div>
+</div>
+
+<!-- Protocol Cards Grid -->
+<div class="max-w-7xl mx-auto px-6 pb-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+    <!-- FREE Card 1 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-pink text-xs font-medium px-2.5 py-1 rounded-full">Estética</span>
+        <span class="badge-free text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+          FREE
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">GHK-Cu 50mg</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Peptídeo de cobre para regeneração cutânea e produção de colágeno</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 8 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg> EN | PT | ES</span>
+      </div>
+    </div>
+
+    <!-- FREE Card 2 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-green text-xs font-medium px-2.5 py-1 rounded-full">Recuperação</span>
+        <span class="badge-free text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+          FREE
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">TB-500</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Thymosin Beta-4 para recuperação tecidual e reparo muscular</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 12 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg> EN | PT | ES</span>
+      </div>
+    </div>
+
+    <!-- FREE Card 3 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-orange text-xs font-medium px-2.5 py-1 rounded-full">Emagrecimento</span>
+        <span class="badge-free text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+          FREE
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Retatrutide</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Agonista triplo GLP-1/GIP/Glucagon para pesquisa metabólica</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 16 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg> EN | PT | ES</span>
+      </div>
+    </div>
+
+    <!-- FREE Card 4 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat text-xs font-medium px-2.5 py-1 rounded-full">Hormonal</span>
+        <span class="badge-free text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+          FREE
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Oxytocin</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Neuropeptídeo para pesquisa em comportamento social e vínculo</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 8 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg> EN | PT | ES</span>
+      </div>
+    </div>
+
+    <!-- PRO Card 1 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer pro-glow relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-yellow-500/10 to-transparent rounded-bl-full"></div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-green text-xs font-medium px-2.5 py-1 rounded-full">Recuperação</span>
+        <span class="badge-pro text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>
+          PRO
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Tissue Regeneration</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Protocolo avançado de regeneração tecidual com stack otimizado</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 12 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Bloqueado</span>
+      </div>
+    </div>
+
+    <!-- PRO Card 2 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer pro-glow relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-yellow-500/10 to-transparent rounded-bl-full"></div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-purple text-xs font-medium px-2.5 py-1 rounded-full">Cognitivo</span>
+        <span class="badge-pro text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>
+          PRO
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Cognitive Support</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Stack nootrópico avançado para pesquisa em cognição e neuroplasticidade</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 8 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Bloqueado</span>
+      </div>
+    </div>
+
+    <!-- PRO Card 3 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer pro-glow relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-yellow-500/10 to-transparent rounded-bl-full"></div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-pink text-xs font-medium px-2.5 py-1 rounded-full">Anti-aging</span>
+        <span class="badge-pro text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>
+          PRO
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Rejuvenation & Skin</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Protocolo anti-envelhecimento com peptídeos bioativos de rejuvenescimento</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 16 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Bloqueado</span>
+      </div>
+    </div>
+
+    <!-- PRO Card 4 -->
+    <div class="glass rounded-xl p-5 card-hover cursor-pointer pro-glow relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-yellow-500/10 to-transparent rounded-bl-full"></div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="badge-cat-orange text-xs font-medium px-2.5 py-1 rounded-full">Emagrecimento</span>
+        <span class="badge-pro text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>
+          PRO
+        </span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1.5">Metabolic Support</h3>
+      <p class="text-gray-400 text-sm mb-3 line-clamp-2">Protocolo metabólico avançado com composição corporal otimizada</p>
+      <div class="flex items-center gap-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 12 semanas</span>
+        <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Bloqueado</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA Upgrade Section -->
+<div class="max-w-7xl mx-auto px-6 py-12">
+  <div class="cta-gradient rounded-2xl p-8 md:p-12 border border-yellow-500/20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-yellow-500/5 to-transparent rounded-bl-full"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-500/5 to-transparent rounded-tr-full"></div>
+    
+    <div class="relative text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-sm font-medium mb-4">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>
+        Acesso Vitalício
+      </div>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">
+        Desbloqueie <span class="text-yellow-400">Todos</span> os Protocolos
+      </h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
+        Acesso completo a todos os protocolos avançados, pesquisas, sinergias e atualizações futuras. Pagamento único.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+        <!-- Kiwify Button -->
+        <button class="kiwify-btn px-8 py-4 rounded-xl text-white font-bold text-lg flex items-center gap-3 shadow-lg shadow-green-500/20 hover:shadow-green-500/30 transition-all hover:-translate-y-0.5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+          <div class="text-left">
+            <div class="text-xs opacity-80">Cartão de Crédito</div>
+            <div>Pagar com Kiwify</div>
+          </div>
+        </button>
+
+        <span class="text-gray-600 font-medium">ou</span>
+
+        <!-- USDT Button -->
+        <button class="usdt-btn px-8 py-4 rounded-xl text-white font-bold text-lg flex items-center gap-3 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all hover:-translate-y-0.5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="text-left">
+            <div class="text-xs opacity-80">Criptomoeda</div>
+            <div>Pagar com USDT</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path></svg> 70+ Protocolos</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path></svg> Atualizações Gratuitas</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path></svg> Acesso Vitalício</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path></svg> 3 Idiomas (EN/PT/ES)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Code Section -->
+<div class="max-w-7xl mx-auto px-6 pb-16">
+  <div class="glass rounded-2xl p-8 max-w-2xl mx-auto text-center">
+    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-500/10 border border-green-500/20 mb-4">
+      <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+    </div>
+    <h3 class="text-xl font-bold text-white mb-2">Tem um código de verificação?</h3>
+    <p class="text-gray-400 text-sm mb-6">Insira o código do seu produto Zurix para acessar o protocolo gratuito</p>
+    <div class="flex gap-2 max-w-md mx-auto">
+      <input type="text" placeholder="ZX-XXXXXX-XXXX-X-XXXXX" class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none search-glow font-mono text-sm">
+      <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">Validar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
