@@ -34,37 +34,48 @@ export default function PeptideDetail() {
   var akaList = peptide.also_known_as || [];
   var presList = peptide.presentations || [];
 
+  var catSlug = (peptide.category || '').toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
+  var heroImg = API + '/api/library/category-image/' + catSlug;
+
   return (
     <div className="min-h-screen bg-gray-50" data-testid="peptide-detail-page">
-      {/* Header */}
-      <div className="bg-gradient-to-b from-blue-600 to-blue-800 text-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-8">
-          <button data-testid="back-to-library" onClick={function() { navigate('/library'); }} className="inline-flex items-center gap-1.5 text-blue-100 hover:text-white text-sm mb-5 transition-colors">
-            <ChevronLeft className="w-4 h-4" />
-            Back to Library
-          </button>
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="bg-white/15 border border-white/25 text-white text-xs font-medium px-2.5 py-1 rounded-full">{peptide.category}</span>
-            {peptide.classification && (
-              <span className="bg-white/10 border border-white/20 text-blue-100 text-xs px-2.5 py-1 rounded-full">{peptide.classification}</span>
-            )}
-            {peptide.evidence_level && (
-              <span className="bg-green-500/20 text-green-200 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full">{peptide.evidence_level}</span>
-            )}
-            <span className={peptide.is_free ? 'bg-green-500/20 text-green-200 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full' : 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/30 text-xs font-semibold px-2.5 py-1 rounded-full'}>
-              {peptide.is_free ? 'FREE' : 'PRO'}
-            </span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" data-testid="peptide-name">{peptide.name}</h1>
-          <p className="text-lg text-blue-100 mb-3">{peptide.description}</p>
-          {akaList.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs text-blue-200 pt-1">Also known as:</span>
-              {akaList.map(function(aka, i) {
-                return <span key={i} className="text-xs text-blue-200 bg-white/10 px-2.5 py-1 rounded-full">{aka}</span>;
-              })}
+      {/* Header with Hero Image */}
+      <div className="relative">
+        {/* Hero Image */}
+        <div className="h-48 sm:h-56 lg:h-64 relative overflow-hidden">
+          <img src={heroImg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f1729] via-[#0f1729]/70 to-[#0f1729]/30" />
+        </div>
+        {/* Content overlay */}
+        <div className="relative -mt-32 sm:-mt-36">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-6">
+            <button data-testid="back-to-library" onClick={function() { navigate('/library'); }} className="inline-flex items-center gap-1.5 text-gray-300 hover:text-white text-sm mb-4 transition-colors">
+              <ChevronLeft className="w-4 h-4" />
+              Back to Library
+            </button>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <span className="bg-white/15 border border-white/25 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">{peptide.category}</span>
+              {peptide.classification && (
+                <span className="bg-white/10 border border-white/20 text-gray-200 text-xs px-2.5 py-1 rounded-full backdrop-blur-sm">{peptide.classification}</span>
+              )}
+              {peptide.evidence_level && (
+                <span className="bg-green-500/20 text-green-300 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">{peptide.evidence_level}</span>
+              )}
+              <span className={peptide.is_free ? 'bg-green-500/20 text-green-300 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm' : 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm'}>
+                {peptide.is_free ? 'FREE' : 'PRO'}
+              </span>
             </div>
-          )}
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-white" data-testid="peptide-name">{peptide.name}</h1>
+            <p className="text-lg text-gray-300 mb-3">{peptide.description}</p>
+            {akaList.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs text-gray-400 pt-1">Also known as:</span>
+                {akaList.map(function(aka, i) {
+                  return <span key={i} className="text-xs text-gray-300 bg-white/10 px-2.5 py-1 rounded-full backdrop-blur-sm">{aka}</span>;
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

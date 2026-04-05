@@ -1,8 +1,42 @@
+from pathlib import Path
+
 from fastapi import APIRouter, Query
+from fastapi.responses import FileResponse
 from database import db
 from typing import Optional
 
 router = APIRouter()
+
+CATEGORY_IMG_DIR = Path(__file__).resolve().parent.parent / "product_images" / "categories"
+
+CATEGORY_IMAGE_MAP = {
+    "Nootropic / Cognitive": "nootropic.jpg",
+    "Recovery": "recovery.jpg",
+    "Anti-aging": "antiaging.jpg",
+    "Aesthetics / Skin": "skin.jpg",
+    "GH / Secretagogues": "molecule.jpg",
+    "Weight Loss / GLP-1": "metabolism.jpg",
+    "Metabolism": "metabolism.jpg",
+    "Hormonal / Sexual Health": "hormone.jpg",
+    "Immunity": "immunity.jpg",
+    "Bioregulators": "molecule.jpg",
+    "Diluents": "molecule.jpg",
+}
+
+
+@router.get("/api/library/category-image/{category_slug}")
+async def get_category_image(category_slug: str):
+    # Map slug back to filename
+    slug_to_file = {k.lower().replace(" / ", "-").replace(" ", "-"): v for k, v in CATEGORY_IMAGE_MAP.items()}
+    filename = slug_to_file.get(category_slug, "molecule.jpg")
+    filepath = CATEGORY_IMG_DIR / filename
+    if filepath.exists():
+        return FileResponse(filepath, media_type="image/jpeg")
+    # Fallback
+    fallback = CATEGORY_IMG_DIR / "molecule.jpg"
+    if fallback.exists():
+        return FileResponse(fallback, media_type="image/jpeg")
+    return {"error": "Image not found"}
 
 LIBRARY_PROJECTION = {
     "_id": 0,
