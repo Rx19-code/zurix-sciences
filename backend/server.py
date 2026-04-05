@@ -19,6 +19,7 @@ from routes.protocols import router as protocols_router
 from routes.payments import router as payments_router
 from routes.admin import router as admin_router
 from routes.verification import router as verification_router
+from routes.library import router as library_router
 
 # Create app
 app = FastAPI()
@@ -55,6 +56,7 @@ app.include_router(protocols_router)
 app.include_router(payments_router)
 app.include_router(admin_router)
 app.include_router(verification_router)
+app.include_router(library_router)
 
 # Middleware stack (order matters - last added = first executed)
 app.add_middleware(
