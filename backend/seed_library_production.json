@@ -3,7 +3,7 @@
     "slug": "semaglutide",
     "name": "Semaglutide",
     "description": "GLP-1 receptor agonist for metabolic research and appetite regulation studies",
-    "category": "Emagrecimento",
+    "category": "Weight Loss / GLP-1",
     "is_free": true,
     "presentations": [
       "5mg",
@@ -17,29 +17,29 @@
       "GLP-1 RA"
     ],
     "overview": {
-      "what_is": "A Semaglutida (Wegovy®, Ozempic®) é um análogo de GLP-1 humano de 31\naminoácidos com 94% de homologia, modificado com substituição Ala→Aib na posição\n8 e conjugação com ácido graxo C18 via espaçador, conferindo meia-vida de ~7 dias\npara administração semanal. Mecanismo (Era dos Peptídeos 2026): Agonismo puro e\npotente do GLP-1R — secreção insulínica glicose-dependente, inibição glucagon,\nretardo esvaziamento gástrico e ação central hipotalâmica na supressão do apetite. No\nensaio STEP-1 (NEJM 2021), 2.4mg/semana produziu 14.9% de redução ponderal em\n\n68 semanas.\nProtocolo de Titulação\nEtapa Dosagem\nPasso 1 0.25mg/semana (4 semanas)\nPasso 2 0.50mg/semana (≥4 semanas)\nPasso 3 1.0mg/semana (≥4 semanas)\n \n\nPasso 4 1.7mg/semana (≥4 semanas)\nAlvo— 2.4mg/semana (manutenção) Validade pós-reconstituição— 30 dias\nPasso 5\n(geladeira 2-8°C). Ciclo— máx 16 sem ON / 4 sem OFF."
+      "what_is": "Semaglutide (Wegovy®, Ozempic®) is a human GLP-1 analogue of 31 amino acids with 94% homology, modified with an Ala→Aib substitution at position 8 and conjugation with C18 fatty acid via spacer, providing a half-life of ~7 days for weekly administration. Mechanism: Pure and potent agonism of GLP-1R — glucose-dependent insulin secretion, glucagon inhibition, gastric emptying delay, and central hypothalamic action in appetite suppression. In the STEP-1 trial (NEJM 2021), 2.4mg/week produced a 14.9% weight reduction in 68 weeks. Titration Protocol Step Dosage Step 1 0.25mg/week (4 weeks) Step 2 0.50mg/week (≥4 weeks) Step 3 1.0mg/week (≥4 weeks) Step 4 1.7mg/week (≥4 weeks) Target— 2.4mg/week (maintenance) Post-reconstitution validity— 30 days Step 5 (refrigerator 2-8°C). Cycle— max 16 weeks ON / 4 weeks OFF."
     },
     "protocols": {
-      "title": "Protocolo Padrão / Titulação",
+      "title": "Standard Protocol / Titration",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once weekly"
       },
       "dosages": [
         {
-          "indication": "1x/semana SC (titular a cada 4 sem)",
-          "schedule": "",
-          "dose": "4 mg/semana"
+          "indication": "Weight Loss (Wegovy)",
+          "schedule": "Titrate every 4 weeks",
+          "dose": "0.25–2.4 mg/week"
         },
         {
-          "indication": "Diabetes Tipo 2 (Ozempic)",
-          "schedule": "",
-          "dose": "0 mg/semana"
+          "indication": "Type 2 Diabetes (Ozempic)",
+          "schedule": "SC once weekly",
+          "dose": "0.25–1.0 mg/week"
         },
         {
-          "indication": "1x/semana SC",
-          "schedule": "",
-          "dose": "5 mg/semana"
+          "indication": "Obesity (High dose)",
+          "schedule": "SC once weekly",
+          "dose": "2.4 mg/week"
         }
       ],
       "phases": [
@@ -65,25 +65,25 @@
         },
         {
           "number": 5,
-          "phase": "Weeks 17+ (Manutenção)",
+          "phase": "Weeks 17+ (Maintenance)",
           "dose": "2400 mcg (2.4 mg)"
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 2.0 mL de bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe",
+        "Inject slowly through the wall of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Semaglutide é um análogo do GLP-1 com 94% de homologia ao GLP-1 humano, modificado com uma cadeia lateral de ácido graxo C18 que se liga à albumina sérica, prolongando sua meia-vida para aproximadamente 7 dias. Ele ativa o receptor GLP-1 (GLP-1R) nas células beta pancreáticas, estimulando a secreção de insulina de forma glicose-dependente e suprimindo a secreção de glucagon.\nNo sistema nervoso central, atua nos núcleos hipotalâmicos e no tronco cerebral\nIníciopara redPeupztíidre oos apetiteF iend aer ingestCãaolc ualaldimoreantar. PMeerniufericamente, retarda o esvaziamento gástrico, contribuindo para saciedade prolongada. Seus efeitos cardiovasculares benéficos incluem redução da inflamação vascular e melhora da função endotelial.",
+      "mechanism": "Semaglutide is a GLP-1 analogue with 94% homology to human GLP-1, modified with a C18 fatty acid side chain that binds to serum albumin, extending its half-life to approximately 7 days. It activates the GLP-1 receptor (GLP-1R) on pancreatic beta cells, stimulating glucose-dependent insulin secretion and suppressing glucagon secretion. In the central nervous system, it acts on hypothalamic nuclei and the brainstem to reduce appetite and caloric intake. Peripherally, it delays gastric emptying, contributing to prolonged satiety. Its beneficial cardiovascular effects include reduced vascular inflammation and improved endothelial function.",
       "steps": [
-        "Ativação do receptor de GLP-1, resultando em aumento da secreção de",
-        "Supressão da secreção de glucagon de forma dependente de glicose",
-        "Retardo do esvaziamento gástrico, contribuindo para a saciedade",
-        "Efeitos diretos no sistema nervoso central, reduzindo o apetite e a ingestão"
+        "Activation of GLP-1 receptor, resulting in increased secretion of",
+        "Suppression of glucagon secretion in a glucose-dependent manner",
+        "Delay of gastric emptying, contributing to satiety",
+        "Direct effects on the central nervous system, reducing appetite and intake"
       ],
       "references": [
         {
@@ -97,11 +97,11 @@
           "summary": ""
         },
         {
-          "title": "Este estudo pivotal de fase 3 demonstrou que a semaglutida uma vez por semana resultou em perda de peso",
+          "title": "This pivotal phase 3 study demonstrated that once-weekly semaglutide resulted in weight loss",
           "metadata": [
             "Research"
           ],
-          "summary": "com melhorias nos fatores de risco cardiometabólicos."
+          "summary": "with improvements in cardiometabolic risk factors."
         },
         {
           "title": "Semaglutide and Cardiovascular Outcomes in Patients with Type 2 Diabetes",
@@ -114,11 +114,11 @@
           "summary": ""
         },
         {
-          "title": "O estudo SUSTAIN-6 mostrou que a semaglutida semanal reduziu o risco de eventos cardiovasculares adversos",
+          "title": "The SUSTAIN-6 study showed that weekly semaglutide reduced the risk of major adverse cardiovascular events",
           "metadata": [
             "Research"
           ],
-          "summary": "maiores em pacientes com diabetes tipo 2 e alto risco cardiovascular, em comparação com placebo."
+          "summary": "in patients with type 2 diabetes and high cardiovascular risk, compared to placebo."
         },
         {
           "title": "Semaglutide in Patients with Type 2 Diabetes and Chronic Kidney Disease",
@@ -131,47 +131,47 @@
           "summary": ""
         },
         {
-          "title": "O estudo FLOW demonstrou que a semaglutida semanal reduziu significativamente o risco de eventos renais e",
+          "title": "The FLOW study demonstrated that weekly semaglutide significantly reduced the risk of renal and",
           "metadata": [
             "Research"
           ],
-          "summary": "renal e cardiovascular."
+          "summary": "cardiovascular events."
         }
       ]
     },
     "synergy": {
       "interactions": [
         {
-          "peptide": "Metformina",
+          "peptide": "Metformin",
           "status": "SYNERGISTIC",
-          "description": "BPC-157 COMPATÍVEL"
+          "description": "BPC-157 COMPATIBLE"
         },
         {
           "peptide": "BPC-157",
           "status": "COMPATIBLE",
-          "description": "Sulfonilureias MONITORAR"
+          "description": "Sulfonylureas MONITOR"
         },
         {
-          "peptide": "Anticoagulantes orais (Warfarina)",
+          "peptide": "Oral anticoagulants (Warfarin)",
           "status": "MONITOR",
-          "description": "Outros agonistas GLP-1 (Liraglutida, Dulaglutida) EVITAR"
+          "description": "Other GLP-1 agonists (Liraglutide, Dulaglutide) AVOID"
         },
         {
-          "peptide": "Sulfonilureias",
+          "peptide": "Sulfonylureas",
           "status": "MONITOR",
-          "description": "Anticoagulantes orais (Warfarina) MONITORAR"
+          "description": "Oral anticoagulants (Warfarin) MONITOR"
         },
         {
-          "peptide": "Outros agonistas GLP-1 (Liraglutida, Dulaglutida)",
+          "peptide": "Other GLP-1 agonists (Liraglutide, Dulaglutide)",
           "status": "AVOID",
-          "description": "Insulina SINÉRGICO"
+          "description": "Insulin SYNERGISTIC"
         }
       ],
       "stacks": []
     },
-    "classification": "Agonista do receptor GLP-1 (análogo de GLP-1)",
-    "evidence_level": "Aprovado (FDA/EMA)",
-    "half_life": "~7 dias",
+    "classification": "GLP-1 Receptor Agonist (GLP-1 analog)",
+    "evidence_level": "Approved (FDA/EMA)",
+    "half_life": "~7 days",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -243,7 +243,7 @@
     "slug": "retatrutide",
     "name": "Retatrutide",
     "description": "Triple GLP-1/GIP/Glucagon receptor agonist for next-generation metabolic research",
-    "category": "https://peptideoshealth.com.br/peptide/51 06/04/2026, 14:53",
+    "category": "Weight Loss / GLP-1",
     "is_free": true,
     "presentations": [
       "10mg",
@@ -253,27 +253,27 @@
     ],
     "also_known_as": [
       "LY3437943",
-      "Agonista triplo GIP/GLP-1/Glucagon"
+      "Triple GIP/GLP-1/Glucagon Agonist"
     ],
     "overview": {
-      "what_is": "Retatrutide é um agonista triplo dos receptores GIP, GLP-1 e glucagon, representando\numa nova classe de peptídeos para o tratamento da obesidade e controle metabólico.\nSua ação simultânea nos três receptores promove efeitos sinérgicos na perda de peso,\ncontrole glicêmico e metabolismo energético, superando os resultados observados\ncom agonistas simples ou duplos."
+      "what_is": "Retatrutide is a triple receptor agonist of GIP, GLP-1, and glucagon, representing a new class of peptides for the treatment of obesity and metabolic control. Its simultaneous action on the three receptors promotes synergistic effects on weight loss, glycemic control, and energy metabolism, surpassing the results observed with single or dual agonists."
     },
     "protocols": {
-      "title": "Protocolo Padrão / Titulação",
+      "title": "Standard Protocol / Titration",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once weekly"
       },
       "dosages": [
         {
-          "indication": "1x por semana (escalonamento)",
+          "indication": "1x per week (escalation)",
           "schedule": "",
-          "dose": "1-12 mg/semana"
+          "dose": "1-12 mg/week"
         },
         {
-          "indication": "Controle Glicêmico",
+          "indication": "Glycemic Control",
           "schedule": "",
-          "dose": "1-8 mg/semana"
+          "dose": "1-8 mg/week"
         }
       ],
       "phases": [
@@ -294,21 +294,21 @@
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 2.0 mL de bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe",
+        "Inject slowly into the vial wall; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "Retatrutide é o primeiro agonista triplo dos receptores GIP, GLP-1 e glucagon em desenvolvimento clínico avançado. A ativação do GLP-1R promove secreção de insulina glicose-dependente, suprime glucagon e retarda o esvaziamento gástrico. A ativação do GIPR potencializa a secreção de insulina e melhora a sensibilidade periférica. A ativação do receptor de glucagon aumenta o gasto energético hepático e a oxidação de ácidos graxos, contribuindo para uma perda\nIníciode pesoP esputídpeeorsior à obFisnederrvada cCoamlcu laadgooranistas Msiemnuples ou duplos. A ação combinada nos três receptores resulta em efeitos sinérgicos no metabolismo energético, controle glicêmico e redução de gordura hepática.",
+      "mechanism": "Retatrutide is the first triple receptor agonist of GIP, GLP-1, and glucagon in advanced clinical development. Activation of GLP-1R promotes glucose-dependent insulin secretion, suppresses glucagon, and slows gastric emptying. Activation of GIPR enhances insulin secretion and improves peripheral sensitivity. Activation of the glucagon receptor increases hepatic energy expenditure and fatty acid oxidation, contributing to weight loss. The combined action on the three receptors results in synergistic effects on energy metabolism, glycemic control, and hepatic fat reduction.",
       "steps": [
-        "Ativação do receptor GLP-1: promove secreção de insulina e suprime",
-        "Ativação do receptor GIP: potencializa a secreção de insulina e melhora a",
-        "Ativação do receptor de Glucagon: aumenta o gasto energético e a oxidação",
-        "Retardo do esvaziamento gástrico, contribuindo para saciedade",
-        "Efeitos centrais na regulação do apetite"
+        "Activation of the GLP-1 receptor: promotes insulin secretion and suppresses",
+        "Activation of the GIP receptor: enhances insulin secretion and improves",
+        "Activation of the glucagon receptor: increases energy expenditure and oxidation",
+        "Slowed gastric emptying, contributing to satiety",
+        "Central effects on appetite regulation"
       ],
       "references": [
         {
@@ -320,14 +320,14 @@
             "2023",
             "2023"
           ],
-          "summary": "multicentre, randomised, double-blind, placebo-controlled trial"
+          "summary": "multicenter, randomized, double-blind, placebo-controlled trial"
         },
         {
-          "title": "Este estudo de fase 2 avaliou a eficácia e segurança da retatrutida em adultos com obesidade, demonstrando",
+          "title": "This phase 2 study evaluated the efficacy and safety of retatrutide in adults with obesity, demonstrating",
           "metadata": [
             "Research"
           ],
-          "summary": "reduções significativas no peso corporal em comparação com placebo."
+          "summary": "significant reductions in body weight compared to placebo."
         },
         {
           "title": "Retatrutide, a GIP, GLP-1 and glucagon receptor agonist, for people with type 2 diabetes: a",
@@ -338,7 +338,7 @@
             "2023",
             "2023"
           ],
-          "summary": "no controle glicêmico e redução de peso."
+          "summary": "on glycemic control and weight reduction."
         },
         {
           "title": "Retatrutide, a GIP, GLP-1, and glucagon receptor agonist, in patients with obesity: a phase 2,",
@@ -352,11 +352,11 @@
           "summary": "randomized, double-blind, placebo-controlled trial"
         },
         {
-          "title": "Este estudo de fase 2 avaliou a retatrutida em pacientes com obesidade, demonstrando reduções significativas",
+          "title": "This phase 2 study evaluated retatrutide in patients with obesity, demonstrating significant",
           "metadata": [
             "Research"
           ],
-          "summary": "e dose-dependentes no peso corporal e melhorias em parâmetros metabólicos."
+          "summary": "and dose-dependent reductions in body weight and improvements in metabolic parameters."
         },
         {
           "title": "Pharmacokinetics, Pharmacodynamics, and Safety of Retatrutide, a GIP, GLP-1, and",
@@ -370,26 +370,26 @@
     "synergy": {
       "interactions": [
         {
-          "peptide": "Metformina",
+          "peptide": "Metformin",
           "status": "COMPATIBLE",
-          "description": "Insulina MONITORAR"
+          "description": "Insulin MONITOR"
         },
         {
-          "peptide": "Insulina",
+          "peptide": "Insulin",
           "status": "MONITOR",
-          "description": "Outros agonistas GLP-1 (Semaglutide, Tirzepatide) EVITAR"
+          "description": "Other GLP-1 agonists (Semaglutide, Tirzepatide) AVOID"
         },
         {
-          "peptide": "Outros agonistas GLP-1 (Semaglutide, Tirzepatide)",
+          "peptide": "Other GLP-1 agonists (Semaglutide, Tirzepatide)",
           "status": "AVOID",
-          "description": "BPC-157 SINÉRGICO"
+          "description": "BPC-157 SYNERGISTIC"
         }
       ],
       "stacks": []
     },
-    "classification": "Agonista triplo de receptores incretínicos",
+    "classification": "Triple Incretin Receptor Agonist",
     "evidence_level": "Clinical Phase II",
-    "half_life": "~6 dias",
+    "half_life": "~6 days",
     "reconstitution_difficulty": "Moderada"
   },
   {
@@ -402,10 +402,10 @@
       "500mg"
     ],
     "also_known_as": [
-      "Nicotinamide Adenine Dinucleotide NAD Coenzima NAD"
+      "Nicotinamide Adenine Dinucleotide NAD Coenzyme NAD"
     ],
     "overview": {
-      "what_is": "O NAD+ é uma coenzima fundamental presente em todas as células vivas, essencial\npara o metabolismo energético, reparo de DNA e sinalização celular. Seus níveis\ndiminuem significativamente com a idade, contribuindo para o envelhecimento\ncelular. A suplementação visa restaurar esses níveis para função celular ótima.\nBenefícios Comprovados\n1 Energia celular e função mitocondrial\n2 Reparo de DNA via sirtuínas e PARPs\n3 Anti-aging celular\n \n\n3 Anti-aging celular\n\n4 Sensibilidade à insulina\n5 Suporte à saúde metabólica\nLinha do Tempo de Resultados\nSemana 1-2 Aumento de energia e disposição.\nSemana 3- Melhora na clareza mental e resistência.\n4\nMês 2-3 Benefícios mensuráveis em biomarcadores de envelhecimento."
+      "what_is": "NAD+ is a fundamental coenzyme present in all living cells, essential for energy metabolism, DNA repair, and cell signaling. Its levels decrease significantly with age, contributing to cellular aging. Supplementation aims to restore these levels for optimal cellular function. Proven Benefits 1 Cellular energy and mitochondrial function 2 DNA repair via sirtuins and PARPs 3 Cellular anti-aging 4 Insulin sensitivity 5 Support for metabolic health Result Timeline Week 1-2 Increased energy and disposition. Week 3 Improved mental clarity and endurance. Month 2-3 Measurable benefits in aging biomarkers."
     },
     "protocols": {
       "standard": {
@@ -414,36 +414,36 @@
       },
       "dosages": [
         {
-          "indication": "Sensibilidade à insulina",
+          "indication": "Insulin sensitivity",
           "schedule": "",
           "dose": "500–1000 mg"
         },
         {
-          "indication": "Fadiga / resiliência ao estresse",
+          "indication": "Fatigue / stress resilience",
           "schedule": "",
           "dose": "250–500 mg"
         },
         {
-          "indication": "Anti-aging / suporte metabólico",
+          "indication": "Anti-aging / metabolic support",
           "schedule": "",
           "dose": "250–500 mg"
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 1-2 mL de bacteriostatic water (se liofilizado)",
+        "Aspirate 1-2 mL of bacteriostatic water (if lyophilized)",
         "Inject slowly down the side of the vial",
         "Gently swirl until dissolved",
-        "Label and refrigerate at 2–8°C por até 7 dias"
+        "Label and refrigerate at 2–8°C for up to 7 days"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O NAD+ funciona como aceptor de elétrons nas reações metabólicas (glicólise,\nβ-oxidação, ciclo de Krebs), sendo reduzido a NADH. Também é substrato essencial para sirtuínas (desacetilases dependentes de NAD+) que regulam expressão gênica, envelhecimento e metabolismo.",
+      "mechanism": "NAD+ acts as an electron acceptor in metabolic reactions (glycolysis, β-oxidation, Krebs cycle), being reduced to NADH. It is also an essential substrate for sirtuins (NAD+-dependent deacetylases) that regulate gene expression, aging, and metabolism.",
       "steps": [
-        "Cofator para enzimas do metabolismo energético (glicólise, ciclo de Krebs)",
-        "Substrato para sirtuínas (SIRT1-7) que regulam longevidade",
-        "Substrato para PARPs de reparo de DNA",
-        "Ativação de AMPK e metabolismo mitocondrial"
+        "Cofactor for energy metabolism enzymes (glycolysis, Krebs cycle)",
+        "Substrate for sirtuins (SIRT1-7) that regulate longevity",
+        "Substrate for PARPs in DNA repair",
+        "Activation of AMPK and mitochondrial metabolism"
       ],
       "references": [
         {
@@ -456,7 +456,7 @@
         {
           "title": "Nature Reviews Molecular Cell Biology · 2020",
           "metadata": [
-            "Revisão sobre o papel do NAD+ no envelhecimento e estratégias de restauração."
+            "Review on the role of NAD+ in aging and restoration strategies."
           ],
           "summary": ""
         }
@@ -467,53 +467,53 @@
         {
           "peptide": "MOTS-c",
           "status": "SYNERGISTIC",
-          "description": "Epithalon SINÉRGICO"
+          "description": "Synergistic with Epithalon"
         },
         {
           "peptide": "Epithalon",
           "status": "SYNERGISTIC",
-          "description": "Glutathione SINÉRGICO"
+          "description": "Synergistic with Glutathione"
         },
         {
           "peptide": "Glutathione",
           "status": "SYNERGISTIC",
-          "description": "SS-31 SINÉRGICO"
+          "description": "Synergistic with SS-31"
         },
         {
           "peptide": "SS-31",
           "status": "SYNERGISTIC",
-          "description": "MOTS-c SINÉRGICO"
+          "description": "Synergistic with MOTS-c"
         }
       ],
       "stacks": [
         {
-          "name": "Longevidade Celular Anti-aging celular completo",
+          "name": "Cellular Longevity Complete Cellular Anti-aging",
           "goal": "NAD+ SS-31 Epithalon",
           "peptides": [],
-          "description": "NAD+ para metabolismo, SS-31 para mitocôndrias, Epithalon para telômeros."
+          "description": "NAD+ for metabolism, SS-31 for mitochondria, Epithalon for telomeres."
         }
       ]
     },
     "classification": "Coenzima celular essencial",
     "evidence_level": "Clínico Fase II",
-    "half_life": "~30-60 minutos (IV); variável em tecidos",
+    "half_life": "~30-60 minutes (IV); variable in tissues",
     "reconstitution_difficulty": "Moderada"
   },
   {
     "slug": "glutathione",
     "name": "Glutathione",
     "description": "Tripeptídeo antioxidante mestre do organismo.",
-    "category": "Antioxidante",
+    "category": "Metabolism",
     "is_free": true,
     "presentations": [
       "600mg",
       "1500mg"
     ],
     "also_known_as": [
-      "GSH L-Glutationa γ-L-Glutamil-L-cisteinil-glicina"
+      "GSH L-Glutathione γ-L-Glutamyl-L-cysteinyl-glycine"
     ],
     "overview": {
-      "what_is": "A Glutationa é o antioxidante mestre do organismo, um tripeptídeo composto por\nglutamato, cisteína e glicina. Atua como principal defensor contra estresse oxidativo,\ndesintoxicação hepática e modulação imunológica. A administração injetável (IM)\ncontorna a degradação oral, elevando diretamente os níveis teciduais.\nBenefícios Comprovados\n\n1 Potente proteção antioxidante celular\n2 Desintoxicação hepática\n3 Clareamento e rejuvenescimento da pele\n \n\n3 Clareamento e rejuvenescimento da pele\n4 Suporte imunológico\n5 Proteção contra dano oxidativo\nLinha do Tempo de Resultados\nSemana 1-2 Melhora sutil de energia e disposição.\nSemana 3- Melhora na clareza da pele e vitalidade.\n4\nMês 2+ Benefícios acumulativos em biomarcadores de estresse oxidativo."
+      "what_is": "Glutathione is the body's master antioxidant, a tripeptide composed of glutamate, cysteine, and glycine. It acts as the primary defender against oxidative stress, liver detoxification, and immune modulation. Injectable administration (IM) bypasses oral degradation, directly elevating tissue levels. Proven Benefits\n\n1 Powerful cellular antioxidant protection\n2 Liver detoxification\n3 Skin whitening and rejuvenation\n\n3 Skin whitening and rejuvenation\n4 Immune support\n5 Protection against oxidative damage\nResult Timeline\nWeek 1-2 Subtle improvement in energy and mood.\nWeek 3- Improvement in skin clarity and vitality.\nMonth 2+ Cumulative benefits on oxidative stress biomarkers."
     },
     "protocols": {
       "standard": {
@@ -522,36 +522,36 @@
       },
       "dosages": [
         {
-          "indication": "Clareamento da pele / cosmético",
+          "indication": "Skin whitening / cosmetic",
           "schedule": "",
           "dose": "600 mg"
         },
         {
-          "indication": "Fadiga pós-viral / suporte imune",
+          "indication": "Post-viral fatigue / immune support",
           "schedule": "",
           "dose": "600 mg"
         },
         {
-          "indication": "Suporte hepático",
+          "indication": "Liver support",
           "schedule": "",
           "dose": "600 mg"
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 1-2 mL de bacteriostatic water",
+        "Aspirate 1-2 mL of bacteriostatic water",
         "Inject slowly down the side of the vial",
         "Gently swirl until dissolved",
-        "Label and refrigerate at 2–8°C por até 7 dias"
+        "Label and refrigerate at 2–8°C for up to 7 days"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "A glutationa atua como o principal tampão redox intracelular. Ela doa elétrons para neutralizar ROS via glutationa peroxidase, regenera antioxidantes oxidados\n(vitamina C, E) e participa das reações de conjugação de Fase II no fígado. Seus níveis diminuem com a idade e estresse, justificando a suplementação.\nInício",
+      "mechanism": "Glutathione acts as the primary intracellular redox buffer. It donates electrons to neutralize ROS via glutathione peroxidase, regenerates oxidized antioxidants (vitamin C, E), and participates in Phase II conjugation reactions in the liver. Its levels decrease with age and stress, justifying supplementation.\nStart",
       "steps": [
-        "NeuPetrpatídliezoasção dirFeintdae rde espCéaclciuelasd orreaativas Mdeen uoxigênio (ROS)",
-        "Regeneração de vitaminas C e E oxidadas",
-        "Conjugação com toxinas para excreção hepática (Fase II)",
-        "Modulação da resposta imune via células T e NK"
+        "Intracellular redox buffering against reactive oxygen species (ROS)",
+        "Regeneration of oxidized vitamins C and E",
+        "Conjugation with toxins for liver excretion (Phase II)",
+        "Modulation of the immune response via T and NK cells"
       ],
       "references": [
         {
@@ -564,7 +564,7 @@
         {
           "title": "Ann N Y Acad Sci · 2019",
           "metadata": [
-            "Revisão sobre os papéis protetores da glutationa e aplicações clínicas."
+            "Review of the protective roles of glutathione and clinical applications."
           ],
           "summary": ""
         }
@@ -573,33 +573,33 @@
     "synergy": {
       "interactions": [
         {
-          "peptide": "Vitamina C",
+          "peptide": "Vitamin C",
           "status": "SYNERGISTIC",
-          "description": "BPC-157 COMPATÍVEL"
+          "description": "BPC-157 COMPATIBLE"
         },
         {
-          "peptide": "BPC-157 COMPATÍVEL\n\nNAD+",
+          "peptide": "BPC-157 COMPATIBLE\n\nNAD+",
           "status": "SYNERGISTIC",
-          "description": "Ambos atuam em vias de proteção celular e anti-aging."
+          "description": "Both act on cellular protection and anti-aging pathways."
         },
         {
           "peptide": "BPC-157",
           "status": "COMPATIBLE",
-          "description": "NAD+ SINÉRGICO"
+          "description": "NAD+ SYNERGISTIC"
         }
       ],
       "stacks": [
         {
-          "name": "Detox & Anti-aging Proteção celular máxima",
+          "name": "Detox & Anti-aging Maximum cellular protection",
           "goal": "Glutathione NAD+ Epithalon",
           "peptides": [],
-          "description": "Antioxidante + reparo de DNA + telomerase para anti-aging completo."
+          "description": "Antioxidant + DNA repair + telomerase for complete anti-aging."
         }
       ]
     },
-    "classification": "Tripeptídeo antioxidante endógeno",
+    "classification": "Endogenous Antioxidant Tripeptide",
     "evidence_level": "Clínico Fase II",
-    "half_life": "~10-15 minutos (IV); prolongada em tecidos",
+    "half_life": "~10-15 minutes (IV); prolonged in tissues",
     "reconstitution_difficulty": "Moderada"
   },
   {
@@ -951,7 +951,7 @@
     "slug": "cagrilintide",
     "name": "Cagrilintide",
     "description": "Long-acting amylin analogue for appetite regulation and metabolic research",
-    "category": "Emagrecimento",
+    "category": "Weight Loss / GLP-1",
     "is_free": false,
     "presentations": [
       "5mg",
@@ -963,55 +963,45 @@
       "Long-acting amylin analogue"
     ],
     "overview": {
-      "what_is": "Cagrilintide é um análogo acilado de ação prolongada do hormônio amilina, que atua\ncomo um agonista do receptor de amilina. Sua função principal é promover saciedade\ne retardar o esvaziamento gástrico, resultando na redução da ingestão alimentar e\nperda de peso. Este peptídeo sintético foi desenvolvido para mimetizar os efeitos\nfisiológicos da amilina endógena."
+      "what_is": "Cagrilintide is a long-acting acylated analogue of the amylin hormone, which acts as an amylin receptor agonist. Its main function is to promote satiety and delay gastric emptying, resulting in reduced food intake and weight loss. This synthetic peptide was developed to mimic the physiological effects of endogenous amylin."
     },
     "protocols": {
-      "title": "Protocolo Padrão / Gradual (3 mL = ~1.67 mg/mL)",
+      "title": "Standard / Gradual Protocol (3 mL = ~1.67 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once weekly"
       },
       "dosages": [
         {
-          "indication": "1x por semana",
-          "schedule": "",
-          "dose": "15 mg/sem"
+          "indication": "Weight loss (titration)",
+          "schedule": "SC once weekly",
+          "dose": "0.3–4.5 mg/week"
         },
         {
-          "indication": "Perda de peso (titração)",
-          "schedule": "",
-          "dose": "30 mg/sem"
-        },
-        {
-          "indication": "1x por semana",
-          "schedule": "",
-          "dose": "4 mg/sem"
-        },
-        {
-          "indication": "Perda de peso (manutenção)",
-          "schedule": "",
-          "dose": "4 mg/sem"
+          "indication": "Weight loss (maintenance)",
+          "schedule": "SC once weekly",
+          "dose": "2.4–4.5 mg/week"
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 3.0 mL de bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
+        "Inject slowly into the vial wall; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "A Cagrilintide é um análogo da amilina humana com modificações químicas\n(acilação com ácido graxo C18) que prolongam drasticamente sua meia-vida, permitindo dosagem semanal. Ela ativa os receptores de amilina (AMY1-3), que são heterodímeros do receptor de calcitonina com proteínas RAMP. No SNC, particularmente na área postrema e núcleo do trato solitário, a ativação desses receptores reduz o apetite e promove saciedade. Perifericamente, retarda o\nInícioesvaziaPmepetíndetoos gástricFoin dee rsuprimCeal cau lsadeocrareção dMee ngulucagon pós-prandial. A combinação com agonistas GLP-1 (como semaglutida) tem mostrado perda de peso aditiva, pois atuam em vias complementares de controle do apetite.",
+      "mechanism": "Cagrilintide is a human amylin analogue with chemical modifications (C18 fatty acid acylation) that drastically prolong its half-life, allowing for weekly dosing. It activates amylin receptors (AMY1-3), which are heterodimers of the calcitonin receptor with RAMP proteins. In the CNS, particularly in the area postrema and nucleus of the solitary tract, receptor activation reduces appetite and promotes satiety. Peripherally, it slows gastric emptying, suppressing the postprandial glucagon secretion. The combination with GLP-1 agonists (such as semaglutide) has shown additive weight loss as they act on complementary pathways for appetite control.",
       "steps": [
-        "Ativa os receptores de amilina (AMY1, AMY2, AMY3) no sistema nervoso",
-        "Aumenta a sensação de saciedade e plenitude.",
-        "Retarda o esvaziamento gástrico, prolongando a sensação de saciedade.",
-        "Modula a liberação de glucagon."
+        "Activates amylin receptors (AMY1, AMY2, AMY3) in the nervous system",
+        "Increases the sensation of satiety and fullness.",
+        "Delays gastric emptying, prolonging the feeling of satiety.",
+        "Modulates glucagon release."
       ],
       "references": [
         {
-          "title": "Cagrilintide, a long-acting amylin analogue, in combination with semaglutide for weight",
+          "title": "Cagrilintide, a long-acting amylin analogue, in combination with semaglutide for weight management: a randomised, multicentre, double-blind, parallel-group, phase 1b trial",
           "metadata": [
             "Humans",
             "Randomized",
@@ -1019,17 +1009,17 @@
             "2021",
             "2021"
           ],
-          "summary": "management: a randomised, multicentre, double-blind, parallel-group, phase 1b trial"
+          "summary": ""
         },
         {
-          "title": "Este estudo de fase 1b avaliou a segurança e a eficácia da cagrilintida em combinação com semaglutida para o",
+          "title": "This phase 1b study evaluated the safety and efficacy of cagrilintide in combination with semaglutide for",
           "metadata": [
             "Research"
           ],
-          "summary": "tolerada e levou a uma perda de peso significativamente maior em comparação com a semaglutida isolada."
+          "summary": "tolerability and led to significantly greater weight loss compared to semaglutide alone."
         },
         {
-          "title": "Cagrilintide, a long-acting amylin analogue, for weight management: a randomised, double-",
+          "title": "Cagrilintide, a long-acting amylin analogue, for weight management: a randomised, double-blind, placebo-controlled, dose-escalation, phase 1 trial",
           "metadata": [
             "Humans",
             "Randomized",
@@ -1037,17 +1027,17 @@
             "2021",
             "2021"
           ],
-          "summary": "blind, placebo-controlled, dose-escalation, phase 1 trial"
+          "summary": ""
         },
         {
-          "title": "Este estudo de fase 1 investigou a segurança, tolerabilidade e farmacocinética da cagrilintida em doses",
+          "title": "This phase 1 study investigated the safety, tolerability, and pharmacokinetics of cagrilintide at doses",
           "metadata": [
             "Research"
           ],
-          "summary": "bem tolerada e demonstrou um perfil farmacocinético adequado para dosagem semanal."
+          "summary": "well tolerated and demonstrated an appropriate pharmacokinetic profile for weekly dosing."
         },
         {
-          "title": "Cagrilintide in combination with semaglutide for weight management: a randomized,",
+          "title": "Cagrilintide in combination with semaglutide for weight management: a randomized, controlled, phase 2 trial",
           "metadata": [
             "Humans",
             "Randomized",
@@ -1055,14 +1045,14 @@
             "2023",
             "2023"
           ],
-          "summary": "controlled, phase 2 trial"
+          "summary": ""
         },
         {
-          "title": "Este estudo de fase 2 avaliou a eficácia e segurança da cagrilintida em combinação com semaglutida para o",
+          "title": "This phase 2 study evaluated the efficacy and safety of cagrilintide in combination with semaglutide for",
           "metadata": [
             "Research"
           ],
-          "summary": "perda de peso superior em comparação com os componentes isolados, com um perfil de segurança aceitável."
+          "summary": "superior weight loss compared to the individual components, with an acceptable safety profile."
         }
       ]
     },
@@ -1071,51 +1061,51 @@
         {
           "peptide": "TB-500",
           "status": "SYNERGISTIC",
-          "description": "Semaglutide MONITORAR"
+          "description": "Semaglutide MONITOR"
         },
         {
-          "peptide": "Insulina",
+          "peptide": "Insulin",
           "status": "MONITOR",
-          "description": "Pramlintide EVITAR"
+          "description": "Pramlintide AVOID"
         },
         {
           "peptide": "Semaglutide",
           "status": "MONITOR",
-          "description": "Insulina MONITORAR"
+          "description": "Insulin MONITOR"
         },
         {
-          "peptide": "Outros agonistas de amilina",
+          "peptide": "Other amylin agonists",
           "status": "AVOID",
-          "description": "BPC-157 SINÉRGICO"
+          "description": "BPC-157 SYNERGISTIC"
         },
         {
           "peptide": "Pramlintide",
           "status": "AVOID",
-          "description": "Outros agonistas de amilina EVITAR"
+          "description": "Other amylin agonists AVOID"
         }
       ],
       "stacks": []
     },
-    "classification": "Análogo acilado da amilina",
+    "classification": "Acylated Amylin Analog",
     "evidence_level": "Clinical Phase II",
-    "half_life": "~160 horas (semanal)",
+    "half_life": "~160 hours (weekly)",
     "reconstitution_difficulty": "Moderada"
   },
   {
     "slug": "mazdutide",
     "name": "Mazdutide",
     "description": "Dual GLP-1/Glucagon receptor agonist for obesity and metabolic research",
-    "category": "Emagrecimento",
+    "category": "Weight Loss / GLP-1",
     "is_free": false,
     "presentations": [
       "10mg"
     ],
     "also_known_as": [
       "LY3305677",
-      "Agonista duplo GLP-1/Glucagon"
+      "Dual GLP-1/Glucagon Agonist"
     ],
     "overview": {
-      "what_is": "Protocolo Padrão\nVia: Subcutânea | Frequência: 1x por semana\nDosagem por Indicação\nIndicação Dose\nIníciSouporte mPeepttaídbeóolsico / regFuilnadçeãro de apCeatlcitueladora Menu\n250 mcg\n1x por semana\nControle de peso (introdutório)\n250–500 mcg\n1x por semana\nPerda de gordura / recomposição\n500 mcg\n1x por semana\nControle glicêmico\n250–500 mcg\n1x por semana\n \n\nFases do Protocolo\n# Fase Dose\n1 Início 250 mcg semanal\n2 Titração 250-500 mcg semanal\nReconstituição Calcular Dose\n1 Aspirar 2.0 mL de água bacteriostática\n2 Injetar lentamente pela parede do frasco\n3 Girar suavemente até dissolver\n4 Rotular e refrigerar a 2–8°C por até 30 dias"
+      "what_is": "Standard Protocol\nRoute: Subcutaneous | Frequency: 1x per week\nDosage by Indication\nIndication Dose\nInitiation Basic support for appetite regulation\n250 mcg\n1x per week\nWeight control (introductory)\n250–500 mcg\n1x per week\nFat loss / recomposition\n500 mcg\n1x per week\nGlycemic control\n250–500 mcg\n1x per week\n\nPhases of the Protocol\n# Phase Dose\n1 Initiation 250 mcg weekly\n2 Titration 250-500 mcg weekly\nReconstitution Calculate Dose\n1 Withdraw 2.0 mL of bacteriostatic water\n2 Inject slowly into the wall of the vial\n3 Gently swirl until dissolved\n4 Label and refrigerate at 2–8°C for up to 30 days"
     },
     "protocols": {
       "standard": {
@@ -1123,15 +1113,15 @@
         "frequency": "As per research protocol"
       },
       "dosages": [],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C after reconstitution."
     },
     "research": {
-      "mechanism": "O Mazdutide ativa simultaneamente os receptores GLP-1 e Glucagon. O GLP-1 suprime o apetite e melhora a secreção de insulina, enquanto o glucagon aumenta o gasto energético, mobiliza gordura hepática e promove termogênese.",
+      "mechanism": "Mazdutide simultaneously activates GLP-1 and glucagon receptors. GLP-1 suppresses appetite and improves insulin secretion, while glucagon increases energy expenditure, mobilizes liver fat, and promotes thermogenesis.",
       "steps": [
-        "Agonismo do receptor GLP-1 (supressão de apetite)",
-        "Agonismo do receptor de Glucagon (gasto energético)",
-        "Retardo do esvaziamento gástrico",
-        "Modulação da secreção de insulina"
+        "GLP-1 receptor agonism (appetite suppression)",
+        "Glucagon receptor agonism (energy expenditure)",
+        "Delay of gastric emptying",
+        "Modulation of insulin secretion"
       ],
       "references": [
         {
@@ -1149,7 +1139,7 @@
           "summary": ""
         },
         {
-          "title": "Resultados de Fase II/III mostrando eficácia do Mazdutide na perda de peso.",
+          "title": "Phase II/III results showing efficacy of Mazdutide in weight loss.",
           "metadata": [
             "Research"
           ],
@@ -1160,33 +1150,33 @@
     "synergy": {
       "interactions": [
         {
-          "peptide": "Semaglutide MONITORAR\nInsulina MONITORAR\n\nAOD-9604",
+          "peptide": "Semaglutide MONITOR\nInsulin MONITOR\n\nAOD-9604",
           "status": "SYNERGISTIC",
-          "description": "Lipólise direta complementa ação metabólica."
+          "description": "Direct lipolysis complements metabolic action."
         },
         {
-          "peptide": "Insulina",
+          "peptide": "Insulin",
           "status": "MONITOR",
-          "description": "AOD-9604 SINÉRGICO"
+          "description": "AOD-9604 SYNERGISTIC"
         },
         {
           "peptide": "Semaglutide",
           "status": "MONITOR",
-          "description": "Insulina MONITORAR"
+          "description": "Insulin MONITOR"
         }
       ],
       "stacks": []
     },
-    "classification": "Peptídeo agonista duplo de receptores",
+    "classification": "Dual Receptor Agonist Peptide",
     "evidence_level": "Clinical Phase III",
-    "half_life": "~5-7 dias",
+    "half_life": "~5-7 days",
     "reconstitution_difficulty": "Easy"
   },
   {
     "slug": "aod-9604",
     "name": "AOD 9604",
     "description": "Modified HGH fragment for fat metabolism and cartilage repair research",
-    "category": "Emagrecimento",
+    "category": "Weight Loss / GLP-1",
     "is_free": false,
     "presentations": [
       "5mg"
@@ -1197,34 +1187,29 @@
       "Tyr-hGH177-191"
     ],
     "overview": {
-      "what_is": "O AOD-9604 é um peptídeo sintético, um fragmento modificado da região C-terminal\ndo hormônio do crescimento humano (hGH 177-191), projetado para promover a lipólise\ne inibir a lipogênese sem os efeitos metabólicos sistêmicos do hGH intacto. Sua ação\nse concentra na mobilização de gordura, distinguindo-o de outros análogos do hGH\npor não elevar os níveis de IGF-1 ou induzir resistência à insulina."
+      "what_is": "AOD-9604 is a synthetic peptide, a modified fragment of the C-terminal region of human growth hormone (hGH 177-191), designed to promote lipolysis and inhibit lipogenesis without the systemic metabolic effects of intact hGH. Its action focuses on fat mobilization, distinguishing it from other hGH analogs by not elevating IGF-1 levels or inducing insulin resistance."
     },
     "protocols": {
-      "title": "Protocolo Padrão / Gradual (3 mL = ~0.667 mg/mL)",
+      "title": "Standard / Gradual Protocol (3 mL = ~0.667 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once daily (manhã, em jejum)"
       },
       "dosages": [
         {
-          "indication": "1x ao dia (manhã, em jejum)",
-          "schedule": "",
-          "dose": "5 mg/dia"
+          "indication": "Fat loss (standard)",
+          "schedule": "SC daily, fasting",
+          "dose": "300–500 mcg/day"
         },
         {
-          "indication": "Perda de gordura (acelerada)",
-          "schedule": "",
-          "dose": "0 mg/dia"
+          "indication": "Fat loss (accelerated)",
+          "schedule": "SC daily",
+          "dose": "500 mcg/day"
         },
         {
-          "indication": "1x ao dia ou dividido manhã+tarde",
-          "schedule": "",
-          "dose": "3 mg/dia"
-        },
-        {
-          "indication": "Perfil lipídico / suporte metabólico",
-          "schedule": "",
-          "dose": "0 mg/dia"
+          "indication": "Lipid profile / metabolic support",
+          "schedule": "SC daily",
+          "dose": "300 mcg/day"
         }
       ],
       "phases": [
@@ -1240,20 +1225,20 @@
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 3.0 mL de bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
+        "Inject slowly against the wall of the vial; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O AOD-9604 é um fragmento modificado do hGH que retém a atividade lipolítica do hormônio do crescimento sem seus efeitos anabólicos e diabetogênicos. Ele se liga a receptores específicos nos adipócitos, ativando a lipólise (quebra de triglicerídeos em ácidos graxos livres e glicerol) e simultaneamente inibindo a lipogênese (formação de novas moléculas de gordura). Diferentemente do hGH completo, o AOD-9604 não estimula a produção de IGF-1 nem afeta o\nIníciometaboPliespmtídoeo dsa glicoFsined,e ro que Ccaolcnufleadroer aum perMfeiln ude segurança superior para uso no manejo da obesidade.",
+      "mechanism": "AOD-9604 is a modified fragment of hGH that retains the lipolytic activity of growth hormone without its anabolic and diabetogenic effects. It binds to specific receptors in adipocytes, activating lipolysis (breakdown of triglycerides into free fatty acids and glycerol) while simultaneously inhibiting lipogenesis (formation of new fat molecules). Unlike intact hGH, AOD-9604 does not stimulate IGF-1 production or affect glucose metabolism, which could ensure a superior safety profile for use in obesity management.",
       "steps": [
-        "Mimetiza a ação do hormônio do crescimento na regulação do metabolismo",
-        "Atua especificamente no metabolismo da gordura, sem afetar o crescimento",
-        "Estimula a liberação de ácidos graxos de adipócitos",
-        "Inibe a conversão de nutrientes em gordura de armazenamento"
+        "Mimics the action of growth hormone in regulating metabolism",
+        "Specifically acts on fat metabolism without affecting growth",
+        "Stimulates the release of fatty acids from adipocytes",
+        "Inhibits the conversion of nutrients into stored fat"
       ],
       "references": [
         {
@@ -1267,11 +1252,11 @@
           "summary": "glucose homeostasis in obese mice."
         },
         {
-          "title": "Este estudo investigou os efeitos do AOD9604 na homeostase da glicose em camundongos obesos, concluindo",
+          "title": "This study investigated the effects of AOD9604 on glucose homeostasis in obese mice, concluding",
           "metadata": [
             "Research"
           ],
-          "summary": "que não houve impacto significativo nos níveis de glicose ou sensibilidade à insulina."
+          "summary": "that there was no significant impact on glucose levels or insulin sensitivity."
         },
         {
           "title": "AOD9604, a synthetic analog of the C-terminus of human growth hormone, does not",
@@ -1281,7 +1266,7 @@
             "2009",
             "2009"
           ],
-          "summary": "encontrou evidências de um efeito significativo na redução do peso corporal."
+          "summary": "find evidence of a significant effect on body weight reduction."
         },
         {
           "title": "The effect of AOD9604 on fat metabolism and body weight in obese mice.",
@@ -1294,11 +1279,11 @@
           "summary": ""
         },
         {
-          "title": "Este estudo em camundongos obesos examinou o impacto do AOD9604 no metabolismo da gordura e no peso",
+          "title": "This study in obese mice examined the impact of AOD9604 on fat metabolism and weight",
           "metadata": [
             "Research"
           ],
-          "summary": "corporal, observando que, embora houvesse algumas alterações metabólicas, não resultou em perda de peso"
+          "summary": "body, noting that while there were some metabolic changes, it did not result in weight loss."
         }
       ]
     },
@@ -1307,44 +1292,44 @@
         {
           "peptide": "Ipamorelin",
           "status": "SYNERGISTIC",
-          "description": "CJC-1295 SINÉRGICO"
+          "description": "CJC-1295 SYNERGISTIC"
         },
         {
           "peptide": "CJC-1295",
           "status": "SYNERGISTIC",
-          "description": "Tesamorelin SINÉRGICO"
+          "description": "Tesamorelin SYNERGISTIC"
         },
         {
           "peptide": "Tesamorelin",
           "status": "SYNERGISTIC",
-          "description": "Semaglutide MONITORAR"
+          "description": "Semaglutide MONITOR"
         },
         {
           "peptide": "Tirzepatide",
           "status": "MONITOR",
-          "description": "5-Amino-1MQ MONITORAR"
+          "description": "5-Amino-1MQ MONITOR"
         },
         {
           "peptide": "Amino-1MQ",
           "status": "MONITOR",
-          "description": "Insulina exógena MONITORAR"
+          "description": "Exogenous insulin MONITOR"
         },
         {
-          "peptide": "Insulina exógena",
+          "peptide": "Exogenous insulin",
           "status": "MONITOR",
-          "description": "BPC-157 SINÉRGICO"
+          "description": "BPC-157 SYNERGISTIC"
         },
         {
           "peptide": "Semaglutide",
           "status": "MONITOR",
-          "description": "Tirzepatide MONITORAR"
+          "description": "Tirzepatide MONITOR"
         }
       ],
       "stacks": []
     },
     "classification": "Fragmento peptídico do hGH (16 aminoácidos)",
     "evidence_level": "Clinical Phase II",
-    "half_life": "~30 minutos",
+    "half_life": "~30 minutes",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -1358,13 +1343,13 @@
     ],
     "also_known_as": [
       "MEHFPGP",
-      "Análogo ACTH(4-10)"
+      "ACTH(4-10) analog"
     ],
     "overview": {
-      "what_is": "O Semax é um neuropeptídeo sintético derivado do fragmento ACTH(4-10) com\npotentes propriedades nootrópicas e neuroprotetoras. Aprovado na Rússia, melhora\ncognição, memória e aprendizado sem elevar cortisol. Atua aumentando BDNF e\nmodulando neurotransmissores."
+      "what_is": "Semax is a synthetic neuropeptide derived from the ACTH(4-10) fragment with potent nootropic and neuroprotective properties. Approved in Russia, it enhances cognition, memory, and learning without raising cortisol levels. It works by increasing BDNF and modulating neurotransmitters."
     },
     "protocols": {
-      "title": "Protocolo Intranasal / SC",
+      "title": "Intranasal / SC Protocol",
       "standard": {
         "route": "Intranasal or Subcutaneous",
         "frequency": "1-3x daily"
@@ -1372,25 +1357,25 @@
       "dosages": [
         {
           "indication": "Indication 1",
-          "schedule": "1-3x ao dia intranasal",
-          "dose": "200-600 mcg/dia"
+          "schedule": "1-3 times a day intranasally",
+          "dose": "200-600 mcg/day"
         }
       ],
       "reconstitution_steps": [
-        "Para uso SC: reconstituir com bacteriostatic water",
-        "Para intranasal: usar formulação pronta",
-        "Refrigerar a 2–8°C",
-        "Usar dentro de 30 dias"
+        "For SC use: reconstitute with bacteriostatic water",
+        "For intranasal: use ready-to-use formulation",
+        "Refrigerate at 2–8°C",
+        "Use within 30 days"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Semax retém propriedades neurotrópicas do ACTH sem efeitos endócrinos.\nAumenta BDNF, promove neuroplasticidade e modula sistemas dopaminérgico e serotoninérgico. Doses intranasais de 0.25-1.0 mg produzem efeitos nootrópicos sustentados por 20-24h.\nInício",
+      "mechanism": "Semax retains the neurotropic properties of ACTH without endocrine effects. It increases BDNF, promotes neuroplasticity, and modulates dopaminergic and serotonergic systems. Intranasal doses of 0.25-1.0 mg produce nootropic effects lasting 20-24 hours.",
       "steps": [
-        "Modulação dopaminérgica e serotoninérgica",
-        "Proteção contra excitotoxicidade",
-        "Melhora da microcirculação cerebral",
-        "Regulação da expressão gênica neuronal"
+        "Dopaminergic and serotonergic modulation",
+        "Protection against excitotoxicity",
+        "Improvement of cerebral microcirculation",
+        "Regulation of neuronal gene expression"
       ],
       "references": [
         {
@@ -1403,7 +1388,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo demonstrando propriedades nootrópicas do Semax em humanos.",
+          "title": "Study demonstrating nootropic properties of Semax in humans.",
           "metadata": [
             "Research"
           ],
@@ -1416,24 +1401,24 @@
         {
           "peptide": "Adamax",
           "status": "SYNERGISTIC",
-          "description": "BPC-157 COMPATÍVEL"
+          "description": "BPC-157 COMPATIBLE"
         },
         {
-          "peptide": "BPC-157 COMPATÍVEL\n\nSelank",
+          "peptide": "BPC-157 COMPATIBLE\n\nSelank",
           "status": "SYNERGISTIC",
-          "description": "Cognição + ansiolítico para performance mental."
+          "description": "Cognition + anxiolytic for mental performance."
         },
         {
           "peptide": "BPC-157",
           "status": "COMPATIBLE",
-          "description": "Selank SINÉRGICO"
+          "description": "Selank SYNERGISTIC"
         }
       ],
       "stacks": []
     },
-    "classification": "Heptapeptídeo sintético (análogo de ACTH 4-10)",
+    "classification": "Synthetic Heptapeptide (ACTH 4-10 Analog)",
     "evidence_level": "Clinical Phase III",
-    "half_life": "~3-5 minutos (intranasal; efeitos 20-24h)",
+    "half_life": "~3-5 minutes (intranasal; effects 20-24h)",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -1448,13 +1433,13 @@
     "also_known_as": [
       "TP-7",
       "Selanc",
-      "Análogo de Tuftsin"
+      "Tuftsin Analog"
     ],
     "overview": {
-      "what_is": "O Selank é um peptídeo ansiolítico sintético derivado do Tuftsin, aprovado na Rússia\npara uso clínico. Exerce efeitos ansiolíticos potentes sem sedação ou dependência,\natravés da modulação do sistema GABAérgico e influência nos níveis de BDNF,\nserotonina e dopamina."
+      "what_is": "Selank is a synthetic anxiolytic peptide derived from Tuftsin, approved in Russia for clinical use. It exerts potent anxiolytic effects without sedation or dependency, through the modulation of the GABAergic system and influence on BDNF, serotonin, and dopamine levels."
     },
     "protocols": {
-      "title": "Protocolo Intranasal / SC",
+      "title": "Intranasal / SC Protocol",
       "standard": {
         "route": "Intranasal or Subcutaneous",
         "frequency": "1-3x daily"
@@ -1462,25 +1447,25 @@
       "dosages": [
         {
           "indication": "Indication 1",
-          "schedule": "1-3x ao dia",
-          "dose": "300-600 mcg/dia intranasal"
+          "schedule": "1-3 times a day",
+          "dose": "300-600 mcg/day intranasal"
         }
       ],
       "reconstitution_steps": [
-        "Para uso SC: reconstituir com bacteriostatic water",
-        "Para intranasal: usar formulação pronta",
-        "Refrigerar a 2–8°C",
-        "Usar dentro de 30 dias"
+        "For SC use: reconstitute with bacteriostatic water",
+        "For intranasal: use ready-made formulation",
+        "Refrigerate at 2–8°C",
+        "Use within 30 days"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Selank modula alostericamente os receptores GABA-A de forma similar a benzodiazepínicos de baixa dose, mas sem sedação ou dependência. Aumenta\nBDNF, regulando neuroplasticidade. Sua porção tuftsin confere propriedades imunomoduladoras.\nInício",
+      "mechanism": "Selank allosterically modulates GABA-A receptors similarly to low-dose benzodiazepines, but without sedation or dependency. It increases BDNF, regulating neuroplasticity. Its tuftsin portion confers immunomodulatory properties.",
       "steps": [
-        "Aumento dos níveis de BDNF",
-        "Regulação de serotonina, dopamina e norepinefrina",
-        "Modulação da expressão gênica de encefalinas",
-        "Propriedades imunomoduladoras via tuftsin"
+        "Increase in BDNF levels",
+        "Regulation of serotonin, dopamine and norepinephrine",
+        "Modulation of gene expression of enkephalins",
+        "Immunomodulatory properties via tuftsin"
       ],
       "references": [
         {
@@ -1501,7 +1486,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo demonstrando modulação GABAérgica pelo Selank.",
+          "title": "Study demonstrating GABAergic modulation by Selank.",
           "metadata": [
             "Research"
           ],
@@ -1514,24 +1499,24 @@
         {
           "peptide": "BPC-157",
           "status": "SYNERGISTIC",
-          "description": "Benzodiazepínicos MONITORAR"
+          "description": "Benzodiazepines MONITOR"
         },
         {
-          "peptide": "Benzodiazepínicos MONITORAR\n\nSemax",
+          "peptide": "Benzodiazepines MONITOR\n\nSemax",
           "status": "SYNERGISTIC",
-          "description": "Cognição + ansiolítico para performance mental completa."
+          "description": "Cognition + anxiolytic for complete mental performance."
         },
         {
-          "peptide": "Benzodiazepínicos",
+          "peptide": "Benzodiazepines",
           "status": "MONITOR",
-          "description": "Semax SINÉRGICO"
+          "description": "Semax SYNERGISTIC"
         }
       ],
       "stacks": []
     },
-    "classification": "Heptapeptídeo sintético (análogo de Tuftsin)",
+    "classification": "Synthetic Heptapeptide (Tuftsin Analog)",
     "evidence_level": "Clinical Phase III",
-    "half_life": "~5-10 minutos (intranasal; efeitos prolongados)",
+    "half_life": "~5-10 minutes (intranasal; prolonged effects)",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -1753,41 +1738,41 @@
       "50mg"
     ],
     "also_known_as": [
-      "Epitalon AEDG Ala-Glu-Asp-Gly Epithalamin sintético"
+      "Epitalon AEDG Ala-Glu-Asp-Gly synthetic Epithalamin"
     ],
     "overview": {
-      "what_is": "O Epithalon é um tetrapeptídeo sintético (Ala-Glu-Asp-Gly) baseado no Epithalamin,\num extrato natural da glândula pineal. Sua principal ação é a ativação da telomerase,\na enzima responsável por estender os telômeros, conferindo-lhe propriedades anti-\naging. Também regula o ciclo circadiano através da modulação da melatonina e\nexerce efeitos antioxidantes e epigenéticos.\n\nBenefícios Comprovados\n1 Ativação da telomerase e extensão de telômeros\n2 Regulação do ciclo circadiano e melatonina\n \n\n3 Propriedades antioxidantes celulares\n4 Modulação epigenética do envelhecimento\n5 Melhora da qualidade do sono\nLinha do Tempo de Resultados\nSemana 1-2 Melhora do sono e regulação circadiana.\nSemana 3- Aumento de energia e bem-estar.\n4\nMês 2-3 Efeitos anti-aging celulares em andamento.\nMês 3-6 Benefícios acumulativos com ciclos regulares."
+      "what_is": "Epithalon is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) based on Epithalamin, a natural extract from the pineal gland. Its main action is the activation of telomerase, the enzyme responsible for extending telomeres, granting it anti-aging properties. It also regulates the circadian cycle through melatonin modulation and exerts antioxidant and epigenetic effects.\n\nProven Benefits\n1 Activation of telomerase and telomere extension\n2 Regulation of the circadian cycle and melatonin\n\n3 Cellular antioxidant properties\n4 Epigenetic modulation of aging\n5 Improved sleep quality\nTimeline of Results\nWeek 1-2 Improvement in sleep and circadian regulation.\nWeek 3- Increased energy and well-being.\nMonth 2-3 Ongoing cellular anti-aging effects.\nMonth 3-6 Cumulative benefits with regular cycles."
     },
     "protocols": {
-      "title": "Protocolo Padrão (2 mL = 5 mg/mL)",
+      "title": "Standard Protocol (2 mL = 5 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once daily"
       },
       "dosages": [
         {
-          "indication": "0.5–1.",
-          "schedule": "",
-          "dose": "0 mg/dia"
+          "indication": "Anti-aging (standard cycle)",
+          "schedule": "SC daily, 10-day cycles",
+          "dose": "5–10 mg/day"
         },
         {
-          "indication": "Qualidade do sono / circadiano",
-          "schedule": "",
-          "dose": "0 mg/dia"
+          "indication": "Sleep quality / circadian",
+          "schedule": "SC before bedtime",
+          "dose": "5 mg/day"
         },
         {
-          "indication": "Recuperação pós-cirúrgica",
-          "schedule": "",
-          "dose": "5 mg/dia"
+          "indication": "Post-surgical recovery",
+          "schedule": "SC daily",
+          "dose": "5 mg/day"
         },
         {
-          "indication": "Longevidade (curso prolongado)",
-          "schedule": "",
-          "dose": "0 mg/dia"
+          "indication": "Longevity (extended course)",
+          "schedule": "SC daily, 20-day cycle",
+          "dose": "10 mg/day"
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 2.0 mL de bacteriostatic water com sterile syringe",
+        "Aspirate 2.0 mL of bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -1795,13 +1780,13 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Epithalon ativa a telomerase interagindo diretamente com regiões promotoras do gene hTERT, a subunidade catalítica da telomerase. Isso resulta em extensão dos telômeros além do limite de Hayflick. Também modula a produção de melatonina pela glândula pineal e atua na remodelação da cromatina.\nInício",
+      "mechanism": "Epithalon activates telomerase by directly interacting with promoter regions of the hTERT gene, the catalytic subunit of telomerase. This results in telomere extension beyond the Hayflick limit. It also modulates melatonin production by the pineal gland and acts on chromatin remodeling.\nStart",
       "steps": [
-        "AtivPaepçtãídoeo dsireta dFain tdeelromeraCsaelc u(lhadToEraRT) Menu",
-        "Extensão dos telômeros em células somáticas",
-        "Modulação da produção de melatonina pela glândula pineal",
-        "Regulação epigenética via interação com promotores gênicos",
-        "Proteção contra estresse oxidativo celular"
+        "Direct activation of telomerase (hTERT) Menu",
+        "Extension of telomeres in somatic cells",
+        "Modulation of melatonin production by the pineal gland",
+        "Epigenetic regulation via interaction with gene promoters",
+        "Protection against cellular oxidative stress"
       ],
       "references": [
         {
@@ -1814,7 +1799,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo demonstrando que Epitalon aumenta comprimento telomérico via ativação de telomerase.",
+          "title": "Study demonstrating that Epitalon increases telomeric length via telomerase activation.",
           "metadata": [
             "Research"
           ],
@@ -1834,31 +1819,31 @@
         {
           "peptide": "Pinealon",
           "status": "SYNERGISTIC",
-          "description": "Cardiogen SINÉRGICO"
+          "description": "Cardiogen SYNERGISTIC"
         },
         {
           "peptide": "Cardiogen",
           "status": "SYNERGISTIC",
-          "description": "Thymosin Alpha-1 SINÉRGICO"
+          "description": "Thymosin Alpha-1 SYNERGISTIC"
         },
         {
           "peptide": "Thymosin Alpha-1",
           "status": "SYNERGISTIC",
-          "description": "Pinealon SINÉRGICO"
+          "description": "Pinealon SYNERGISTIC"
         }
       ],
       "stacks": [
         {
-          "name": "Longevidade Anti-aging celular",
+          "name": "Cellular Anti-aging Longevity",
           "goal": "Epithalon Thymosin Alpha-1 NAD+",
           "peptides": [],
-          "description": "Extensão telomérica + modulação imune + reparo de DNA."
+          "description": "Telomere extension + immune modulation + DNA repair."
         }
       ]
     },
-    "classification": "Tetrapeptídeo biorregulador sintético",
+    "classification": "Synthetic Bioregulator Tetrapeptide",
     "evidence_level": "Pre-clinical",
-    "half_life": "Curta (minutos); efeitos epigenéticos prolongados",
+    "half_life": "Short (minutes); prolonged epigenetic effects",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -2147,7 +2132,7 @@
       "Elamipretide MTP-131 Bendavia RTA 408"
     ],
     "overview": {
-      "what_is": "O SS-31 (Elamipretide) é um tetrapeptídeo aromático-catiônico (D-Arg-Dmt-Lys-Phe-\nNH2) que penetra seletivamente na membrana mitocondrial interna. Liga-se à\ncardiolipina, um fosfolipídeo essencial para a cadeia de transporte de elétrons,\notimizando a produção de ATP e reduzindo a geração de espécies reativas de\noxigênio (ROS). É o peptídeo mitocondrial mais avançado em ensaios clínicos, com\n\nestudos de Fase III para miopatia de Barth e insuficiência cardíaca.\nBenefícios Comprovados\n1 Otimização da produção de ATP (até 30% de aumento)\n \n\n2 Redução de ROS mitocondrial (antioxidante seletivo)\n3 Neuroproteção — protege neurônios contra dano oxidativo\n4 Prevenção de neurodegeneração (Alzheimer, Parkinson)\n5 Melhora da função muscular esquelética (anti-sarcopenia)\n6 Proteção cardiovascular — melhora fração de ejeção\n7 Proteção ocular — degeneração macular relacionada à idade\n8 Estabilização da cardiolipina mitocondrial\nLinha do Tempo de Resultados\nSemanas 1– Aumento sutil de energia e disposição. Possível melhora na\nqualidade do sono. Adaptação ao protocolo.\n2\nSemanas Melhora perceptível na resistência ao exercício. Redução de fadiga.\nMaior clareza mental.\n2–4\nSemanas Resultados mensuráveis em biomarcadores de estresse oxidativo.\nMelhora significativa na performance física e cognitiva.\n4–8\nSemanas Efeitos máximos do ciclo. Melhora na composição corporal, função\ncardiovascular e marcadores de longevidade. Momento de reavaliar\n8–12\npróximo ciclo."
+      "what_is": "SS-31 (Elamipretide) is a cationic aromatic tetrapeptide (D-Arg-Dmt-Lys-Phe-\nNH2) that selectively penetrates the inner mitochondrial membrane. It binds to cardiolipin, an essential phospholipid for the electron transport chain, optimizing ATP production and reducing the generation of reactive oxygen species (ROS). It is the most advanced mitochondrial peptide in clinical trials, with Phase III studies for Barth syndrome and heart failure.\nProven Benefits\n1 Optimization of ATP production (up to 30% increase)\n\n2 Reduction of mitochondrial ROS (selective antioxidant)\n3 Neuroprotection — protects neurons from oxidative damage\n4 Prevention of neurodegeneration (Alzheimer's, Parkinson's)\n5 Improvement of skeletal muscle function (anti-sarcopenia)\n6 Cardiovascular protection — improves ejection fraction\n7 Ocular protection — age-related macular degeneration\n8 Stabilization of mitochondrial cardiolipin\nTimeline of Results\nWeeks 1– Subtle increase in energy and disposition. Possible improvement in\nsleep quality. Adaptation to the protocol.\n2\nWeeks Noticeable improvement in exercise endurance. Reduced fatigue.\nGreater mental clarity.\n2–4\nWeeks Measurable results in biomarkers of oxidative stress.\nSignificant improvement in physical and cognitive performance.\n4–8\nWeeks Maximum effects of the cycle. Improvement in body composition, cardiovascular function, and longevity markers. Time to reassess\n8–12\nnext cycle."
     },
     "protocols": {
       "standard": {
@@ -2156,12 +2141,12 @@
       },
       "dosages": [
         {
-          "indication": "Anti-aging / Longevidade",
+          "indication": "Anti-aging / Longevity",
           "schedule": "",
           "dose": "5 mg SC"
         },
         {
-          "indication": "Neuroproteção",
+          "indication": "Neuroprotection",
           "schedule": "",
           "dose": "5 mg SC"
         },
@@ -2177,22 +2162,22 @@
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 1-2 mL de bacteriostatic water com sterile syringe",
-        "Inject slowly down the side of the vial-ampola",
-        "Girar suavemente (do not shake) até dissolução completa",
-        "Rotular com data e concentração",
-        "Armazenar refrigerado a 2–8°C por até 28 dias"
+        "Aspirate 1-2 mL of bacteriostatic water with sterile syringe",
+        "Inject slowly down the side of the vial-ampoule",
+        "Gently swirl (do not shake) until completely dissolved",
+        "Label with date and concentration",
+        "Store refrigerated at 2–8°C for up to 28 days"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O SS-31 possui afinidade seletiva pela cardiolipina (CL), um fosfolipídeo exclusivo da membrana mitocondrial interna. A CL é essencial para a organização dos complexos da cadeia respiratória em supercompostos. Com o envelhecimento, a CL sofre oxidação e peroxidação, desestabilizando a cadeia de elétrons. O SS-31 se ancora na CL, prevenindo sua oxidação e restaurando a\n eficiência dos complexos I, III e IV. Isso resulta em aumento de 20-30% na produção de ATP e redução de até 60% na geração de ROS. Diferente de antioxidantes convencionais, o SS-31 não elimina ROS de forma indiscriminada, preservando a sinalização redox necessária para adaptações celulares.",
+      "mechanism": "SS-31 has a selective affinity for cardiolipin (CL), a unique phospholipid of the inner mitochondrial membrane. CL is essential for the organization of respiratory chain complexes into supercomplexes. With aging, CL undergoes oxidation and peroxidation, destabilizing the electron chain. SS-31 anchors to CL, preventing its oxidation and restoring the efficiency of complexes I, III, and IV. This results in a 20-30% increase in ATP production and up to a 60% reduction in ROS generation. Unlike conventional antioxidants, SS-31 does not indiscriminately eliminate ROS, preserving the redox signaling necessary for cellular adaptations.",
       "steps": [
-        "Liga-se seletivamente à cardiolipina na membrana mitocondrial interna",
-        "Otimiza a cadeia de transporte de elétrons e produção de ATP",
-        "Inibe a abertura do poro de transição de permeabilidade mitocondrial (mPTP)",
-        "Reduz geração de ROS sem eliminar sinalização redox fisiológica",
-        "Ativa autofagia mitocondrial (mitofagia) seletiva"
+        "Selectively binds to cardiolipin in the inner mitochondrial membrane",
+        "Optimizes the electron transport chain and ATP production",
+        "Inhibits the opening of the mitochondrial permeability transition pore (mPTP)",
+        "Reduces ROS generation without eliminating physiological redox signaling",
+        "Activates selective mitochondrial autophagy (mitophagy)"
       ],
       "references": [
         {
@@ -2204,7 +2189,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo demonstrando que peptídeos SS concentram-se 5000x na mitocôndria interna, reduzindo ROS de",
+          "title": "Study demonstrating that SS peptides concentrate 5000x in the inner mitochondria, reducing ROS",
           "metadata": [
             "Research"
           ],
@@ -2222,7 +2207,7 @@
           "metadata": [
             "Research"
           ],
-          "summary": "Ensaio clínico Fase II demonstrou melhora na fração de ejeção e redução de volume diastólico em pacientes"
+          "summary": "Phase II clinical trial demonstrated improvement in ejection fraction and reduction in diastolic volume in patients"
         },
         {
           "title": "SS-31 attenuates age-related decline in cardiac function",
@@ -2233,7 +2218,7 @@
           "summary": ""
         },
         {
-          "title": "Tratamento com SS-31 reverteu declínio cardíaco associado ao envelhecimento em modelo animal.",
+          "title": "SS-31 treatment reversed age-related cardiac decline in an animal model.",
           "metadata": [
             "Research"
           ],
@@ -2251,41 +2236,41 @@
         {
           "peptide": "Epithalon",
           "status": "SYNERGISTIC",
-          "description": "SS-31 protege mitocôndrias + Epithalon ativa telomerase. Stack anti-aging sinérgico."
+          "description": "SS-31 protects mitochondria + Epithalon activates telomerase. Synergistic anti-aging stack."
         },
         {
           "peptide": "GHK-Cu",
           "status": "COMPATIBLE",
-          "description": "Antioxidantes em alta dose MONITORAR"
+          "description": "High-dose antioxidants MONITOR"
         },
         {
           "peptide": "BPC-157",
           "status": "COMPATIBLE",
-          "description": "GHK-Cu COMPATÍVEL"
+          "description": "GHK-Cu COMPATIBLE"
         },
         {
-          "peptide": "Antioxidantes em alta dose",
+          "peptide": "High-dose antioxidants",
           "status": "MONITOR",
-          "description": "Quimioterápicos EVITAR"
+          "description": "Chemotherapeutics AVOID"
         },
         {
-          "peptide": "Quimioterápicos",
+          "peptide": "Chemotherapeutics",
           "status": "AVOID",
-          "description": "NAD+ Precursores (NMN/NR) SINÉRGICO"
+          "description": "NAD+ Precursors (NMN/NR) SYNERGISTIC"
         }
       ],
       "stacks": [
         {
-          "name": "completo de proteção mitocondrial. SS-31 estabiliza cardiolipina, MOTS-c ativa",
-          "goal": "metabolismo celular via AMPK, Epithalon mantém comprimento telomérico.",
+          "name": "complete mitochondrial protection. SS-31 stabilizes cardiolipin, MOTS-c activates",
+          "goal": "cellular metabolism via AMPK, Epithalon maintains telomere length.",
           "peptides": [],
-          "description": "Neuroproteção Avançada Proteção neuronal\nSS-31 Semax Cerebrolysin\nSS-31 protege mitocôndrias neuronais, Semax estimula BDNF e neuroplasticidade,\n \n\nCerebrolysin fornece fatores neurotróficos.\nAnti-Sar"
+          "description": "Advanced Neuroprotection Neuronal Protection\nSS-31 Semax Cerebrolysin\nSS-31 protects neuronal mitochondria, Semax stimulates BDNF and neuroplasticity,\n\nCerebrolysin provides neurotrophic factors.\nAnti-Sarc"
         }
       ]
     },
-    "classification": "Tetrapeptídeo sintético direcionado à mitocôndria",
+    "classification": "Synthetic Tetrapeptide Targeting Mitochondria",
     "evidence_level": "Clínico Fase III",
-    "half_life": "~4 horas",
+    "half_life": "~4 hours",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -2903,7 +2888,7 @@
     "slug": "hgh-fragment-176-191",
     "name": "HGH Fragment 176-191",
     "description": "GH fragment for fat metabolism research without growth effects",
-    "category": "Emagrecimento",
+    "category": "Weight Loss / GLP-1",
     "is_free": false,
     "presentations": [
       "5mg"
@@ -2915,7 +2900,7 @@
       "GH Fragment"
     ],
     "overview": {
-      "what_is": "HGH Fragment 176-191 é um fragmento sintético composto pelos aminoácidos 176 a 191\nda cadeia do hormônio de crescimento humano (hGH). Este segmento específico\ncorresponde à região responsável pela atividade lipolítica do GH — ou seja, a queima\nde gordura — mas sem os efeitos colaterais indesejáveis do GH completo, como\nhiperglicemia, retenção hídrica ou acromegalia. Pesquisas demonstraram que o HGH\n\nFrag 176-191 é até 12,5 vezes mais potente que o GH completo na indução da lipólise,\ntornando-o o peptídeo mais eficaz disponível para queima de gordura direcionada.\nEle estimula a lipólise (quebra de gordura) e inibe a lipogênese (formação de novas\ncélulas de gordura), sem afetar os níveis de IGF-1 ou insulina."
+      "what_is": "HGH Fragment 176-191 is a synthetic fragment composed of the amino acids 176 to 191 of the human growth hormone (hGH) chain. This specific segment corresponds to the region responsible for the lipolytic activity of GH — that is, fat burning — but without the undesirable side effects of full GH, such as hyperglycemia, water retention, or acromegaly. Research has shown that HGH Frag 176-191 is up to 12.5 times more potent than full GH in inducing lipolysis, making it the most effective peptide available for targeted fat burning. It stimulates lipolysis (fat breakdown) and inhibits lipogenesis (formation of new fat cells), without affecting IGF-1 or insulin levels."
     },
     "protocols": {
       "standard": {
@@ -2923,18 +2908,18 @@
         "frequency": "As per research protocol"
       },
       "dosages": [],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C after reconstitution."
     },
     "research": {
       "steps": [
-        "Semana 1 250 mcg/dia (1x manhã em jejum)",
-        "Semanas 2–4 500 mcg/dia (250 mcg manhã + 250 mcg pré-treino)",
-        "Semanas 5–8 500 mcg/dia (manutenção)",
-        "Semanas 9–12 500–600 mcg/dia (dose máxima se necessário)",
-        "Remova as tampas do frasco de peptídeo e da água bacteriostática. Limpe as",
-        "Usando seringa de insulina, aspire 1 mL de água bacteriostática para frasco de 2",
-        "Injete lentamente pela parede interna do frasco — deixe a água escorrer",
-        "Gire o frasco com delicadeza até dissolver completamente. A solução deve ficar"
+        "Week 1 250 mcg/day (1x morning on an empty stomach)",
+        "Weeks 2–4 500 mcg/day (250 mcg morning + 250 mcg pre-workout)",
+        "Weeks 5–8 500 mcg/day (maintenance)",
+        "Weeks 9–12 500–600 mcg/day (maximum dose if necessary)",
+        "Remove the caps from the peptide vial and the bacteriostatic water.",
+        "Using an insulin syringe, draw 1 mL of bacteriostatic water into vial.",
+        "Inject slowly through the inner wall of the vial — let the water run down",
+        "Gently swirl the vial until fully dissolved. The solution should remain"
       ]
     },
     "synergy": {
@@ -2942,39 +2927,39 @@
         {
           "peptide": "Tesamorelin",
           "status": "SYNERGISTIC",
-          "description": "SINÉRGICO"
+          "description": "SYNERGISTIC"
         },
         {
           "peptide": "AOD-9604",
           "status": "SYNERGISTIC",
-          "description": "Compartilham mecanismo similar (AOD-9604 é derivado modificado do Frag 176-191). Podem ser"
+          "description": "Share a similar mechanism (AOD-9604 is a modified derivative of Frag 176-191). They can be"
         },
         {
-          "peptide": "Semaglutida / Tirzepatida",
+          "peptide": "Semaglutide / Tirzepatide",
           "status": "COMPATIBLE",
-          "description": "GH exógeno (Somatropina) MONITORAR"
+          "description": "Exogenous GH (Somatropin) MONITOR"
         },
         {
           "peptide": "BPC-157",
           "status": "COMPATIBLE",
-          "description": "Semaglutida / Tirzepatida COMPATÍVEL"
+          "description": "Semaglutide / Tirzepatide COMPATIBLE"
         },
         {
-          "peptide": "Insulina exógena",
+          "peptide": "Exogenous insulin",
           "status": "MONITOR",
-          "description": "CJC-1295 / Ipamorelin SINÉRGICO"
+          "description": "CJC-1295 / Ipamorelin SYNERGISTIC"
         },
         {
-          "peptide": "GH exógeno (Somatropina)",
+          "peptide": "Exogenous GH (Somatropin)",
           "status": "MONITOR",
-          "description": "Insulina exógena MONITORAR"
+          "description": "Exogenous insulin MONITOR"
         }
       ],
       "stacks": []
     },
-    "classification": "Fragmento peptídico do hormônio de crescimento humano",
+    "classification": "Human Growth Hormone Peptide Fragment",
     "evidence_level": "Pre-clinical",
-    "half_life": "~30 minutos (ação rápida)",
+    "half_life": "~30 minutes (rapid action)",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -3551,19 +3536,19 @@
       "10mg"
     ],
     "also_known_as": [
-      "Proxofim FOXO4-D-Retro-Inverso"
+      "Proxofim FOXO4-D-Reverse-Inverse"
     ],
     "overview": {
-      "what_is": "O FOXO4-DRI é um peptídeo senolítico de última geração que elimina seletivamente\ncélulas senescentes ('células zumbis'). Ele interfere na interação FOXO4-p53,\nforçando células senescentes à apoptose sem afetar células saudáveis. Em estudos\nanimais, resultou em melhoras drásticas na densidade do pelo, função renal, força\nfísica e saúde geral.\n\nBenefícios Comprovados\n1 Eliminação de células senescentes em todo o corpo\n2 Redução da inflamação sistêmica crônica (inflammaging)\n \n\n3 Melhora da função dos órgãos (rins, fígado)\n4 Reversão de sinais físicos de envelhecimento\n5 Aumento da vitalidade física e resistência\nLinha do Tempo de Resultados\nDia 1-3 Possível fadiga ou sintomas gripais (reação de Herxheimer).\nSemana 1-2 Recuperação e início dos efeitos.\nMês 1-2 Melhora da energia, pele e função orgânica.\nMês 3-6 Benefícios anti-aging acumulativos."
+      "what_is": "FOXO4-DRI is a next-generation senolytic peptide that selectively eliminates senescent cells ('zombie cells'). It interferes with the FOXO4-p53 interaction, forcing senescent cells into apoptosis without affecting healthy cells. In animal studies, it resulted in dramatic improvements in fur density, kidney function, physical strength, and overall health.\n\nProven Benefits\n1 Elimination of senescent cells throughout the body\n2 Reduction of chronic systemic inflammation (inflammaging)\n\n3 Improvement of organ function (kidneys, liver)\n4 Reversal of physical signs of aging\n5 Increased physical vitality and endurance\nResults Timeline\nDays 1-3 Possible fatigue or flu-like symptoms (Herxheimer reaction).\nWeeks 1-2 Recovery and onset of effects.\nMonths 1-2 Improvement in energy, skin, and organ function.\nMonths 3-6 Cumulative anti-aging benefits."
     },
     "protocols": {
-      "title": "Protocolo Senolítico (Pulso)",
+      "title": "Senolytic Protocol (Pulse)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Protocolo de pulso"
       },
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial",
         "Gently swirl until dissolved",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -3571,12 +3556,12 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O FOXO4-DRI atua interrompendo a interação entre FOXO4 e p53 em células senescentes. Normalmente, FOXO4 mantém p53 sequestrada no núcleo, impedindo apoptose. O peptídeo compete com FOXO4, liberando p53 para sinalizar morte celular programada. Células saudáveis, que não dependem dessa interação para sobrevivência, não são afetadas.",
+      "mechanism": "FOXO4-DRI works by interrupting the interaction between FOXO4 and p53 in senescent cells. Normally, FOXO4 sequesters p53 in the nucleus, preventing apoptosis. The peptide competes with FOXO4, releasing p53 to signal programmed cell death. Healthy cells, which do not rely on this interaction for survival, are not affected.",
       "steps": [
-        "Interrupção da interação FOXO4-p53",
-        "Liberação de p53 para induzir apoptose em células senescentes",
-        "Seletividade: células saudáveis não são afetadas",
-        "Redução do fenótipo secretório associado à senescência (SASP)"
+        "Interruption of the FOXO4-p53 interaction",
+        "Release of p53 to induce apoptosis in senescent cells",
+        "Selectivity: healthy cells are not affected",
+        "Reduction of the senescence-associated secretory phenotype (SASP)"
       ],
       "references": [
         {
@@ -3597,7 +3582,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo seminal demonstrando rejuvenescimento de camundongos idosos via FOXO4-DRI.",
+          "title": "Seminal study demonstrating rejuvenation of aged mice via FOXO4-DRI.",
           "metadata": [
             "Research"
           ],
@@ -3610,31 +3595,31 @@
         {
           "peptide": "Epithalon",
           "status": "SYNERGISTIC",
-          "description": "Quimioterápicos MONITORAR"
+          "description": "Chemotherapeutics MONITOR"
         },
         {
-          "peptide": "Quimioterápicos MONITORAR\n\nDasatinib + Quercetina",
+          "peptide": "Chemotherapeutics MONITOR\n\nDasatinib + Quercetin",
           "status": "SYNERGISTIC",
-          "description": "Senolíticos com espectro complementar."
+          "description": "Senolytics with complementary spectrum."
         },
         {
-          "peptide": "Quimioterápicos",
+          "peptide": "Chemotherapeutics",
           "status": "MONITOR",
-          "description": "Dasatinib + Quercetina SINÉRGICO"
+          "description": "Dasatinib + Quercetin SYNERGISTIC"
         }
       ],
       "stacks": [
         {
-          "name": "Senolítico Completo Rejuvenescimento celular",
+          "name": "Complete Senolytic Cellular Rejuvenation",
           "goal": "FOXO4-DRI Epithalon NAD+",
           "peptides": [],
-          "description": "Eliminação de células zumbis + extensão telomérica + reparo de DNA."
+          "description": "Elimination of zombie cells + telomere extension + DNA repair."
         }
       ]
     },
-    "classification": "Peptídeo senolítico D-retro-inverso",
+    "classification": "D-reverse-inverse Senolytic Peptide",
     "evidence_level": "Pre-clinical",
-    "half_life": "~24-48 horas",
+    "half_life": "~24-48 hours",
     "reconstitution_difficulty": "Avançada"
   },
   {
@@ -3707,36 +3692,36 @@
     "slug": "prostamax",
     "name": "Prostamax",
     "description": "Bioregulator peptide for prostate tissue support research",
-    "category": "Biorregulador",
+    "category": "Bioregulators",
     "is_free": false,
     "presentations": [
       "20mg"
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para saúde da próstata."
+      "what_is": "Peptide bioregulator for prostate health."
     },
     "protocols": {
-      "title": "Protocolo Subcutâneo",
+      "title": "Subcutaneous Protocol",
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly into the wall of the vial; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPreclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -3745,36 +3730,36 @@
     "slug": "vesugen",
     "name": "Vesugen",
     "description": "Bioregulator peptide for vascular and cardiovascular tissue research",
-    "category": "Cardiovascular",
+    "category": "Recovery",
     "is_free": false,
     "presentations": [
       "20mg"
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para o sistema vascular."
+      "what_is": "Peptide bioregulator for the vascular system."
     },
     "protocols": {
-      "title": "Protocolo Subcutâneo",
+      "title": "Subcutaneous Protocol",
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly through the vial wall; avoid frothing",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied. Preclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -3790,11 +3775,11 @@
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para a glândula pineal e função cerebral.\nBenefícios Comprovados\n1 Regulação circadiana\nInício2 NeuPreoptpídreootseção Finder Calculadora Menu\n3 Qualidade do sono\n \n\nLinha do Tempo de Resultados\nSemana 1-2 Período de adaptação inicial\nMês 1-2 Primeiros efeitos perceptíveis\nMês 2-4 Efeitos progressivos e mais pronunciados"
+      "what_is": "Peptide bioregulator for the pineal gland and brain function.\nProven Benefits\n1 Circadian regulation\n2 Quality of sleep\n\nTimeline of Results\nWeek 1-2 Initial adaptation period\nMonth 1-2 First noticeable effects\nMonth 2-4 Progressive and more pronounced effects"
     },
     "protocols": {
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -3802,16 +3787,16 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still under study.\nPreclinical research is underway to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -3820,36 +3805,36 @@
     "slug": "ovagen",
     "name": "Ovagen",
     "description": "Bioregulator peptide for hepatic and liver tissue research",
-    "category": "Biorregulador",
+    "category": "Bioregulators",
     "is_free": false,
     "presentations": [
       "20mg"
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para fígado e trato gastrointestinal."
+      "what_is": "Peptide bioregulator for the liver and gastrointestinal tract."
     },
     "protocols": {
-      "title": "Protocolo Subcutâneo",
+      "title": "Subcutaneous Protocol",
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly into the wall of the vial; avoid bubbles",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied. Preclinical research is underway to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under investigation."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -3935,11 +3920,11 @@
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Peptídeo antitumoral que induz necrose em células cancerígenas.\nBenefícios Comprovados\n1 Atividade antitumoral\nInício2 SelePetipvtíiddeaosde celuFlainrder Calculadora Menu\n3 Pesquisa oncológica\n \n\nLinha do Tempo de Resultados\nSemana 1-2 Período de adaptação inicial\nMês 1-2 Primeiros efeitos perceptíveis\nMês 2-4 Efeitos progressivos e mais pronunciados"
+      "what_is": "Antitumor peptide that induces necrosis in cancer cells.\nProven Benefits\n1 Antitumor activity\nStart2 Select peptide of cell finder Calculator Menu\n3 Oncological research\n\nTimeline of Results\nWeek 1-2 Initial adaptation period\nMonth 1-2 First noticeable effects\nMonth 2-4 Progressive and more pronounced effects"
     },
     "protocols": {
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -3947,16 +3932,16 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPreclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -3971,10 +3956,10 @@
       "30mg"
     ],
     "also_known_as": [
-      "FPF-1070 Cerebrolysina"
+      "FPF-1070 Cerebrolysin"
     ],
     "overview": {
-      "what_is": "A Cerebrolysina é uma mistura peptídica biotecnológica derivada de proteínas\ncerebrais purificadas de suínos. Contém neuropeptídeos de baixo peso molecular que\nmimetizam BDNF, GDNF, CNTF e NGF. É um dos tratamentos mais validados\nclinicamente para AVC isquêmico, demência vascular, Alzheimer e lesões cerebrais\ntraumáticas.\n\nBenefícios Comprovados\n1 Acelera recuperação pós-AVC e traumatismo craniano\n2 Melhora memória, atenção e cognição em idosos\n \n\n3 Protege contra declínio neurodegenerativo\n4 Melhora humor e clareza mental\n5 Estimula regeneração de nervos periféricos\nLinha do Tempo de Resultados\nDia 1-3 Sensação de clareza mental e melhora sutil.\nSemana 1-2 Melhora de memória e velocidade de processamento.\nSemana 3- Benefícios cognitivos consolidados.\n4\nMês 2-3 Neuroproteção e regeneração a longo prazo."
+      "what_is": "Cerebrolysin is a biotechnological peptide mixture derived from purified brain proteins from pigs. It contains low molecular weight neuropeptides that mimic BDNF, GDNF, CNTF, and NGF. It is one of the most clinically validated treatments for ischemic stroke, vascular dementia, Alzheimer's disease, and traumatic brain injuries.\n\nProven Benefits\n1 Accelerates recovery post-stroke and traumatic brain injury\n2 Improves memory, attention, and cognition in the elderly\n\n3 Protects against neurodegenerative decline\n4 Enhances mood and mental clarity\n5 Stimulates regeneration of peripheral nerves\nResults Timeline\nDay 1-3 Sensation of mental clarity and subtle improvement.\nWeek 1-2 Improvement in memory and processing speed.\nWeek 3-4 Consolidated cognitive benefits.\nMonth 2-3 Long-term neuroprotection and regeneration."
     },
     "protocols": {
       "standard": {
@@ -3982,20 +3967,20 @@
         "frequency": "Diária em ciclos"
       },
       "reconstitution_steps": [
-        "Vem pronto em ampolas de vidro estéreis",
-        "Usar imediatamente após aberta",
-        "Não misturar na seringa com outros compostos",
-        "Armazenar em temperatura ambiente protegido da luz"
+        "Comes ready in sterile glass ampoules",
+        "Use immediately after opening",
+        "Do not mix in the syringe with other compounds",
+        "Store at room temperature protected from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "A Cerebrolysina atua através de um mecanismo multimodal: protege neurônios contra estresse oxidativo e excitotoxicidade do glutamato; estimula neuroplasticidade e formação de novas sinapses; melhora metabolismo energético cerebral; e inibe formação de placas amiloides e emaranhados neurofibrilares. Seus neuropeptídeos mimetizam a ação de fatores neurotróficos endógenos.",
+      "mechanism": "Cerebrolysin acts through a multimodal mechanism: it protects neurons against oxidative stress and glutamate excitotoxicity; stimulates neuroplasticity and the formation of new synapses; enhances cerebral energy metabolism; and inhibits the formation of amyloid plaques and neurofibrillary tangles. Its neuropeptides mimic the action of endogenous neurotrophic factors.",
       "steps": [
-        "Proteção contra estresse oxidativo e excitotoxicidade do glutamato",
-        "Estimulação da neuroplasticidade e sinaptogênese",
-        "Melhora do metabolismo energético cerebral",
-        "Inibição da formação de placas amiloides"
+        "Protection against oxidative stress and glutamate excitotoxicity",
+        "Stimulation of neuroplasticity and synaptogenesis",
+        "Improvement of cerebral energy metabolism",
+        "Inhibition of amyloid plaque formation"
       ],
       "references": [
         {
@@ -4006,10 +3991,10 @@
             "2018",
             "2018"
           ],
-          "summary": "Meta-análise confirmando eficácia e segurança no Alzheimer."
+          "summary": "Meta-analysis confirming efficacy and safety in Alzheimer's."
         },
         {
-          "title": "Cerebrolysin for acute ischaemic stroke",
+          "title": "Cerebrolysin for acute ischemic stroke",
           "metadata": [
             "Humans",
             "Clinical Trial",
@@ -4019,7 +4004,7 @@
           "summary": ""
         },
         {
-          "title": "Melhora nos resultados motores e cognitivos pós-AVC.",
+          "title": "Improvement in motor and cognitive outcomes post-stroke.",
           "metadata": [
             "Research"
           ],
@@ -4032,36 +4017,36 @@
         {
           "peptide": "BPC-157",
           "status": "SYNERGISTIC",
-          "description": "Noopept COMPATÍVEL"
+          "description": "Compatible with Noopept"
         },
         {
-          "peptide": "Noopept COMPATÍVEL\nAntidepressivos MONITORAR\n\nSemax",
+          "peptide": "Noopept Compatible\nAntidepressants MONITOR\n\nSemax",
           "status": "SYNERGISTIC",
-          "description": "Neuroproteção e neurotrofismo complementares."
+          "description": "Complementary neuroprotection and neurotrophism."
         },
         {
           "peptide": "Noopept",
           "status": "COMPATIBLE",
-          "description": "Antidepressivos MONITORAR"
+          "description": "Antidepressants MONITOR"
         },
         {
-          "peptide": "Antidepressivos",
+          "peptide": "Antidepressants",
           "status": "MONITOR",
-          "description": "Semax SINÉRGICO"
+          "description": "Synergistic with Semax"
         }
       ],
       "stacks": [
         {
-          "name": "Neuroproteção Máxima Regeneração neural completa",
+          "name": "Maximum Neuroprotection Complete Neural Regeneration",
           "goal": "Cerebrolysin Semax BPC-157",
           "peptides": [],
-          "description": "Fatores neurotróficos + modulação ACTH + proteção gástrica-neural."
+          "description": "Neurotrophic factors + ACTH modulation + gastric-neural protection."
         }
       ]
     },
     "classification": "Mistura peptídica neurotrófica (derivada de suínos)",
     "evidence_level": "Clínico Fase III",
-    "half_life": "~6-8 horas (IM); efeitos prolongados",
+    "half_life": "~6-8 hours (IM); prolonged effects",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -4106,13 +4091,13 @@
       "20mg"
     ],
     "also_known_as": [
-      "Ala-Glu-Asp AED Peptídeo biorregulador cartilaginoso"
+      "Ala-Glu-Asp AED Cartilage Bioregulator Peptide"
     ],
     "overview": {
-      "what_is": "O Cartalax é um tripeptídeo biorregulador sintético (Ala-Glu-Asp) que atua modulando\na expressão gênica em condrócitos, promovendo a síntese de componentes da matriz\nextracelular como colágeno tipo II e agrecan. Sua função principal é a proteção e\nregeneração da cartilagem articular, com propriedades anti-aging que atuam na\npreservação da integridade tecidual.\n\nBenefícios Comprovados\n1 Proteção e regeneração da cartilagem articular\n2 Melhora da função articular e mobilidade\n \n\n3 Propriedades anti-aging celulares\n4 Modulação da expressão gênica em condrócitos\n5 Suporte à saúde musculoesquelética\nLinha do Tempo de Resultados\nSemana 1-2 Efeitos mínimos perceptíveis; composto se acumulando\nSemana 3- Melhora sutil na mobilidade articular.\n4\nMês 2-3 Benefícios mais pronunciados na saúde articular."
+      "what_is": "Cartalax is a synthetic bioregulator tripeptide (Ala-Glu-Asp) that modulates gene expression in chondrocytes, promoting the synthesis of extracellular matrix components such as type II collagen and aggrecan. Its main function is the protection and regeneration of articular cartilage, with anti-aging properties that act on the preservation of tissue integrity.\n\nProven Benefits\n1 Protection and regeneration of articular cartilage\n2 Improvement of joint function and mobility\n\n3 Cellular anti-aging properties\n4 Modulation of gene expression in chondrocytes\n5 Support for musculoskeletal health\nResults Timeline\nWeek 1-2 Minimal effects noticeable; compound accumulating\nWeek 3-4 Subtle improvement in joint mobility.\nMonth 2-3 More pronounced benefits in joint health."
     },
     "protocols": {
-      "title": "Protocolo Padrão (3 mL = ~6.67 mg/mL)",
+      "title": "Standard Protocol (3 mL = ~6.67 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once daily"
@@ -4135,7 +4120,7 @@
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 3.0 mL de bacteriostatic water com sterile syringe",
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -4143,18 +4128,18 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Cartalax (AED) é um citomédino que atua modulando a expressão gênica em células cartilaginosas. Ele estimula a síntese de componentes da matriz extracelular como colágeno tipo II e agrecan, enquanto suprime vias de sinalização pró-degenerativas. Também pode atuar como agente senomórfico, suprimindo o fenótipo secretório associado à senescência (SASP) em condrócitos envelhecidos.",
+      "mechanism": "Cartalax (AED) is a cytomedin that modulates gene expression in cartilage cells. It stimulates the synthesis of extracellular matrix components such as type II collagen and aggrecan, while suppressing pro-degenerative signaling pathways. It may also act as a senomorphic agent, suppressing the secretory phenotype associated with senescence (SASP) in aged chondrocytes.",
       "steps": [
-        "Modulação da expressão gênica em condrócitos",
-        "Estímulo à síntese de colágeno tipo II e agrecan",
-        "Supressão de sinais pró-degenerativos",
-        "Regulação epigenética da homeostase cartilaginosa"
+        "Modulation of gene expression in chondrocytes",
+        "Stimulation of type II collagen and aggrecan synthesis",
+        "Suppression of pro-degenerative signals",
+        "Epigenetic regulation of cartilage homeostasis"
       ],
       "references": [
         {
           "title": "Functional peptides in the regulation of cartilage tissue metabolism",
           "metadata": [
-            "Revisão sobre peptídeos biorreguladores como Cartalax na modulação do metabolismo da cartilagem."
+            "Review on bioregulator peptides like Cartalax in modulating cartilage metabolism."
           ],
           "summary": ""
         }
@@ -4165,18 +4150,18 @@
         {
           "peptide": "TB-500",
           "status": "SYNERGISTIC",
-          "description": "BPC-157 SINÉRGICO"
+          "description": "BPC-157 SYNERGISTIC"
         },
         {
           "peptide": "BPC-157",
           "status": "SYNERGISTIC",
-          "description": "TB-500 SINÉRGICO"
+          "description": "TB-500 SYNERGISTIC"
         }
       ]
     },
-    "classification": "Tripeptídeo biorregulador sintético",
+    "classification": "Synthetic Bioregulator Tripeptide",
     "evidence_level": "Pre-clinical",
-    "half_life": "Curta (minutos); efeitos prolongados",
+    "half_life": "Short (minutes); prolonged effects",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -4190,11 +4175,11 @@
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para o córtex cerebral.\nBenefícios Comprovados\n1 Função cortical\nInício2 NeuPreoptpídreootseção Finder Calculadora Menu\n3 Melhora cognitiva\n \n\nLinha do Tempo de Resultados\nSemana 1-2 Período de adaptação inicial\nMês 1-2 Primeiros efeitos perceptíveis\nMês 2-4 Efeitos progressivos e mais pronunciados"
+      "what_is": "Bioregulator peptide for the cerebral cortex.\nProven Benefits\n1 Cortical function\nOnset 2 NeuPreoptpeptide section Finder Calculator Menu\n3 Cognitive improvement\n\nTimeline of Results\nWeek 1-2 Initial adaptation period\nMonth 1-2 First perceptible effects\nMonth 2-4 Progressive and more pronounced effects"
     },
     "protocols": {
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -4202,16 +4187,16 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPre-clinical research is underway to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -4220,36 +4205,36 @@
     "slug": "chonluten",
     "name": "Chonluten",
     "description": "Bioregulator peptide for bronchial mucosa and respiratory research",
-    "category": "Biorregulador",
+    "category": "Bioregulators",
     "is_free": false,
     "presentations": [
       "20mg"
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para mucosa brônquica e sistema respiratório."
+      "what_is": "Peptide bioregulator for bronchial mucosa and respiratory system."
     },
     "protocols": {
-      "title": "Protocolo Subcutâneo",
+      "title": "Subcutaneous Protocol",
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly through the vial wall; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPreclinical research is underway to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -4258,36 +4243,36 @@
     "slug": "livagen",
     "name": "Livagen",
     "description": "Bioregulator peptide for liver tissue and hepatic function research",
-    "category": "Biorregulador",
+    "category": "Bioregulators",
     "is_free": false,
     "presentations": [
       "20mg"
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Biorregulador peptídico para o fígado."
+      "what_is": "Peptide bioregulator for the liver."
     },
     "protocols": {
-      "title": "Protocolo Subcutâneo",
+      "title": "Subcutaneous Protocol",
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly into the wall of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied. Preclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -4296,7 +4281,7 @@
     "slug": "cardiogen",
     "name": "Cardiogen",
     "description": "Bioregulator peptide for cardiac muscle and cardiovascular research",
-    "category": "Cardiovascular",
+    "category": "Recovery",
     "is_free": false,
     "presentations": [
       "20mg"
@@ -4304,32 +4289,32 @@
     "also_known_as": [
       "Ala-Glu-Asp-Arg",
       "AEDR",
-      "Peptídeo biorregulador cardíaco"
+      "Cardiac bioregulatory peptide"
     ],
     "overview": {
-      "what_is": "O Cardiogen é um tetrapeptídeo biorregulador sintético (Ala-Glu-Asp-Arg) que atua\ncomo um agente cardioprotetor e reparador celular. Ele modula vias de sobrevivência\nintracelulares, promovendo a integridade citoesquelética e inibindo a apoptose em\ncardiomiócitos sob estresse."
+      "what_is": "Cardiogen is a synthetic bioregulatory tetrapeptide (Ala-Glu-Asp-Arg) that acts as a cardioprotective and cell-repairing agent. It modulates intracellular survival pathways, promoting cytoskeletal integrity and inhibiting apoptosis in stressed cardiomyocytes."
     },
     "protocols": {
-      "title": "Protocolo Padrão / Gradual (3 mL = ~6.67 mg/mL)",
+      "title": "Standard / Gradual Protocol (3 mL = ~6.67 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once daily"
       },
       "dosages": [
         {
-          "indication": "1x ao dia",
+          "indication": "Once a day",
           "schedule": "",
-          "dose": "200-500 mcg/dia"
+          "dose": "200-500 mcg/day"
         },
         {
-          "indication": "Pós-isquemia / Recuperação",
+          "indication": "Post-ischemia / Recovery",
           "schedule": "",
-          "dose": "500 mcg/dia"
+          "dose": "500 mcg/day"
         },
         {
-          "indication": "1x ao dia",
+          "indication": "Once a day",
           "schedule": "",
-          "dose": "200-300 mcg/dia"
+          "dose": "200-300 mcg/day"
         }
       ],
       "phases": [
@@ -4355,21 +4340,21 @@
         }
       ],
       "reconstitution_steps": [
-        "Aspirate 3.0 mL de bacteriostatic water com seringa estéril",
-        "Injetar lentamente pela parede do frasco; evitar espuma",
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
+        "Inject slowly into the side of the vial; avoid foaming",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Cardiogen, como outros peptídeos biorreguladores desenvolvidos pelo Prof.\nKhavinson, atua ao nível da regulação epigenética da expressão gênica. O tetrapeptídeo Ala-Glu-Asp-Arg se liga ao DNA em regiões promotoras específicas de genes relacionados à função cardíaca, modulando a transcrição de proteínas essenciais para a integridade do cardiomiócito. Isso inclui proteínas anti- apoptóticas (Bcl-2), enzimas antioxidantes (SOD, catalase), e componentes do\nIníciocitoesqPueeplteídteoo.s Além dFiinsdseor, reguClaal cau lhadoomraeostasMee ndue cálcio intracelular, fundamental para a contração cardíaca adequada, e protege a membrana celular contra danos oxidativos. Esses efeitos combinados conferem cardioproteção e promovem a reparação celular em condições de estresse isquêmico.",
+      "mechanism": "Cardiogen, like other bioregulatory peptides developed by Prof. Khavinson, acts at the level of epigenetic regulation of gene expression. The tetrapeptide Ala-Glu-Asp-Arg binds to DNA at specific promoter regions of genes related to cardiac function, modulating the transcription of essential proteins for cardiomyocyte integrity. This includes anti-apoptotic proteins (Bcl-2), antioxidant enzymes (SOD, catalase), and components of the cytoskeleton. Additionally, it regulates intracellular calcium homeostasis, which is crucial for proper cardiac contraction, and protects the cell membrane from oxidative damage. These combined effects confer cardioprotection and promote cellular repair under ischemic stress conditions.",
       "steps": [
-        "Modulação da expressão gênica de proteínas envolvidas na integridade",
-        "Ativação de vias de sinalização anti-apoptóticas.",
-        "Estabilização da membrana celular e do citoesqueleto.",
-        "Regulação da homeostase de cálcio intracelular.",
-        "Aumento da atividade de enzimas antioxidantes endógenas."
+        "Modulation of gene expression of proteins involved in integrity",
+        "Activation of anti-apoptotic signaling pathways.",
+        "Stabilization of the cell membrane and cytoskeleton.",
+        "Regulation of intracellular calcium homeostasis.",
+        "Increase of endogenous antioxidant enzyme activity."
       ],
       "references": [
         {
@@ -4382,11 +4367,11 @@
           "summary": ""
         },
         {
-          "title": "Este artigo de revisão discute os peptídeos bioreguladores, incluindo o Cardiogen, como uma nova classe de",
+          "title": "This review article discusses bioregulatory peptides, including Cardiogen, as a new class of",
           "metadata": [
             "Research"
           ],
-          "summary": "geroprotetores com potencial para modular o envelhecimento e doenças relacionadas."
+          "summary": "geroprotectors with potential to modulate aging and related diseases."
         },
         {
           "title": "Peptide bioregulators of the pineal gland and heart: effects on aging and cardiovascular",
@@ -4398,18 +4383,18 @@
           "summary": ""
         },
         {
-          "title": "Este estudo explora os efeitos de peptídeos bioreguladores, como o Cardiogen, na glândula pineal e no",
+          "title": "This study explores the effects of bioregulatory peptides, such as Cardiogen, on the pineal gland and the",
           "metadata": [
             "Research"
           ],
-          "summary": "coração, destacando seu potencial na modulação do envelhecimento e na prevenção de doenças"
+          "summary": "heart, highlighting their potential in modulating aging and preventing diseases."
         },
         {
           "title": "Short peptides and aging",
           "metadata": [
             "Research"
           ],
-          "summary": "aqueles como o Cardiogen, no processo de envelhecimento e na manutenção da homeostase."
+          "summary": "those like Cardiogen, in the aging process and maintaining homeostasis."
         },
         {
           "title": "Peptide bioregulators in gerontology and geriatrics",
@@ -4427,64 +4412,64 @@
         {
           "peptide": "Thymalin",
           "status": "SYNERGISTIC",
-          "description": "Epitalon SINÉRGICO"
+          "description": "Thymalin SYNERGISTIC"
         },
         {
           "peptide": "Epitalon",
           "status": "SYNERGISTIC",
-          "description": "Vilon SINÉRGICO"
+          "description": "Vilon SYNERGISTIC"
         },
         {
           "peptide": "Vilon",
           "status": "SYNERGISTIC",
-          "description": "Cerebrolysin SINÉRGICO"
+          "description": "Cerebrolysin SYNERGISTIC"
         },
         {
           "peptide": "Cerebrolysin",
           "status": "SYNERGISTIC",
-          "description": "Pinealon SINÉRGICO"
+          "description": "Pinealon SYNERGISTIC"
         },
         {
           "peptide": "Pinealon",
           "status": "SYNERGISTIC",
-          "description": "Ventfort SINÉRGICO"
+          "description": "Ventfort SYNERGISTIC"
         },
         {
           "peptide": "Ventfort",
           "status": "SYNERGISTIC",
-          "description": "Sigumir SINÉRGICO"
+          "description": "Sigumir SYNERGISTIC"
         },
         {
           "peptide": "Sigumir",
           "status": "SYNERGISTIC",
-          "description": "Svetinorm SINÉRGICO"
+          "description": "Svetinorm SYNERGISTIC"
         },
         {
           "peptide": "Svetinorm",
           "status": "SYNERGISTIC",
-          "description": "Vesugen SINÉRGICO"
+          "description": "Vesugen SYNERGISTIC"
         },
         {
           "peptide": "Vesugen",
           "status": "SYNERGISTIC",
-          "description": "Gotratix SINÉRGICO"
+          "description": "Gotratix SYNERGISTIC"
         },
         {
           "peptide": "Gotratix",
           "status": "SYNERGISTIC",
-          "description": "BPC-157 SINÉRGICO"
+          "description": "BPC-157 SYNERGISTIC"
         },
         {
           "peptide": "BPC-157",
           "status": "SYNERGISTIC",
-          "description": "Thymalin SINÉRGICO"
+          "description": "Thymalin SYNERGISTIC"
         }
       ],
       "stacks": []
     },
-    "classification": "Tetrapeptídeo biorregulador sintético",
+    "classification": "Synthetic Bioregulator Tetrapeptide",
     "evidence_level": "Pre-clinical",
-    "half_life": "~30-60 minutos",
+    "half_life": "~30-60 minutes",
     "reconstitution_difficulty": "Easy"
   },
   {
@@ -5209,7 +5194,7 @@
       "PNB-0408 N-hexanoic-Tyr-Ile-(6) aminohexanoic amide"
     ],
     "overview": {
-      "what_is": "O Dihexa é um pequeno peptídeo derivado da angiotensina IV, considerado um dos\nnootrópicos mais potentes já descobertos. Com capacidade de promover\nsinaptogênese ordens de magnitude superior ao BDNF natural, ele atua via ativação\nda via HGF/c-Met para reparar e criar novas conexões neurais. Desenvolvido para\nAlzheimer, é reservado para declínio cognitivo significativo.\n\nBenefícios Comprovados\n1 Potencial de reverter danos cognitivos e perda de memória\n2 Estimula criação massiva de novas conexões neurais\n \n\n3 Melhora drástica do aprendizado e retenção\n4 Neuroproteção contra doenças degenerativas\n5 Melhora da coordenação motora e função executiva\nLinha do Tempo de Resultados\nDia 1-3 Início dos efeitos nootrópicos sutis.\nSemana 1-2 Melhora perceptível na clareza mental.\nSemana 3- Benefícios cognitivos consolidados.\n4\nMês 2-3 Integração sináptica e resultados sustentados."
+      "what_is": "Dihexa is a small peptide derived from angiotensin IV, considered one of the most potent nootropics ever discovered. With the ability to promote synaptogenesis orders of magnitude greater than natural BDNF, it acts via activation of the HGF/c-Met pathway to repair and create new neural connections. Developed for Alzheimer’s, it is reserved for significant cognitive decline.\n\nProven Benefits\n1 Potential to reverse cognitive damage and memory loss\n2 Stimulates massive creation of new neural connections\n\n3 Drastic improvement in learning and retention\n4 Neuroprotection against degenerative diseases\n5 Improvement in motor coordination and executive function\nResult Timeline\nDay 1-3 Onset of subtle nootropic effects.\nWeek 1-2 Noticeable improvement in mental clarity.\nWeek 3-4 Consolidated cognitive benefits.\nMonth 2-3 Synaptic integration and sustained results."
     },
     "protocols": {
       "standard": {
@@ -5217,20 +5202,20 @@
         "frequency": "1-2x por semana"
       },
       "reconstitution_steps": [
-        "Geralmente vendido em cápsulas ou pó",
-        "Para uso tópico, requer DMSO como solvente",
-        "Armazenar em local fresco e seco",
-        "Proteger da luz e umidade"
+        "Generally sold in capsules or powder",
+        "For topical use, requires DMSO as a solvent",
+        "Store in a cool, dry place",
+        "Protect from light and moisture"
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O Dihexa atua como agonista do HGF e seu receptor c-Met. No cérebro, a sinalização HGF/c-Met é fundamental para desenvolvimento sináptico, sobrevivência neuronal e plasticidade. Estudos demonstraram que é 7 ordens de magnitude mais potente que o BDNF na formação de sinapses, tornando-o o nootrópico mais potente conhecido.",
+      "mechanism": "Dihexa acts as an agonist of HGF and its receptor c-Met. In the brain, HGF/c-Met signaling is crucial for synaptic development, neuronal survival, and plasticity. Studies have shown it is 7 orders of magnitude more potent than BDNF in synapse formation, making it the most potent nootropic known.",
       "steps": [
-        "Agonismo do Fator de Crescimento de Hepatócitos (HGF)",
-        "Ativação do receptor c-Met no cérebro",
-        "Estimulação da formação de espinhas dendríticas",
-        "Fortalecimento de conexões sinápticas existentes"
+        "Agonism of Hepatocyte Growth Factor (HGF)",
+        "Activation of the c-Met receptor in the brain",
+        "Stimulation of dendritic spine formation",
+        "Strengthening of existing synaptic connections"
       ],
       "references": [
         {
@@ -5244,7 +5229,7 @@
           "summary": ""
         },
         {
-          "title": "Estudo demonstrando potência 10 milhões de vezes superior ao BDNF na sinaptogênese.",
+          "title": "Study demonstrating potency 10 million times greater than BDNF in synaptogenesis.",
           "metadata": [
             "Research"
           ],
@@ -5258,37 +5243,37 @@
             "2014",
             "2014"
           ],
-          "summary": "Recuperação cognitiva em estágios avançados de demência."
+          "summary": "Cognitive recovery in advanced stages of dementia."
         }
       ]
     },
     "synergy": {
       "interactions": [
         {
-          "peptide": "Magnésio L-Treonato",
+          "peptide": "Magnesium L-Threonate",
           "status": "COMPATIBLE",
-          "description": "Semax MONITORAR"
+          "description": "Semax MONITOR"
         },
         {
-          "peptide": "Semax MONITORAR\nQuimioterápicos EVITAR\n\nÔmega-3",
+          "peptide": "Semax MONITOR\nChemotherapeutics AVOID\n\nOmega-3",
           "status": "COMPATIBLE",
-          "description": "Suporte nutricional para formação sináptica."
+          "description": "Nutritional support for synaptic formation."
         },
         {
           "peptide": "Semax",
           "status": "MONITOR",
-          "description": "Quimioterápicos EVITAR"
+          "description": "Chemotherapeutics AVOID"
         },
         {
-          "peptide": "Quimioterápicos",
+          "peptide": "Chemotherapeutics",
           "status": "AVOID",
-          "description": "Ômega-3 COMPATÍVEL"
+          "description": "Omega-3 COMPATIBLE"
         }
       ]
     },
-    "classification": "Oligopeptídeo derivado de angiotensina IV",
+    "classification": "Angiotensin IV Derived Oligopeptide",
     "evidence_level": "Pre-clinical",
-    "half_life": "~12-24 horas (oral)",
+    "half_life": "~12-24 hours (oral)",
     "reconstitution_difficulty": "Moderada"
   },
   {
@@ -5300,11 +5285,11 @@
     "presentations": [],
     "also_known_as": [],
     "overview": {
-      "what_is": "Peptídeo mimético do Cerebrolysin para neurogênese.\nBenefícios Comprovados\n1 Neurogênese\nInício2 MelPheoptríade cosognitivaFinder Calculadora Menu\n3 Neuroplasticidade\n \n\nLinha do Tempo de Resultados\nSemana 1-2 Período de adaptação inicial\nMês 1-2 Primeiros efeitos perceptíveis\nMês 2-4 Efeitos progressivos e mais pronunciados"
+      "what_is": "Cerebrolysin mimetic peptide for neurogenesis.\nProven Benefits\n1 Neurogenesis\nStart2 MelPheoptríade cosognitivaFinder Calculator Menu\n3 Neuroplasticity\n\nTimeline of Results\nWeek 1-2 Initial adaptation period\nMonth 1-2 First noticeable effects\nMonth 2-4 Progressive and more pronounced effects"
     },
     "protocols": {
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -5312,16 +5297,16 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPreclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
@@ -5335,11 +5320,11 @@
     "presentations": [],
     "also_known_as": [],
     "overview": {
-      "what_is": "Peptídeo nootrópico que inibe a PDE-4 no cérebro.\nBenefícios Comprovados\n1 Melhora de memória\nInício2 FocPoeptídeos Finder Calculadora Menu\n3 Anti-depressivo\n \n\nLinha do Tempo de Resultados\nSemana 1-2 Período de adaptação inicial\nMês 1-2 Primeiros efeitos perceptíveis\nMês 2-4 Efeitos progressivos e mais pronunciados"
+      "what_is": "Nootropic peptide that inhibits PDE-4 in the brain.\nProven Benefits\n1 Memory improvement\n2 Onset\n3 Antidepressant\n\nTimeline of Results\nWeek 1-2 Initial adaptation period\nMonth 1-2 First noticeable effects\nMonth 2-4 Progressive and more pronounced effects"
     },
     "protocols": {
       "reconstitution_steps": [
-        "Aspirate bacteriostatic water com sterile syringe",
+        "Aspirate bacteriostatic water with sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2–8°C, protect from light"
@@ -5347,16 +5332,16 @@
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C."
     },
     "research": {
-      "mechanism": "O mecanismo de ação detalhado deste peptídeo ainda está sendo estudado.\nPesquisas pré-clínicas estão em andamento para elucidar as vias moleculares envolvidas.",
+      "mechanism": "The detailed mechanism of action of this peptide is still being studied.\nPreclinical research is ongoing to elucidate the molecular pathways involved.",
       "steps": [
-        "Mecanismo de ação em estudo."
+        "Mechanism of action under study."
       ]
     },
     "synergy": {
       "interactions": [],
       "stacks": []
     },
-    "classification": "Peptídeo sintético",
+    "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
     "reconstitution_difficulty": "Moderada"
