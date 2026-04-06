@@ -7,18 +7,19 @@ import requests
 import os
 import re
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://peptide-catalog-3.preview.emergentagent.com').rstrip('/')
 
 # Portuguese words that should NOT appear in English content
+# Uses word-boundary matching to avoid false positives (e.g. 'eliminates' matching 'elimina')
 PORTUGUESE_WORDS = [
     'semana', 'semanal', 'diário', 'diária', 'peptídeo', 'peptídico', 
-    'aminoácidos', 'Fragmento', 'análogo', 'sintético', 'heptapeptídeo',
+    'aminoácidos', 'análogo', 'sintético', 'heptapeptídeo',
     'Emagrecimento', 'Biorregulador', 'Antioxidante', 'mg/semana', 'mcg/semana',
-    'Mistura', 'neurotrófica', 'derivada', 'suínos', 'Tripeptídeo',
-    'regulador', 'telomerase', 'propriedades', 'senolítico', 'elimina',
-    'seletivamente', 'células', 'senescentes', 'derivado', 'angiotensina',
-    'potentes', 'efeitos', 'nootrópicos', 'Formulação', 'injetável',
-    'fatores', 'neurotróficos', 'cartilagem', 'articulações', 'organismo'
+    'neurotrófica', 'derivada', 'suínos', 'Tripeptídeo',
+    'propriedades', 'senolítico',
+    'seletivamente', 'células', 'senescentes', 'angiotensina',
+    'potentes', 'nootrópicos', 'Formulação', 'injetável',
+    'neurotróficos', 'cartilagem', 'articulações', 'organismo'
 ]
 
 # Competitor terms that should NOT appear

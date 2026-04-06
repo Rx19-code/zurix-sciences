@@ -390,7 +390,7 @@
     "classification": "Triple Incretin Receptor Agonist",
     "evidence_level": "Clinical Phase II",
     "half_life": "~6 days",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "nad-plus-",
@@ -497,12 +497,12 @@
     "classification": "Coenzima celular essencial",
     "evidence_level": "Clínico Fase II",
     "half_life": "~30-60 minutes (IV); variable in tissues",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "glutathione",
     "name": "Glutathione",
-    "description": "Tripeptídeo antioxidante mestre do organismo.",
+    "description": "Master antioxidant tripeptide of the body.",
     "category": "Metabolism",
     "is_free": true,
     "presentations": [
@@ -600,7 +600,7 @@
     "classification": "Endogenous Antioxidant Tripeptide",
     "evidence_level": "Clínico Fase II",
     "half_life": "~10-15 minutes (IV); prolonged in tissues",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "ghk-cu",
@@ -1089,7 +1089,7 @@
     "classification": "Acylated Amylin Analog",
     "evidence_level": "Clinical Phase II",
     "half_life": "~160 hours (weekly)",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "mazdutide",
@@ -1327,7 +1327,7 @@
       ],
       "stacks": []
     },
-    "classification": "Fragmento peptídico do hGH (16 aminoácidos)",
+    "classification": "hGH Peptide Fragment (16 amino acids)",
     "evidence_level": "Clinical Phase II",
     "half_life": "~30 minutes",
     "reconstitution_difficulty": "Easy"
@@ -1730,7 +1730,7 @@
   {
     "slug": "epithalon",
     "name": "Epithalon",
-    "description": "Peptídeo regulador de telomerase com propriedades anti-aging.",
+    "description": "Telomerase-regulating peptide with anti-aging properties.",
     "category": "Anti-aging",
     "is_free": false,
     "presentations": [
@@ -3529,7 +3529,7 @@
   {
     "slug": "foxo4-dri",
     "name": "FoxO4-DRI",
-    "description": "Peptídeo senolítico que elimina seletivamente células senescentes.",
+    "description": "Senolytic peptide that selectively eliminates senescent cells.",
     "category": "Anti-aging",
     "is_free": false,
     "presentations": [
@@ -3724,7 +3724,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "vesugen",
@@ -3762,7 +3762,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "pinealon",
@@ -3799,7 +3799,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "ovagen",
@@ -3837,7 +3837,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "sermorelin",
@@ -3944,12 +3944,12 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "cerebrolysin",
     "name": "Cerebrolysin",
-    "description": "Formulação injetável de fatores neurotróficos peptídicos.",
+    "description": "Injectable formulation of neurotrophic peptide factors.",
     "category": "Nootropic / Cognitive",
     "is_free": false,
     "presentations": [
@@ -4044,7 +4044,7 @@
         }
       ]
     },
-    "classification": "Mistura peptídica neurotrófica (derivada de suínos)",
+    "classification": "Neurotrophic Peptide Mixture (porcine-derived)",
     "evidence_level": "Clínico Fase III",
     "half_life": "~6-8 hours (IM); prolonged effects",
     "reconstitution_difficulty": "Easy"
@@ -4084,7 +4084,7 @@
   {
     "slug": "cartalax",
     "name": "Cartalax",
-    "description": "Biorregulador peptídico para cartilagem e articulações.",
+    "description": "Bioregulator peptide for cartilage and joint health.",
     "category": "Anti-aging",
     "is_free": false,
     "presentations": [
@@ -4199,7 +4199,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "chonluten",
@@ -4237,7 +4237,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "livagen",
@@ -4275,7 +4275,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "cardiogen",
@@ -5186,7 +5186,7 @@
   {
     "slug": "dihexa",
     "name": "Dihexa",
-    "description": "Peptídeo derivado da angiotensina IV com potentes efeitos nootrópicos.",
+    "description": "Angiotensin IV-derived peptide with potent nootropic effects.",
     "category": "Nootropic / Cognitive",
     "is_free": false,
     "presentations": [],
@@ -5274,7 +5274,7 @@
     "classification": "Angiotensin IV Derived Oligopeptide",
     "evidence_level": "Pre-clinical",
     "half_life": "~12-24 hours (oral)",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "p-21",
@@ -5309,7 +5309,7 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   },
   {
     "slug": "pnc-28",
@@ -5344,6 +5344,6 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados não disponíveis",
-    "reconstitution_difficulty": "Moderada"
+    "reconstitution_difficulty": "Moderate"
   }
 ]

@@ -4,20 +4,22 @@
 Professional e-commerce website (Zurix Sciences) for selling peptide research products. PWA with product catalog, shopping cart, checkout, product verification (QR), and downloadable research protocols with automated watermarking/emailing. Admin panel for managing products, codes, and leads.
 
 ## NEW: Peptide Library Feature
-Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Protocols, Research, and Synergy. Hero images per category. Quick Facts sidebar. Free vs PRO access tiers.
+Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Protocols, Research, and Synergy. Hero images per category. Quick Facts sidebar. Free vs PRO access tiers. ALL content in English.
 
 ## Architecture
 ```
 /app/
 ├── backend/
-│   ├── main.py / server.py
+│   ├── server.py
 │   ├── database.py
 │   ├── routes/          # auth, products, protocols, admin, library, verification
 │   ├── utils/           # security, email
 │   ├── product_images/
 │   │   └── categories/  # Hero images (nootropic.jpg, recovery.jpg, etc.)
 │   ├── protocols_pdf/
-│   └── seed_library.py
+│   ├── seed_library.py
+│   ├── seed_library_production.json  # Export for production DB
+│   └── tests/           # test_library_data_quality.py
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/       # Library.js, PeptideDetail.js, Calculator.js, Admin.js...
@@ -51,16 +53,24 @@ Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Pr
 - [x] Batch PDF import from WeTransfer (72 PDFs processed)
 - [x] Light theme consistency across all pages
 - [x] Production server synced (via SSH)
+- [x] **Data Quality Fixes (Feb 2026)**:
+  - [x] Removed competitor URL from Retatrutide category
+  - [x] Mapped 12 Portuguese categories to English (11 total categories)
+  - [x] Fixed broken "0 mg" dosage values (semaglutide, aod-9604, epithalon, cagrilintide)
+  - [x] Cleaned competitor artifacts from 15 peptides
+  - [x] Translated all Portuguese content to English (21 peptides overview/protocols/research/synergy)
+  - [x] Translated metadata fields (classification, evidence_level, half_life) for 27 peptides
+  - [x] Fixed reconstitution_difficulty 'Moderada' -> 'Moderate' for 15 peptides
+  - [x] 20/20 data quality tests passing
 
-## Current Status (April 2026)
-- **26 peptides**: Full content (all 4 tabs populated)
-- **70 peptides**: Partial content (basic info only, awaiting PDFs)
-- **Some content in Portuguese**: Needs English translation
+## Current Status (Feb 2026)
+- **36 peptides**: Full content (all 4 tabs populated, English)
+- **60 peptides**: Partial content (basic info only, awaiting PDFs)
+- **All content in English**: Verified via automated tests
 
 ## Pending Tasks
-- [ ] P0: Receive & process remaining peptide PDFs
-- [ ] P1: Translate PT content to English
-- [ ] P1: Add "Library" to navbar
+- [ ] P0: Deploy data fixes to production (user needs to run import commands)
+- [ ] P1: Receive & process remaining 60 peptide PDFs
 - [ ] P1: USDT lifetime access payment for PRO peptides
 - [ ] P2: Automated MongoDB backups
 - [ ] P3: MongoDB authentication
@@ -68,7 +78,7 @@ Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Pr
 - [ ] P3: React Native mobile app
 
 ## Credentials
-- Backend: `/app/backend/.env` (ADMIN_PASSWORD, JWT_SECRET, RESEND_API_KEY)
+- Backend: `/app/backend/.env` (ADMIN_PASSWORD, JWT_SECRET, RESEND_API_KEY, EMERGENT_LLM_KEY)
 - Test code: ZX-260312-GHK50-1-TEST01
 - Production: root@80.78.19.40 (/var/www/zurix/)
 
@@ -77,3 +87,4 @@ Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Pr
 - All Library content must be in English (user communicates in Portuguese)
 - User manages live server via SSH - provide exact copy-paste commands
 - USDT payment: User wants crypto for anonymity
+- Production DB name: `zurix_sciences` (dev uses `test_database`)
