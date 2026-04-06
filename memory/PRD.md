@@ -1,76 +1,79 @@
-# Zurix Sciences - Product Requirements Document
+# Zurix Sciences - PRD (Product Requirements Document)
 
 ## Original Problem Statement
-Build a professional e-commerce website (Zurix Sciences) for selling peptide research products with PWA capabilities and product verification system.
+Professional e-commerce website (Zurix Sciences) for selling peptide research products. PWA with product catalog, shopping cart, checkout, product verification (QR), and downloadable research protocols with automated watermarking/emailing. Admin panel for managing products, codes, and leads.
 
-## What's Been Implemented
-
-### March 16, 2026 - Advanced Protocols (5 new paid protocols)
-- [x] Removed 3 old placeholder advanced protocols
-- [x] Added 5 new advanced protocols at $4.99 each (English only for now):
-  1. Tissue Regeneration & Wound Healing
-  2. Body Composition & Physical Performance
-  3. Cognitive Support & Stress Reduction
-  4. Sexual Health & Libido
-  5. Rejuvenation & Skin Health
-- [x] PDFs stored at `protocols_pdf/advanced/en/`
-- [x] Frontend shows correct available languages per protocol
-- [x] Payment flow via USDT (TRC20) active
-
-### March 15, 2026 - Admin Leads Tab
-- [x] Leads tab with search, filter by protocol, CSV export
-
-### March 15, 2026 - Server Refactoring
-- [x] Refactored server.py (2441 lines) into 11 modular files
-
-### March 15, 2026 - Product Images Complete
-- [x] All 32 products with local images
-
-### Previous Implementations
-- [x] Full-stack PWA (FastAPI + React)
-- [x] Product verification with QR scanner
-- [x] Protocol system V3 (single-use code + watermarking + email)
-- [x] Security hardening (rate limiting, IP blocking, headers)
-- [x] Admin panel (codes, batches, logs, leads)
-- [x] Resend email integration
+## NEW: Peptide Library Feature
+Comprehensive "Peptide Library" with 96 peptides featuring tabs for Overview, Protocols, Research, and Synergy. Hero images per category. Quick Facts sidebar. Free vs PRO access tiers.
 
 ## Architecture
 ```
-backend/
-├── server.py              # App init (~100 lines)
-├── database.py            # MongoDB + cache
-├── models.py              # Pydantic models
-├── routes/                # auth, products, protocols, payments, admin, verification
-├── utils/                 # security, email
-├── product_images/        # 32 product images
-└── protocols_pdf/
-    ├── en/, es/, pt/      # 8 basic protocols x 3 languages
-    └── advanced/en/       # 5 advanced protocols (EN only for now)
+/app/
+├── backend/
+│   ├── main.py / server.py
+│   ├── database.py
+│   ├── routes/          # auth, products, protocols, admin, library, verification
+│   ├── utils/           # security, email
+│   ├── product_images/
+│   │   └── categories/  # Hero images (nootropic.jpg, recovery.jpg, etc.)
+│   ├── protocols_pdf/
+│   └── seed_library.py
+├── frontend/
+│   ├── src/
+│   │   ├── pages/       # Library.js, PeptideDetail.js, Calculator.js, Admin.js...
+│   │   ├── components/
+│   │   └── App.js
+│   └── package.json
+└── mobile/              # React Native (ON HOLD)
 ```
 
-## Prioritized Backlog
+## Key DB Schema
+- `peptide_library`: `{slug, name, description, category, is_free, classification, evidence_level, half_life, reconstitution_difficulty, also_known_as[], presentations[], overview{what_is, mechanism_summary}, protocols{title, standard{route, frequency}, dosages[], phases[], reconstitution_steps[]}, research{mechanism, steps[], references[]}, synergy{interactions[], stacks[]}}`
+- `products`: `{name, image_url, ...}`
+- `unique_codes`: `{code, product_name, ...}`
+- `protocol_leads`: `{email, name, phone, ...}`
 
-### P0 - Pending User Action
-- [ ] Deploy to production (update .env + git pull + pm2 restart)
-- [ ] Upload ES and PT versions of advanced protocol PDFs
+## Key API Endpoints
+- `GET /api/library` - List all peptides (with filters)
+- `GET /api/library/{slug}` - Peptide detail
+- `GET /api/library/category-image/{category_slug}` - Hero images
+- `GET /api/images/products/{filename}` - Product images
+- `GET /api/admin/leads` - Admin leads
+- `POST /api/protocols/v3/send-protocol` - Send protocol
 
-### P1 - Next
-- [ ] Add ES/PT PDFs for advanced protocols when user provides them
+## What's Been Implemented
+- [x] Full e-commerce catalog with local images (28 products)
+- [x] Peptide reconstitution calculator with syringe UI
+- [x] Product verification system (/verify)
+- [x] Protocol delivery with watermarking (Resend)
+- [x] Admin panel with Leads tab + CSV export
+- [x] Peptide Library: 96 peptides, 4-tab detail pages, hero images, Quick Facts
+- [x] Batch PDF import from WeTransfer (72 PDFs processed)
+- [x] Light theme consistency across all pages
+- [x] Production server synced (via SSH)
 
-### P2 - Future
-- [ ] Mobile app (on hold)
-- [ ] MongoDB authentication
-- [ ] Automated database backups
+## Current Status (April 2026)
+- **26 peptides**: Full content (all 4 tabs populated)
+- **70 peptides**: Partial content (basic info only, awaiting PDFs)
+- **Some content in Portuguese**: Needs English translation
 
-## Advanced Protocols Configuration
-| ID | Title | Price | Languages |
-|---|---|---|---|
-| proto-adv-tissue | Tissue Regeneration & Wound Healing | $4.99 | EN |
-| proto-adv-body | Body Composition & Physical Performance | $4.99 | EN |
-| proto-adv-cognitive | Cognitive Support & Stress Reduction | $4.99 | EN |
-| proto-adv-sexual | Sexual Health & Libido | $4.99 | EN |
-| proto-adv-skin | Rejuvenation & Skin Health | $4.99 | EN |
+## Pending Tasks
+- [ ] P0: Receive & process remaining peptide PDFs
+- [ ] P1: Translate PT content to English
+- [ ] P1: Add "Library" to navbar
+- [ ] P1: USDT lifetime access payment for PRO peptides
+- [ ] P2: Automated MongoDB backups
+- [ ] P3: MongoDB authentication
+- [ ] P3: Cloudflare WAF fix for South American users
+- [ ] P3: React Native mobile app
 
-## Test Data
-- **Admin Password:** Rx050217!
-- **Valid Test Code:** ZX-260312-GHK50-1-TEST01
+## Credentials
+- Backend: `/app/backend/.env` (ADMIN_PASSWORD, JWT_SECRET, RESEND_API_KEY)
+- Test code: ZX-260312-GHK50-1-TEST01
+- Production: root@80.78.19.40 (/var/www/zurix/)
+
+## Critical Notes
+- PeptideDetail.js: Avoid `.map()` on member expressions (causes Babel plugin infinite recursion). Always assign to local variables first.
+- All Library content must be in English (user communicates in Portuguese)
+- User manages live server via SSH - provide exact copy-paste commands
+- USDT payment: User wants crypto for anonymity

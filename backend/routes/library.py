@@ -47,6 +47,8 @@ LIBRARY_PROJECTION = {
     "is_free": 1,
     "presentations": 1,
     "also_known_as": 1,
+    "classification": 1,
+    "evidence_level": 1,
 }
 
 DETAIL_PROJECTION = {"_id": 0}
@@ -75,5 +77,5 @@ async def get_library(
 async def get_peptide_detail(slug: str):
     peptide = await db.peptide_library.find_one({"slug": slug}, DETAIL_PROJECTION)
     if not peptide:
-        return {"error": "Peptide not found"}, 404
+        return {"error": "Peptide not found"}
     return peptide
