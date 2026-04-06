@@ -13,7 +13,7 @@ import Checkout from './pages/Checkout';
 import CheckoutSuccess from './pages/CheckoutSuccess';
 import Representatives from './pages/Representatives';
 import Contact from './pages/Contact';
-import Protocols from './pages/Protocols';
+import Protocols from './pages/Library';
 import Library from './pages/Library';
 import PeptideDetailPage from './pages/PeptideDetail';
 import PeptigenLogos from './components/PeptigenLogos';
@@ -57,6 +57,7 @@ function App() {
             <Route path="/representatives" element={<Representatives />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/protocols" element={<Protocols />} />
+            <Route path="/protocols/:slug" element={<PeptideDetailPage />} />
             <Route path="/library" element={<Library />} />
             <Route path="/library/:slug" element={<PeptideDetailPage />} />
             <Route path="/logos" element={<PeptigenLogos />} />

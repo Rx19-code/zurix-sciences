@@ -16,11 +16,11 @@ export default function PeptideDetail() {
     fetch(API + '/api/library/' + slug)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (data.error) { navigate('/library'); return; }
+        if (data.error) { navigate('/protocols'); return; }
         setPeptide(data);
         setLoading(false);
       })
-      .catch(function() { navigate('/library'); });
+      .catch(function() { navigate('/protocols'); });
   }, [slug, navigate]);
 
   if (loading || !peptide) {
@@ -49,9 +49,9 @@ export default function PeptideDetail() {
         {/* Content overlay */}
         <div className="relative -mt-32 sm:-mt-36">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-6">
-            <button data-testid="back-to-library" onClick={function() { navigate('/library'); }} className="inline-flex items-center gap-1.5 text-gray-300 hover:text-white text-sm mb-4 transition-colors">
+            <button data-testid="back-to-library" onClick={function() { navigate('/protocols'); }} className="inline-flex items-center gap-1.5 text-gray-300 hover:text-white text-sm mb-4 transition-colors">
               <ChevronLeft className="w-4 h-4" />
-              Back to Library
+              Back to Protocols
             </button>
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <span className="bg-white/15 border border-white/25 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">{peptide.category}</span>

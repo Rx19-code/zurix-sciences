@@ -129,7 +129,7 @@ export default function Library() {
               <div
                 key={pep.slug}
                 data-testid={`peptide-card-${pep.slug}`}
-                onClick={() => navigate(`/library/${pep.slug}`)}
+                onClick={() => navigate(`/protocols/${pep.slug}`)}
                 className={`bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/60 ${!pep.is_free ? 'relative overflow-hidden' : ''}`}
               >
                 {!pep.is_free && <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-yellow-100 to-transparent rounded-bl-full" />}
