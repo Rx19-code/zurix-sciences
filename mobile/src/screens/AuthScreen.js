@@ -21,9 +21,9 @@ const T = {
 };
 
 // API configuration
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://zurixsciences.com';
 const API_URLS = [
-  'https://www.zurixsciences.com/api',
-  'https://zurixsciences.com/api',
+  `${BACKEND_URL}/api`,
 ];
 
 const fetchAPI = async (endpoint, options = {}) => {

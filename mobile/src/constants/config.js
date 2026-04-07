@@ -10,8 +10,10 @@
 // OPTION 3: Physical Device (same WiFi)
 // export const API_URL = 'http://YOUR_LOCAL_IP:8001/api';
 
-// OPTION 4: Production
-export const API_URL = 'https://zurixsciences.com/api';
+// OPTION 4: Production / Environment
+export const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL
+  ? `${process.env.EXPO_PUBLIC_BACKEND_URL}/api`
+  : 'https://zurixsciences.com/api';
 
 export const COLORS = {
   primary: '#1e40af',
