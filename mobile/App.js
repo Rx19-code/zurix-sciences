@@ -12,10 +12,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
-// Multiple API URLs to try (fallback)
+// API URL from environment or fallback to production
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://zurixsciences.com';
 const API_URLS = [
-  'https://zurixsciences.com/api',
-  'https://www.zurixsciences.com/api',
+  `${BACKEND_URL}/api`,
 ];
 
 // Timeout for API requests (in milliseconds)

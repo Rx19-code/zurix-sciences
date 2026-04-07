@@ -20,16 +20,14 @@ JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 USDT_WALLET_ADDRESS = os.environ.get('USDT_WALLET_ADDRESS')
-TRON_API_URL = "https://apilist.tronscanapi.com/api"
+TRON_API_URL = os.environ.get('TRON_API_URL', 'https://apilist.tronscanapi.com/api')
 
-# PDF storage directory - production path takes priority
-PRODUCTION_PDF_DIR = Path("/var/www/zurix/assets/protocols")
-PDF_STORAGE_DIR = PRODUCTION_PDF_DIR if PRODUCTION_PDF_DIR.exists() else ROOT_DIR / "protocols_pdf"
+# PDF storage directory
+PDF_STORAGE_DIR = Path(os.environ.get('PDF_STORAGE_DIR', str(ROOT_DIR / "protocols_pdf")))
 PDF_STORAGE_DIR.mkdir(exist_ok=True)
 
-# Product images directory - production path takes priority
-PRODUCTION_IMG_DIR = Path("/var/www/zurix/assets/images/products")
-PRODUCT_IMG_DIR = PRODUCTION_IMG_DIR if PRODUCTION_IMG_DIR.exists() else ROOT_DIR / "product_images"
+# Product images directory
+PRODUCT_IMG_DIR = Path(os.environ.get('PRODUCT_IMG_DIR', str(ROOT_DIR / "product_images")))
 PRODUCT_IMG_DIR.mkdir(exist_ok=True)
 
 # Resend email setup
