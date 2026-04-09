@@ -87,7 +87,10 @@ function MaintenancePage() {
           color: '#60a5fa',
           fontSize: '14px'
         }}>
-          For urgent inquiries, contact us at <strong>support@zurixsciences.com</strong>
+          For urgent inquiries:<br/>
+          <strong>RxpeptidesHK@proton.me</strong>
+          <span style={{margin: '0 8px', color: '#475569'}}>|</span>
+          <strong>Threema:</strong> contact us via Threema
         </div>
       </div>
     </div>
