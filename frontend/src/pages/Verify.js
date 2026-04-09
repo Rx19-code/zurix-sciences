@@ -210,24 +210,6 @@ const Verify = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900" data-testid="verify-page">
-      {/* QR Scanner Modal */}
-      {showScanner && (
-        <div className="fixed inset-0 z-50 bg-black flex flex-col">
-          <div className="flex items-center justify-between p-4 bg-black/80">
-            <h3 className="text-white font-semibold">Scan QR Code</h3>
-            <button onClick={stopScanner} className="text-white p-2">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-          <div className="flex-1 relative flex items-center justify-center">
-            <div id="qr-reader" style={{ width: '100%', maxWidth: '500px' }}></div>
-          </div>
-          <p className="p-4 text-center text-white text-sm bg-black/80">
-            Hold steady, 10-15 cm from the QR code. Tap the screen to focus.
-          </p>
-        </div>
-      )}
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
@@ -247,33 +229,13 @@ const Verify = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Verify Product</h2>
             
-            {/* Show scan/manual options */}
+            {/* Simple instruction */}
             <div className="mb-6">
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
-                <p className="text-sm text-blue-800 font-medium mb-1">Best way to verify:</p>
-                <p className="text-xs text-blue-600">Open your phone's native camera and point it at the QR code on the product. It will open this page automatically.</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <p className="text-sm text-blue-800 font-medium mb-1">How to verify:</p>
+                <p className="text-xs text-blue-600">Scan the QR code on your product with your phone's camera — it will open this page and verify automatically. Or enter the code manually below.</p>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => document.getElementById('code-input')?.focus()}
-                  data-testid="enter-code-button"
-                  className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl transition-colors"
-                >
-                  <Keyboard className="w-8 h-8 text-blue-600 mb-2" />
-                  <span className="text-sm font-semibold text-blue-900">Enter Code</span>
-                </button>
-                <button
-                  onClick={startScanner}
-                  data-testid="scan-qr-button"
-                  className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl transition-colors"
-                >
-                  <Camera className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-900">In-App Scan</span>
-                </button>
-              </div>
-              {cameraError && (
-                <p className="mt-3 text-sm text-red-600" data-testid="camera-error">{cameraError}</p>
-              )}
+              {/* Camera error removed - using native camera only */}
             </div>
 
             <form id="verify-form" onSubmit={handleVerify} className="space-y-6">
