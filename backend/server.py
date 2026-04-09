@@ -34,6 +34,14 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 async def root():
     return {"message": "Zurix Sciences API", "version": "2.0.0"}
 
+# Maintenance mode
+@app.get("/api/maintenance")
+async def get_maintenance_status():
+    import pathlib
+    flag_file = pathlib.Path(__file__).parent / "maintenance.flag"
+    return {"maintenance": flag_file.exists()}
+
+
 # Health check
 @app.get("/api/health")
 async def health_check():
