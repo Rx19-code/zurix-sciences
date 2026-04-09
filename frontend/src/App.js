@@ -85,12 +85,12 @@ function MaintenancePage() {
           borderRadius: '12px',
           padding: '16px 24px',
           color: '#60a5fa',
-          fontSize: '14px'
+          fontSize: '14px',
+          lineHeight: '1.8'
         }}>
           For urgent inquiries:<br/>
-          <strong>RxpeptidesHK@proton.me</strong>
-          <span style={{margin: '0 8px', color: '#475569'}}>|</span>
-          <strong>Threema:</strong> contact us via Threema
+          <strong>Email:</strong> RxpeptidesHK@proton.me<br/>
+          <strong>Threema ID:</strong> 2D9DAD9R
         </div>
       </div>
     </div>
