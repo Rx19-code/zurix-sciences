@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Shield, CheckCircle, XCircle, AlertTriangle, Camera, Keyboard, X } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 
@@ -6,12 +7,48 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Verify = () => {
+  const [searchParams] = useSearchParams();
   const [code, setCode] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [cameraError, setCameraError] = useState(null);
+  const [autoVerified, setAutoVerified] = useState(false);
   const scannerRef = useRef(null);
+
+  // Auto-verify if ?code= is in URL (from native camera QR scan)
+  useEffect(function() {
+    var urlCode = searchParams.get('code');
+    if (urlCode && !autoVerified) {
+      setAutoVerified(true);
+      var cleanCode = urlCode.trim().toUpperCase();
+      setCode(cleanCode);
+      verifyCode(cleanCode);
+    }
+  }, [searchParams]);
+
+  var verifyCode = async function(codeToVerify) {
+    if (!codeToVerify || !codeToVerify.trim()) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      var response = await fetch(API + '/verify-product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: codeToVerify.trim().toUpperCase() })
+      });
+      var data = await response.json();
+      setResult(data);
+    } catch (error) {
+      setResult({
+        success: false,
+        message: 'Connection error. Please check your internet and try again.',
+        warning_level: 'danger'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Start QR Scanner
   const startScanner = async () => {
@@ -101,16 +138,13 @@ const Verify = () => {
   };
 
   const handleQRCodeDetected = async (qrCode) => {
-    // Extract code from QR
     let extractedCode = qrCode;
     
-    // If QR contains URL, extract the code
     if (qrCode.includes('verify') || qrCode.includes('code=')) {
       const urlParams = new URLSearchParams(qrCode.split('?')[1]);
       extractedCode = urlParams.get('code') || qrCode;
     }
     
-    // If it's a Zurix code format
     if (qrCode.match(/ZX-[\w-]+/i)) {
       const match = qrCode.match(/ZX-[\w-]+/i);
       extractedCode = match[0];
@@ -119,55 +153,12 @@ const Verify = () => {
     const cleanCode = extractedCode.trim().toUpperCase();
     setCode(cleanCode);
     await stopScanner();
-    
-    // Directly call verify API instead of form dispatch (more reliable across browsers)
-    setLoading(true);
-    setResult(null);
-    try {
-      const response = await fetch(`${API}/verify-product`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: cleanCode })
-      });
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      console.error('Error verifying product:', error);
-      setResult({
-        success: false,
-        message: 'Connection error. Please check your internet and try again.',
-        warning_level: 'danger'
-      });
-    } finally {
-      setLoading(false);
-    }
+    await verifyCode(cleanCode);
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    if (!code.trim()) return;
-    
-    setLoading(true);
-    setResult(null);
-
-    try {
-      const response = await fetch(`${API}/verify-product`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: code.trim().toUpperCase() })
-      });
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      console.error('Error verifying product:', error);
-      setResult({
-        success: false,
-        message: 'Error verifying product. Please try again.',
-        warning_level: 'danger'
-      });
-    } finally {
-      setLoading(false);
-    }
+    await verifyCode(code);
   };
 
   const getResultStyles = () => {
@@ -256,24 +247,28 @@ const Verify = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Verify Product</h2>
             
-            {/* Show scan/manual options - Both visible for all users */}
+            {/* Show scan/manual options */}
             <div className="mb-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+                <p className="text-sm text-blue-800 font-medium mb-1">Best way to verify:</p>
+                <p className="text-xs text-blue-600">Open your phone's native camera and point it at the QR code on the product. It will open this page automatically.</p>
+              </div>
               <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={startScanner}
-                  data-testid="scan-qr-button"
-                  className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl transition-colors"
-                >
-                  <Camera className="w-8 h-8 text-blue-600 mb-2" />
-                  <span className="text-sm font-semibold text-blue-900">Scan QR Code</span>
-                </button>
                 <button
                   onClick={() => document.getElementById('code-input')?.focus()}
                   data-testid="enter-code-button"
+                  className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl transition-colors"
+                >
+                  <Keyboard className="w-8 h-8 text-blue-600 mb-2" />
+                  <span className="text-sm font-semibold text-blue-900">Enter Code</span>
+                </button>
+                <button
+                  onClick={startScanner}
+                  data-testid="scan-qr-button"
                   className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl transition-colors"
                 >
-                  <Keyboard className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-semibold text-gray-900">Enter Code</span>
+                  <Camera className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-semibold text-gray-900">In-App Scan</span>
                 </button>
               </div>
               {cameraError && (
