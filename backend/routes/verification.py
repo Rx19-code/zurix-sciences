@@ -31,15 +31,24 @@ async def verify_product(request: Request, body: VerifyProductRequest):
 
     geo = await get_geolocation(client_ip)
 
-    if not code.startswith("ZX-"):
+    if not code.startswith("ZX"):
         return VerifyProductResponse(
             success=False,
-            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX-'",
+            message="Invalid code format. All genuine Zurix Sciences products have codes starting with 'ZX'",
             verification_count=0,
             warning_level="none"
         )
 
+    # Search by exact code first, then try without hyphens
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+    if not unique_code:
+        # Try matching by removing hyphens from both sides
+        code_no_hyphens = code.replace("-", "")
+        all_codes = await db.unique_codes.find({}, {"_id": 0}).to_list(None)
+        for c in all_codes:
+            if c["code"].replace("-", "").upper() == code_no_hyphens:
+                unique_code = c
+                break
 
     if unique_code:
         current_count = unique_code.get('verification_count', 0)
