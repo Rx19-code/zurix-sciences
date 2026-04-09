@@ -352,6 +352,8 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
     codes_list = body.get("codes", [])
     if not codes_list:
         raise HTTPException(status_code=400, detail="No codes provided")
+    if len(codes_list) > 500:
+        raise HTTPException(status_code=400, detail="Maximum 500 labels per request")
 
     import qrcode
     from PIL import Image, ImageDraw, ImageFont
@@ -363,7 +365,7 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
     MARGIN = 6
 
     labels = []
-    for code_str in codes_list[:50]:  # Max 50 labels per request
+    for code_str in codes_list:  # Process all codes
         # Generate QR with high error correction for small prints
         qr = qrcode.QRCode(
             version=1,

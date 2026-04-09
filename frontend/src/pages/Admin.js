@@ -895,16 +895,29 @@ export default function Admin() {
 
 function LabelsTab({ password, apiUrl, codes, batches }) {
   var [selectedBatch, setSelectedBatch] = React.useState('');
-  var [selectedCodes, setSelectedCodes] = React.useState([]);
+  var [batchCodes, setBatchCodes] = React.useState([]);
+  var [loadingCodes, setLoadingCodes] = React.useState(false);
   var [manualCodes, setManualCodes] = React.useState('');
   var [labels, setLabels] = React.useState([]);
   var [generating, setGenerating] = React.useState(false);
   var [selectMode, setSelectMode] = React.useState('batch');
 
-  var batchCodes = React.useMemo(function() {
-    if (!selectedBatch) return [];
-    return codes.filter(function(c) { return c.batch_number === selectedBatch; });
-  }, [selectedBatch, codes]);
+  var handleBatchSelect = async function(batchId) {
+    setSelectedBatch(batchId);
+    setBatchCodes([]);
+    if (!batchId) return;
+    setLoadingCodes(true);
+    try {
+      var res = await fetch(apiUrl + '/api/admin/codes?batch_number=' + encodeURIComponent(batchId) + '&limit=500', {
+        headers: { 'x-admin-password': password }
+      });
+      var data = await res.json();
+      setBatchCodes(data.codes || []);
+    } catch (err) {
+      console.error('Error loading batch codes:', err);
+    }
+    setLoadingCodes(false);
+  };
 
   var handleGenerate = async function() {
     var codesToGenerate = [];
@@ -912,8 +925,6 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
       codesToGenerate = batchCodes.map(function(c) { return c.code; });
     } else if (selectMode === 'manual' && manualCodes.trim()) {
       codesToGenerate = manualCodes.trim().split('\n').map(function(c) { return c.trim(); }).filter(Boolean);
-    } else if (selectMode === 'selected' && selectedCodes.length > 0) {
-      codesToGenerate = selectedCodes;
     }
     if (codesToGenerate.length === 0) return;
 
@@ -940,20 +951,13 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
     html += '.label img{display:block;width:260px;height:165px;image-rendering:pixelated}';
     html += '@media print{.label{border:none;margin:2px;padding:0} .no-print{display:none}}';
     html += '</style></head><body>';
-    html += '<p class="no-print" style="margin-bottom:10px;font-size:14px">Labels: ' + labels.length + ' | Niimbot 14x22mm (300 DPI) — Print or save individual images</p>';
+    html += '<p class="no-print" style="margin-bottom:10px;font-size:14px">Labels: ' + labels.length + ' | Niimbot 14x22mm (300 DPI)</p>';
     labels.forEach(function(l) {
       html += '<div class="label"><img src="' + l.image + '" alt="' + l.code + '"/></div>';
     });
     html += '</body></html>';
     printWindow.document.write(html);
     printWindow.document.close();
-  };
-
-  var handleDownload = function(label) {
-    var link = document.createElement('a');
-    link.download = label.code + '.png';
-    link.href = label.image;
-    link.click();
   };
 
   var handleDownloadAll = function() {
@@ -989,16 +993,19 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
       {selectMode === 'batch' && (
         <div className="mb-6">
           <label className="block text-sm text-gray-300 mb-2">Select Batch</label>
-          <select value={selectedBatch} onChange={function(e) { setSelectedBatch(e.target.value); }}
+          <select value={selectedBatch} onChange={function(e) { handleBatchSelect(e.target.value); }}
             data-testid="label-batch-select"
             className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-blue-500">
             <option value="">-- Select a batch --</option>
             {batches.map(function(b) {
-              return <option key={b._id} value={b.batch_number}>{b.product_name} — {b.batch_number} ({b.total_codes} codes)</option>;
+              var batchId = b._id || b.batch_number;
+              return <option key={batchId} value={batchId}>{b.product_name} — {batchId} ({b.total_codes} codes)</option>;
             })}
           </select>
           {selectedBatch && (
-            <p className="text-gray-400 text-sm mt-2">{batchCodes.length} codes found in this batch</p>
+            <p className="text-gray-400 text-sm mt-2">
+              {loadingCodes ? 'Loading codes...' : batchCodes.length + ' codes loaded from this batch'}
+            </p>
           )}
         </div>
       )}
@@ -1008,7 +1015,7 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           <label className="block text-sm text-gray-300 mb-2">Enter codes (one per line)</label>
           <textarea value={manualCodes} onChange={function(e) { setManualCodes(e.target.value); }}
             data-testid="label-manual-codes"
-            rows={6} placeholder="ZX-260312-GHK50-1-000001&#10;ZX-260312-GHK50-1-000002"
+            rows={6} placeholder={"ZX-260312-GHK50-1-000001\nZX-260312-GHK50-1-000002"}
             className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-blue-500 font-mono text-sm" />
         </div>
       )}
@@ -1040,8 +1047,12 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
                 <div key={label.code} className="bg-gray-900 rounded-lg p-2 border border-gray-700 text-center group">
                   <img src={label.image} alt={label.code} className="w-full rounded border border-gray-600 mb-2" style={{imageRendering: 'pixelated'}} />
                   <p className="text-gray-400 text-xs font-mono truncate mb-1">{label.code}</p>
-                  <button onClick={function() { handleDownload(label); }}
-                    className="text-blue-400 hover:text-blue-300 text-xs opacity-0 group-hover:opacity-100 transition">
+                  <button onClick={function() {
+                    var link = document.createElement('a');
+                    link.download = label.code + '.png';
+                    link.href = label.image;
+                    link.click();
+                  }} className="text-blue-400 hover:text-blue-300 text-xs opacity-0 group-hover:opacity-100 transition">
                     Download PNG
                   </button>
                 </div>
