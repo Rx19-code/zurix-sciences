@@ -119,16 +119,31 @@ const Verify = () => {
       extractedCode = match[0];
     }
     
-    setCode(extractedCode.toUpperCase());
+    const cleanCode = extractedCode.trim().toUpperCase();
+    setCode(cleanCode);
     await stopScanner();
     
-    // Auto-verify
-    setTimeout(() => {
-      const form = document.getElementById('verify-form');
-      if (form) {
-        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-      }
-    }, 300);
+    // Directly call verify API instead of form dispatch (more reliable across browsers)
+    setLoading(true);
+    setResult(null);
+    try {
+      const response = await fetch(`${API}/verify-product`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: cleanCode })
+      });
+      const data = await response.json();
+      setResult(data);
+    } catch (error) {
+      console.error('Error verifying product:', error);
+      setResult({
+        success: false,
+        message: 'Connection error. Please check your internet and try again.',
+        warning_level: 'danger'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleVerify = async (e) => {
