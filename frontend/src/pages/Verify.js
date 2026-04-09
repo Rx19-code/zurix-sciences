@@ -22,12 +22,14 @@ const Verify = () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     try {
-      // First, explicitly request camera permission with higher resolution for small QR codes
+      // First, explicitly request camera permission with maximum resolution for small QR codes
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { 
           facingMode: "environment",
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
+          width: { ideal: 3840 },
+          height: { ideal: 2160 },
+          focusMode: { ideal: "continuous" },
+          zoom: { ideal: 2.0 }
         } 
       });
       // Stop the stream immediately - we just needed permission
@@ -52,16 +54,17 @@ const Verify = () => {
         cameraConfig = { facingMode: "environment" };
       }
       
-      // Optimized settings for small QR codes
+      // Optimized settings for small QR codes (1-2cm)
       await html5QrCode.start(
         cameraConfig,
         { 
-          fps: 15,  // Higher FPS for faster detection
-          qrbox: { width: 180, height: 180 },  // Smaller scan area - forces user to get closer
+          fps: 30,  // Maximum FPS for faster detection
+          qrbox: { width: 250, height: 250 },  // Larger scan area to capture small QR codes
           aspectRatio: 1.0,
           disableFlip: false,
+          formatsToSupport: [ 0 ],  // QR_CODE only - faster processing
           experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true  // Use native detector if available
+            useBarCodeDetectorIfSupported: true  // Use native detector if available (better on iOS)
           }
         },
         (decodedText) => {
@@ -217,7 +220,7 @@ const Verify = () => {
             <div id="qr-reader" style={{ width: '100%', maxWidth: '500px' }}></div>
           </div>
           <p className="p-4 text-center text-white text-sm bg-black/80">
-            Position the QR code inside the frame
+            Hold the QR code close to the camera (10-15 cm)
           </p>
         </div>
       )}

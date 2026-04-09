@@ -1,4 +1,6 @@
 import logging
+import io
+import base64
 import uuid
 from typing import Optional
 from datetime import datetime, timezone
@@ -338,3 +340,85 @@ async def export_leads_csv(
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=zurix_leads.csv"}
     )
+
+
+@router.post("/admin/generate-labels")
+async def generate_labels(request: Request, x_admin_password: str = Header(None)):
+    """Generate printable QR code labels for Niimbot 14x22mm labels."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    body = await request.json()
+    codes_list = body.get("codes", [])
+    if not codes_list:
+        raise HTTPException(status_code=400, detail="No codes provided")
+
+    import qrcode
+    from PIL import Image, ImageDraw, ImageFont
+
+    # Niimbot 14x22mm at 300 DPI
+    LABEL_W = 260  # 22mm
+    LABEL_H = 165  # 14mm
+    QR_SIZE = 130  # ~11mm QR code
+    MARGIN = 6
+
+    labels = []
+    for code_str in codes_list[:50]:  # Max 50 labels per request
+        # Generate QR with high error correction for small prints
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=1,
+        )
+        qr.add_data(code_str)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+        qr_img = qr_img.resize((QR_SIZE, QR_SIZE), Image.NEAREST)
+
+        # Create label canvas
+        label = Image.new("RGB", (LABEL_W, LABEL_H), "white")
+        draw = ImageDraw.Draw(label)
+
+        # Place QR on left side, vertically centered
+        qr_y = (LABEL_H - QR_SIZE) // 2
+        label.paste(qr_img, (MARGIN, qr_y))
+
+        # Text area on the right of QR
+        text_x = MARGIN + QR_SIZE + 8
+        text_w = LABEL_W - text_x - MARGIN
+
+        # Draw "ZURIX" brand
+        try:
+            font_brand = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 12)
+            font_code = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 7)
+        except OSError:
+            font_brand = ImageFont.load_default()
+            font_code = ImageFont.load_default()
+
+        draw.text((text_x, qr_y + 5), "ZURIX", fill="black", font=font_brand)
+
+        # Draw the code in small wrapped text
+        short_code = code_str.replace("ZX-", "")
+        parts = short_code.split("-")
+        line1 = "-".join(parts[:2]) if len(parts) >= 2 else short_code[:12]
+        line2 = "-".join(parts[2:]) if len(parts) > 2 else ""
+
+        draw.text((text_x, qr_y + 25), line1, fill="#333333", font=font_code)
+        if line2:
+            draw.text((text_x, qr_y + 36), line2, fill="#333333", font=font_code)
+
+        # Draw "Scan to verify" text
+        try:
+            font_tiny = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 6)
+        except OSError:
+            font_tiny = font_code
+        draw.text((text_x, qr_y + QR_SIZE - 18), "Scan to verify", fill="#666666", font=font_tiny)
+
+        # Convert to base64
+        buf = io.BytesIO()
+        label.save(buf, format="PNG", dpi=(300, 300))
+        b64 = base64.b64encode(buf.getvalue()).decode()
+        labels.append({"code": code_str, "image": f"data:image/png;base64,{b64}"})
+
+    return {"labels": labels, "count": len(labels)}

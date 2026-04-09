@@ -408,6 +408,7 @@ export default function Admin() {
         <div className="flex gap-2 mb-6">
           {[
             { id: 'import', label: 'Import Codes', icon: '📥' },
+            { id: 'labels', label: 'Labels', icon: '🏷️' },
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'leads', label: 'Leads', icon: '📊' },
@@ -527,6 +528,11 @@ export default function Admin() {
               </button>
             </form>
           </div>
+        )}
+        
+        {/* Labels Tab */}
+        {activeTab === 'labels' && (
+          <LabelsTab password={password} apiUrl={API_URL} codes={codes} batches={batches} />
         )}
         
         {/* Codes Tab */}
@@ -882,6 +888,168 @@ export default function Admin() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+
+function LabelsTab({ password, apiUrl, codes, batches }) {
+  var [selectedBatch, setSelectedBatch] = React.useState('');
+  var [selectedCodes, setSelectedCodes] = React.useState([]);
+  var [manualCodes, setManualCodes] = React.useState('');
+  var [labels, setLabels] = React.useState([]);
+  var [generating, setGenerating] = React.useState(false);
+  var [selectMode, setSelectMode] = React.useState('batch');
+
+  var batchCodes = React.useMemo(function() {
+    if (!selectedBatch) return [];
+    return codes.filter(function(c) { return c.batch_number === selectedBatch; });
+  }, [selectedBatch, codes]);
+
+  var handleGenerate = async function() {
+    var codesToGenerate = [];
+    if (selectMode === 'batch' && batchCodes.length > 0) {
+      codesToGenerate = batchCodes.map(function(c) { return c.code; });
+    } else if (selectMode === 'manual' && manualCodes.trim()) {
+      codesToGenerate = manualCodes.trim().split('\n').map(function(c) { return c.trim(); }).filter(Boolean);
+    } else if (selectMode === 'selected' && selectedCodes.length > 0) {
+      codesToGenerate = selectedCodes;
+    }
+    if (codesToGenerate.length === 0) return;
+
+    setGenerating(true);
+    try {
+      var res = await fetch(apiUrl + '/api/admin/generate-labels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ codes: codesToGenerate })
+      });
+      var data = await res.json();
+      setLabels(data.labels || []);
+    } catch (err) {
+      console.error('Error generating labels:', err);
+    }
+    setGenerating(false);
+  };
+
+  var handlePrint = function() {
+    var printWindow = window.open('', '_blank');
+    var html = '<html><head><title>Zurix Labels</title><style>';
+    html += 'body{margin:0;padding:10px;font-family:sans-serif}';
+    html += '.label{display:inline-block;margin:4px;border:1px dashed #ccc;padding:2px}';
+    html += '.label img{display:block;width:260px;height:165px;image-rendering:pixelated}';
+    html += '@media print{.label{border:none;margin:2px;padding:0} .no-print{display:none}}';
+    html += '</style></head><body>';
+    html += '<p class="no-print" style="margin-bottom:10px;font-size:14px">Labels: ' + labels.length + ' | Niimbot 14x22mm (300 DPI) — Print or save individual images</p>';
+    labels.forEach(function(l) {
+      html += '<div class="label"><img src="' + l.image + '" alt="' + l.code + '"/></div>';
+    });
+    html += '</body></html>';
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
+  var handleDownload = function(label) {
+    var link = document.createElement('a');
+    link.download = label.code + '.png';
+    link.href = label.image;
+    link.click();
+  };
+
+  var handleDownloadAll = function() {
+    labels.forEach(function(label, i) {
+      setTimeout(function() {
+        var link = document.createElement('a');
+        link.download = label.code + '.png';
+        link.href = label.image;
+        link.click();
+      }, i * 200);
+    });
+  };
+
+  return (
+    <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700" data-testid="labels-tab">
+      <h2 className="text-xl font-bold text-white mb-2">Label Generator</h2>
+      <p className="text-gray-400 text-sm mb-6">Generate QR code labels for Niimbot 14x22mm printer (300 DPI, high error correction)</p>
+
+      <div className="flex gap-2 mb-6">
+        {[
+          { id: 'batch', label: 'By Batch' },
+          { id: 'manual', label: 'Manual Codes' },
+        ].map(function(m) {
+          return (
+            <button key={m.id} onClick={function() { setSelectMode(m.id); setLabels([]); }}
+              className={'px-4 py-2 rounded-lg text-sm font-medium transition ' + (selectMode === m.id ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:text-white')}>
+              {m.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {selectMode === 'batch' && (
+        <div className="mb-6">
+          <label className="block text-sm text-gray-300 mb-2">Select Batch</label>
+          <select value={selectedBatch} onChange={function(e) { setSelectedBatch(e.target.value); }}
+            data-testid="label-batch-select"
+            className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-blue-500">
+            <option value="">-- Select a batch --</option>
+            {batches.map(function(b) {
+              return <option key={b._id} value={b.batch_number}>{b.product_name} — {b.batch_number} ({b.total_codes} codes)</option>;
+            })}
+          </select>
+          {selectedBatch && (
+            <p className="text-gray-400 text-sm mt-2">{batchCodes.length} codes found in this batch</p>
+          )}
+        </div>
+      )}
+
+      {selectMode === 'manual' && (
+        <div className="mb-6">
+          <label className="block text-sm text-gray-300 mb-2">Enter codes (one per line)</label>
+          <textarea value={manualCodes} onChange={function(e) { setManualCodes(e.target.value); }}
+            data-testid="label-manual-codes"
+            rows={6} placeholder="ZX-260312-GHK50-1-000001&#10;ZX-260312-GHK50-1-000002"
+            className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-blue-500 font-mono text-sm" />
+        </div>
+      )}
+
+      <button onClick={handleGenerate} disabled={generating}
+        data-testid="generate-labels-btn"
+        className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold px-6 py-3 rounded-lg transition mb-6">
+        {generating ? 'Generating...' : 'Generate Labels'}
+      </button>
+
+      {labels.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-white font-bold">{labels.length} Labels Generated</h3>
+            <div className="flex gap-2">
+              <button onClick={handleDownloadAll}
+                className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+                Download All
+              </button>
+              <button onClick={handlePrint}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+                Print View
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {labels.map(function(label) {
+              return (
+                <div key={label.code} className="bg-gray-900 rounded-lg p-2 border border-gray-700 text-center group">
+                  <img src={label.image} alt={label.code} className="w-full rounded border border-gray-600 mb-2" style={{imageRendering: 'pixelated'}} />
+                  <p className="text-gray-400 text-xs font-mono truncate mb-1">{label.code}</p>
+                  <button onClick={function() { handleDownload(label); }}
+                    className="text-blue-400 hover:text-blue-300 text-xs opacity-0 group-hover:opacity-100 transition">
+                    Download PNG
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
