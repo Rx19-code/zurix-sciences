@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -928,16 +929,30 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
   var handleExportCSV = function() {
     var codesToExport = getExportCodes();
     if (codesToExport.length === 0) return;
-    var header = 'Code,Product,Batch,Verification URL\n';
+    
     var rows = codesToExport.map(function(c) {
-      var url = 'https://zurixsciences.com/verify?code=' + encodeURIComponent(c.code);
-      return '"' + c.code + '","' + (c.product_name || '') + '","' + (c.batch_number || '') + '","' + url + '"';
-    }).join('\n');
-    var blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = (selectedBatch || 'zurix_codes') + '.csv';
-    link.click();
+      var codeRaw = c.code.replace(/-/g, '');
+      return {
+        'Code': c.code,
+        'Verification URL': 'https://zurixsciences.com/verify?code=' + codeRaw,
+        'Product': c.product_name || '',
+        'Batch': c.batch_number || ''
+      };
+    });
+    
+    var ws = XLSX.utils.json_to_sheet(rows);
+    
+    // Auto-size columns
+    ws['!cols'] = [
+      { wch: 30 },  // Code
+      { wch: 60 },  // Verification URL
+      { wch: 25 },  // Product
+      { wch: 25 },  // Batch
+    ];
+    
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Codes');
+    XLSX.writeFile(wb, (selectedBatch || 'zurix_codes') + '.xlsx');
   };
 
   var handleCopyAll = function() {
@@ -1002,7 +1017,7 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           <div className="flex items-center gap-3 mb-4">
             <button onClick={handleExportCSV} data-testid="export-csv-btn"
               className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition">
-              Export CSV ({exportCodes.length} codes)
+              Export Excel ({exportCodes.length} codes)
             </button>
             <button onClick={handleCopyAll} data-testid="copy-codes-btn"
               className="bg-gray-600 hover:bg-gray-500 text-white font-medium px-5 py-3 rounded-lg transition">
@@ -1047,10 +1062,10 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           <div className="mt-4 p-4 bg-blue-900/20 border border-blue-800/30 rounded-lg">
             <p className="text-blue-300 text-sm font-medium mb-1">How to print labels:</p>
             <ol className="text-blue-200/70 text-xs space-y-1 list-decimal list-inside">
-              <li>Click "Export CSV" to download the file</li>
-              <li>Open the CSV in Excel or import into Niimbot app</li>
-              <li>Use the "Code" column to generate QR codes in the print software</li>
-              <li>The "Verification URL" column can also be used as QR data for direct scanning</li>
+              <li>Click "Export Excel" to download the .xlsx file</li>
+              <li>Open in Excel or import into Niimbot app</li>
+              <li>Use the "Verification URL" column as the QR code data</li>
+              <li>Customer scans QR with native camera → auto-verifies on the website</li>
             </ol>
           </div>
         </div>
