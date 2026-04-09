@@ -898,8 +898,6 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
   var [batchCodes, setBatchCodes] = React.useState([]);
   var [loadingCodes, setLoadingCodes] = React.useState(false);
   var [manualCodes, setManualCodes] = React.useState('');
-  var [labels, setLabels] = React.useState([]);
-  var [generating, setGenerating] = React.useState(false);
   var [selectMode, setSelectMode] = React.useState('batch');
 
   var handleBatchSelect = async function(batchId) {
@@ -919,62 +917,41 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
     setLoadingCodes(false);
   };
 
-  var handleGenerate = async function() {
-    var codesToGenerate = [];
-    if (selectMode === 'batch' && batchCodes.length > 0) {
-      codesToGenerate = batchCodes.map(function(c) { return c.code; });
-    } else if (selectMode === 'manual' && manualCodes.trim()) {
-      codesToGenerate = manualCodes.trim().split('\n').map(function(c) { return c.trim(); }).filter(Boolean);
+  var getExportCodes = function() {
+    if (selectMode === 'batch') return batchCodes;
+    if (selectMode === 'manual' && manualCodes.trim()) {
+      return manualCodes.trim().split('\n').map(function(c) { return { code: c.trim(), product_name: '', batch_number: '' }; }).filter(function(c) { return c.code; });
     }
-    if (codesToGenerate.length === 0) return;
-
-    setGenerating(true);
-    try {
-      var res = await fetch(apiUrl + '/api/admin/generate-labels', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-        body: JSON.stringify({ codes: codesToGenerate })
-      });
-      var data = await res.json();
-      setLabels(data.labels || []);
-    } catch (err) {
-      console.error('Error generating labels:', err);
-    }
-    setGenerating(false);
+    return [];
   };
 
-  var handlePrint = function() {
-    var printWindow = window.open('', '_blank');
-    var html = '<html><head><title>Zurix Labels</title><style>';
-    html += 'body{margin:0;padding:10px;font-family:sans-serif}';
-    html += '.label{display:inline-block;margin:4px;border:1px dashed #ccc;padding:2px}';
-    html += '.label img{display:block;width:260px;height:165px;image-rendering:pixelated}';
-    html += '@media print{.label{border:none;margin:2px;padding:0} .no-print{display:none}}';
-    html += '</style></head><body>';
-    html += '<p class="no-print" style="margin-bottom:10px;font-size:14px">Labels: ' + labels.length + ' | Niimbot 14x22mm (300 DPI)</p>';
-    labels.forEach(function(l) {
-      html += '<div class="label"><img src="' + l.image + '" alt="' + l.code + '"/></div>';
-    });
-    html += '</body></html>';
-    printWindow.document.write(html);
-    printWindow.document.close();
+  var handleExportCSV = function() {
+    var codesToExport = getExportCodes();
+    if (codesToExport.length === 0) return;
+    var header = 'Code,Product,Batch,Verification URL\n';
+    var rows = codesToExport.map(function(c) {
+      var url = 'https://zurixsciences.com/verify?code=' + encodeURIComponent(c.code);
+      return '"' + c.code + '","' + (c.product_name || '') + '","' + (c.batch_number || '') + '","' + url + '"';
+    }).join('\n');
+    var blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = (selectedBatch || 'zurix_codes') + '.csv';
+    link.click();
   };
 
-  var handleDownloadAll = function() {
-    labels.forEach(function(label, i) {
-      setTimeout(function() {
-        var link = document.createElement('a');
-        link.download = label.code + '.png';
-        link.href = label.image;
-        link.click();
-      }, i * 200);
-    });
+  var handleCopyAll = function() {
+    var codesToExport = getExportCodes();
+    var text = codesToExport.map(function(c) { return c.code; }).join('\n');
+    navigator.clipboard.writeText(text);
   };
+
+  var exportCodes = getExportCodes();
 
   return (
     <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700" data-testid="labels-tab">
-      <h2 className="text-xl font-bold text-white mb-2">Label Generator</h2>
-      <p className="text-gray-400 text-sm mb-6">Generate QR code labels for Niimbot 14x22mm printer (300 DPI, high error correction)</p>
+      <h2 className="text-xl font-bold text-white mb-2">Export Codes for Labels</h2>
+      <p className="text-gray-400 text-sm mb-6">Export verification codes as CSV to import into Niimbot app or Excel for printing labels</p>
 
       <div className="flex gap-2 mb-6">
         {[
@@ -982,7 +959,7 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           { id: 'manual', label: 'Manual Codes' },
         ].map(function(m) {
           return (
-            <button key={m.id} onClick={function() { setSelectMode(m.id); setLabels([]); }}
+            <button key={m.id} onClick={function() { setSelectMode(m.id); }}
               className={'px-4 py-2 rounded-lg text-sm font-medium transition ' + (selectMode === m.id ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:text-white')}>
               {m.label}
             </button>
@@ -1004,7 +981,7 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           </select>
           {selectedBatch && (
             <p className="text-gray-400 text-sm mt-2">
-              {loadingCodes ? 'Loading codes...' : batchCodes.length + ' codes loaded from this batch'}
+              {loadingCodes ? 'Loading codes...' : batchCodes.length + ' codes loaded'}
             </p>
           )}
         </div>
@@ -1020,44 +997,61 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
         </div>
       )}
 
-      <button onClick={handleGenerate} disabled={generating}
-        data-testid="generate-labels-btn"
-        className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold px-6 py-3 rounded-lg transition mb-6">
-        {generating ? 'Generating...' : 'Generate Labels'}
-      </button>
-
-      {labels.length > 0 && (
+      {exportCodes.length > 0 && (
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-bold">{labels.length} Labels Generated</h3>
-            <div className="flex gap-2">
-              <button onClick={handleDownloadAll}
-                className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-                Download All
-              </button>
-              <button onClick={handlePrint}
-                className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-                Print View
-              </button>
-            </div>
+          <div className="flex items-center gap-3 mb-4">
+            <button onClick={handleExportCSV} data-testid="export-csv-btn"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+              Export CSV ({exportCodes.length} codes)
+            </button>
+            <button onClick={handleCopyAll} data-testid="copy-codes-btn"
+              className="bg-gray-600 hover:bg-gray-500 text-white font-medium px-5 py-3 rounded-lg transition">
+              Copy All Codes
+            </button>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {labels.map(function(label) {
-              return (
-                <div key={label.code} className="bg-gray-900 rounded-lg p-2 border border-gray-700 text-center group">
-                  <img src={label.image} alt={label.code} className="w-full rounded border border-gray-600 mb-2" style={{imageRendering: 'pixelated'}} />
-                  <p className="text-gray-400 text-xs font-mono truncate mb-1">{label.code}</p>
-                  <button onClick={function() {
-                    var link = document.createElement('a');
-                    link.download = label.code + '.png';
-                    link.href = label.image;
-                    link.click();
-                  }} className="text-blue-400 hover:text-blue-300 text-xs opacity-0 group-hover:opacity-100 transition">
-                    Download PNG
-                  </button>
-                </div>
-              );
-            })}
+
+          <div className="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-700 bg-gray-900/50">
+                  <th className="py-2 px-4 text-left text-gray-400 font-medium">#</th>
+                  <th className="py-2 px-4 text-left text-gray-400 font-medium">Code</th>
+                  <th className="py-2 px-4 text-left text-gray-400 font-medium">Product</th>
+                  <th className="py-2 px-4 text-left text-gray-400 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {exportCodes.slice(0, 20).map(function(c, i) {
+                  return (
+                    <tr key={c.code} className="border-b border-gray-800">
+                      <td className="py-2 px-4 text-gray-500">{i + 1}</td>
+                      <td className="py-2 px-4 text-white font-mono text-xs">{c.code}</td>
+                      <td className="py-2 px-4 text-gray-300">{c.product_name || '-'}</td>
+                      <td className="py-2 px-4">
+                        {c.verified_at ? (
+                          <span className="text-yellow-400 text-xs">Used</span>
+                        ) : (
+                          <span className="text-green-400 text-xs">Available</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {exportCodes.length > 20 && (
+              <p className="text-gray-500 text-xs text-center py-2">... and {exportCodes.length - 20} more codes</p>
+            )}
+          </div>
+
+          <div className="mt-4 p-4 bg-blue-900/20 border border-blue-800/30 rounded-lg">
+            <p className="text-blue-300 text-sm font-medium mb-1">How to print labels:</p>
+            <ol className="text-blue-200/70 text-xs space-y-1 list-decimal list-inside">
+              <li>Click "Export CSV" to download the file</li>
+              <li>Open the CSV in Excel or import into Niimbot app</li>
+              <li>Use the "Code" column to generate QR codes in the print software</li>
+              <li>The "Verification URL" column can also be used as QR data for direct scanning</li>
+            </ol>
           </div>
         </div>
       )}
