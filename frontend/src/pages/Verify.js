@@ -19,52 +19,26 @@ const Verify = () => {
     setShowScanner(true);
     
     // Wait for DOM element to be ready
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 200));
     
     try {
-      // First, explicitly request camera permission with maximum resolution for small QR codes
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: "environment",
-          width: { ideal: 3840 },
-          height: { ideal: 2160 },
-          focusMode: { ideal: "continuous" },
-          zoom: { ideal: 2.0 }
-        } 
-      });
-      // Stop the stream immediately - we just needed permission
-      stream.getTracks().forEach(track => track.stop());
-      
       const html5QrCode = new Html5Qrcode("qr-reader");
       scannerRef.current = html5QrCode;
       
-      // Try to get available cameras
-      const cameras = await Html5Qrcode.getCameras();
-      
-      let cameraConfig;
-      if (cameras && cameras.length > 0) {
-        // Prefer back camera
-        const backCamera = cameras.find(c => 
-          c.label.toLowerCase().includes('back') || 
-          c.label.toLowerCase().includes('rear') ||
-          c.label.toLowerCase().includes('environment')
-        );
-        cameraConfig = backCamera ? { deviceId: backCamera.id } : { facingMode: "environment" };
-      } else {
-        cameraConfig = { facingMode: "environment" };
-      }
-      
-      // Optimized settings for small QR codes (1-2cm)
+      // Simple, reliable config - let the device handle resolution/focus
       await html5QrCode.start(
-        cameraConfig,
+        { facingMode: "environment" },
         { 
-          fps: 30,  // Maximum FPS for faster detection
-          qrbox: { width: 250, height: 250 },  // Larger scan area to capture small QR codes
+          fps: 10,
+          qrbox: function(viewfinderWidth, viewfinderHeight) {
+            // Use 70% of the smaller dimension for scan area
+            var minDim = Math.min(viewfinderWidth, viewfinderHeight);
+            var size = Math.floor(minDim * 0.7);
+            return { width: size, height: size };
+          },
           aspectRatio: 1.0,
-          disableFlip: false,
-          formatsToSupport: [ 0 ],  // QR_CODE only - faster processing
           experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true  // Use native detector if available (better on iOS)
+            useBarCodeDetectorIfSupported: true
           }
         },
         (decodedText) => {
@@ -74,6 +48,29 @@ const Verify = () => {
           // Ignore scan errors
         }
       );
+
+      // After scanner starts, try to apply focus constraints to the active stream
+      try {
+        var videoElem = document.querySelector('#qr-reader video');
+        if (videoElem && videoElem.srcObject) {
+          var track = videoElem.srcObject.getVideoTracks()[0];
+          var capabilities = track.getCapabilities ? track.getCapabilities() : {};
+          var constraints = {};
+          if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
+            constraints.focusMode = 'continuous';
+          }
+          if (capabilities.focusDistance) {
+            // Set focus for close range (10-20cm)
+            constraints.focusDistance = capabilities.focusDistance.min + 
+              (capabilities.focusDistance.max - capabilities.focusDistance.min) * 0.15;
+          }
+          if (Object.keys(constraints).length > 0) {
+            await track.applyConstraints({ advanced: [constraints] });
+          }
+        }
+      } catch (focusErr) {
+        // Focus adjustment is optional, ignore errors
+      }
     } catch (err) {
       console.error('Camera error:', err);
       let errorMsg = 'Could not access camera. ';
@@ -235,7 +232,7 @@ const Verify = () => {
             <div id="qr-reader" style={{ width: '100%', maxWidth: '500px' }}></div>
           </div>
           <p className="p-4 text-center text-white text-sm bg-black/80">
-            Hold the QR code close to the camera (10-15 cm)
+            Hold steady, 10-15 cm from the QR code. Tap the screen to focus.
           </p>
         </div>
       )}
