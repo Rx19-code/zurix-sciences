@@ -46,6 +46,10 @@ class VerifyProductResponse(BaseModel):
     verification_count: int = 0
     first_verified_at: Optional[str] = None
     warning_level: Optional[str] = None
+    product_name: Optional[str] = None
+    batch_number: Optional[str] = None
+    purity: Optional[str] = None
+    expiry_date: Optional[str] = None
 
 
 class Protocol(BaseModel):

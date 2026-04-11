@@ -41,6 +41,7 @@ async def verify_product(request: Request, body: VerifyProductRequest):
 
     # Search by exact code first, then try without hyphens
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+    db_code = code  # Track the actual code stored in DB for updates
     if not unique_code:
         # Try matching by removing hyphens from both sides
         code_no_hyphens = code.replace("-", "")
@@ -48,6 +49,7 @@ async def verify_product(request: Request, body: VerifyProductRequest):
         for c in all_codes:
             if c["code"].replace("-", "").upper() == code_no_hyphens:
                 unique_code = c
+                db_code = c["code"]  # Use the actual DB code for updates
                 break
 
     if unique_code:
@@ -57,7 +59,11 @@ async def verify_product(request: Request, body: VerifyProductRequest):
                 success=False,
                 message="CODE BLOCKED - This code has exceeded the maximum number of verifications. Please contact support immediately.",
                 verification_count=current_count,
-                warning_level="blocked"
+                warning_level="blocked",
+                product_name=unique_code.get('product_name'),
+                batch_number=unique_code.get('batch_number'),
+                purity=unique_code.get('purity'),
+                expiry_date=unique_code.get('expiry_date')
             )
 
         verification_count = current_count + 1
@@ -69,11 +75,11 @@ async def verify_product(request: Request, body: VerifyProductRequest):
             update_data["first_verified_at"] = now
             first_verified = now
 
-        await db.unique_codes.update_one({"code": code}, {"$set": update_data})
+        await db.unique_codes.update_one({"code": db_code}, {"$set": update_data})
 
         log_entry = {
             "id": str(uuid.uuid4()),
-            "code": code,
+            "code": db_code,
             "batch_number": unique_code.get('batch_number', ''),
             "product_name": unique_code.get('product_name', ''),
             "timestamp": now,
@@ -104,7 +110,11 @@ async def verify_product(request: Request, body: VerifyProductRequest):
             message=message,
             verification_count=verification_count,
             first_verified_at=first_verified,
-            warning_level=warning_level
+            warning_level=warning_level,
+            product_name=unique_code.get('product_name'),
+            batch_number=unique_code.get('batch_number'),
+            purity=unique_code.get('purity'),
+            expiry_date=unique_code.get('expiry_date')
         )
 
     product = await db.products.find_one({"verification_code": code}, {"_id": 0})

@@ -317,34 +317,36 @@ const Verify = () => {
                     </div>
                   )}
 
-                  {result.product && (
+                  {(result.product_name || result.product) && (
                     <div className="space-y-3 pt-4 border-t border-gray-200 mt-4">
                       <h4 className={`font-semibold ${styles.titleColor} text-sm`}>Product Details:</h4>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className={styles.textColor}>Product:</span>
                           <span className={`font-semibold ${styles.titleColor}`} data-testid="verified-product-name">
-                            {result.product.name}
+                            {result.product_name || (result.product && result.product.name) || '-'}
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span className={styles.textColor}>Batch:</span>
                           <span className={`font-mono font-semibold ${styles.titleColor} text-xs`}>
-                            {result.product.batch_number}
+                            {result.batch_number || (result.product && result.product.batch_number) || '-'}
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span className={styles.textColor}>Purity:</span>
                           <span className={`font-semibold ${styles.titleColor}`}>
-                            {result.product.purity}
+                            {result.purity || (result.product && result.product.purity) || '-'}
                           </span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className={styles.textColor}>Expiry Date:</span>
-                          <span className={`font-semibold ${styles.titleColor}`}>
-                            {result.product.expiry_date}
-                          </span>
-                        </div>
+                        {(result.expiry_date || (result.product && result.product.expiry_date)) && (
+                          <div className="flex justify-between">
+                            <span className={styles.textColor}>Expiry Date:</span>
+                            <span className={`font-semibold ${styles.titleColor}`}>
+                              {result.expiry_date || result.product.expiry_date}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
