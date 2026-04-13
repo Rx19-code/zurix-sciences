@@ -108,6 +108,8 @@ async def create_indexes():
         await db.lifetime_orders.create_index("order_id", unique=True)
         await db.lifetime_orders.create_index("user_id")
         await db.lifetime_orders.create_index("np_payment_id")
+        await db.peptide_stacks.create_index("slug", unique=True)
+        await db.peptide_stacks.create_index("category")
         await db.verification_logs.create_index("code")
         await db.verification_logs.create_index("verified_at")
         logging.info("MongoDB indexes created successfully")

@@ -21,6 +21,7 @@ import PeptigenLogos from './components/PeptigenLogos';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import AuthCallback from './pages/AuthCallback';
+import StackDetail from './pages/StackDetail';
 import './App.css';
 
 // Layout wrapper that hides navbar/footer for admin and login
@@ -122,6 +123,7 @@ function AppRouter() {
       <Route path="/representatives" element={<Representatives />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/protocols" element={<Protocols />} />
+      <Route path="/protocols/stack/:slug" element={<StackDetail />} />
       <Route path="/protocols/:slug" element={<PeptideDetailPage />} />
       <Route path="/library" element={<Library />} />
       <Route path="/library/:slug" element={<PeptideDetailPage />} />

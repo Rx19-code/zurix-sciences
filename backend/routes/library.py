@@ -79,3 +79,43 @@ async def get_peptide_detail(slug: str):
     if not peptide:
         return {"error": "Peptide not found"}
     return peptide
+
+
+# ═══════════ STACKS API ═══════════
+
+STACK_LIST_PROJECTION = {
+    "_id": 0,
+    "id": 1,
+    "slug": 1,
+    "name": 1,
+    "category": 1,
+    "goal": 1,
+    "peptides": 1,
+    "is_free": 1,
+}
+
+STACK_DETAIL_PROJECTION = {"_id": 0}
+
+
+@router.get("/api/stacks")
+async def get_stacks(
+    category: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
+):
+    query = {}
+    if category and category != "All":
+        query["category"] = category
+    if search:
+        query["name"] = {"$regex": search, "$options": "i"}
+
+    stacks = await db.peptide_stacks.find(query, STACK_LIST_PROJECTION).sort("name", 1).to_list(200)
+    categories = await db.peptide_stacks.distinct("category")
+    return {"stacks": stacks, "categories": sorted(categories), "total": len(stacks)}
+
+
+@router.get("/api/stacks/{slug}")
+async def get_stack_detail(slug: str):
+    stack = await db.peptide_stacks.find_one({"slug": slug}, STACK_DETAIL_PROJECTION)
+    if not stack:
+        return {"error": "Stack not found"}
+    return stack

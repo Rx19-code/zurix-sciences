@@ -1,0 +1,55 @@
+{
+  "summary": "Comprehensive testing of Auth, Stacks, and Payments features. All 20 backend tests passed (100%). All frontend UI tests passed. Auth system (email+password + Google OAuth), NOWPayments USDT integration, and Peptide Stacks section all working correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_auth_stacks_payments.py",
+    "/app/test_reports/pytest/pytest_auth_stacks.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_auth_stacks_payments.py"
+  ],
+  "success_rate": {
+    "backend": "100% (20/20 tests passed)",
+    "frontend": "100% (all UI tests passed)"
+  },
+  "test_credentials": "test@test.com / test123 (has_lifetime_access: false)",
+  "seed_data_creation": "No new seed data created - test users created dynamically during tests",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All new features tested and working: 1) Auth system with JWT (register, login, /me endpoints), 2) Google OAuth via Emergent Auth, 3) NOWPayments USDT lifetime access ($39.99), 4) Peptide Stacks section (43 stacks with categories). All 96 peptides are PRO (is_free=false). Product images show 'Image update in progress' placeholder. Test file /app/backend/tests/test_auth_stacks_payments.py covers all auth, stacks, and payment endpoints.",
+  "features_tested": {
+    "backend_apis": [
+      "GET /api/stacks - returns 43 stacks with categories ✓",
+      "GET /api/stacks/the-shred-stack - returns stack detail with peptides, goal, how_to_use ✓",
+      "POST /api/auth/register - creates user with has_lifetime_access=false ✓",
+      "POST /api/auth/login - returns JWT token ✓",
+      "GET /api/auth/me - returns user info with has_lifetime_access field ✓",
+      "POST /api/payment/create-invoice - creates NOWPayments invoice (requires auth) ✓",
+      "GET /api/payment/check/{id} - checks payment status (requires auth) ✓",
+      "GET /api/payment/my-status - returns user payment status ✓"
+    ],
+    "frontend_ui": [
+      "/protocols page loads with Peptides/Stacks toggle ✓",
+      "Clicking Stacks toggle shows 43 stack cards with category filters ✓",
+      "Stack detail page shows header, peptides list, locked content ✓",
+      "/login page shows email/password form and Google login button ✓",
+      "Login flow works and redirects to /protocols ✓",
+      "Locked content shows 'Sign In to Unlock' when not logged in ✓",
+      "Locked content shows 'Unlock Full Access - $39.99' when logged in without payment ✓",
+      "Product cards show 'Image update in progress' placeholder ✓",
+      "Navbar shows 'Sign In' button when not logged in ✓",
+      "Navbar shows user name and logout button when logged in ✓"
+    ]
+  },
+  "notes": "NOWPayments uses real API key (ER8A5WS-34840WY-NGHX1VS-7PF129J) - creates real USDT invoices. Google OAuth uses Emergent Auth integration."
+}
