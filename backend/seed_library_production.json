@@ -1729,42 +1729,42 @@
       "mechanism_summary": "Cartalax (AED) acts as a cytomedine modulating gene expression in cartilage cells. It stimulates the synthesis of extracellular matrix components while suppressing pro-degenerative signaling pathways and may act as a senomorphic agent, suppressing the secretory phenotype associated with senescence in aged chondrocytes."
     },
     "protocols": {
-      "title": "Standard Protocol",
+      "title": "Standard Protocol (3 mL = ~6.67 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once a day"
       },
       "dosages": [
         {
-          "indication": "Health Protection of Cartilage",
-          "schedule": "Once a day",
+          "indication": "Joint Health",
+          "schedule": "1x per day",
           "dose": "200-500 mcg/day"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Weeks 1\u20132",
+          "phase": "Weeks 1-2",
           "dose": "200 mcg"
         },
         {
           "number": 2,
-          "phase": "Weeks 3\u20134",
+          "phase": "Weeks 3-4",
           "dose": "400 mcg"
         },
         {
           "number": 3,
-          "phase": "Weeks 5\u201310",
+          "phase": "Weeks 5-10",
           "dose": "500 mcg"
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Aspirate 3.0 mL of bacteriostatic water with a sterile syringe.",
-        "Step 2: Inject slowly through the wall of the vial; avoid foaming.",
-        "Step 3: Gently swirl until dissolved (do not shake).",
-        "Step 4: Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not agitate).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Easy reconstitution process."
+      "reconstitution": "Reconstitute with 3.0 mL bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Cartalax (AED) stimulates the synthesis of type II collagen and aggrecan while suppressing pro-degenerative signals and regulating the epigenetic homeostasis of cartilage.",
@@ -2302,17 +2302,17 @@
       "phases": [
         {
           "number": 1,
-          "phase": "Consult specific protocol",
-          "dose": "N/A"
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
         }
       ],
       "reconstitution_steps": [
         "Aspirate bacteriostatic water with a sterile syringe.",
-        "Inject slowly through the wall of the vial; avoid foaming.",
+        "Slowly inject into the vial; avoid foam.",
         "Gently swirl until dissolved (do not shake).",
-        "Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Moderate reconstitution note."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "The mechanism of action detailed of this peptide is still being studied. Preclinical research is ongoing to elucidate the molecular pathways involved.",
@@ -2505,47 +2505,37 @@
       "mechanism_summary": "Dihexa acts as an agonist of hepatocyte growth factor (HGF) and its receptor c-Met. In the brain, HGF/c-Met signaling is crucial for synaptic development, neuronal survival, and plasticity."
     },
     "protocols": {
-      "title": "Oral/Topical Protocol",
+      "title": "Oral / Topical Protocol",
       "standard": {
         "route": "Oral or Topical (with DMSO)",
-        "frequency": "1-2 times per week"
+        "frequency": "1-2x per week"
       },
       "dosages": [
         {
-          "indication": "Cognitive enhancement",
-          "schedule": "1-2 times per week",
+          "indication": "Cognitive Regeneration",
+          "schedule": "1-2x per week",
           "dose": "5-20 mg"
-        },
-        {
-          "indication": "Initial phase",
-          "schedule": "1 time per week",
-          "dose": "5-10 mg"
-        },
-        {
-          "indication": "Standard dose",
-          "schedule": "1-2 times per week",
-          "dose": "10-20 mg"
         }
       ],
       "phases": [
         {
           "number": 1,
           "phase": "Low dose",
-          "dose": "5-10 mg, once a week"
+          "dose": "5-10 mg, 1x/week"
         },
         {
           "number": 2,
           "phase": "Standard dose",
-          "dose": "10-20 mg, 1-2 times per week"
+          "dose": "10-20 mg, 1-2x/week"
         }
       ],
       "reconstitution_steps": [
         "Generally sold in capsules or powder.",
-        "For topical use, requires DMSO as a solvent.",
+        "For topical use, DMSO is required as a solvent.",
         "Store in a cool, dry place.",
-        "Protect from light and moisture."
+        "Protect from light and humidity."
       ],
-      "reconstitution": "Moderate reconstitution required."
+      "reconstitution": "Available in capsules or powder. For topical use, requires DMSO as solvent."
     },
     "research": {
       "mechanism": "Dihexa is shown to be 7 orders of magnitude more potent than BDNF in synapse formation, thus making it the most potent known nootropic.",
@@ -2677,30 +2667,30 @@
       "mechanism_summary": "Epithalon activates telomerase by directly interacting with promoter regions of the hTERT gene, the catalytic subunit of telomerase. This results in the extension of telomeres beyond the Hayflick limit. It also modulates melatonin production by the pineal gland and acts on chromatin remodeling."
     },
     "protocols": {
-      "title": "Standard Protocol",
+      "title": "Standard Protocol (2 mL = 5 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Once daily"
+        "frequency": "Once a day"
       },
       "dosages": [
         {
-          "indication": "Anti-aging / Telomere regulation",
-          "schedule": "Once daily for 10 days",
-          "dose": "0.5\u20131.0 mg/day"
+          "indication": "Anti-aging / telomeres",
+          "schedule": "1x per day for 10 days",
+          "dose": "0.5-1.0 mg/day"
         },
         {
-          "indication": "Sleep quality / Circadian regulation",
-          "schedule": "Once daily before sleep",
-          "dose": "0.5\u20131.0 mg/day"
+          "indication": "Sleep quality / circadian rhythm",
+          "schedule": "1x per day before bed",
+          "dose": "0.5-1.0 mg/day"
         },
         {
           "indication": "Post-surgical recovery",
-          "schedule": "Once daily",
+          "schedule": "1x per day",
           "dose": "0.5 mg/day"
         },
         {
-          "indication": "Longevity (extended course)",
-          "schedule": "Once daily for 20 days",
+          "indication": "Longevity (prolonged course)",
+          "schedule": "1x per day for 20 days",
           "dose": "1.0 mg/day"
         }
       ],
@@ -2717,12 +2707,12 @@
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Draw 2.0 mL of bacteriostatic water with a sterile syringe.",
-        "Step 2: Inject slowly into the side of the vial; avoid frothing.",
-        "Step 3: Gently swirl until dissolved (do not shake).",
-        "Step 4: Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Easy"
+      "reconstitution": "Reconstitute with 2.0 mL bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Epithalon activates telomerase interacting with hTERT gene promoters, leading to telomere lengthening, modulation of melatonin production, and epigenetic regulation.",
@@ -2783,8 +2773,8 @@
       },
       "dosages": [
         {
-          "indication": "Anti-aging senolytic treatment",
-          "schedule": "1 dose every 2-3 days",
+          "indication": "Anti-aging Senolytic",
+          "schedule": "Pulse: 1 dose every 2-3 days",
           "dose": "5-10 mg/dose"
         }
       ],
@@ -2797,11 +2787,11 @@
       ],
       "reconstitution_steps": [
         "Aspirate bacteriostatic water with a sterile syringe.",
-        "Inject slowly through the wall of the vial.",
+        "Slowly inject into the vial.",
         "Gently swirl until dissolved.",
-        "Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Advanced reconstitution procedure."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "FOXO4-DRI operates by disrupting the FOXO4-p53 interaction in senescent cells, allowing p53 to induce apoptosis.",
@@ -3218,21 +3208,21 @@
       "title": "Standard IM Protocol",
       "standard": {
         "route": "Intramuscular",
-        "frequency": "1-2 times per week"
+        "frequency": "1-2x per week"
       },
       "dosages": [
         {
-          "indication": "General support / Enhancing performance",
-          "schedule": "IM 1-2 times per week",
-          "dose": "300\u2013600 mg"
+          "indication": "Antioxidant support / well-being",
+          "schedule": "IM 1-2x per week",
+          "dose": "300-600 mg"
         },
         {
-          "indication": "Skin brightening / Cosmetic",
+          "indication": "Skin lightening / cosmetic",
           "schedule": "IM weekly",
           "dose": "600 mg"
         },
         {
-          "indication": "Post-viral fatigue / Immune support",
+          "indication": "Post-viral fatigue / immune support",
           "schedule": "IM weekly",
           "dose": "600 mg"
         },
@@ -3251,11 +3241,11 @@
       ],
       "reconstitution_steps": [
         "Aspirate 1-2 mL of bacteriostatic water.",
-        "Inject slowly along the wall of the vial.",
+        "Slowly inject into the vial.",
         "Gently swirl until dissolved.",
-        "Label and refrigerate at 2\u20138\u00b0C for up to 7 days."
+        "Label and refrigerate at 2-8\u00b0C for up to 7 days."
       ],
-      "reconstitution": "Moderate"
+      "reconstitution": "Reconstitute with 1-2 mL bacteriostatic water. Store at 2-8\u00b0C for up to 7 days."
     },
     "research": {
       "mechanism": "Glutathione acts as the principal intracellular redox buffer that donates electrons to neutralize reactive oxygen species (ROS), regenerates oxidized forms of antioxidants (vitamins C and E), conjugates with toxins for hepatic excretion (Phase II), and modulates immune response via T and NK cells.",
@@ -5033,45 +5023,45 @@
     "protocols": {
       "title": "Standard Protocol",
       "standard": {
-        "route": "IV, IM, or SC",
+        "route": "IV, IM or SC",
         "frequency": "Variable"
       },
       "dosages": [
         {
-          "indication": "Energy metabolism support",
+          "indication": "Energy / mitochondrial metabolism",
           "schedule": "1x per day in the morning",
-          "dose": "250\u2013500 mg"
+          "dose": "250-500 mg"
         },
         {
           "indication": "Insulin sensitivity",
           "schedule": "1x per day",
-          "dose": "500\u20131000 mg"
+          "dose": "500-1000 mg"
         },
         {
           "indication": "Fatigue / stress resilience",
           "schedule": "1x per day or EOD",
-          "dose": "250\u2013500 mg"
+          "dose": "250-500 mg"
         },
         {
           "indication": "Anti-aging / metabolic support",
           "schedule": "1x per day",
-          "dose": "250\u2013500 mg"
+          "dose": "250-500 mg"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Standard oral (NMN/NR)",
-          "dose": "250\u2013500 mg/day"
+          "phase": "Oral standard (NMN/NR)",
+          "dose": "250-500 mg/day"
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Withdraw 1-2 mL of bacteriostatic water (if lyophilized)",
-        "Step 2: Inject slowly through the wall of the vial",
-        "Step 3: Gently swirl until dissolved",
-        "Step 4: Label and refrigerate at 2\u20138\u00b0C for up to 7 days"
+        "Aspirate 1-2 mL of bacteriostatic water (if lyophilized).",
+        "Slowly inject into the vial.",
+        "Gently swirl until dissolved.",
+        "Label and refrigerate at 2-8\u00b0C for up to 7 days."
       ],
-      "reconstitution": "Moderate reconstitution process."
+      "reconstitution": "Reconstitute with 1-2 mL bacteriostatic water. Store at 2-8\u00b0C for up to 7 days."
     },
     "research": {
       "mechanism": "NAD+ serves as a cofactor for energy metabolism enzymes (glycolysis, Krebs cycle) and as a substrate for sirtuins (SIRT1-7) that regulate longevity, along with DNA repair through PARPs and activation of AMPK and mitochondrial metabolism.",
@@ -5253,29 +5243,29 @@
       "title": "Subcutaneous Protocol",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Consult healthcare professional"
+        "frequency": "Consult a healthcare professional"
       },
       "dosages": [
         {
           "indication": "General Use",
-          "schedule": "Consult healthcare professional",
+          "schedule": "Consult a professional",
           "dose": "Variable"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Consult specific protocol",
-          "dose": "N/A"
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Draw bacteriostatic water with a sterile syringe.",
-        "Step 2: Inject slowly into the side of the vial; avoid foaming.",
-        "Step 3: Gently swirl until dissolved (do not shake).",
-        "Step 4: Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Moderate"
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Ongoing preclinical research to elucidate the molecular pathways involved.",
@@ -5382,58 +5372,32 @@
       "mechanism_summary": "Research suggests PE-22-28 may act through specific receptor pathways relevant to its category of Nootropic / Cognitive."
     },
     "protocols": {
+      "title": "Subcutaneous Protocol",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "As per research protocol"
+        "frequency": "Consult a healthcare professional"
       },
       "dosages": [
         {
-          "indication": "Cognitive enhancement",
-          "schedule": "Subcutaneous, daily",
-          "dose": "200 mcg"
-        },
-        {
-          "indication": "Antidepressant effects",
-          "schedule": "Subcutaneous, every other day",
-          "dose": "300 mcg"
-        },
-        {
-          "indication": "Neuroplasticity research",
-          "schedule": "Subcutaneous, 3 times a week",
-          "dose": "250 mcg"
+          "indication": "General Use",
+          "schedule": "Consult a professional",
+          "dose": "Variable"
         }
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
       "phases": [
         {
           "number": 1,
-          "phase": "Week 1-2",
-          "dose": "100 mcg"
-        },
-        {
-          "number": 2,
-          "phase": "Week 3-4",
-          "dose": "200 mcg"
-        },
-        {
-          "number": 3,
-          "phase": "Week 5-6",
-          "dose": "300 mcg"
-        },
-        {
-          "number": 4,
-          "phase": "Week 7 and beyond",
-          "dose": "250 mcg"
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Gather the bacteriostatic water and the peptide vial.",
-        "Step 2: Clean the top of the peptide vial with an alcohol swab.",
-        "Step 3: Using a sterile syringe, draw up the required amount of bacteriostatic water.",
-        "Step 4: Slowly inject the bacteriostatic water into the peptide vial along the side of the vial.",
-        "Step 5: Gently swirl the vial to mix, avoiding vigorous shaking.",
-        "Step 6: Store the reconstituted solution at 2-8C."
-      ]
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "The mechanism of action of PE-22-28 is under active investigation.",
@@ -5463,29 +5427,29 @@
       "title": "Subcutaneous Protocol",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Consult healthcare professional"
+        "frequency": "Consult a healthcare professional"
       },
       "dosages": [
         {
           "indication": "General Use",
-          "schedule": "Consult healthcare professional",
+          "schedule": "Consult a professional",
           "dose": "Variable"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Consult specific protocol",
-          "dose": "Not specified"
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Draw bacteriostatic water with a sterile syringe.",
-        "Step 2: Inject slowly against the wall of the vial; avoid foaming.",
-        "Step 3: Gently swirl until dissolved (do not shake).",
-        "Step 4: Label and refrigerate at 2-8\u00b0C, protect from light."
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Moderate reconstitution required."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Ongoing preclinical research is being conducted to elucidate the molecular pathways involved.",
@@ -5520,12 +5484,12 @@
       "title": "Subcutaneous Protocol",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Consult health professional"
+        "frequency": "Consult a healthcare professional"
       },
       "dosages": [
         {
           "indication": "General Use",
-          "schedule": "Consult professional",
+          "schedule": "Consult a professional",
           "dose": "Variable"
         }
       ],
@@ -5537,12 +5501,12 @@
         }
       ],
       "reconstitution_steps": [
-        "Step 1: Aspirate bacteriostatic water with a sterile syringe.",
-        "Step 2: Inject slowly into the side of the vial; avoid foaming.",
-        "Step 3: Gently swirl until dissolved (do not shake).",
-        "Step 4: Label and refrigerate at 2\u20138\u00b0C, protect from light."
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Moderate"
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Induces necrosis in cancer cells with antitumoral effects.",
@@ -5888,22 +5852,34 @@
       "title": "Intranasal / SC Protocol",
       "standard": {
         "route": "Intranasal or Subcutaneous",
-        "frequency": "1-3x daily"
+        "frequency": "1-3x per day"
       },
       "dosages": [
         {
-          "indication": "Indication 1",
-          "schedule": "1-3 times a day",
-          "dose": "300-600 mcg/day intranasal"
+          "indication": "Anxiety",
+          "schedule": "1-3x per day intranasal",
+          "dose": "300-600 mcg/day"
+        }
+      ],
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Intranasal (standard)",
+          "dose": "300-600 mcg/day"
+        },
+        {
+          "number": 2,
+          "phase": "Subcutaneous",
+          "dose": "250-500 mcg/day"
         }
       ],
       "reconstitution_steps": [
-        "For SC use: reconstitute with bacteriostatic water",
-        "For intranasal: use ready-made formulation",
-        "Refrigerate at 2\u20138\u00b0C",
-        "Use within 30 days"
+        "For SC use: reconstitute with bacteriostatic water.",
+        "For intranasal: use ready-made formulation.",
+        "Refrigerate at 2-8\u00b0C.",
+        "Use within 30 days."
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C."
+      "reconstitution": "For SC: reconstitute with bacteriostatic water. For intranasal: use ready-made formulation. Store at 2-8\u00b0C."
     },
     "research": {
       "mechanism": "Selank allosterically modulates GABA-A receptors similarly to low-dose benzodiazepines, but without sedation or dependency. It increases BDNF, regulating neuroplasticity. Its tuftsin portion confers immunomodulatory properties.",
@@ -6103,25 +6079,32 @@
       "what_is": "Semax is a synthetic neuropeptide derived from the ACTH(4-10) fragment with potent nootropic and neuroprotective properties. Approved in Russia, it enhances cognition, memory, and learning without raising cortisol levels. It works by increasing BDNF and modulating neurotransmitters."
     },
     "protocols": {
-      "title": "Intranasal / SC Protocol",
+      "title": "Subcutaneous Protocol",
       "standard": {
-        "route": "Intranasal or Subcutaneous",
-        "frequency": "1-3x daily"
+        "route": "Subcutaneous",
+        "frequency": "Consult a healthcare professional"
       },
       "dosages": [
         {
-          "indication": "Indication 1",
-          "schedule": "1-3 times a day intranasally",
-          "dose": "200-600 mcg/day"
+          "indication": "General Use",
+          "schedule": "Consult a professional",
+          "dose": "Variable"
+        }
+      ],
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
         }
       ],
       "reconstitution_steps": [
-        "For SC use: reconstitute with bacteriostatic water",
-        "For intranasal: use ready-to-use formulation",
-        "Refrigerate at 2\u20138\u00b0C",
-        "Use within 30 days"
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8\u00b0C, protected from light."
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C."
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C, protected from light."
     },
     "research": {
       "mechanism": "Semax retains the neurotropic properties of ACTH without endocrine effects. It increases BDNF, promotes neuroplasticity, and modulates dopaminergic and serotonergic systems. Intranasal doses of 0.25-1.0 mg produce nootropic effects lasting 20-24 hours.",
@@ -6479,40 +6462,53 @@
       "what_is": "SS-31 (Elamipretide) is a cationic aromatic tetrapeptide (D-Arg-Dmt-Lys-Phe-\nNH2) that selectively penetrates the inner mitochondrial membrane. It binds to cardiolipin, an essential phospholipid for the electron transport chain, optimizing ATP production and reducing the generation of reactive oxygen species (ROS). It is the most advanced mitochondrial peptide in clinical trials, with Phase III studies for Barth syndrome and heart failure.\nProven Benefits\n1 Optimization of ATP production (up to 30% increase)\n\n2 Reduction of mitochondrial ROS (selective antioxidant)\n3 Neuroprotection \u2014 protects neurons from oxidative damage\n4 Prevention of neurodegeneration (Alzheimer's, Parkinson's)\n5 Improvement of skeletal muscle function (anti-sarcopenia)\n6 Cardiovascular protection \u2014 improves ejection fraction\n7 Ocular protection \u2014 age-related macular degeneration\n8 Stabilization of mitochondrial cardiolipin\nTimeline of Results\nWeeks 1\u2013 Subtle increase in energy and disposition. Possible improvement in\nsleep quality. Adaptation to the protocol.\n2\nWeeks Noticeable improvement in exercise endurance. Reduced fatigue.\nGreater mental clarity.\n2\u20134\nWeeks Measurable results in biomarkers of oxidative stress.\nSignificant improvement in physical and cognitive performance.\n4\u20138\nWeeks Maximum effects of the cycle. Improvement in body composition, cardiovascular function, and longevity markers. Time to reassess\n8\u201312\nnext cycle."
     },
     "protocols": {
+      "title": "Standard Anti-aging Protocol",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Di\u00e1ria ou em dias alternados"
+        "frequency": "Daily or every other day"
       },
       "dosages": [
         {
           "indication": "Anti-aging / Longevity",
-          "schedule": "",
+          "schedule": "Daily or every other day",
           "dose": "5 mg SC"
         },
         {
           "indication": "Neuroprotection",
-          "schedule": "",
+          "schedule": "Daily",
           "dose": "5 mg SC"
         },
         {
           "indication": "Sarcopenia",
-          "schedule": "",
+          "schedule": "Daily",
           "dose": "5-10 mg SC"
         },
         {
           "indication": "Cardiovascular",
-          "schedule": "",
+          "schedule": "Daily",
           "dose": "5 mg SC"
         }
       ],
-      "reconstitution_steps": [
-        "Aspirate 1-2 mL of bacteriostatic water with sterile syringe",
-        "Inject slowly down the side of the vial-ampoule",
-        "Gently swirl (do not shake) until completely dissolved",
-        "Label with date and concentration",
-        "Store refrigerated at 2\u20138\u00b0C for up to 28 days"
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Initial Phase",
+          "dose": "5 mg/day SC"
+        },
+        {
+          "number": 2,
+          "phase": "Maintenance Phase",
+          "dose": "5 mg every other day"
+        }
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C."
+      "reconstitution_steps": [
+        "Aspirate 1-2 mL of bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial.",
+        "Gently swirl (do not shake) until completely dissolved.",
+        "Label with date and concentration.",
+        "Store refrigerated at 2-8\u00b0C for up to 28 days."
+      ],
+      "reconstitution": "Reconstitute with 1-2 mL bacteriostatic water. Store at 2-8\u00b0C for up to 28 days."
     },
     "research": {
       "mechanism": "SS-31 has a selective affinity for cardiolipin (CL), a unique phospholipid of the inner mitochondrial membrane. CL is essential for the organization of respiratory chain complexes into supercomplexes. With aging, CL undergoes oxidation and peroxidation, destabilizing the electron chain. SS-31 anchors to CL, preventing its oxidation and restoring the efficiency of complexes I, III, and IV. This results in a 20-30% increase in ATP production and up to a 60% reduction in ROS generation. Unlike conventional antioxidants, SS-31 does not indiscriminately eliminate ROS, preserving the redox signaling necessary for cellular adaptations.",
