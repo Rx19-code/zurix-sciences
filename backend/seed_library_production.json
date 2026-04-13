@@ -491,7 +491,7 @@
     "name": "AHK-Cu",
     "description": "Copper tripeptide analogue for advanced skin regeneration and hair growth research",
     "category": "Aesthetics / Skin",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "100mg"
     ],
@@ -2881,7 +2881,7 @@
     "name": "GHK-Cu",
     "description": "Copper peptide for skin regeneration, collagen synthesis, and wound healing research",
     "category": "Aesthetics / Skin",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "50mg",
       "100mg"
@@ -3192,7 +3192,7 @@
     "name": "Glutathione",
     "description": "Master antioxidant tripeptide of the body.",
     "category": "Metabolism",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "600mg",
       "1500mg"
@@ -3453,7 +3453,7 @@
     "name": "HGH",
     "description": "Human Growth Hormone for growth factor and body composition research",
     "category": "GH / Secretagogues",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "10iu"
     ],
@@ -4066,7 +4066,7 @@
     "name": "Kisspeptin",
     "description": "Neuropeptide for reproductive endocrinology and hormonal regulation research",
     "category": "Hormonal / Sexual Health",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "10mg"
     ],
@@ -5009,7 +5009,7 @@
     "name": "NAD+",
     "description": "Coenzima essencial para metabolismo celular e reparo de DNA.",
     "category": "Anti-aging",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "500mg"
     ],
@@ -5164,7 +5164,7 @@
     "name": "Oxytocin",
     "description": "Neuropeptide for social behavior, bonding, and neuroendocrine research",
     "category": "Hormonal / Sexual Health",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "10mg"
     ],
@@ -5728,7 +5728,7 @@
     "name": "Retatrutide",
     "description": "Triple GLP-1/GIP/Glucagon receptor agonist for next-generation metabolic research",
     "category": "Weight Loss / GLP-1",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "10mg",
       "20mg",
@@ -5946,7 +5946,7 @@
     "name": "Semaglutide",
     "description": "GLP-1 receptor agonist for metabolic research and appetite regulation studies",
     "category": "Weight Loss / GLP-1",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "5mg",
       "10mg",
@@ -7558,7 +7558,7 @@
     "name": "Tirzepatide",
     "description": "Dual GIP/GLP-1 receptor agonist for advanced metabolic and weight management research",
     "category": "Weight Loss / GLP-1",
-    "is_free": true,
+    "is_free": false,
     "presentations": [
       "10mg",
       "15mg",

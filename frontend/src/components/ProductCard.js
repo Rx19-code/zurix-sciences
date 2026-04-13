@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart, Star, RefreshCw } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const ProductCard = ({ product }) => {
@@ -17,16 +17,11 @@ const ProductCard = ({ product }) => {
       className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
       data-testid={`product-card-${product.id}`}
     >
-      {/* Product Image */}
-      {product.image_url && (
-        <div className="h-56 bg-white overflow-hidden flex items-center justify-center p-4">
-          <img 
-            src={product.image_url} 
-            alt={product.name}
-            className="h-48 w-auto object-contain"
-          />
-        </div>
-      )}
+      {/* Product Image - Update Placeholder */}
+      <div className="h-56 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden flex flex-col items-center justify-center p-4">
+        <RefreshCw className="w-10 h-10 text-blue-300 mb-2" />
+        <span className="text-xs text-gray-400 font-medium text-center">Image update in progress</span>
+      </div>
       
       <div className="p-6">
         {/* Badge */}

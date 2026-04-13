@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle, RefreshCw } from 'lucide-react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 
@@ -75,19 +75,12 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Product Image */}
           <div className="bg-white rounded-xl shadow-sm p-8">
-            <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
-              {product.image_url ? (
-                <img 
-                  src={product.image_url} 
-                  alt={product.name}
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <Package className="w-32 h-32 text-blue-300" />
-              )}
+            <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex flex-col items-center justify-center overflow-hidden">
+              <RefreshCw className="w-16 h-16 text-blue-300 mb-3" />
+              <span className="text-sm text-gray-400 font-medium">Image update in progress</span>
             </div>
             <p className="text-xs text-gray-400 text-center mt-3 italic">
-              *Illustrative image. Vial colors may vary by batch.
+              *Product images are being updated.
             </p>
           </div>
 
