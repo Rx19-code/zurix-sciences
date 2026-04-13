@@ -1,18 +1,20 @@
 import logging
-import secrets
 import uuid
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, Request, Depends
+import httpx
+from fastapi import APIRouter, Request, Depends, HTTPException, Response
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
-from database import db
-from models import UserRegisterRequest, UserLoginRequest, PasswordResetRequest, PasswordResetConfirm
+from database import db, JWT_SECRET, JWT_ALGORITHM
+from models import UserRegisterRequest, UserLoginRequest
 from utils.security import hash_password, verify_password, create_jwt_token, get_current_user
 
 router = APIRouter(prefix="/api")
 limiter = Limiter(key_func=get_remote_address)
+
+EMERGENT_AUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
 
 
 @router.post("/auth/register")
@@ -20,7 +22,6 @@ limiter = Limiter(key_func=get_remote_address)
 async def register_user(request: Request, body: UserRegisterRequest):
     existing = await db.users.find_one({"email": body.email.lower()})
     if existing:
-        from fastapi import HTTPException
         raise HTTPException(status_code=400, detail="Email already registered")
 
     user = {
@@ -28,9 +29,10 @@ async def register_user(request: Request, body: UserRegisterRequest):
         "email": body.email.lower(),
         "password_hash": hash_password(body.password),
         "name": body.name,
+        "auth_provider": "email",
+        "has_lifetime_access": False,
+        "payment_id": None,
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "purchased_protocols": [],
-        "verification_history": []
     }
 
     await db.users.insert_one(user)
@@ -38,14 +40,13 @@ async def register_user(request: Request, body: UserRegisterRequest):
 
     return {
         "success": True,
-        "message": "Registration successful",
         "token": token,
         "user": {
             "id": user["id"],
             "email": user["email"],
             "name": user["name"],
-            "created_at": user["created_at"],
-            "purchased_protocols": []
+            "has_lifetime_access": False,
+            "auth_provider": "email",
         }
     }
 
@@ -53,11 +54,12 @@ async def register_user(request: Request, body: UserRegisterRequest):
 @router.post("/auth/login")
 @limiter.limit("10/minute")
 async def login_user(request: Request, body: UserLoginRequest):
-    from fastapi import HTTPException
-    user = await db.users.find_one({"email": body.email.lower()})
+    user = await db.users.find_one({"email": body.email.lower()}, {"_id": 0})
     if not user:
-        logging.warning(f"Failed login attempt for email: {body.email}")
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    if not user.get("password_hash"):
+        raise HTTPException(status_code=401, detail="This account uses Google login. Please sign in with Google.")
 
     if not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
@@ -66,68 +68,90 @@ async def login_user(request: Request, body: UserLoginRequest):
 
     return {
         "success": True,
-        "message": "Login successful",
         "token": token,
         "user": {
             "id": user["id"],
             "email": user["email"],
             "name": user["name"],
-            "created_at": user["created_at"],
-            "purchased_protocols": user.get("purchased_protocols", [])
+            "has_lifetime_access": user.get("has_lifetime_access", False),
+            "auth_provider": user.get("auth_provider", "email"),
+        }
+    }
+
+
+@router.post("/auth/google")
+async def google_auth(request: Request):
+    """Exchange Emergent Auth session_id for user data and JWT token."""
+    body = await request.json()
+    session_id = body.get("session_id")
+    if not session_id:
+        raise HTTPException(status_code=400, detail="session_id required")
+
+    async with httpx.AsyncClient(timeout=15) as client:
+        resp = await client.get(
+            EMERGENT_AUTH_URL,
+            headers={"X-Session-ID": session_id}
+        )
+
+    if resp.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid Google session")
+
+    gdata = resp.json()
+    email = gdata.get("email", "").lower()
+    name = gdata.get("name", "")
+    picture = gdata.get("picture", "")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="No email from Google")
+
+    existing = await db.users.find_one({"email": email}, {"_id": 0})
+
+    if existing:
+        await db.users.update_one(
+            {"email": email},
+            {"$set": {"name": name, "picture": picture, "last_login": datetime.now(timezone.utc).isoformat()}}
+        )
+        user_id = existing["id"]
+        has_access = existing.get("has_lifetime_access", False)
+    else:
+        user_id = str(uuid.uuid4())
+        user = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "auth_provider": "google",
+            "has_lifetime_access": False,
+            "payment_id": None,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        await db.users.insert_one(user)
+        has_access = False
+
+    token = create_jwt_token(user_id, email)
+
+    return {
+        "success": True,
+        "token": token,
+        "user": {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "has_lifetime_access": has_access,
+            "auth_provider": "google",
         }
     }
 
 
 @router.get("/auth/me")
 async def get_current_user_info(user: dict = Depends(get_current_user)):
-    return {"success": True, "user": user}
-
-
-@router.post("/auth/request-password-reset")
-@limiter.limit("3/minute")
-async def request_password_reset(request: Request, body: PasswordResetRequest):
-    user = await db.users.find_one({"email": body.email.lower()})
-    if not user:
-        return {"success": True, "message": "If the email exists, a reset link will be sent"}
-
-    reset_token = secrets.token_urlsafe(32)
-    expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
-
-    await db.password_resets.insert_one({
-        "user_id": user["id"],
-        "token": reset_token,
-        "expires_at": expires_at.isoformat(),
-        "used": False
-    })
-
     return {
         "success": True,
-        "message": "Password reset requested",
-        "reset_token": reset_token
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "name": user["name"],
+            "has_lifetime_access": user.get("has_lifetime_access", False),
+            "auth_provider": user.get("auth_provider", "email"),
+        }
     }
-
-
-@router.post("/auth/reset-password")
-async def reset_password(request: PasswordResetConfirm):
-    from fastapi import HTTPException
-    reset = await db.password_resets.find_one({"token": request.token, "used": False})
-
-    if not reset:
-        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
-
-    expires_at = datetime.fromisoformat(reset["expires_at"].replace("Z", "+00:00"))
-    if datetime.now(timezone.utc) > expires_at:
-        raise HTTPException(status_code=400, detail="Reset token expired")
-
-    new_hash = hash_password(request.new_password)
-    await db.users.update_one(
-        {"id": reset["user_id"]},
-        {"$set": {"password_hash": new_hash}}
-    )
-
-    await db.password_resets.update_one(
-        {"token": request.token},
-        {"$set": {"used": True}}
-    )
-
-    return {"success": True, "message": "Password reset successful"}

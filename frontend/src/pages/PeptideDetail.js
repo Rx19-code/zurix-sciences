@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, Beaker, FlaskConical, BookOpen, GitCompare, Info, Clock, Award, RefreshCw, Tag, Layers, Lock } from 'lucide-react';
+import { ChevronLeft, Beaker, FlaskConical, BookOpen, GitCompare, Info, Clock, Award, RefreshCw, Tag, Layers, Lock, Loader2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 var API = process.env.REACT_APP_BACKEND_URL;
 
@@ -8,6 +9,7 @@ export default function PeptideDetail() {
   var params = useParams();
   var slug = params.slug;
   var navigate = useNavigate();
+  var { user, token } = useAuth();
   var [peptide, setPeptide] = useState(null);
   var [tab, setTab] = useState('overview');
   var [loading, setLoading] = useState(true);
@@ -90,9 +92,9 @@ export default function PeptideDetail() {
         <div className="py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-5">
             {tab === 'overview' && <OverviewContent peptide={peptide} />}
-            {tab === 'protocols' && (!peptide.is_free ? <LockedContent /> : <ProtocolsContent peptide={peptide} />)}
-            {tab === 'research' && (!peptide.is_free ? <LockedContent /> : <ResearchContent peptide={peptide} />)}
-            {tab === 'synergy' && (!peptide.is_free ? <LockedContent /> : <SynergyContent peptide={peptide} />)}
+            {tab === 'protocols' && (user && user.has_lifetime_access ? <ProtocolsContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
+            {tab === 'research' && (user && user.has_lifetime_access ? <ResearchContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
+            {tab === 'synergy' && (user && user.has_lifetime_access ? <SynergyContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
           </div>
           <div className="lg:col-span-1">
             <QuickFacts peptide={peptide} />
@@ -115,7 +117,105 @@ function TabBtn({ active, onClick, icon, label, tid }) {
 }
 
 /* ── Locked Content ── */
-function LockedContent() {
+function LockedContent({ navigate, user, token }) {
+  var [payLoading, setPayLoading] = useState(false);
+  var [paymentData, setPaymentData] = useState(null);
+  var [checking, setChecking] = useState(false);
+  var [payStatus, setPayStatus] = useState('');
+
+  function handleCreateInvoice() {
+    setPayLoading(true);
+    fetch(API + '/api/payment/create-invoice', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.already_paid) {
+          window.location.reload();
+          return;
+        }
+        setPaymentData(data);
+        setPayLoading(false);
+      })
+      .catch(function() { setPayLoading(false); });
+  }
+
+  function handleCheckPayment() {
+    if (!paymentData) return;
+    setChecking(true);
+    fetch(API + '/api/payment/check/' + paymentData.payment_id, {
+      headers: { 'Authorization': 'Bearer ' + token },
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        setPayStatus(data.status);
+        if (data.has_lifetime_access) {
+          window.location.reload();
+        }
+        setChecking(false);
+      })
+      .catch(function() { setChecking(false); });
+  }
+
+  // Not logged in
+  if (!user) {
+    return (
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" data-testid="locked-content">
+        <div className="px-6 py-12 text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-8 h-8 text-gray-400" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Premium Content</h3>
+          <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
+            Sign in or create an account to unlock all protocols, research data, and synergy information.
+          </p>
+          <button
+            onClick={function() { navigate('/login'); }}
+            data-testid="login-to-unlock-btn"
+            className="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Sign In to Unlock
+          </button>
+          <p className="text-xs text-gray-400 mt-3">One-time payment of $39.99 USDT for lifetime access</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Logged in but no payment - show payment flow
+  if (paymentData) {
+    return (
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" data-testid="payment-flow">
+        <div className="px-6 py-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Complete Payment</h3>
+          <div className="bg-gray-50 rounded-lg p-4 mb-4 text-center">
+            <p className="text-sm text-gray-500 mb-1">Send exactly</p>
+            <p className="text-2xl font-bold text-gray-900">{paymentData.pay_amount} USDT</p>
+            <p className="text-xs text-gray-400 mt-1">TRC20 Network</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4 mb-4">
+            <p className="text-xs text-gray-500 mb-1">To this address:</p>
+            <p className="text-sm font-mono text-gray-900 break-all select-all bg-white p-2 rounded border">{paymentData.pay_address}</p>
+          </div>
+          <button
+            onClick={handleCheckPayment}
+            disabled={checking}
+            data-testid="check-payment-btn"
+            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {checking ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            {checking ? 'Checking...' : 'I have paid - Check Status'}
+          </button>
+          {payStatus && payStatus !== 'confirmed' && payStatus !== 'finished' && (
+            <p className="text-sm text-yellow-600 text-center mt-3">Status: {payStatus} — Payment not yet confirmed. Please wait a few minutes and check again.</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" data-testid="locked-content">
       <div className="px-6 py-12 text-center">
@@ -124,13 +224,18 @@ function LockedContent() {
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">Premium Content</h3>
         <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-          This content requires a lifetime access subscription. Get full access to all protocols, research data, and synergy information.
+          Get lifetime access to all protocols, research data, and synergy information for all 96 peptides.
         </p>
-        <div className="inline-flex items-center gap-2 bg-yellow-500 text-white font-semibold px-6 py-3 rounded-lg">
-          <Lock className="w-4 h-4" />
-          Unlock Full Access
-        </div>
-        <p className="text-xs text-gray-400 mt-3">One-time payment via USDT</p>
+        <button
+          onClick={handleCreateInvoice}
+          disabled={payLoading}
+          data-testid="unlock-access-btn"
+          className="inline-flex items-center gap-2 bg-yellow-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50"
+        >
+          {payLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
+          {payLoading ? 'Creating invoice...' : 'Unlock Full Access — $39.99'}
+        </button>
+        <p className="text-xs text-gray-400 mt-3">One-time payment via USDT (TRC20)</p>
       </div>
     </div>
   );

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import CartDrawer from './CartDrawer';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { getItemCount } = useCart();
+  const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const itemCount = getItemCount();
 
   const navLinks = [
@@ -66,6 +69,20 @@ const Navbar = () => {
                   </span>
                 )}
               </button>
+
+              {/* Auth Button */}
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500 hidden lg:block">{user.name || user.email}</span>
+                  <button onClick={() => { logout(); navigate('/'); }} data-testid="logout-btn" className="p-2 text-gray-500 hover:text-red-500 transition-colors" title="Logout">
+                    <LogOut className="w-5 h-5" />
+                  </button>
+                </div>
+              ) : (
+                <Link to="/login" data-testid="login-nav-btn" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Sign In
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu button */}
@@ -111,6 +128,15 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              {user ? (
+                <button onClick={() => { logout(); navigate('/'); setIsMenuOpen(false); }} className="block w-full text-left py-2 px-3 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
+                  Logout ({user.name || user.email})
+                </button>
+              ) : (
+                <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block py-2 px-3 rounded-md text-sm font-medium bg-blue-600 text-white text-center">
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         )}

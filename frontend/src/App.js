@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import RegulatoryBanner from './components/RegulatoryBanner';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -18,14 +19,18 @@ import Library from './pages/Library';
 import PeptideDetailPage from './pages/PeptideDetail';
 import PeptigenLogos from './components/PeptigenLogos';
 import Admin from './pages/Admin';
+import Login from './pages/Login';
+import AuthCallback from './pages/AuthCallback';
 import './App.css';
 
-// Layout wrapper that hides navbar/footer for admin
+// Layout wrapper that hides navbar/footer for admin and login
 function Layout({ children }) {
   const location = useLocation();
   const isAdmin = location.pathname === '/admin';
+  const isLogin = location.pathname === '/login';
+  const isCallback = location.pathname === '/auth/callback';
   
-  if (isAdmin) {
+  if (isAdmin || isLogin || isCallback) {
     return <>{children}</>;
   }
   
@@ -97,6 +102,37 @@ function MaintenancePage() {
   );
 }
 
+function AppRouter() {
+  var location = useLocation();
+
+  // Check URL fragment for session_id - MUST be synchronous during render
+  if (location.hash && location.hash.includes('session_id=')) {
+    return <AuthCallback />;
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
+      <Route path="/calculator" element={<Calculator />} />
+      <Route path="/verify" element={<Verify />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/checkout/success" element={<CheckoutSuccess />} />
+      <Route path="/representatives" element={<Representatives />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/protocols" element={<Protocols />} />
+      <Route path="/protocols/:slug" element={<PeptideDetailPage />} />
+      <Route path="/library" element={<Library />} />
+      <Route path="/library/:slug" element={<PeptideDetailPage />} />
+      <Route path="/logos" element={<PeptigenLogos />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
+    </Routes>
+  );
+}
+
 function AppContent() {
   var [maintenance, setMaintenance] = useState(false);
   var [checked, setChecked] = useState(false);
@@ -115,34 +151,20 @@ function AppContent() {
 
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/calculator" element={<Calculator />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/checkout/success" element={<CheckoutSuccess />} />
-        <Route path="/representatives" element={<Representatives />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/protocols" element={<Protocols />} />
-        <Route path="/protocols/:slug" element={<PeptideDetailPage />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/library/:slug" element={<PeptideDetailPage />} />
-        <Route path="/logos" element={<PeptigenLogos />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+      <AppRouter />
     </Layout>
   );
 }
 
 function App() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
