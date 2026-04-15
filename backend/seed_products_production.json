@@ -249,7 +249,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/hgh-10iu.pdf",
     "featured": true,
-    "image_url": "/api/images/products/81791e86-ba14-441d-86a8-18565344997b.png"
+    "image_url": "/api/images/products/hgh-10iu-new.png"
   },
   {
     "id": "9c697e42-ec93-44ca-baae-61db2ae9fabd",
@@ -267,7 +267,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/hgh-176-191-5mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/e8c7bdf3-7dda-4d54-a207-3335ac93e00d.png"
+    "image_url": "/api/images/products/hgh-frag-176-191-5mg-new.png"
   },
   {
     "id": "83d81dfa-b222-40cd-bc39-e9ce18b3a312",
@@ -285,7 +285,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/igf-1-lr3-1mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/24f21d8c-5b1b-4da0-8281-8b73fa122810.png"
+    "image_url": "/api/images/products/igf1-lr3-1mg-new.png"
   },
   {
     "id": "8aa70c46-aeed-431b-b113-bae17c39345e",
@@ -501,7 +501,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/tb-500/thymosin-beta-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/a78b6629-36e8-4554-9900-334af2faad9d.png"
+    "image_url": "/api/images/products/tb500-thymosin-10mg-new.png"
   },
   {
     "id": "490ac88f-f8a6-4acc-9a82-03afd1870ac5",
@@ -645,6 +645,6 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/kisspeptin-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/25a1e25a-4368-4846-8b98-a604a477157f.png"
+    "image_url": "/api/images/products/kisspeptin-10mg-new.png"
   }
 ]
