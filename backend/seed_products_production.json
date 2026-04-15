@@ -87,7 +87,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/bpc-157-10mg.pdf",
     "featured": true,
-    "image_url": null
+    "image_url": "/api/images/products/bpc157-10mg-new.png"
   },
   {
     "id": "f0a2de00-da06-4741-9c86-cdf1371c052d",
