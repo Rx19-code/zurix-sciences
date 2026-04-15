@@ -198,17 +198,9 @@ const Contact = () => {
                   <span className="text-gray-600">Monday - Friday:</span>
                   <span className="font-semibold text-gray-900">9:00 - 18:00</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Saturday:</span>
-                  <span className="font-semibold text-gray-900">10:00 - 14:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Sunday:</span>
-                  <span className="font-semibold text-gray-900">Closed</span>
-                </div>
               </div>
               <p className="text-xs text-gray-500 mt-3">
-                * Hours may vary by representative location
+                * By appointment only
               </p>
             </div>
           </div>
