@@ -15,7 +15,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/5-amino-1mq-10mg.pdf",
     "featured": true,
-    "image_url": null
+    "image_url": "/api/images/products/5-amino-1mq-10mg-new.png"
   },
   {
     "id": "8430976a-6706-45c5-97f0-ddff971ba0ff",
@@ -51,7 +51,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/aod-9604-5mg.pdf",
     "featured": true,
-    "image_url": null
+    "image_url": "/api/images/products/aod-9604-5mg-new.png"
   },
   {
     "id": "eea5a4c0-298b-4851-b367-7d7c74ecd03e",
@@ -105,7 +105,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/bacteriostatic-water-3ml.pdf",
     "featured": true,
-    "image_url": "/api/images/products/f0a2de00-da06-4741-9c86-cdf1371c052d.png"
+    "image_url": "/api/images/products/bacteriostatic-water-3ml-new.png"
   },
   {
     "id": "d002b6ee-b4d6-48d1-97a1-f31ed1fda272",
@@ -159,7 +159,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/cartalax-20mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/891231c6-1d4c-449d-aec8-c8505344b747.png"
+    "image_url": "/api/images/products/cartalax-20mg-new.png"
   },
   {
     "id": "f88702ed-8b69-4219-a55b-02064017005c",
@@ -393,7 +393,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/oxytocin-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/3c4c4b60-d643-4706-bcf3-db786b09529d.png"
+    "image_url": "/api/images/products/oxytocin-10mg-new.png"
   },
   {
     "id": "8cdb633b-f514-472d-a489-b394d9774daf",
