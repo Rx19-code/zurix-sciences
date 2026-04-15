@@ -176,15 +176,18 @@ const Contact = () => {
                   <MapPin className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900">Locations</h3>
-                  <p className="text-sm text-gray-600">We serve globally</p>
+                  <h3 className="font-bold text-gray-900">Office Address</h3>
+                  <p className="text-sm text-gray-600">Basel, Switzerland</p>
                 </div>
               </div>
-              <ul className="space-y-1 text-gray-700">
-                <li>Paraguay</li>
-                <li>United States</li>
-                <li>Switzerland</li>
-              </ul>
+              <p className="text-gray-700 font-medium mb-2">
+                Aeschenvorstadt 71, 4051 Basel, Switzerland
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
+                <p className="text-xs text-amber-700 leading-relaxed">
+                  This is a private office. We value client confidentiality and operate by appointment only. Please contact us via Threema or email to schedule a visit.
+                </p>
+              </div>
             </div>
 
             {/* Business Hours */}
