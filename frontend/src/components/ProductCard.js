@@ -63,11 +63,8 @@ const ProductCard = ({ product }) => {
           {product.description}
         </p>
 
-        {/* Price & Action */}
-        <div className="flex items-center justify-between pt-4 border-t">
-          <span className="text-2xl font-bold text-blue-600" data-testid="product-price">
-            ${product.price.toFixed(2)}
-          </span>
+        {/* Action */}
+        <div className="flex items-center justify-end pt-4 border-t">
           <button
             onClick={handleAddToCart}
             data-testid={`add-to-cart-${product.id}`}

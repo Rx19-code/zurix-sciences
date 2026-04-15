@@ -119,13 +119,6 @@ const ProductDetail = () => {
 
               {/* Price and Add to Cart */}
               <div className="bg-gray-50 rounded-lg p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-gray-600">Price:</span>
-                  <span className="text-3xl font-bold text-blue-600" data-testid="product-detail-price">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </div>
-
                 <div className="flex items-center space-x-4 mb-4">
                   <span className="text-gray-600">Quantity:</span>
                   <div className="flex items-center space-x-2">
