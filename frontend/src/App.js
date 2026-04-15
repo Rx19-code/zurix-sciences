@@ -22,6 +22,7 @@ import Admin from './pages/Admin';
 import Login from './pages/Login';
 import AuthCallback from './pages/AuthCallback';
 import StackDetail from './pages/StackDetail';
+import EmailTemplate from './pages/EmailTemplate';
 import './App.css';
 
 // Layout wrapper that hides navbar/footer for admin and login
@@ -30,8 +31,9 @@ function Layout({ children }) {
   const isAdmin = location.pathname === '/admin';
   const isLogin = location.pathname === '/login';
   const isCallback = location.pathname === '/auth/callback';
+  const isEmailTemplate = location.pathname === '/email-template';
   
-  if (isAdmin || isLogin || isCallback) {
+  if (isAdmin || isLogin || isCallback || isEmailTemplate) {
     return <>{children}</>;
   }
   
@@ -129,6 +131,7 @@ function AppRouter() {
       <Route path="/library/:slug" element={<PeptideDetailPage />} />
       <Route path="/logos" element={<PeptigenLogos />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/email-template" element={<EmailTemplate />} />
       <Route path="/login" element={<Login />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
     </Routes>
