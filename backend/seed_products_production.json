@@ -195,7 +195,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/ghk-cu-100mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/d8743569-b90e-4bce-aa0f-927bfb0127dd.png"
+    "image_url": "/api/images/products/ghk-cu-100mg-new.png"
   },
   {
     "id": "5657e3be-22b5-40ea-8d88-07561d258709",
@@ -213,7 +213,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/ghk-cu-50mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/5657e3be-22b5-40ea-8d88-07561d258709.png"
+    "image_url": "/api/images/products/ghk-cu-50mg-new.png"
   },
   {
     "id": "3b3f1314-6072-496c-a109-a3fab26241a7",
@@ -411,7 +411,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/pt141-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/8cdb633b-f514-472d-a489-b394d9774daf.png"
+    "image_url": "/api/images/products/pt-141-new.png"
   },
   {
     "id": "450e70ac-b893-4bc2-9cbe-3bd359e2cb9b",
@@ -429,7 +429,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/retatrutide-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/450e70ac-b893-4bc2-9cbe-3bd359e2cb9b.png"
+    "image_url": "/api/images/products/retatrutide-10mg-new.png"
   },
   {
     "id": "89cf0896-987c-49a8-a564-0fedd029b372",
@@ -447,7 +447,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/retatrutide-40mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/89cf0896-987c-49a8-a564-0fedd029b372.png"
+    "image_url": "/api/images/products/retatrutide-40mg-new.png"
   },
   {
     "id": "4456031d-6662-414a-9a78-8ee4584ade3d",
