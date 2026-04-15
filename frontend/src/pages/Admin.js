@@ -1110,11 +1110,17 @@ function EmailTab() {
   }
 
   function handleCopy() {
-    var html = generateEmailHTML(clientName, responseText);
-    navigator.clipboard.writeText(html).then(function() {
-      setCopied(true);
-      setTimeout(function() { setCopied(false); }, 2000);
-    });
+    if (!iframeRef.current) return;
+    var doc = iframeRef.current.contentDocument;
+    var range = doc.createRange();
+    range.selectNodeContents(doc.body);
+    var sel = iframeRef.current.contentWindow.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    doc.execCommand('copy');
+    sel.removeAllRanges();
+    setCopied(true);
+    setTimeout(function() { setCopied(false); }, 2000);
   }
 
   return (
@@ -1155,14 +1161,14 @@ function EmailTab() {
                 onClick={handleCopy}
                 className="flex items-center gap-2 bg-green-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-green-700 transition-colors"
               >
-                {copied ? '✓ Copied!' : '📋 Copy HTML'}
+                {copied ? '✓ Copied!' : '📋 Copy Email'}
               </button>
             )}
           </div>
           {showPreview && (
             <div className="bg-blue-900/20 border border-blue-800/30 rounded-lg p-3">
               <p className="text-blue-300 text-xs leading-relaxed">
-                <strong>ProtonMail:</strong> Click "Copy HTML", then in ProtonMail composer click <code className="bg-blue-900/50 px-1 rounded">&lt;/&gt;</code> (bottom toolbar → "..."), paste the HTML and send.
+                <strong>ProtonMail:</strong> Click "Copy Email", then paste directly in the ProtonMail composer (Ctrl+V). The formatting will be preserved.
               </p>
             </div>
           )}
