@@ -33,7 +33,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/ahk-cu-100mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/8430976a-6706-45c5-97f0-ddff971ba0ff.png"
+    "image_url": "/api/images/products/ahk-cu-100mg-new.png"
   },
   {
     "id": "5a7e601e-96cb-4ff6-9613-c663dbd0e6dc",
@@ -303,7 +303,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/ipamorelin-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/4d0c53fa-35a1-46cb-9d09-521935053774.png"
+    "image_url": "/api/images/products/ipamorelin-10mg-new.png"
   },
   {
     "id": "72784d63-1464-4a20-ae38-cfefd19de887",
@@ -321,7 +321,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/kpv-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/72784d63-1464-4a20-ae38-cfefd19de887.png"
+    "image_url": "/api/images/products/kpv-10mg-new.png"
   },
   {
     "id": "5a1639bb-9d6f-4e56-9694-57efbc96d419",
@@ -339,7 +339,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/klow-blend-80mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/5a1639bb-9d6f-4e56-9694-57efbc96d419.png"
+    "image_url": "/api/images/products/klow-blend-new.png"
   },
   {
     "id": "549cfbcb-e2f1-4371-9ce5-9922fc21e45a",
@@ -555,7 +555,7 @@
     "expiry_date": "2026-10-01",
     "coa_url": "/coa/tesamorelin-10mg.pdf",
     "featured": true,
-    "image_url": "/api/images/products/6c6d3539-9623-4dda-85e1-146829ca4de7.png"
+    "image_url": "/api/images/products/tesamorelin-10mg-new.png"
   },
   {
     "id": "3034f1dc-2d90-46eb-9d54-c9b34a550c75",
