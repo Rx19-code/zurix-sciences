@@ -414,6 +414,7 @@ export default function Admin() {
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'leads', label: 'Leads', icon: '📊' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
+            { id: 'email', label: 'Email', icon: '✉️' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -888,6 +889,11 @@ export default function Admin() {
             )}
           </div>
         )}
+
+        {/* Email Template Tab */}
+        {activeTab === 'email' && (
+          <EmailTab />
+        )}
       </div>
     </div>
   );
@@ -1070,6 +1076,115 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+
+function generateEmailHTML(clientName, responseText) {
+  var lines = responseText.split('\n').map(function(line) {
+    return '<p style="margin:0 0 12px;font-size:15px;color:#374151;line-height:1.7;">' + line + '</p>';
+  }).join('');
+
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:32px 16px;"><tr><td align="center"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);"><tr><td style="background:linear-gradient(135deg,#1e40af 0%,#2563eb 100%);padding:32px 40px;text-align:center;"><h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">Zurix Sciences</h1><p style="margin:4px 0 0;font-size:12px;color:#93c5fd;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;">Premium Research Compounds</p></td></tr><tr><td style="padding:40px;"><p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.7;">Dear <span style="color:#1e40af;font-weight:600;">' + clientName + '</span>,</p><p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.7;">Thank you for reaching out to Zurix Sciences. We appreciate your interest in our research-grade peptide products.</p><div style="background-color:#f8fafc;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;padding:20px 24px;margin:24px 0;">' + lines + '</div><p style="margin:24px 0 20px;font-size:15px;color:#374151;line-height:1.7;">Should you have any further questions, please do not hesitate to contact us. We are available Monday through Friday, 9:00 - 18:00 (CET).</p><p style="margin:0 0 8px;font-size:15px;color:#374151;line-height:1.7;">Kind regards,</p></td></tr><tr><td style="padding:0 40px;"><hr style="border:none;border-top:1px solid #e5e7eb;margin:0;"/></td></tr><tr><td style="padding:28px 40px;"><p style="margin:0 0 2px;font-size:16px;font-weight:700;color:#1e3a5f;">Zurix Sciences</p><p style="margin:0 0 12px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">Research Division</p><p style="margin:0 0 4px;font-size:13px;color:#374151;">&#9993; RxpeptidesHK@proton.me</p><p style="margin:0 0 4px;font-size:13px;color:#374151;">&#9830; Threema ID: <strong>2D9DAD9R</strong></p><p style="margin:0 0 4px;font-size:13px;color:#374151;">&#9906; Aeschenvorstadt 71, 4051 Basel, Switzerland</p><p style="margin:0;font-size:13px;"><a href="https://zurixsciences.com" style="color:#2563eb;text-decoration:none;font-weight:600;">zurixsciences.com</a></p></td></tr><tr><td style="background-color:#f8fafc;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;"><p style="margin:0 0 4px;font-size:11px;color:#9ca3af;">This email and any attachments are confidential and intended solely for the addressee.</p><p style="margin:0;font-size:11px;color:#9ca3af;">All products are sold strictly for research purposes only. Not for human consumption.</p></td></tr></table></td></tr></table></body></html>';
+}
+
+function EmailTab() {
+  const [clientName, setClientName] = React.useState('');
+  const [responseText, setResponseText] = React.useState('');
+  const [copied, setCopied] = React.useState(false);
+  const [showPreview, setShowPreview] = React.useState(false);
+  const iframeRef = React.useRef(null);
+
+  function handleGenerate() {
+    if (!clientName.trim() || !responseText.trim()) return;
+    setShowPreview(true);
+    setTimeout(function() {
+      if (iframeRef.current) {
+        var doc = iframeRef.current.contentDocument;
+        doc.open();
+        doc.write(generateEmailHTML(clientName, responseText));
+        doc.close();
+      }
+    }, 100);
+  }
+
+  function handleCopy() {
+    var html = generateEmailHTML(clientName, responseText);
+    navigator.clipboard.writeText(html).then(function() {
+      setCopied(true);
+      setTimeout(function() { setCopied(false); }, 2000);
+    });
+  }
+
+  return (
+    <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+      <h2 className="text-xl font-bold text-white mb-6">Email Template Generator</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Client Name</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={function(e) { setClientName(e.target.value); }}
+              placeholder="John Smith"
+              className="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Your Response</label>
+            <textarea
+              value={responseText}
+              onChange={function(e) { setResponseText(e.target.value); }}
+              placeholder="Type your response to the client here..."
+              rows={10}
+              className="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+            />
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={handleGenerate}
+              disabled={!clientName.trim() || !responseText.trim()}
+              className="flex-1 bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-40"
+            >
+              Generate Preview
+            </button>
+            {showPreview && (
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-2 bg-green-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-green-700 transition-colors"
+              >
+                {copied ? '✓ Copied!' : '📋 Copy HTML'}
+              </button>
+            )}
+          </div>
+          {showPreview && (
+            <div className="bg-blue-900/20 border border-blue-800/30 rounded-lg p-3">
+              <p className="text-blue-300 text-xs leading-relaxed">
+                <strong>ProtonMail:</strong> Click "Copy HTML", then in ProtonMail composer click <code className="bg-blue-900/50 px-1 rounded">&lt;/&gt;</code> (bottom toolbar → "..."), paste the HTML and send.
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden">
+          <div className="bg-gray-700 px-4 py-2 border-b border-gray-600">
+            <span className="text-sm font-medium text-gray-300">Email Preview</span>
+          </div>
+          {showPreview ? (
+            <iframe
+              ref={iframeRef}
+              title="Email Preview"
+              className="w-full border-0 bg-white"
+              style={{ height: '500px' }}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-64 text-gray-500 text-sm">
+              Fill in the form and click "Generate Preview"
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
