@@ -1110,17 +1110,23 @@ function EmailTab() {
   }
 
   function handleCopy() {
-    if (!iframeRef.current) return;
-    var doc = iframeRef.current.contentDocument;
-    var range = doc.createRange();
-    range.selectNodeContents(doc.body);
-    var sel = iframeRef.current.contentWindow.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    doc.execCommand('copy');
-    sel.removeAllRanges();
-    setCopied(true);
-    setTimeout(function() { setCopied(false); }, 2000);
+    var html = generateEmailHTML(clientName, responseText);
+    var blob = new Blob([html], { type: 'text/html' });
+    var plainText = 'Dear ' + clientName + ',\n\nThank you for reaching out to Zurix Sciences.\n\n' + responseText + '\n\nKind regards,\nZurix Sciences\nClient Relations\nRxpeptidesHK@proton.me\nThreema ID: 2D9DAD9R\nAeschenvorstadt 71, 4051 Basel, Switzerland\nzurixsciences.com';
+    var textBlob = new Blob([plainText], { type: 'text/plain' });
+    var item = new ClipboardItem({
+      'text/html': blob,
+      'text/plain': textBlob,
+    });
+    navigator.clipboard.write([item]).then(function() {
+      setCopied(true);
+      setTimeout(function() { setCopied(false); }, 2000);
+    }).catch(function() {
+      navigator.clipboard.writeText(plainText).then(function() {
+        setCopied(true);
+        setTimeout(function() { setCopied(false); }, 2000);
+      });
+    });
   }
 
   return (
