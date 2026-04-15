@@ -69,7 +69,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/bpc157-tb4-blend.pdf",
     "featured": false,
-    "image_url": null
+    "image_url": "/api/images/products/bpc157-tb500-blend-new.png"
   },
   {
     "id": "097b7786-fbad-4053-a356-4d5df4de5c69",
@@ -123,7 +123,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/cjc1295-ipamorelin-blend.pdf",
     "featured": false,
-    "image_url": null
+    "image_url": "/api/images/products/cjc1295-ipamorelin-blend-new.png"
   },
   {
     "id": "d450e210-a767-44f5-a9a1-22e47d1cebe7",
@@ -177,7 +177,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/ghk-cu-kpv-blend.pdf",
     "featured": false,
-    "image_url": null
+    "image_url": "/api/images/products/ghkcu-kpv-blend-new.png"
   },
   {
     "id": "d8743569-b90e-4bce-aa0f-927bfb0127dd",
@@ -357,7 +357,7 @@
     "expiry_date": "2027-01-01",
     "coa_url": "/coa/mots-c-10mg.pdf",
     "featured": true,
-    "image_url": null
+    "image_url": "/api/images/products/motsc-10mg-new.png"
   },
   {
     "id": "e185597f-d206-45a8-a26f-72d35383a0db",
@@ -502,24 +502,6 @@
     "coa_url": "/coa/tb-500/thymosin-beta-10mg.pdf",
     "featured": true,
     "image_url": "/api/images/products/tb500-thymosin-10mg-new.png"
-  },
-  {
-    "id": "490ac88f-f8a6-4acc-9a82-03afd1870ac5",
-    "name": "Tesamorelin + Ipamorelin + CJC-1295 Blend 6mg+3mg+3mg",
-    "category": "Research Peptides",
-    "product_type": "Tesamorelin/Ipamorelin/CJC-1295 Blend",
-    "purity": "99% HPLC",
-    "dosage": "6mg+3mg+3mg",
-    "description": "Triple GH secretagogue blend for comprehensive growth hormone axis research. Tesamorelin 6mg + Ipamorelin 3mg + CJC-1295 3mg.",
-    "price": 119.99,
-    "verification_code": "ZX-TICBLEND",
-    "storage_info": "Store at -20\u00b0C for long-term storage. Stable at 2-8\u00b0C for up to 30 days.",
-    "batch_number": "ZX-TIC-001",
-    "manufacturing_date": "2025-01-01",
-    "expiry_date": "2027-01-01",
-    "coa_url": "/coa/tesamorelin-ipamorelin-cjc1295-blend.pdf",
-    "featured": true,
-    "image_url": null
   },
   {
     "id": "d64c209a-5167-47dd-b358-6817db86e5fb",
