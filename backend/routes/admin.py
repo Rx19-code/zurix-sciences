@@ -44,6 +44,7 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
         return {"success": False, "message": "All codes already exist in database", "imported": 0, "duplicates": len(codes)}
 
     now = datetime.now(timezone.utc).isoformat()
+    import_batch_id = f"IMP-{uuid.uuid4().hex[:8].upper()}"
     documents = []
     for code in new_codes:
         documents.append({
@@ -57,7 +58,8 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
             "verification_count": 0,
             "first_verified_at": None,
             "last_verified_at": None,
-            "created_at": now
+            "created_at": now,
+            "import_batch_id": import_batch_id
         })
 
     await db.unique_codes.insert_many(documents)
@@ -66,7 +68,8 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
         "success": True,
         "message": f"Successfully imported {len(new_codes)} codes",
         "imported": len(new_codes),
-        "duplicates": len(existing_codes)
+        "duplicates": len(existing_codes),
+        "import_batch_id": import_batch_id
     }
 
 
@@ -103,6 +106,7 @@ async def update_batch_info(request: UpdateBatchRequest, x_admin_password: str =
 async def get_admin_codes(
     x_admin_password: str = Header(None),
     batch_number: Optional[str] = None,
+    import_batch_id: Optional[str] = None,
     search: Optional[str] = None,
     limit: int = 100,
     skip: int = 0
@@ -111,7 +115,9 @@ async def get_admin_codes(
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     query = {}
-    if batch_number:
+    if import_batch_id:
+        query["import_batch_id"] = import_batch_id
+    elif batch_number:
         query["batch_number"] = batch_number.upper()
 
     if search:

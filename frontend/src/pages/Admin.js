@@ -17,6 +17,7 @@ export default function Admin() {
   const [expiryDate, setExpiryDate] = useState('');
   const [codesText, setCodesText] = useState('');
   const [importResult, setImportResult] = useState(null);
+  const [lastImportBatchId, setLastImportBatchId] = useState('');
   
   // Data views
   const [products, setProducts] = useState([]);
@@ -238,6 +239,9 @@ export default function Admin() {
       
       if (data.success) {
         setCodesText('');
+        if (data.import_batch_id) {
+          setLastImportBatchId(data.import_batch_id);
+        }
         loadData(password);
       }
     } catch (err) {
@@ -534,7 +538,7 @@ export default function Admin() {
         
         {/* Labels Tab */}
         {activeTab === 'labels' && (
-          <LabelsTab password={password} apiUrl={API_URL} codes={codes} batches={batches} />
+          <LabelsTab password={password} apiUrl={API_URL} codes={codes} batches={batches} lastImportBatchId={lastImportBatchId} />
         )}
         
         {/* Codes Tab */}
@@ -900,7 +904,7 @@ export default function Admin() {
 }
 
 
-function LabelsTab({ password, apiUrl, codes, batches }) {
+function LabelsTab({ password, apiUrl, codes, batches, lastImportBatchId }) {
   var [selectedBatch, setSelectedBatch] = React.useState('');
   var [batchCodes, setBatchCodes] = React.useState([]);
   var [loadingCodes, setLoadingCodes] = React.useState(false);
@@ -924,8 +928,25 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
     setLoadingCodes(false);
   };
 
+  var handleLastImport = async function() {
+    if (!lastImportBatchId) return;
+    setSelectMode('lastimport');
+    setBatchCodes([]);
+    setLoadingCodes(true);
+    try {
+      var res = await fetch(apiUrl + '/api/admin/codes?import_batch_id=' + encodeURIComponent(lastImportBatchId) + '&limit=1000', {
+        headers: { 'x-admin-password': password }
+      });
+      var data = await res.json();
+      setBatchCodes(data.codes || []);
+    } catch (err) {
+      console.error('Error loading last import:', err);
+    }
+    setLoadingCodes(false);
+  };
+
   var getExportCodes = function() {
-    if (selectMode === 'batch') return batchCodes;
+    if (selectMode === 'batch' || selectMode === 'lastimport') return batchCodes;
     if (selectMode === 'manual' && manualCodes.trim()) {
       return manualCodes.trim().split('\n').map(function(c) { return { code: c.trim(), product_name: '', batch_number: '' }; }).filter(function(c) { return c.code; });
     }
@@ -977,16 +998,28 @@ function LabelsTab({ password, apiUrl, codes, batches }) {
       <div className="flex gap-2 mb-6">
         {[
           { id: 'batch', label: 'By Batch' },
+          { id: 'lastimport', label: 'Last Import' },
           { id: 'manual', label: 'Manual Codes' },
         ].map(function(m) {
           return (
-            <button key={m.id} onClick={function() { setSelectMode(m.id); }}
-              className={'px-4 py-2 rounded-lg text-sm font-medium transition ' + (selectMode === m.id ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:text-white')}>
-              {m.label}
+            <button key={m.id} onClick={function() { setSelectMode(m.id); if (m.id === 'lastimport') handleLastImport(); }}
+              className={'px-4 py-2 rounded-lg text-sm font-medium transition ' + (selectMode === m.id ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:text-white') + (m.id === 'lastimport' && !lastImportBatchId ? ' opacity-40 cursor-not-allowed' : '')}
+              disabled={m.id === 'lastimport' && !lastImportBatchId}>
+              {m.label}{m.id === 'lastimport' && lastImportBatchId ? ' (' + lastImportBatchId + ')' : ''}
             </button>
           );
         })}
       </div>
+
+      {selectMode === 'lastimport' && (
+        <div className="mb-6">
+          {loadingCodes ? (
+            <p className="text-gray-400 text-sm">Loading last imported codes...</p>
+          ) : (
+            <p className="text-green-400 text-sm">{batchCodes.length} codes from last import ready to export</p>
+          )}
+        </div>
+      )}
 
       {selectMode === 'batch' && (
         <div className="mb-6">
