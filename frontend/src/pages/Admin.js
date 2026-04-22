@@ -377,7 +377,8 @@ export default function Admin() {
   };
 
   // Use codes directly since search is server-side now
-  const filteredCodes = codes;
+  const [codeFilter, setCodeFilter] = useState('all');
+  const filteredCodes = codeFilter === 'all' ? codes : codeFilter === 'verified' ? codes.filter(c => c.verification_count > 0) : codes.filter(c => c.verification_count === 0);
   
   // Login screen
   if (!isLoggedIn) {
@@ -589,16 +590,32 @@ export default function Admin() {
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">
-                All Codes ({codes.length} of {codesTotal})
+                All Codes ({filteredCodes.length} of {codesTotal})
                 {searching && <span className="ml-2 text-blue-400 text-sm">Searching...</span>}
               </h2>
-              <input
-                type="text"
-                value={searchCode}
-                onChange={(e) => setSearchCode(e.target.value)}
-                placeholder="Search code, product or batch (min 2 chars)..."
-                className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-blue-500 w-72"
-              />
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1">
+                  {[
+                    { id: 'all', label: 'All' },
+                    { id: 'verified', label: 'Verified' },
+                    { id: 'new', label: 'New' },
+                  ].map(function(f) {
+                    return (
+                      <button key={f.id} onClick={function() { setCodeFilter(f.id); }}
+                        className={'px-3 py-1 rounded text-xs font-medium transition ' + (codeFilter === f.id ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-white')}>
+                        {f.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <input
+                  type="text"
+                  value={searchCode}
+                  onChange={(e) => setSearchCode(e.target.value)}
+                  placeholder="Search code, product or batch..."
+                  className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-blue-500 w-72"
+                />
+              </div>
             </div>
             
             {filteredCodes.length === 0 ? (
