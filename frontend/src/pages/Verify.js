@@ -300,12 +300,12 @@ const Verify = () => {
                   </div>
 
                   {/* Verification count warning */}
-                  {result.verification_count > 1 && (
+                  {result.verification_count >= 3 && (
                     <div className={`mt-4 p-3 rounded-lg ${
-                      result.verification_count >= 3 ? 'bg-red-100' : 'bg-yellow-100'
+                      result.verification_count >= 4 ? 'bg-red-100' : 'bg-yellow-100'
                     }`}>
                       <p className={`text-sm font-medium ${
-                        result.verification_count >= 3 ? 'text-red-800' : 'text-yellow-800'
+                        result.verification_count >= 4 ? 'text-red-800' : 'text-yellow-800'
                       }`}>
                         This code has been verified {result.verification_count} times.
                         {result.first_verified_at && (
@@ -387,15 +387,15 @@ const Verify = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                  <span className="text-sm"><strong>1st verification:</strong> Product is authentic</span>
+                  <span className="text-sm"><strong>1st - 2nd verification:</strong> Product is authentic</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-                  <span className="text-sm"><strong>2nd verification:</strong> Caution - may be counterfeit</span>
+                  <span className="text-sm"><strong>3rd verification:</strong> Attention - product verified multiple times</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                  <span className="text-sm"><strong>3+ verifications:</strong> High risk of counterfeit</span>
+                  <span className="text-sm"><strong>4+ verifications:</strong> High risk of counterfeit</span>
                 </div>
               </div>
             </div>

@@ -54,18 +54,6 @@ async def verify_product(request: Request, body: VerifyProductRequest):
 
     if unique_code:
         current_count = unique_code.get('verification_count', 0)
-        if current_count >= 3:
-            return VerifyProductResponse(
-                success=False,
-                message="CODE BLOCKED - This code has exceeded the maximum number of verifications. Please contact support immediately.",
-                verification_count=current_count,
-                warning_level="blocked",
-                product_name=unique_code.get('product_name'),
-                batch_number=unique_code.get('batch_number'),
-                purity=unique_code.get('purity'),
-                expiry_date=unique_code.get('expiry_date')
-            )
-
         verification_count = current_count + 1
         first_verified = unique_code.get('first_verified_at')
         now = datetime.now(timezone.utc).isoformat()
@@ -92,14 +80,14 @@ async def verify_product(request: Request, body: VerifyProductRequest):
         }
         await db.verification_logs.insert_one(log_entry)
 
-        if verification_count == 1:
-            message = "Product Authenticated! This is the FIRST verification."
+        if verification_count <= 2:
+            message = f"Product Authenticated! Verification #{verification_count}."
             warning_level = "none"
-        elif verification_count == 2:
-            message = f"CAUTION: This code was already verified on {first_verified[:10]}. If this wasn't you, the product may be counterfeit."
+        elif verification_count == 3:
+            message = f"Product Authenticated. This product has been verified {verification_count} times."
             warning_level = "caution"
         else:
-            message = f"ALERT: This code has been verified {verification_count} times! This code is now BLOCKED."
+            message = f"WARNING: High risk of counterfeit. This code has been verified {verification_count} times. Please contact support."
             warning_level = "danger"
 
         product = await db.products.find_one({"id": unique_code.get('product_id')}, {"_id": 0})
@@ -169,14 +157,6 @@ async def verify_scan(request: Request, body: VerifyScanRequest):
 
         if unique_code:
             current_count = unique_code.get('verification_count', 0)
-            if current_count >= 3:
-                return VerifyScanResponse(
-                    success=False,
-                    message="CODE BLOCKED - This code has exceeded the maximum number of verifications.",
-                    verification_count=current_count,
-                    warning="blocked"
-                )
-
             verification_count = current_count + 1
             first_verified = unique_code.get('first_verified_at')
             now = datetime.now(timezone.utc).isoformat()
@@ -207,13 +187,13 @@ async def verify_scan(request: Request, body: VerifyScanRequest):
             product = await db.products.find_one({"id": unique_code.get('product_id')}, {"_id": 0})
 
             warning = None
-            if verification_count == 1:
-                message = "Product Authenticated! This is the FIRST verification."
-            elif verification_count == 2:
-                message = "CAUTION: This code was already verified. If this wasn't you, the product may be counterfeit."
+            if verification_count <= 2:
+                message = f"Product Authenticated! Verification #{verification_count}."
+            elif verification_count == 3:
+                message = f"Product Authenticated. This product has been verified {verification_count} times."
                 warning = "caution"
             else:
-                message = f"ALERT: This code has been verified {verification_count} times! This code is now BLOCKED."
+                message = f"WARNING: High risk of counterfeit. This code has been verified {verification_count} times. Please contact support."
                 warning = "danger"
 
             return VerifyScanResponse(
