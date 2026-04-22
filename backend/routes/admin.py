@@ -102,6 +102,37 @@ async def update_batch_info(request: UpdateBatchRequest, x_admin_password: str =
     }
 
 
+@router.post("/admin/reset-verifications")
+async def reset_verifications(request: Request, x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    body = await request.json()
+    batch_number = body.get("batch_number", "").strip().upper()
+    code = body.get("code", "").strip().upper()
+
+    if code:
+        result = await db.unique_codes.update_one(
+            {"code": code},
+            {"$set": {"verification_count": 0, "first_verified_at": None, "last_verified_at": None}}
+        )
+        count = result.modified_count
+    elif batch_number:
+        result = await db.unique_codes.update_many(
+            {"batch_number": batch_number},
+            {"$set": {"verification_count": 0, "first_verified_at": None, "last_verified_at": None}}
+        )
+        count = result.modified_count
+    else:
+        result = await db.unique_codes.update_many(
+            {"verification_count": {"$gt": 0}},
+            {"$set": {"verification_count": 0, "first_verified_at": None, "last_verified_at": None}}
+        )
+        count = result.modified_count
+
+    return {"success": True, "message": f"Reset {count} codes", "reset_count": count}
+
+
 @router.get("/admin/codes")
 async def get_admin_codes(
     x_admin_password: str = Header(None),

@@ -268,6 +268,28 @@ export default function Admin() {
       alert('Error deleting batch');
     }
   };
+
+  const handleResetBatch = async (batchNumber) => {
+    if (!window.confirm(`Reset all verifications for batch ${batchNumber}? Codes will NOT be deleted.`)) {
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${API_URL}/api/admin/reset-verifications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ batch_number: batchNumber })
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        alert(`Reset ${data.reset_count} codes in batch ${batchNumber}`);
+        loadData(password);
+      }
+    } catch (err) {
+      alert('Error resetting verifications');
+    }
+  };
   
   const handleDeleteCode = async (code) => {
     if (!window.confirm(`Delete code ${code}?`)) {
@@ -675,6 +697,12 @@ export default function Admin() {
                             className="text-blue-400 hover:text-blue-300 text-sm"
                           >
                             Edit
+                          </button>
+                          <button
+                            onClick={() => handleResetBatch(batch._id)}
+                            className="text-yellow-400 hover:text-yellow-300 text-sm"
+                          >
+                            Reset
                           </button>
                           <button
                             onClick={() => handleDeleteBatch(batch._id)}
