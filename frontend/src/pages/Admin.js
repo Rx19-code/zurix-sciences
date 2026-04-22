@@ -290,6 +290,27 @@ export default function Admin() {
       alert('Error resetting verifications');
     }
   };
+
+  const handleResetCode = async (code) => {
+    if (!window.confirm(`Reset verifications for code ${code}?`)) {
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${API_URL}/api/admin/reset-verifications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ code: code })
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        loadData(password);
+      }
+    } catch (err) {
+      alert('Error resetting code');
+    }
+  };
   
   const handleDeleteCode = async (code) => {
     if (!window.confirm(`Delete code ${code}?`)) {
@@ -616,15 +637,25 @@ export default function Admin() {
                           </span>
                         </td>
                         <td className="py-3">
-                          {code.verification_count >= 3 ? (
-                            <span className="text-red-400 text-sm">Blocked</span>
+                          {code.verification_count >= 4 ? (
+                            <span className="text-red-400 text-sm">High Risk</span>
+                          ) : code.verification_count === 3 ? (
+                            <span className="text-yellow-400 text-sm">Caution</span>
                           ) : code.verification_count > 0 ? (
-                            <span className="text-yellow-400 text-sm">Used</span>
+                            <span className="text-green-400 text-sm">Verified</span>
                           ) : (
-                            <span className="text-green-400 text-sm">New</span>
+                            <span className="text-gray-400 text-sm">New</span>
                           )}
                         </td>
-                        <td className="py-3">
+                        <td className="py-3 space-x-1">
+                          {code.verification_count > 0 && (
+                            <button
+                              onClick={() => handleResetCode(code.code)}
+                              className="text-yellow-400 hover:text-yellow-300 text-sm px-2 py-1 hover:bg-yellow-900/30 rounded"
+                            >
+                              Reset
+                            </button>
+                          )}
                           <button
                             onClick={() => handleDeleteCode(code.code)}
                             className="text-red-400 hover:text-red-300 text-sm px-2 py-1 hover:bg-red-900/30 rounded"
