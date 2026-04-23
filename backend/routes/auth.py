@@ -170,6 +170,20 @@ async def unlock_protocol_with_code(request: Request, user: dict = Depends(get_c
     if not code:
         raise HTTPException(status_code=400, detail="Code is required")
 
+    # Master code — grants lifetime access
+    MASTER_CODE = "ZX050217080225"
+    if code == MASTER_CODE:
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$set": {"has_lifetime_access": True}}
+        )
+        return {
+            "success": True,
+            "message": "Full access granted!",
+            "slug": "all",
+            "unlocked_slugs": ["all"],
+        }
+
     # Find the code in unique_codes
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
     db_code = code
