@@ -39,6 +39,8 @@ export default function PeptideDetail() {
   var catSlug = (peptide.category || '').toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
   var heroImg = API + '/api/library/category-image/' + catSlug;
 
+  var hasAccess = user && (user.has_lifetime_access || (user.unlocked_slugs && user.unlocked_slugs.includes(slug)));
+
   return (
     <div className="min-h-screen bg-gray-50" data-testid="peptide-detail-page">
       {/* Header with Hero Image */}
@@ -92,9 +94,9 @@ export default function PeptideDetail() {
         <div className="py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-5">
             {tab === 'overview' && <OverviewContent peptide={peptide} />}
-            {tab === 'protocols' && (user && user.has_lifetime_access ? <ProtocolsContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
-            {tab === 'research' && (user && user.has_lifetime_access ? <ResearchContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
-            {tab === 'synergy' && (user && user.has_lifetime_access ? <SynergyContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} />)}
+            {tab === 'protocols' && (hasAccess ? <ProtocolsContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
+            {tab === 'research' && (hasAccess ? <ResearchContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
+            {tab === 'synergy' && (hasAccess ? <SynergyContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
           </div>
           <div className="lg:col-span-1">
             <QuickFacts peptide={peptide} />
@@ -117,11 +119,43 @@ function TabBtn({ active, onClick, icon, label, tid }) {
 }
 
 /* ── Locked Content ── */
-function LockedContent({ navigate, user, token }) {
+function LockedContent({ navigate, user, token, slug }) {
+  var [qrCode, setQrCode] = useState('');
+  var [unlockLoading, setUnlockLoading] = useState(false);
+  var [unlockError, setUnlockError] = useState('');
+  var [unlockSuccess, setUnlockSuccess] = useState('');
+  var [showPayment, setShowPayment] = useState(false);
   var [payLoading, setPayLoading] = useState(false);
   var [paymentData, setPaymentData] = useState(null);
   var [checking, setChecking] = useState(false);
   var [payStatus, setPayStatus] = useState('');
+
+  function handleUnlockWithCode(e) {
+    e.preventDefault();
+    if (!qrCode.trim()) return;
+    setUnlockLoading(true);
+    setUnlockError('');
+    setUnlockSuccess('');
+    fetch(API + '/api/auth/unlock-protocol', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: qrCode.trim() }),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          setUnlockSuccess(data.message);
+          setTimeout(function() { window.location.reload(); }, 1500);
+        } else {
+          setUnlockError(data.detail || 'Could not unlock. Check the code and try again.');
+        }
+        setUnlockLoading(false);
+      })
+      .catch(function() {
+        setUnlockError('Connection error. Please try again.');
+        setUnlockLoading(false);
+      });
+  }
 
   function handleCreateInvoice() {
     setPayLoading(true);
@@ -132,10 +166,7 @@ function LockedContent({ navigate, user, token }) {
     })
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (data.already_paid) {
-          window.location.reload();
-          return;
-        }
+        if (data.already_paid) { window.location.reload(); return; }
         setPaymentData(data);
         setPayLoading(false);
       })
@@ -151,9 +182,7 @@ function LockedContent({ navigate, user, token }) {
       .then(function(r) { return r.json(); })
       .then(function(data) {
         setPayStatus(data.status);
-        if (data.has_lifetime_access) {
-          window.location.reload();
-        }
+        if (data.has_lifetime_access) { window.location.reload(); }
         setChecking(false);
       })
       .catch(function() { setChecking(false); });
@@ -167,9 +196,9 @@ function LockedContent({ navigate, user, token }) {
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-8 h-8 text-gray-400" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Premium Content</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Protocol Access</h3>
           <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-            Sign in or create an account to unlock all protocols, research data, and synergy information.
+            Sign in and enter your product's QR code to unlock this protocol.
           </p>
           <button
             onClick={function() { navigate('/login'); }}
@@ -178,18 +207,17 @@ function LockedContent({ navigate, user, token }) {
           >
             Sign In to Unlock
           </button>
-          <p className="text-xs text-gray-400 mt-3">One-time payment of $39.99 USDT for lifetime access</p>
         </div>
       </div>
     );
   }
 
-  // Logged in but no payment - show payment flow
+  // Payment flow
   if (paymentData) {
     return (
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" data-testid="payment-flow">
         <div className="px-6 py-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Complete Payment</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Complete Payment — Full Access</h3>
           <div className="bg-gray-50 rounded-lg p-4 mb-4 text-center">
             <p className="text-sm text-gray-500 mb-1">Send exactly</p>
             <p className="text-2xl font-bold text-gray-900">{paymentData.pay_amount} USDT</p>
@@ -199,43 +227,78 @@ function LockedContent({ navigate, user, token }) {
             <p className="text-xs text-gray-500 mb-1">To this address:</p>
             <p className="text-sm font-mono text-gray-900 break-all select-all bg-white p-2 rounded border">{paymentData.pay_address}</p>
           </div>
-          <button
-            onClick={handleCheckPayment}
-            disabled={checking}
-            data-testid="check-payment-btn"
-            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-          >
+          <button onClick={handleCheckPayment} disabled={checking} className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
             {checking ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
             {checking ? 'Checking...' : 'I have paid - Check Status'}
           </button>
           {payStatus && payStatus !== 'confirmed' && payStatus !== 'finished' && (
-            <p className="text-sm text-yellow-600 text-center mt-3">Status: {payStatus} — Payment not yet confirmed. Please wait a few minutes and check again.</p>
+            <p className="text-sm text-yellow-600 text-center mt-3">Status: {payStatus}</p>
           )}
         </div>
       </div>
     );
   }
 
+  // Logged in — show QR unlock + payment option
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" data-testid="locked-content">
-      <div className="px-6 py-12 text-center">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Lock className="w-8 h-8 text-gray-400" />
+      <div className="px-6 py-8">
+        <div className="text-center mb-6">
+          <Lock className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-gray-900 mb-1">Unlock Protocol</h3>
+          <p className="text-gray-500 text-sm">Enter your product's verification code to access this protocol</p>
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">Premium Content</h3>
-        <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-          Get lifetime access to all protocols, research data, and synergy information for all 96 peptides.
-        </p>
-        <button
-          onClick={handleCreateInvoice}
-          disabled={payLoading}
-          data-testid="unlock-access-btn"
-          className="inline-flex items-center gap-2 bg-yellow-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50"
-        >
-          {payLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
-          {payLoading ? 'Creating invoice...' : 'Unlock Full Access — $39.99'}
-        </button>
-        <p className="text-xs text-gray-400 mt-3">One-time payment via USDT (TRC20)</p>
+
+        <form onSubmit={handleUnlockWithCode} className="mb-6">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={qrCode}
+              onChange={function(e) { setQrCode(e.target.value.toUpperCase()); }}
+              placeholder="ZX-XXXXXX-XXXX-X-XXXXXX"
+              data-testid="unlock-code-input"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button
+              type="submit"
+              disabled={unlockLoading || !qrCode.trim()}
+              data-testid="unlock-submit-btn"
+              className="bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+            >
+              {unlockLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Unlock
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-2">Find the code on your product's QR label</p>
+        </form>
+
+        {unlockError && (
+          <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">{unlockError}</div>
+        )}
+        {unlockSuccess && (
+          <div className="bg-green-50 text-green-600 text-sm px-4 py-3 rounded-lg mb-4">{unlockSuccess}</div>
+        )}
+
+        <div className="border-t border-gray-200 pt-5">
+          <p className="text-center text-gray-400 text-xs mb-3">Or get full access to all protocols and stacks</p>
+          {!showPayment ? (
+            <button
+              onClick={function() { setShowPayment(true); }}
+              className="w-full border border-yellow-400 text-yellow-600 font-semibold py-2.5 rounded-lg hover:bg-yellow-50 transition-colors text-sm"
+            >
+              Unlock Full Access — $39.99 USDT
+            </button>
+          ) : (
+            <button
+              onClick={handleCreateInvoice}
+              disabled={payLoading}
+              className="w-full bg-yellow-500 text-white font-semibold py-2.5 rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+            >
+              {payLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              {payLoading ? 'Creating invoice...' : 'Confirm — Pay $39.99 USDT for Full Access'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

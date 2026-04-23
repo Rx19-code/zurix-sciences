@@ -47,6 +47,7 @@ async def register_user(request: Request, body: UserRegisterRequest):
             "name": user["name"],
             "has_lifetime_access": False,
             "auth_provider": "email",
+            "unlocked_slugs": [],
         }
     }
 
@@ -75,6 +76,7 @@ async def login_user(request: Request, body: UserLoginRequest):
             "name": user["name"],
             "has_lifetime_access": user.get("has_lifetime_access", False),
             "auth_provider": user.get("auth_provider", "email"),
+            "unlocked_slugs": user.get("unlocked_slugs", []),
         }
     }
 
@@ -139,6 +141,7 @@ async def google_auth(request: Request):
             "name": name,
             "has_lifetime_access": has_access,
             "auth_provider": "google",
+            "unlocked_slugs": existing.get("unlocked_slugs", []) if existing else [],
         }
     }
 
@@ -153,5 +156,99 @@ async def get_current_user_info(user: dict = Depends(get_current_user)):
             "name": user["name"],
             "has_lifetime_access": user.get("has_lifetime_access", False),
             "auth_provider": user.get("auth_provider", "email"),
+            "unlocked_slugs": user.get("unlocked_slugs", []),
         }
     }
+
+
+@router.post("/auth/unlock-protocol")
+async def unlock_protocol_with_code(request: Request, user: dict = Depends(get_current_user)):
+    """Unlock a peptide protocol using a product QR code."""
+    body = await request.json()
+    code = body.get("code", "").strip().upper()
+
+    if not code:
+        raise HTTPException(status_code=400, detail="Code is required")
+
+    # Find the code in unique_codes
+    unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
+    db_code = code
+    if not unique_code:
+        code_no_hyphens = code.replace("-", "")
+        all_codes = await db.unique_codes.find({}, {"_id": 0}).to_list(None)
+        for c in all_codes:
+            if c["code"].replace("-", "").upper() == code_no_hyphens:
+                unique_code = c
+                db_code = c["code"]
+                break
+
+    if not unique_code:
+        raise HTTPException(status_code=404, detail="Code not found. Please check the code and try again.")
+
+    # Map product name to peptide slug
+    product_name = unique_code.get("product_name", "")
+    slug = await _find_slug_for_product(product_name)
+
+    if not slug:
+        raise HTTPException(status_code=404, detail="Could not match this product to a protocol.")
+
+    # Add slug to user's unlocked list
+    current_slugs = user.get("unlocked_slugs", [])
+    if slug not in current_slugs:
+        current_slugs.append(slug)
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$set": {"unlocked_slugs": current_slugs}}
+        )
+
+    peptide = await db.peptide_library.find_one({"slug": slug}, {"_id": 0, "name": 1, "slug": 1})
+
+    return {
+        "success": True,
+        "message": f"Protocol unlocked: {peptide['name'] if peptide else slug}",
+        "slug": slug,
+        "unlocked_slugs": current_slugs,
+    }
+
+
+async def _find_slug_for_product(product_name: str) -> str:
+    """Map a product name to a peptide library slug."""
+    pn = product_name.lower().strip()
+
+    PRODUCT_SLUG_MAP = {
+        "5-amino-1mq": "5-amino-1mq",
+        "ahk-cu": "ahk-cu",
+        "aod-9604": "aod-9604",
+        "bpc-157": "bpc-157",
+        "bpc-157 + tb4": "bpc-157",
+        "bacteriostatic water": "bacteriostatic-water",
+        "cjc-1295": "cjc-1295-dac",
+        "cjc1295": "cjc-1295-dac",
+        "cartalax": "cartalax",
+        "ghk-cu": "ghk-cu",
+        "glow blend": "ghk-cu",
+        "hgh": "hgh-fragment-176-191",
+        "igf-1": "igf-1-lr3",
+        "ipamorelin": "ipamorelin",
+        "kisspeptin": "kisspeptin",
+        "kpv": "kpv",
+        "klow": "kpv",
+        "mots-c": "mots-c",
+        "nad+": "nad-plus-",
+        "oxytocin": "oxytocin",
+        "pt141": "pt-141",
+        "pt-141": "pt-141",
+        "retatrutide": "retatrutide",
+        "selank": "selank",
+        "semax": "semax",
+        "tb-500": "tb-500",
+        "thymosin": "tb-500",
+        "tesamorelin": "tesamorelin",
+        "tirzepatide": "tirzepatide",
+    }
+
+    for key, slug in PRODUCT_SLUG_MAP.items():
+        if key in pn:
+            return slug
+
+    return ""
