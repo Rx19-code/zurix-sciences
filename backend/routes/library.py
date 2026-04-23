@@ -60,7 +60,7 @@ async def get_library(
     search: Optional[str] = Query(None),
     free_only: Optional[bool] = Query(None),
 ):
-    query = {}
+    query = {"has_product": True}
     if category and category != "All":
         query["category"] = category
     if free_only:
@@ -69,7 +69,7 @@ async def get_library(
         query["name"] = {"$regex": search, "$options": "i"}
 
     peptides = await db.peptide_library.find(query, LIBRARY_PROJECTION).sort("name", 1).to_list(200)
-    categories = await db.peptide_library.distinct("category")
+    categories = await db.peptide_library.distinct("category", {"has_product": True})
     return {"peptides": peptides, "categories": sorted(categories), "total": len(peptides)}
 
 

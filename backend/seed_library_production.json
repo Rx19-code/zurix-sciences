@@ -163,7 +163,8 @@
     "classification": "Small molecule enzyme inhibitor",
     "evidence_level": "Pre-clinical",
     "half_life": "~6-8 hours (oral)",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "abaloparatide",
@@ -238,7 +239,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "adamax",
@@ -408,7 +410,8 @@
     "classification": "Synthetic heptapeptide (Semax analogue)",
     "evidence_level": "Pre-clinical",
     "half_life": "~2-4 hours",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "adipotide",
@@ -484,7 +487,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "ahk-cu",
@@ -542,7 +546,8 @@
         }
       ],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "aod-9604",
@@ -670,7 +675,8 @@
     "classification": "hGH Peptide Fragment (16 amino acids)",
     "evidence_level": "Clinical Phase II",
     "half_life": "~30 minutes",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "ara-290",
@@ -750,7 +756,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bacteriostatic-water",
@@ -799,7 +806,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "bam-15",
@@ -872,7 +880,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bam-slu-blend",
@@ -950,7 +959,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bpc-157",
@@ -1115,7 +1125,8 @@
     "classification": "Pentadecapeptide (15 amino acids) \u2014 nootropic use",
     "evidence_level": "Pre-clinical",
     "half_life": "~4 hours (subcutaneous)",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "bpc-157-tb4-blend-10-plus-10",
@@ -1188,7 +1199,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bpc-157-tb4-blend-30-plus-30",
@@ -1266,7 +1278,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bpc-157-tb4-blend-5-plus-5",
@@ -1351,7 +1364,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "bronchogen",
@@ -1429,7 +1443,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "cagrilintide",
@@ -1558,7 +1573,8 @@
     "classification": "Acylated Amylin Analog",
     "evidence_level": "Clinical Phase II",
     "half_life": "~160 hours (weekly)",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "cardiogen",
@@ -1710,7 +1726,8 @@
     "classification": "Synthetic Bioregulator Tetrapeptide",
     "evidence_level": "Pre-clinical",
     "half_life": "~30-60 minutes",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "cartalax",
@@ -1795,7 +1812,8 @@
     "classification": "Synthetic Bioregulator Tripeptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Short (minutes); prolonged effects",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "cerebrolysin",
@@ -1889,7 +1907,8 @@
     "classification": "Neurotrophic Peptide Mixture (porcine-derived)",
     "evidence_level": "Cl\u00ednico Fase III",
     "half_life": "~6-8 hours (IM); prolonged effects",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "chonluten",
@@ -1948,7 +1967,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "cjc-1295-dac",
@@ -2028,7 +2048,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "cjc-1295-ipamorelin-blend",
@@ -2106,7 +2127,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "cjc-1295-no-dac",
@@ -2187,7 +2209,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "coremend-blend",
@@ -2270,7 +2293,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "cortagen",
@@ -2327,7 +2351,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "crystagen",
@@ -2405,7 +2430,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "dermorphin",
@@ -2488,7 +2514,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "dihexa",
@@ -2577,7 +2604,8 @@
     "classification": "Angiotensin IV Derived Oligopeptide",
     "evidence_level": "Pre-clinical",
     "half_life": "~12-24 hours (oral)",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "dsip",
@@ -2647,7 +2675,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "epithalon",
@@ -2747,7 +2776,8 @@
     "classification": "Synthetic Bioregulator Tetrapeptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Short (minutes); prolonged epigenetic effects",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "foxo4-dri",
@@ -2827,7 +2857,8 @@
     "classification": "D-reverse-inverse Senolytic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "~24-48 hours",
-    "reconstitution_difficulty": "Avan\u00e7ada"
+    "reconstitution_difficulty": "Avan\u00e7ada",
+    "has_product": false
   },
   {
     "slug": "ga-water",
@@ -2874,7 +2905,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "ghk-cu",
@@ -2958,7 +2990,8 @@
           "description": "Comprehensive skin regeneration and anti-aging protocol"
         }
       ]
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "ghrp-2",
@@ -3033,7 +3066,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "ghrp-6",
@@ -3108,7 +3142,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "glow-blend",
@@ -3185,7 +3220,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "glutathione",
@@ -3281,7 +3317,8 @@
     "classification": "Endogenous Antioxidant Tripeptide",
     "evidence_level": "Cl\u00ednico Fase II",
     "half_life": "~10-15 minutes (IV); prolonged in tissues",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "hcg",
@@ -3366,7 +3403,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "hexarelin",
@@ -3446,7 +3484,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "hgh",
@@ -3520,7 +3559,8 @@
         }
       ],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "hgh-fragment-176-191",
@@ -3656,7 +3696,8 @@
     "classification": "Human Growth Hormone Peptide Fragment",
     "evidence_level": "Pre-clinical",
     "half_life": "~30 minutes (rapid action)",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "hmg",
@@ -3737,7 +3778,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "humanin",
@@ -3818,7 +3860,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "igf-1-lr3",
@@ -3899,7 +3942,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "illumineuro",
@@ -3981,7 +4025,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "ipamorelin",
@@ -4059,7 +4104,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "kisspeptin",
@@ -4120,7 +4166,8 @@
         }
       ],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "klow-blend",
@@ -4198,7 +4245,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "kpv",
@@ -4269,7 +4317,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "livagen",
@@ -4326,7 +4375,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "ll-37",
@@ -4406,7 +4456,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "mazdutide",
@@ -4508,7 +4559,8 @@
     "classification": "Dual Receptor Agonist Peptide",
     "evidence_level": "Clinical Phase III",
     "half_life": "~5-7 days",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "melanotan-i",
@@ -4589,7 +4641,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "melanotan-ii",
@@ -4669,7 +4722,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "mots-c",
@@ -4756,7 +4810,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "na-epithalon",
@@ -4841,7 +4896,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "na-selank",
@@ -4921,7 +4977,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "na-semax",
@@ -5002,7 +5059,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "nad-plus-",
@@ -5100,7 +5158,8 @@
     "classification": "Coenzima celular essencial",
     "evidence_level": "Cl\u00ednico Fase II",
     "half_life": "~30-60 minutes (IV); variable in tissues",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": true
   },
   {
     "slug": "ovagen",
@@ -5157,7 +5216,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "oxytocin",
@@ -5225,7 +5285,8 @@
         }
       ],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "p-21",
@@ -5280,7 +5341,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "pancragen",
@@ -5353,7 +5415,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "pe-22-28",
@@ -5407,7 +5470,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "pinealon",
@@ -5464,7 +5528,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "pnc-27",
@@ -5519,7 +5584,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "pnc-28",
@@ -5584,7 +5650,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "prostamax",
@@ -5641,7 +5708,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "pt-141",
@@ -5721,7 +5789,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "retatrutide",
@@ -5829,7 +5898,8 @@
     "classification": "Triple Incretin Receptor Agonist",
     "evidence_level": "Clinical Phase II",
     "half_life": "~6 days",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": true
   },
   {
     "slug": "selank",
@@ -5939,7 +6009,8 @@
     "classification": "Synthetic Heptapeptide (Tuftsin Analog)",
     "evidence_level": "Clinical Phase III",
     "half_life": "~5-10 minutes (intranasal; prolonged effects)",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "semaglutide",
@@ -6060,7 +6131,8 @@
     "classification": "GLP-1 Receptor Agonist (GLP-1 analog)",
     "evidence_level": "Approved (FDA/EMA)",
     "half_life": "~7 days",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "semax",
@@ -6156,7 +6228,8 @@
     "classification": "Synthetic Heptapeptide (ACTH 4-10 Analog)",
     "evidence_level": "Clinical Phase III",
     "half_life": "~3-5 minutes (intranasal; effects 20-24h)",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": true
   },
   {
     "slug": "sermorelin",
@@ -6232,7 +6305,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "slu-pp-332",
@@ -6313,7 +6387,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "snap-8",
@@ -6393,7 +6468,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "sodium-chloride-09%",
@@ -6442,7 +6518,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "ss-31",
@@ -6611,7 +6688,8 @@
     "classification": "Synthetic Tetrapeptide Targeting Mitochondria",
     "evidence_level": "Cl\u00ednico Fase III",
     "half_life": "~4 hours",
-    "reconstitution_difficulty": "Easy"
+    "reconstitution_difficulty": "Easy",
+    "has_product": false
   },
   {
     "slug": "survodutide",
@@ -6691,7 +6769,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "tadalafil",
@@ -6771,7 +6850,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "tb-500",
@@ -6848,7 +6928,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "tb500-frag",
@@ -6929,7 +7010,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "teriparatide",
@@ -7000,7 +7082,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "tesamorelin",
@@ -7071,7 +7154,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "tesamorelin-ipamorelin-blend",
@@ -7155,7 +7239,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "tesamorelin-ipamorelin-cjc-1295-blend",
@@ -7238,7 +7323,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "testagen",
@@ -7311,7 +7397,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "thymogen",
@@ -7383,7 +7470,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "thymosin-alpha-1",
@@ -7469,7 +7557,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "thymulin",
@@ -7551,7 +7640,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "tirzepatide",
@@ -7616,7 +7706,8 @@
         }
       ],
       "stacks": []
-    }
+    },
+    "has_product": true
   },
   {
     "slug": "toxin-botulinium",
@@ -7702,7 +7793,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "vesilute",
@@ -7779,7 +7871,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "vesugen",
@@ -7836,7 +7929,8 @@
     "classification": "Synthetic Peptide",
     "evidence_level": "Pre-clinical",
     "half_life": "Dados n\u00e3o dispon\u00edveis",
-    "reconstitution_difficulty": "Moderate"
+    "reconstitution_difficulty": "Moderate",
+    "has_product": false
   },
   {
     "slug": "vilon",
@@ -7919,7 +8013,8 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   },
   {
     "slug": "vip",
@@ -8000,6 +8095,7 @@
     "synergy": {
       "interactions": [],
       "stacks": []
-    }
+    },
+    "has_product": false
   }
 ]
