@@ -106,8 +106,8 @@ export default function Library() {
             </p>
           </div>
 
-          {/* View Mode Toggle */}
-          <div className="flex justify-center mb-5">
+          {/* View Mode Toggle - Stacks temporarily hidden */}
+          {/*<div className="flex justify-center mb-5">
             <div className="inline-flex bg-white/10 border border-white/20 rounded-xl p-1">
               <button
                 data-testid="toggle-peptides"
@@ -124,7 +124,7 @@ export default function Library() {
                 Stacks ({stacks.length})
               </button>
             </div>
-          </div>
+          </div>*/}
 
           <p className="text-center text-sm text-blue-200 mb-6">
             {viewMode === 'peptides'
