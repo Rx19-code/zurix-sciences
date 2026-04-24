@@ -111,7 +111,7 @@ const Representatives = () => {
               >
                 {/* Country Flag */}
                 <div className="text-center mb-6">
-                  <div className="mb-4">
+                  <div className="mb-4 h-16 flex items-center justify-center">
                     <FlagIcon country={rep.country} size={80} />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-1" data-testid="rep-country">{rep.country}</h2>
