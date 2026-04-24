@@ -106,7 +106,7 @@ const Representatives = () => {
             {representatives.map((rep) => (
               <div
                 key={rep.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-8"
+                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-8 flex flex-col"
                 data-testid={`rep-card-${rep.country}`}
               >
                 {/* Country Flag */}
@@ -119,7 +119,7 @@ const Representatives = () => {
                 </div>
 
                 {/* Representative Info */}
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1">
                   <div className="flex items-center space-x-3 text-gray-700">
                     <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
                     <span className="font-semibold" data-testid="rep-name">{rep.name}</span>
