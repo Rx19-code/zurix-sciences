@@ -6,6 +6,7 @@ from typing import Optional
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Header, File, UploadFile, Request
+from fastapi.responses import FileResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
@@ -461,3 +462,17 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
         labels.append({"code": code_str, "image": f"data:image/png;base64,{b64}"})
 
     return {"labels": labels, "count": len(labels)}
+
+
+@router.get("/admin/download-stacks-pdf")
+async def download_stacks_pdf(password: str = None, x_admin_password: str = Header(None)):
+    pw = x_admin_password or password
+    if pw != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    import os
+    pdf_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "zurix_stacks_all.pdf")
+    if not os.path.exists(pdf_path):
+        raise HTTPException(status_code=404, detail="PDF not found")
+    
+    return FileResponse(pdf_path, media_type="application/pdf", filename="zurix_stacks_all.pdf")
