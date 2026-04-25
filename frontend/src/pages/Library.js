@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -29,6 +30,8 @@ export default function Library() {
   const [stacks, setStacks] = useState([]);
   const [stackCategories, setStackCategories] = useState([]);
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const showStacks = user && user.has_lifetime_access;
 
   useEffect(() => {
     fetch(`${API}/api/library`)
@@ -106,8 +109,9 @@ export default function Library() {
             </p>
           </div>
 
-          {/* View Mode Toggle - Stacks temporarily hidden */}
-          {/*<div className="flex justify-center mb-5">
+          {/* View Mode Toggle - Only visible for lifetime access users */}
+          {showStacks && (
+          <div className="flex justify-center mb-5">
             <div className="inline-flex bg-white/10 border border-white/20 rounded-xl p-1">
               <button
                 data-testid="toggle-peptides"
@@ -124,7 +128,8 @@ export default function Library() {
                 Stacks ({stacks.length})
               </button>
             </div>
-          </div>*/}
+          </div>
+          )}
 
           <p className="text-center text-sm text-blue-200 mb-6">
             {viewMode === 'peptides'
