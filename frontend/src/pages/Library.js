@@ -133,7 +133,7 @@ export default function Library() {
 
           <p className="text-center text-sm text-blue-200 mb-6">
             {viewMode === 'peptides'
-              ? `${freeCount} of ${peptides.length} peptides accessible free`
+              ? `${peptides.length} peptide protocols available`
               : `${stacks.length} stack protocols available`
             }
           </p>
@@ -171,6 +171,14 @@ export default function Library() {
         </div>
       </div>
 
+      {/* Info Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center gap-3">
+          <svg className="w-5 h-5 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+          <p className="text-sm text-blue-700">Scan your product's QR code to unlock protocols. Each product includes access to its complete protocol.</p>
+        </div>
+      </div>
+
       {/* Cards Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {viewMode === 'peptides' ? (
@@ -184,7 +192,7 @@ export default function Library() {
                 onClick={() => navigate(`/protocols/${pep.slug}`)}
                 className={`bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/60 ${!pep.is_free ? 'relative overflow-hidden' : ''}`}
               >
-                {!pep.is_free && <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-yellow-100 to-transparent rounded-bl-full" />}
+                {!pep.is_free && <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full" />}
                 <div className="flex items-center justify-between mb-3">
                   <span className={`${color.bg} ${color.text} border ${color.border} text-xs font-medium px-2 py-0.5 rounded-full`}>{pep.category}</span>
                   {pep.is_free ? (
@@ -193,9 +201,9 @@ export default function Library() {
                       FREE
                     </span>
                   ) : (
-                    <span className="bg-yellow-50 text-yellow-600 border border-yellow-200 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
-                      PRO
+                    <span className="bg-blue-50 text-blue-600 border border-blue-200 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                      QR Access
                     </span>
                   )}
                 </div>

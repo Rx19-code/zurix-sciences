@@ -64,8 +64,8 @@ export default function PeptideDetail() {
             {peptide.evidence_level && (
               <span className="bg-green-500/20 text-green-300 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full">{peptide.evidence_level}</span>
             )}
-            <span className={peptide.is_free ? 'bg-green-500/20 text-green-300 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full' : 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 text-xs font-semibold px-2.5 py-1 rounded-full'}>
-              {peptide.is_free ? 'FREE' : 'PRO'}
+            <span className={peptide.is_free ? 'bg-green-500/20 text-green-300 border border-green-400/30 text-xs font-semibold px-2.5 py-1 rounded-full' : 'bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-semibold px-2.5 py-1 rounded-full'}>
+              {peptide.is_free ? 'FREE' : 'QR Access'}
             </span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-bold mb-2 text-white" data-testid="peptide-name">{peptide.name}</h1>
