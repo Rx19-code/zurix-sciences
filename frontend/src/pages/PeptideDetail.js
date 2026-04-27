@@ -321,6 +321,36 @@ function Card({ icon, title, children }) {
 function OverviewContent({ peptide }) {
   var ov = peptide.overview;
   if (!ov) return <EmptyState text="Overview data coming soon." />;
+
+  // New format (function, mechanism_of_action, typical_dosage_range, considerations)
+  if (ov.function || ov.mechanism_of_action) {
+    return (
+      <>
+        {ov.function && (
+          <Card icon={<FlaskConical className="w-5 h-5" />} title="Function">
+            <p className="text-gray-600 leading-relaxed">{ov.function}</p>
+          </Card>
+        )}
+        {ov.mechanism_of_action && (
+          <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
+            <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
+          </Card>
+        )}
+        {ov.typical_dosage_range && (
+          <Card icon={<Beaker className="w-5 h-5" />} title="Typical Dosage Range">
+            <p className="text-gray-600 leading-relaxed">{ov.typical_dosage_range}</p>
+          </Card>
+        )}
+        {ov.considerations && (
+          <Card icon={<BookOpen className="w-5 h-5" />} title="Considerations">
+            <p className="text-gray-600 leading-relaxed">{ov.considerations}</p>
+          </Card>
+        )}
+      </>
+    );
+  }
+
+  // Old format (what_is, mechanism_summary)
   return (
     <>
       {ov.what_is && (
