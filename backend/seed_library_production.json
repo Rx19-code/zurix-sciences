@@ -13,8 +13,9 @@
       "5-Amino-1-Methylquinolinium"
     ],
     "overview": {
-      "what_is": "5-Amino-1MQ is a synthetic peptide that acts as a selective inhibitor of the enzyme Nicotinamide N-methyltransferase (NNMT). Its primary function is to modulate cellular energy metabolism by elevating intracellular NAD+ levels and consequently activating metabolic pathways mediated by sirtuins. This mechanism positions it as a promising agent for the study of metabolic conditions and lean mass preservation.",
-      "mechanism_summary": "By inhibiting NNMT, 5-Amino-1MQ prevents the methylation of nicotinamide, preserving SAM (S-adenosylmethionine) and NAD+ levels. With more NAD+ available, sirtuins (especially SIRT1) are activated, promoting fatty acid oxidation, mitochondrial biogenesis, and thermogenesis."
+      "function": "Fat loss, NAD+ optimization, metabolic enhancement",
+      "mechanism_of_action": "Inhibits NNMT (nicotinamide N-methyltransferase), leading to enhanced NAD+ availability and improved energy metabolism. Investigated for obesity, aging, and metabolic syndrome.",
+      "considerations": "Early-stage research compound. Generally well tolerated, but long-term data is limited."
     },
     "protocols": {
       "title": "Subcutaneous Protocol (2 mL = 5 mg/mL)",
@@ -564,8 +565,10 @@
       "Tyr-hGH177-191"
     ],
     "overview": {
-      "what_is": "AOD-9604 is a synthetic peptide, a modified fragment of the C-terminal region of human growth hormone (hGH 177-191) designed to promote lipolysis and inhibit lipogenesis without the systemic metabolic effects of intact hGH. Its action focuses on fat mobilization, distinguishing it from other hGH analogs by not elevating IGF-1 levels or inducing insulin resistance.",
-      "mechanism_summary": "AOD-9604 is a modified fragment of hGH that retains the lipolytic activity of growth hormone without its anabolic and diabetogenic effects. It binds to specific receptors on adipocytes, activating lipolysis (the breakdown of triglycerides into free fatty acids and glycerol) while simultaneously inhibiting lipogenesis (the formation of new fat molecules). Unlike full hGH, AOD-9604 does not stimulate IGF-1 production or affect glucose metabolism, providing a safer profile for use in managing obesity."
+      "function": "Fat loss, metabolic support, lipolysis activation",
+      "mechanism_of_action": "AOD-9604 is a modified fragment of human growth hormone (176-191) designed to stimulate lipolysis (fat breakdown) without affecting blood sugar or growth-related pathways. It selectively activates beta-3 adrenergic receptors in adipose tissue, promoting fat burning without raising IGF-1 levels.",
+      "typical_dosage_range": "300-500 mcg daily, subcutaneous injection, often in the abdomen or hip area. Taken 5-7 days/week, preferably in the morning or pre-exercise.",
+      "considerations": "Generally well tolerated. Mild side effects may include localized irritation or temporary appetite changes. Not a replacement for exercise or diet. Legal status varies; often sold as a research chemical."
     },
     "protocols": {
       "title": "Standard Protocol / Gradual",
@@ -978,8 +981,9 @@
       "BPC-157 Nootropic"
     ],
     "overview": {
-      "what_is": "BPC-157 for Neuroprotection is a synthetic gastric peptide that acts as a potent neuroprotective and nootropic agent. It exerts its function by modulating neurotransmitters, promoting cerebral angiogenesis and activating essential signaling pathways for neuronal growth and protection against damage. This multifunctional peptide offers promising therapeutic potential in preserving brain health and recovering from neurological injuries.",
-      "mechanism_summary": "Modulates neurotransmitters, promotes cerebral angiogenesis and activates essential signaling pathways for neuronal growth and protection against damage."
+      "function": "Tissue repair, gut healing, anti-inflammatory support",
+      "mechanism_of_action": "BPC-157 (Body Protection Compound) is a synthetic peptide derived from a protective protein in human gastric juice. It promotes angiogenesis, fibroblast migration, collagen formation, and nitric oxide modulation, making it effective for healing muscle, tendon, ligament, nerve, and gut tissue.",
+      "considerations": "Well tolerated in most cases. Rare side effects include fatigue or nausea. Not approved for human use but widely used in research and by biohackers."
     },
     "protocols": {
       "title": "Subcutaneous/Oral Protocol \u2014 BPC-157 for Neuroprotection",
@@ -1983,8 +1987,9 @@
       "Modified GRF 1-29 with DAC"
     ],
     "overview": {
-      "what_is": "CJC-1295 DAC is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests CJC-1295 DAC may act through specific receptor pathways relevant to its category of GH / Secretagogues."
+      "function": "Growth hormone stimulation, anti-aging, muscle growth, fat loss",
+      "mechanism_of_action": "CJC-1295 is a synthetic analog of growth hormone-releasing hormone (GHRH). It stimulates the pituitary gland to release more natural growth hormone. The DAC (Drug Affinity Complex) version binds to albumin, significantly extending its half-life to about 8 days. The no-DAC version has a shorter half-life (~30 minutes), making it ideal for pulse-style dosing or stacking with Ipamorelin.",
+      "considerations": "Can cause water retention, tingling, or flushing. Best results seen when combined with adequate sleep, training, and nutrition. Not to be confused with HGH injections, which deliver the hormone directly."
     },
     "protocols": {
       "standard": {
@@ -3578,8 +3583,9 @@
       "GH Fragment"
     ],
     "overview": {
-      "what_is": "HGH Fragment 176-191 is a synthetic fragment composed of amino acids 176 to 191 of the human growth hormone (hGH). This specific segment corresponds to the region responsible for the lipolytic activity of GH, meaning fat burning, without the undesirable side effects of full GH, such as hyperglycemia, water retention, or acromegaly. Research has shown that HGH Frag 176-191 is up to 12.5 times more potent than full GH in inducing lipolysis, making it the most effective peptide available for targeted fat burning.",
-      "mechanism_summary": "It stimulates lipolysis (breakdown of fat) and inhibits lipogenesis (formation of new fat cells) without affecting IGF-1 or insulin levels."
+      "function": "Fat loss, metabolism boost, body recomposition",
+      "mechanism_of_action": "HGH Frag 176-191 is a modified form of HGH that includes only the amino acid sequence responsible for fat metabolism. It mimics GH's lipolytic action without the full range of GH effects. Popular for cutting cycles.",
+      "considerations": "Minimal side effects. Some report localized fat loss. Not anabolic, so best used as part of a broader program."
     },
     "protocols": {
       "title": "Standard Subcutaneous Protocol",
@@ -3877,8 +3883,9 @@
       "Insulin-like Growth Factor 1 LR3"
     ],
     "overview": {
-      "what_is": "IGF-1 LR3 is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests IGF-1 LR3 may act through specific receptor pathways relevant to its category of GH / Secretagogues."
+      "function": "Muscle growth, recovery, fat loss, cellular regeneration",
+      "mechanism_of_action": "Insulin-like Growth Factor 1 LR3 is a modified version of IGF-1 with a longer half-life. It mimics the anabolic effects of GH by promoting nitrogen retention, protein synthesis, and hyperplasia. LR3 resists IGF-binding proteins, enhancing bioavailability and systemic action.",
+      "considerations": "May cause hypoglycemia, jaw/hand tightness, or insulin resistance with prolonged use. Not suitable for unsupervised use."
     },
     "protocols": {
       "standard": {
@@ -4039,8 +4046,9 @@
     ],
     "also_known_as": [],
     "overview": {
-      "what_is": "Ipamorelin is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests Ipamorelin may act through specific receptor pathways relevant to its category of GH / Secretagogues."
+      "function": "Growth hormone stimulation, anti-aging, improved recovery",
+      "mechanism_of_action": "Ipamorelin is a selective ghrelin receptor agonist that stimulates GH release without raising cortisol or prolactin. It mimics natural pulses of GH, making it popular for anti-aging, fat loss, and muscle preservation. Often stacked with CJC-1295 for synergy.",
+      "considerations": "Mild side effects. Well-tolerated with low desensitization risk. Consider baseline GH levels for effectiveness."
     },
     "protocols": {
       "standard": {
@@ -4121,8 +4129,9 @@
       "Metastin"
     ],
     "overview": {
-      "what_is": "Kisspeptin is a neuropeptide encoded by the KISS1 gene that plays a critical role in the regulation of reproductive hormones. It acts on the hypothalamus to stimulate GnRH release, which in turn triggers LH and FSH secretion.",
-      "mechanism_summary": "Kisspeptin binds to GPR54 receptors in the hypothalamus, stimulating the HPG axis and modulating reproductive function."
+      "function": "Fertility support, hormone regulation, HPG axis stimulation",
+      "mechanism_of_action": "Kisspeptin-10 stimulates GnRH neurons, promoting release of LH and FSH, making it vital for reproductive signaling. Under investigation for restoring fertility and supporting testosterone production without suppressing natural hormone rhythms.",
+      "considerations": "Still largely in research. May support endogenous testosterone or ovulation in select cases. Avoid unsupervised use."
     },
     "protocols": {
       "standard": {
@@ -4262,8 +4271,9 @@
       "Alpha-MSH Fragment 11-13"
     ],
     "overview": {
-      "what_is": "KPV is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests KPV may act through specific receptor pathways relevant to its category of Immunity."
+      "function": "Anti-inflammatory, skin healing, gut protection",
+      "mechanism_of_action": "KPV is a tripeptide fragment of alpha-MSH with potent anti-inflammatory effects. It downregulates pro-inflammatory cytokines like TNF-alpha and IL-1B, and supports healing in gut and skin tissue. Also studied in IBD models.",
+      "considerations": "Well tolerated. Topical forms preferred for local inflammation. Promising for skin and gut health."
     },
     "protocols": {
       "standard": {
@@ -4740,8 +4750,9 @@
       "Mitochondrial ORF of the 12S rRNA type-c"
     ],
     "overview": {
-      "what_is": "MOTS-c is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests MOTS-c may act through specific receptor pathways relevant to its category of Anti-aging."
+      "function": "Metabolic regulation, mitochondrial health, exercise mimetic",
+      "mechanism_of_action": "MOTS-c is a mitochondrial-derived peptide that enhances insulin sensitivity, glucose metabolism, and fatty acid oxidation. It activates AMPK pathways and is under study for anti-aging and metabolic benefits.",
+      "considerations": "Limited human data. Anecdotal reports suggest improved energy and body composition. Promising but still experimental."
     },
     "protocols": {
       "standard": {
@@ -5233,8 +5244,9 @@
       "Pitocin"
     ],
     "overview": {
-      "what_is": "Oxytocin is a neuropeptide hormone produced in the hypothalamus and released by the posterior pituitary. Known as the 'bonding hormone,' it plays key roles in social behavior, reproduction, maternal bonding, and stress regulation.",
-      "mechanism_summary": "Oxytocin binds to OXT receptors in the brain and peripheral tissues, modulating social cognition, anxiety, and smooth muscle contraction."
+      "function": "Social bonding, mood enhancement, sexual function",
+      "mechanism_of_action": "Oxytocin is a neuropeptide hormone produced in the hypothalamus and secreted by the posterior pituitary. It plays a key role in emotional bonding, maternal behavior, and orgasm. In peptide therapy, synthetic oxytocin is used for anxiety relief, social connection, and intimacy support.",
+      "considerations": "Well tolerated. May cause transient emotional sensitivity, lightheadedness, or uterine contractions in women. Effects on social behavior vary."
     },
     "protocols": {
       "standard": {
@@ -5724,8 +5736,9 @@
       "Bremelanotide"
     ],
     "overview": {
-      "what_is": "PT-141 is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests PT-141 may act through specific receptor pathways relevant to its category of Hormonal / Sexual Health."
+      "function": "Libido enhancement, erectile function, sexual desire (both sexes)",
+      "mechanism_of_action": "PT-141 is a melanocortin receptor agonist that stimulates MC-4 and MC-3 receptors in the brain, enhancing sexual arousal via central (neural) mechanisms rather than blood flow. Unlike PDE5 inhibitors (e.g., Viagra), it works on libido, not just performance.",
+      "considerations": "Possible side effects include flushing, nausea, headache, or increased blood pressure. FDA-approved as Vyleesi for hypoactive sexual desire disorder in women. Not for daily use."
     },
     "protocols": {
       "standard": {
@@ -5916,7 +5929,9 @@
       "Tuftsin Analog"
     ],
     "overview": {
-      "what_is": "Selank is a synthetic anxiolytic peptide derived from Tuftsin, approved in Russia for clinical use. It exerts potent anxiolytic effects without sedation or dependency, through the modulation of the GABAergic system and influence on BDNF, serotonin, and dopamine levels."
+      "function": "Anxiolytic, cognitive support, immune modulation",
+      "mechanism_of_action": "Selank is a synthetic heptapeptide based on tuftsin, designed to modulate the immune and nervous systems. It enhances serotonin and GABA activity, making it effective for anxiety reduction and cognitive clarity.",
+      "considerations": "Generally well tolerated. Some users report mild nasal irritation. Used off-label in nootropic circles."
     },
     "protocols": {
       "title": "Intranasal / SC Protocol",
@@ -6148,7 +6163,9 @@
       "ACTH(4-10) analog"
     ],
     "overview": {
-      "what_is": "Semax is a synthetic neuropeptide derived from the ACTH(4-10) fragment with potent nootropic and neuroprotective properties. Approved in Russia, it enhances cognition, memory, and learning without raising cortisol levels. It works by increasing BDNF and modulating neurotransmitters."
+      "function": "Nootropic, neuroprotection, stroke recovery",
+      "mechanism_of_action": "A synthetic peptide derived from ACTH fragments, Semax increases BDNF levels and supports neurogenesis and memory. It modulates neurotransmitter levels and promotes recovery from brain injuries.",
+      "considerations": "Minimal side effects. Some users report improved cognition and alertness. Not widely approved outside Russia."
     },
     "protocols": {
       "title": "Subcutaneous Protocol",
@@ -6868,8 +6885,9 @@
       "TB4"
     ],
     "overview": {
-      "what_is": "TB-500 is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests TB-500 may act through specific receptor pathways relevant to its category of Recovery."
+      "function": "Wound healing, tissue regeneration, anti-inflammatory",
+      "mechanism_of_action": "TB-4 is a naturally occurring peptide that modulates actin dynamics, promotes angiogenesis, and accelerates tissue repair. It plays a central role in cell migration and inflammation resolution.",
+      "considerations": "Generally safe; mild fatigue or injection site irritation reported. Popular for musculoskeletal injuries."
     },
     "protocols": {
       "standard": {
@@ -7099,8 +7117,9 @@
       "Egrifta"
     ],
     "overview": {
-      "what_is": "Tesamorelin is a research peptide currently under investigation for its potential therapeutic applications.",
-      "mechanism_summary": "Research suggests Tesamorelin may act through specific receptor pathways relevant to its category of GH / Secretagogues."
+      "function": "Growth hormone stimulation, fat loss (especially visceral fat)",
+      "mechanism_of_action": "A GHRH analog approved for HIV-related lipodystrophy, Tesamorelin increases endogenous growth hormone levels and reduces abdominal fat. Also researched for cognitive benefits in aging.",
+      "considerations": "FDA-approved for specific indications. May cause joint pain, injection site reactions, or insulin sensitivity changes."
     },
     "protocols": {
       "standard": {
