@@ -505,23 +505,54 @@
       "Alanine-Histidine-Lysine Copper"
     ],
     "overview": {
-      "what_is": "AHK-Cu is a copper-binding tripeptide analogue of GHK-Cu with enhanced stability and potentially improved tissue penetration. It is researched for skin rejuvenation, hair follicle stimulation, and wound healing.",
-      "mechanism_summary": "Similar to GHK-Cu, AHK-Cu delivers copper ions to activate tissue repair enzymes, with potentially improved bioavailability."
+      "function": "Skin regeneration, tissue remodeling, hair growth stimulation, anti-aging",
+      "mechanism_of_action": "AHK-Cu (Alanine-Histidine-Lysine-Copper) is a tripeptide complex similar to GHK-Cu but with a different amino acid sequence. It supports collagen synthesis, antioxidant activity, and anti-inflammatory responses. It promotes tissue remodeling, hair follicle stimulation, and general cellular revitalization. AHK-Cu may be slightly more potent than GHK-Cu in specific applications due to its distinct pharmacokinetics.",
+      "considerations": "Generally well tolerated. For topical applications, mild irritation, redness, or itching at the site may occur. For injectable routes, localized pain or swelling at the injection site can occur. Systemic adverse effects are uncommon at appropriate research doses. Start with lower doses and titrate upwards."
     },
     "protocols": {
+      "title": "AHK-Cu Standard Protocol",
       "standard": {
-        "route": "Subcutaneous / Topical",
-        "frequency": "Daily"
+        "route": "Topical or Subcutaneous",
+        "frequency": "1-2x daily (topical) or daily (SC)"
       },
       "dosages": [
         {
-          "indication": "Skin & hair research",
-          "dose": "1-3mg",
-          "route": "SC daily",
-          "notes": ""
+          "indication": "Topical (skin/hair)",
+          "schedule": "1-2x daily",
+          "dose": "0.05% - 0.5% (w/v) in carrier solution"
+        },
+        {
+          "indication": "Subcutaneous injection",
+          "schedule": "Once daily or every other day",
+          "dose": "0.5 - 2 mg/day"
+        },
+        {
+          "indication": "In vitro studies",
+          "schedule": "Single or repeated exposure",
+          "dose": "10nM - 10 mcM"
         }
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C."
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Initial Phase (Weeks 1-2)",
+          "dose": "Start low: 0.05% topical or 0.5mg SC"
+        },
+        {
+          "number": 2,
+          "phase": "Maintenance Phase (Weeks 3-8)",
+          "dose": "Increase to 0.1-0.5% topical or 1-2mg SC"
+        }
+      ],
+      "reconstitution_steps": [
+        "Use bacteriostatic water for reconstitution to maintain sterility and prolong stability.",
+        "For 10mg vial: add 1ml bacteriostatic water = 10mg/ml solution.",
+        "For 1mg dose: draw 0.1ml from the reconstituted vial.",
+        "Gently swirl until fully dissolved (do not shake).",
+        "Store reconstituted solution refrigerated at 2-8\u00b0C.",
+        "Label with date and concentration. Use within 28 days."
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8\u00b0C once reconstituted. Lyophilized powder can be stored frozen long-term."
     },
     "research": {
       "mechanism": "AHK-Cu functions as a copper delivery peptide with enhanced stability.",
@@ -2928,8 +2959,9 @@
       "GHK-Copper"
     ],
     "overview": {
-      "what_is": "GHK-Cu is a naturally occurring copper-binding tripeptide found in human plasma, saliva, and urine. It plays important roles in wound healing, tissue remodeling, collagen synthesis, and anti-inflammatory signaling.",
-      "mechanism_summary": "GHK-Cu delivers copper ions to tissues, activating metalloenzymes involved in collagen synthesis, antioxidant defense, and stem cell recruitment."
+      "function": "Skin regeneration, wound healing, anti-aging, hair growth",
+      "mechanism_of_action": "GHK-Cu is a copper-binding peptide naturally occurring in human plasma. It supports tissue remodeling, collagen synthesis, and reduces oxidative stress. It promotes hair follicle stimulation and is a powerful antioxidant with anti-inflammatory effects.",
+      "considerations": "Well tolerated. Minor skin irritation may occur. Topical form preferred for cosmetic purposes."
     },
     "protocols": {
       "standard": {
