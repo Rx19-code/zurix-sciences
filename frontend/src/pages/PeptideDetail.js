@@ -336,11 +336,6 @@ function OverviewContent({ peptide }) {
             <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
           </Card>
         )}
-        {ov.considerations && (
-          <Card icon={<BookOpen className="w-5 h-5" />} title="Considerations">
-            <p className="text-gray-600 leading-relaxed">{ov.considerations}</p>
-          </Card>
-        )}
       </>
     );
   }
@@ -630,51 +625,64 @@ function SynergyContent({ peptide }) {
 /* ── Quick Facts Sidebar ── */
 function QuickFacts({ peptide }) {
   var akaList = peptide.also_known_as || [];
+  var ov = peptide.overview || {};
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm sticky top-6">
-      <div className="px-5 py-4 border-b border-gray-100">
-        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Quick Facts</h3>
-      </div>
-      <div className="px-5 py-4 space-y-5">
-        {peptide.classification && (
-          <FactItem icon={<FlaskConical className="w-4 h-4" />} label="Classification" value={peptide.classification} />
-        )}
-        {peptide.evidence_level && (
-          <FactItem icon={<Award className="w-4 h-4" />} label="Evidence Level">
-            <span className="inline-block text-xs font-semibold bg-green-100 text-green-700 border border-green-200 px-2.5 py-1 rounded-full">{peptide.evidence_level}</span>
-          </FactItem>
-        )}
-        {peptide.half_life && (
-          <FactItem icon={<Clock className="w-4 h-4" />} label="Half-life" value={peptide.half_life} />
-        )}
-        {peptide.reconstitution_difficulty && (
-          <FactItem icon={<RefreshCw className="w-4 h-4" />} label="Reconstitution">
-            <span className={'text-sm font-semibold ' + (peptide.reconstitution_difficulty === 'Easy' ? 'text-green-600' : peptide.reconstitution_difficulty === 'Hard' ? 'text-red-600' : 'text-amber-600')}>
-              {peptide.reconstitution_difficulty}
-            </span>
-          </FactItem>
-        )}
-        {akaList.length > 0 && (
+    <div className="space-y-4">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm sticky top-6">
+        <div className="px-5 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Quick Facts</h3>
+        </div>
+        <div className="px-5 py-4 space-y-5">
+          {peptide.classification && (
+            <FactItem icon={<FlaskConical className="w-4 h-4" />} label="Classification" value={peptide.classification} />
+          )}
+          {peptide.evidence_level && (
+            <FactItem icon={<Award className="w-4 h-4" />} label="Evidence Level">
+              <span className="inline-block text-xs font-semibold bg-green-100 text-green-700 border border-green-200 px-2.5 py-1 rounded-full">{peptide.evidence_level}</span>
+            </FactItem>
+          )}
+          {peptide.half_life && (
+            <FactItem icon={<Clock className="w-4 h-4" />} label="Half-life" value={peptide.half_life} />
+          )}
+          {peptide.reconstitution_difficulty && (
+            <FactItem icon={<RefreshCw className="w-4 h-4" />} label="Reconstitution">
+              <span className={'text-sm font-semibold ' + (peptide.reconstitution_difficulty === 'Easy' ? 'text-green-600' : peptide.reconstitution_difficulty === 'Hard' ? 'text-red-600' : 'text-amber-600')}>
+                {peptide.reconstitution_difficulty}
+              </span>
+            </FactItem>
+          )}
+          {akaList.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Tag className="w-4 h-4 text-gray-400" />
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Alternative Names</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {akaList.map(function(aka, i) {
+                  return <span key={i} className="text-xs bg-gray-100 text-gray-600 border border-gray-200 px-2.5 py-1 rounded-full">{aka}</span>;
+                })}
+              </div>
+            </div>
+          )}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Tag className="w-4 h-4 text-gray-400" />
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Alternative Names</span>
+              <Beaker className="w-4 h-4 text-gray-400" />
+              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Category</span>
             </div>
-            <div className="flex flex-wrap gap-1.5">
-              {akaList.map(function(aka, i) {
-                return <span key={i} className="text-xs bg-gray-100 text-gray-600 border border-gray-200 px-2.5 py-1 rounded-full">{aka}</span>;
-              })}
-            </div>
+            <span className="inline-block text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">{peptide.category}</span>
           </div>
-        )}
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Beaker className="w-4 h-4 text-gray-400" />
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Category</span>
-          </div>
-          <span className="inline-block text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">{peptide.category}</span>
         </div>
       </div>
+      {ov.considerations && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl shadow-sm">
+          <div className="px-5 py-4 border-b border-amber-200">
+            <h3 className="text-sm font-bold text-amber-800 uppercase tracking-wider">Considerations</h3>
+          </div>
+          <div className="px-5 py-4">
+            <p className="text-sm text-amber-700 leading-relaxed">{ov.considerations}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
