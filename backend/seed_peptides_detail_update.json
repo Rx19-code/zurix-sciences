@@ -1,0 +1,1919 @@
+[
+  {
+    "slug": "bpc-157",
+    "name": "BPC-157 for Neuroprotection",
+    "description": "Nootropic use of BPC-157 for neural protection and repair.",
+    "category": "Nootropic / Cognitive",
+    "is_free": false,
+    "presentations": [
+      "10mg",
+      "20mg",
+      "40mg"
+    ],
+    "also_known_as": [
+      "BPC-157 Neuro",
+      "BPC-157 Nootropic"
+    ],
+    "overview": {
+      "function": "Tissue repair, gut healing, anti-inflammatory support",
+      "mechanism_of_action": "BPC-157 (Body Protection Compound) is a synthetic peptide derived from a protective protein in human gastric juice. It promotes angiogenesis, fibroblast migration, collagen formation, and nitric oxide modulation, making it effective for healing muscle, tendon, ligament, nerve, and gut tissue.",
+      "considerations": "Well tolerated in most cases. Rare side effects include fatigue or nausea. Not approved for human use but widely used in research and by biohackers."
+    },
+    "protocols": {
+      "title": "Subcutaneous/Oral Protocol — BPC-157 for Neuroprotection",
+      "standard": {
+        "route": "Subcutaneous or Oral",
+        "frequency": "1-2x daily"
+      },
+      "dosages": [
+        {
+          "indication": "Post-injury neuroprotection",
+          "schedule": "2x daily",
+          "dose": "500 mcg/day"
+        },
+        {
+          "indication": "Gut-Brain Axis",
+          "schedule": "1x daily (oral, fasted)",
+          "dose": "250 mcg/day"
+        }
+      ],
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Weeks 1-2",
+          "dose": "250 mcg/day"
+        },
+        {
+          "number": 2,
+          "phase": "Weeks 3-4",
+          "dose": "500 mcg/day"
+        },
+        {
+          "number": 3,
+          "phase": "Weeks 5-6",
+          "dose": "500 mcg/day"
+        },
+        {
+          "number": 4,
+          "phase": "Weeks 7-8 (maintenance)",
+          "dose": "250 mcg/day"
+        }
+      ],
+      "reconstitution": "Easy reconstitution with bacteriostatic water.",
+      "reconstitution_steps": [
+        "Aspirate bacteriostatic water with a sterile syringe",
+        "Inject slowly down the side of the vial; avoid foam",
+        "Gently swirl until dissolved (do not shake)",
+        "Label and refrigerate at 2-8°C, protect from light"
+      ]
+    },
+    "research": {
+      "mechanism": "BPC-157 exerts its neuroprotective effects through modulation of dopaminergic and serotonergic systems in the CNS. It protects against neurotoxicity induced by various substances, including methamphetamines, alcohol and organophosphates. It promotes cerebral angiogenesis, increasing blood supply to injured areas, and activates neuronal growth signaling pathways such as JAK-2, STAT-3 and others. Its action on the gut-brain axis, mediated by regulation of the intestinal-cerebral axis, provides an additional mechanism of neuroprotection and mood modulation.",
+      "steps": [
+        "Modulates the dopaminergic and serotonergic systems",
+        "Promotes cerebral angiogenesis",
+        "Protects against neurotoxicity",
+        "Activates neuronal growth signaling pathways"
+      ],
+      "references": [
+        {
+          "title": "BPC 157 as a therapy for neurological disorders",
+          "metadata": [
+            "Review",
+            "In vitro & In vivo",
+            "2022"
+          ],
+          "summary": "This comprehensive review explores the therapeutic potential of BPC-157 in various neurological diseases, highlighting its neuroprotective and regenerative mechanisms of action."
+        },
+        {
+          "title": "BPC 157 promotes functional recovery and neuroprotection in a rat model of spinal cord injury",
+          "metadata": [
+            "Rats",
+            "In vivo",
+            "2018"
+          ],
+          "summary": "This study demonstrated that BPC-157 improves functional recovery and offers significant neuroprotection in rats with spinal cord injury, suggesting its therapeutic potential."
+        },
+        {
+          "title": "BPC 157 promotes functional recovery and neuroprotection in a rat model of traumatic brain injury",
+          "metadata": [
+            "Rats",
+            "In vivo",
+            "2019"
+          ],
+          "summary": "Researchers found that BPC-157 improves functional recovery and exerts neuroprotective effects in a model of traumatic brain injury in rats, attenuating neuronal damage."
+        },
+        {
+          "title": "BPC 157: A novel peptide for the treatment of neurodegenerative diseases",
+          "metadata": [
+            "Review",
+            "In vitro & In vivo",
+            "2022"
+          ],
+          "summary": "This review discusses the potential of BPC-157 as a novel therapy for neurodegenerative diseases, emphasizing its anti-inflammatory, antioxidant and regenerative properties."
+        }
+      ]
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "5-Amino-1MQ",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Arimistane",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "CJC-1295",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Cerebrolysin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "DSIP",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Epitalon",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "GHK-Cu",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Gonadorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "IGF-1 LR3",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Ipamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Kisspeptin-10",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Pentadecapeptide",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "TB-500",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Tesamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Thymalin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Thymosin Alpha-1",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "hCG",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Estrogen Reset Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The PCOS & Metabolic Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Thyroid Support Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Skin, Hair & Glow Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Hormone Rhythm Stabilizer Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Skin & Collagen Rescue Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Joint & Bone Support Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Hashimoto's Immune Reset Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Hair, Skin & Nail Support Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Cold Sensitivity & Circulation Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Estrogen Control Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The TRT Off-Ramp Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The Sperm Quality Optimizer Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Semen Volume Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Post-Orchitis Testicular Recovery Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Recovery & Repair Stack",
+          "category": "Muscle Growth"
+        },
+        {
+          "name": "The Lean Mass Builder (Recomp Stack)",
+          "category": "Muscle Growth"
+        },
+        {
+          "name": "The Spartan Stack",
+          "category": "Strength & Powerlifting"
+        },
+        {
+          "name": "The CNS Reset Stack",
+          "category": "Strength & Powerlifting"
+        },
+        {
+          "name": "The Tendon Armor Stack",
+          "category": "Strength & Powerlifting"
+        },
+        {
+          "name": "The WOD Resilience Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Mobility & Joint Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Grip & Pull Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Impact Recovery Stack",
+          "category": "Combat Sports"
+        },
+        {
+          "name": "The Weight-Cut Recovery Stack",
+          "category": "Combat Sports"
+        }
+      ]
+    },
+    "classification": "Pentadecapeptide (15 amino acids) — nootropic use",
+    "evidence_level": "Pre-clinical",
+    "half_life": "~4 hours (subcutaneous)",
+    "reconstitution_difficulty": "Easy",
+    "has_product": true,
+    "background": "BPC-157 is a partial sequence of the Body Protection Compound (BPC), a protein discovered in gastric juice. A large portion of the early research comes from Eastern Europe, particularly Croatia. It is widely used in research protocols for its broad tissue-repair, anti-inflammatory, and neuroprotective effects.",
+    "clinical_applications": [
+      "Tendon and Ligament Healing: Accelerated repair, enhanced tensile strength, improved collagen alignment, reduced re-injury risk.",
+      "Muscle Recovery: Faster healing of muscle tears/strains, improved recovery from exercise-induced damage, protection against muscle wasting.",
+      "Digestive System Health: Healing of gastric ulcers, support in IBD, protection against leaky gut, potential benefit in acid reflux.",
+      "Nerve Regeneration: Support for peripheral nerve healing, benefits in nerve crush/compression injuries, possible neuroprotective effects.",
+      "Joint and Bone Support: Potential benefits for joint inflammation, support for bone healing, cartilage protection, enhanced healing at bone-tendon junctions.",
+      "Sports Injuries: Tendonitis/tendinopathy, muscle strains/tears, ligament sprains, overuse joint inflammation."
+    ],
+    "contraindications": [
+      "Active or recent cancer",
+      "Pregnancy and breastfeeding",
+      "Pre-operative period for certain surgeries (due to angiogenic effects)",
+      "Uncontrolled autoimmune conditions",
+      "Children and adolescents (unless medically supervised)",
+      "Individuals with hemostatic disorders or on anticoagulant therapy (use with caution)"
+    ],
+    "interactions": {
+      "medications": [
+        "Corticosteroids: may counteract BPC-157's healing effects",
+        "NSAIDs: complex interactions with healing and inflammation",
+        "Immunosuppressants: theoretical interactions with immune/healing pathways",
+        "Anticoagulants: caution due to angiogenesis and vessel effects"
+      ],
+      "supplements": [
+        "Other healing peptides (TB-500, GHK-Cu): potentially synergistic",
+        "Anti-inflammatory supplements: interactions may be complex",
+        "Growth factors and hormones: potentially synergistic",
+        "Physical therapy, PRP, stem cell treatments: often used together for additive benefit"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Mild injection site pain or irritation",
+        "Temporary fatigue or lethargy",
+        "Mild gastrointestinal discomfort with oral use"
+      ],
+      "less_common": [
+        "Headache",
+        "Dizziness",
+        "Changes in appetite",
+        "Mild nausea"
+      ],
+      "rare": [
+        "Potential growth-promoting effects on pre-existing cancers",
+        "Possible interaction with autoimmune conditions via altered healing and immune modulation",
+        "Unknown long-term effects with extended continuous use",
+        "Potential for altered inflammatory responses in certain diseases"
+      ]
+    }
+  },
+  {
+    "slug": "cjc-1295-dac",
+    "name": "CJC-1295 DAC",
+    "description": "Long-acting GHRH analogue with Drug Affinity Complex for sustained GH release",
+    "category": "GH / Secretagogues",
+    "is_free": false,
+    "presentations": [
+      "5mg"
+    ],
+    "also_known_as": [
+      "Modified GRF 1-29 with DAC"
+    ],
+    "overview": {
+      "function": "Growth hormone stimulation, anti-aging, muscle growth, fat loss",
+      "mechanism_of_action": "CJC-1295 is a synthetic analog of growth hormone-releasing hormone (GHRH). It stimulates the pituitary gland to release more natural growth hormone. The DAC (Drug Affinity Complex) version binds to albumin, significantly extending its half-life to about 8 days. The no-DAC version has a shorter half-life (~30 minutes), making it ideal for pulse-style dosing or stacking with Ipamorelin.",
+      "considerations": "Can cause water retention, tingling, or flushing. Best results seen when combined with adequate sleep, training, and nutrition. Not to be confused with HGH injections, which deliver the hormone directly."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "As per research protocol"
+      },
+      "dosages": [
+        {
+          "indication": "Growth hormone release enhancement",
+          "schedule": "Subcutaneous injection, once per week",
+          "dose": "1 mg"
+        },
+        {
+          "indication": "Treatment of growth hormone deficiency",
+          "schedule": "Subcutaneous injection, twice per week",
+          "dose": "0.5 mg"
+        },
+        {
+          "indication": "Body composition improvement",
+          "schedule": "Subcutaneous injection, three times per week",
+          "dose": "0.75 mg"
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Week 1-4",
+          "dose": "0.25 mg"
+        },
+        {
+          "number": 2,
+          "phase": "Week 5-8",
+          "dose": "0.5 mg"
+        },
+        {
+          "number": 3,
+          "phase": "Week 9-12",
+          "dose": "0.75 mg"
+        },
+        {
+          "number": 4,
+          "phase": "Week 13-16",
+          "dose": "1 mg"
+        }
+      ],
+      "reconstitution_steps": [
+        "Step 1: Use a sterile syringe to withdraw 1 mL of bacteriostatic water.",
+        "Step 2: Inject the bacteriostatic water slowly into the vial containing CJC-1295 DAC powder.",
+        "Step 3: Gently swirl the vial to mix; do not shake vigorously.",
+        "Step 4: Allow the solution to sit for a few minutes to ensure complete dissolution.",
+        "Step 5: Once fully reconstituted, store the peptide at 2-8°C.",
+        "Step 6: Protect from light and use within 30 days of reconstitution."
+      ]
+    },
+    "research": {
+      "mechanism": "The mechanism of action of CJC-1295 DAC is under active investigation.",
+      "steps": [],
+      "references": []
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "AOD-9604",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Gonadorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "IGF-1 LR3",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Kisspeptin-10",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "TB-500",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Tesamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Female Fat Loss Stack",
+          "category": "Fat Loss"
+        },
+        {
+          "name": "The Lean & Toned Stack for Women",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Metabolic Drag Reversal Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The HPTA Reboot Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The T-Boost & GH Sync Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The Raw Power Stack",
+          "category": "Strength & Powerlifting"
+        }
+      ]
+    },
+    "has_product": true,
+    "background": "CJC-1295 is a synthetic analog of growth hormone-releasing hormone (GHRH) designed for a longer half-life than natural GHRH. The DAC (Drug Affinity Complex) version binds to albumin in the bloodstream, dramatically extending its half-life to several days, enabling less frequent dosing than 'Modified GRF 1-29' (CJC-1295 without DAC).",
+    "clinical_applications": [
+      "Anti-Aging and Wellness: Addresses age-related decline in GH production; supports vitality, energy, and body composition with aging.",
+      "Athletic Performance and Recovery: Enhances recovery between training sessions, supports tissue repair after exercise, improves training adaptation.",
+      "Growth Hormone Optimization: Significant increase in GH release, enhancement of natural GH pulsatility, sustained elevation of IGF-1 (especially with DAC).",
+      "Body Composition Effects: Potential fat reduction, support for lean muscle maintenance/growth, improved metabolism and energy utilization.",
+      "Convenience-Focused Protocols: Less frequent injections (suitable for travelers); maintains steadier GH levels throughout the week with DAC.",
+      "Synergistic Protocols: Commonly combined with GHRPs for enhanced GH release; foundation of comprehensive GH optimization protocols."
+    ],
+    "contraindications": [
+      "Active or recent cancer",
+      "Uncontrolled diabetes or severe insulin resistance",
+      "Active pituitary tumors",
+      "Uncontrolled hypertension",
+      "Pregnancy and breastfeeding",
+      "Children and adolescents (unless under strict medical supervision)"
+    ],
+    "interactions": {
+      "medications": [
+        "Glucocorticoids: may blunt GH response and reduce effectiveness",
+        "Diabetes medications: blood sugar can shift; dosage adjustment may be required",
+        "Exogenous growth hormone: overlap may lead to excessive GH/IGF-1 levels",
+        "Thyroid medications: GH can influence thyroid hormone metabolism; monitoring may be needed"
+      ],
+      "supplements": [
+        "Arginine and other GH-stimulating amino acids: potentially synergistic",
+        "Melatonin: may enhance sleep-related GH release",
+        "Blood sugar-regulating supplements: may require adjustment as GH affects glucose balance"
+      ],
+      "foods": [
+        "Carbohydrates and fats within ~2 hours before dosing may reduce GH response",
+        "Protein has less impact but can modestly blunt effect"
+      ]
+    },
+    "side_effects": {
+      "common": [
+        "Mild injection site reactions (redness, itching)",
+        "Temporary water retention",
+        "Mild hunger increase (appetite stimulation)",
+        "Tingling or flushing sensation after injection"
+      ],
+      "less_common": [
+        "Headaches",
+        "Dizziness",
+        "Lethargy or fatigue",
+        "Mild changes in blood glucose (monitor if diabetic)"
+      ],
+      "rare": [
+        "Carpal tunnel-like symptoms (with prolonged or high-dose use)",
+        "Changes in insulin sensitivity",
+        "Joint stiffness or swelling",
+        "Allergic reactions"
+      ]
+    }
+  },
+  {
+    "slug": "ghk-cu",
+    "name": "GHK-Cu",
+    "description": "Copper peptide for skin regeneration, collagen synthesis, and wound healing research",
+    "category": "Aesthetics / Skin",
+    "is_free": false,
+    "presentations": [
+      "50mg",
+      "100mg"
+    ],
+    "also_known_as": [
+      "Copper Peptide",
+      "GHK-Copper"
+    ],
+    "overview": {
+      "function": "Skin regeneration, wound healing, anti-aging, hair growth",
+      "mechanism_of_action": "GHK-Cu is a copper-binding peptide naturally occurring in human plasma. It supports tissue remodeling, collagen synthesis, and reduces oxidative stress. It promotes hair follicle stimulation and is a powerful antioxidant with anti-inflammatory effects.",
+      "considerations": "Well tolerated. Minor skin irritation may occur. Topical form preferred for cosmetic purposes."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous / Topical",
+        "frequency": "Daily or as directed"
+      },
+      "dosages": [
+        {
+          "indication": "Skin rejuvenation",
+          "dose": "1-2mg",
+          "route": "SC daily",
+          "notes": ""
+        },
+        {
+          "indication": "Hair growth research",
+          "dose": "1-2mg",
+          "route": "SC in scalp area",
+          "notes": ""
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C."
+    },
+    "research": {
+      "mechanism": "GHK-Cu modulates gene expression related to tissue repair and regeneration.",
+      "steps": [
+        "Delivers bioavailable copper to tissue metalloenzymes",
+        "Activates collagen I, III synthesis and elastin production",
+        "Recruits mesenchymal stem cells to damaged tissue",
+        "Upregulates antioxidant genes (SOD, glutathione system)",
+        "Suppresses pro-inflammatory cytokines (IL-6, TNF-alpha)"
+      ],
+      "references": [
+        "PMID: 22585088",
+        "PMID: 25987413"
+      ]
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "5-Amino-1MQ",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Arimistane",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "BPC-157",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Dihexa",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Epitalon",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Follistatin 344",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "IGF-1 DES",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Kisspeptin-10",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Pentadecapeptide",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Semax",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "TB-500",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Thymalin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Thymosin Alpha-1",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "Mito-Melt Stack",
+          "category": "Fat Loss"
+        },
+        {
+          "name": "The Estrogen Reset Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Thyroid Support Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Fertility & Cycle Harmony Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Skin, Hair & Glow Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Skin & Collagen Rescue Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Cognitive & Clarity Stack (Brain Fog Fix)",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Joint & Bone Support Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The T3/T4 Sensitivity Enhancer Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Hair, Skin & Nail Support Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Cold Sensitivity & Circulation Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Estrogen Control Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The Sperm Quality Optimizer Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Leydig Cell Support Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Post-Orchitis Testicular Recovery Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Recovery & Repair Stack",
+          "category": "Muscle Growth"
+        },
+        {
+          "name": "The Mobility & Joint Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Functional VO2 Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Impact Recovery Stack",
+          "category": "Combat Sports"
+        },
+        {
+          "name": "The Weight-Cut Recovery Stack",
+          "category": "Combat Sports"
+        },
+        {
+          "name": "The Combat Endurance Stack",
+          "category": "Combat Sports"
+        },
+        {
+          "name": "The Explosive Speed Stack",
+          "category": "Sprinting & Speed"
+        }
+      ]
+    },
+    "has_product": true,
+    "background": "GHK-Cu was discovered in the 1970s by Dr. Loren Pickart during research on liver tissue regeneration. It is a naturally occurring tripeptide (Glycyl-L-Histidyl-L-Lysine) that strongly binds copper, found in human plasma, saliva, and urine. Endogenous levels decline significantly with age.",
+    "clinical_applications": [
+      "Skin Regeneration: Enhanced wound healing, increased collagen/elastin production, improved firmness and elasticity, reduction in fine lines and wrinkles.",
+      "Tissue Repair: Accelerated healing across various tissues, improved repair quality, reduced scarring and fibrosis, support for connective tissue resilience.",
+      "Anti-Inflammatory Effects: Reduction in inflammatory markers, support for inflammation resolution, potential benefits in chronic inflammatory conditions.",
+      "Antioxidant Protection: Enhanced cellular antioxidant defenses, protection against oxidative stress, support for cellular repair, anti-aging effects.",
+      "Neurological Benefits: Potential neuroprotective effects (experimental), support for nerve regeneration, possible cognitive benefits and protection against neurotoxicity in models.",
+      "Dermatology and Aesthetic Use: Aging skin, sun damage/hyperpigmentation, scarring and wound healing, post-procedure recovery (microneedling, lasers, chemical peels)."
+    ],
+    "contraindications": [
+      "Pregnancy and breastfeeding",
+      "Wilson's disease or other disorders of copper metabolism",
+      "Known hypersensitivity to copper or GHK-Cu",
+      "Children and adolescents (unless medically supervised)"
+    ],
+    "interactions": {
+      "medications": [
+        "Copper-chelating drugs (e.g., penicillamine, trientine): can directly oppose GHK-Cu's activity",
+        "Immunosuppressants: theoretical interactions with immune modulation",
+        "Certain anti-inflammatory medications: may overlap or complicate response"
+      ],
+      "supplements": [
+        "High-dose zinc: competes with copper and can reduce GHK-Cu effectiveness",
+        "Other healing peptides (BPC-157, TB-500): can be synergistic",
+        "Antioxidant supplements: usually synergistic with GHK-Cu's actions"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Mild injection site reactions (topical or systemic)",
+        "Temporary skin irritation with topical use"
+      ],
+      "less_common": [
+        "Mild headache",
+        "Metallic taste (with higher systemic doses)",
+        "Transient redness or tingling at application site"
+      ],
+      "rare": [
+        "Allergic reactions",
+        "Copper accumulation with very high chronic doses (theoretical)",
+        "Exacerbation of conditions involving copper metabolism"
+      ]
+    }
+  },
+  {
+    "slug": "ipamorelin",
+    "name": "Ipamorelin",
+    "description": "Selective GHRP for clean GH release without appetite or cortisol effects",
+    "category": "GH / Secretagogues",
+    "is_free": false,
+    "presentations": [
+      "10mg"
+    ],
+    "also_known_as": [],
+    "overview": {
+      "function": "Growth hormone stimulation, anti-aging, improved recovery",
+      "mechanism_of_action": "Ipamorelin is a selective ghrelin receptor agonist that stimulates GH release without raising cortisol or prolactin. It binds specifically to the ghrelin receptor (GHS-R1a) in the pituitary, stimulating growth hormone release and amplifying natural GH pulses. Key distinguishing feature: minimal impact on cortisol and prolactin levels, less pronounced effect on appetite than GHRP-2 or GHRP-6, and more selective for GH release than earlier GHRPs.",
+      "considerations": "Mild side effects. Well-tolerated with low desensitization risk. Consider baseline GH levels for effectiveness."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "As per research protocol"
+      },
+      "dosages": [
+        {
+          "indication": "Standard dose",
+          "schedule": "2-3x daily on empty stomach",
+          "dose": "200 mcg per dose"
+        },
+        {
+          "indication": "Anti-aging / wellness",
+          "schedule": "Pre-sleep + AM, 5 days on/2 off",
+          "dose": "100-200 mcg per dose"
+        },
+        {
+          "indication": "Athletic recovery",
+          "schedule": "Pre-sleep + post-workout",
+          "dose": "200-300 mcg per dose"
+        },
+        {
+          "indication": "Body composition",
+          "schedule": "2-3x daily, 4-6 months on / 1-2 months off",
+          "dose": "200 mcg per dose"
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Weeks 1-2",
+          "dose": "100 mcg"
+        },
+        {
+          "number": 2,
+          "phase": "Weeks 3-4",
+          "dose": "150 mcg"
+        },
+        {
+          "number": 3,
+          "phase": "Weeks 5-6",
+          "dose": "200 mcg"
+        },
+        {
+          "number": 4,
+          "phase": "Weeks 7-8",
+          "dose": "250 mcg"
+        }
+      ],
+      "reconstitution_steps": [
+        "Step 1: Gather all materials including Ipamorelin vial and bacteriostatic water.",
+        "Step 2: Clean the vial tops with an alcohol swab.",
+        "Step 3: Using a sterile syringe, draw up the appropriate amount of bacteriostatic water.",
+        "Step 4: Slowly inject the bacteriostatic water into the Ipamorelin vial.",
+        "Step 5: Gently swirl the vial until the powder is completely dissolved.",
+        "Step 6: Store the reconstituted solution at 2-8C."
+      ]
+    },
+    "research": {
+      "mechanism": "The mechanism of action of Ipamorelin is under active investigation.",
+      "steps": [],
+      "references": []
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "AOD-9604",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Gonadorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "IGF-1 LR3",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Kisspeptin-10",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "TB-500",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Tesamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Female Fat Loss Stack",
+          "category": "Fat Loss"
+        },
+        {
+          "name": "The Lean & Toned Stack for Women",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Metabolic Drag Reversal Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The HPTA Reboot Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The T-Boost & GH Sync Stack",
+          "category": "Hormonal Recovery"
+        },
+        {
+          "name": "The Raw Power Stack",
+          "category": "Strength & Powerlifting"
+        }
+      ]
+    },
+    "has_product": true,
+    "background": "Third-generation GHRP developed in the late 1990s. Specifically designed to provide GH-releasing benefits while minimizing unwanted side effects.",
+    "benefits": [
+      "Significant increase in GH release and enhancement of natural GH pulsatility",
+      "Elevation of IGF-1 with regular use",
+      "Favorable effects on body composition and fat reduction",
+      "Support for lean mass preservation",
+      "Improved sleep quality and enhanced recovery from exercise",
+      "Support for tissue repair",
+      "Minimal side effects compared to other GHRPs"
+    ],
+    "classification": "Growth hormone secretagogue, ghrelin mimetic",
+    "clinical_applications": [
+      "Anti-aging: Addressing age-related decline in GH production",
+      "Athletic recovery: Enhancing recovery between training sessions",
+      "Sensitive individuals: Those who experience side effects with other GHRPs",
+      "Aesthetic goals: Supporting skin health and body composition improvement"
+    ],
+    "contraindications": [
+      "Active or recent cancer",
+      "Uncontrolled diabetes or severe insulin resistance",
+      "Active pituitary tumors",
+      "Uncontrolled hypertension",
+      "Pregnancy and breastfeeding",
+      "Children and adolescents (unless medically supervised)"
+    ],
+    "interactions": {
+      "medications": [
+        "Dopamine agonists (may interfere)",
+        "Diabetes medications (may require adjustment)",
+        "Growth hormone (redundant and potentially excessive)"
+      ],
+      "supplements": [
+        "Arginine and amino acids that stimulate GH (potentially synergistic)",
+        "Melatonin (may enhance sleep-related GH release)",
+        "Blood sugar-regulating supplements (may need adjustment)"
+      ],
+      "foods": [
+        "Carbohydrates and fats reduce effectiveness if consumed within 2-3 hours before",
+        "Protein has less impact but still somewhat reduces effectiveness"
+      ]
+    },
+    "molecular_structure": "Pentapeptide: Aib-His-D-2-Nal-D-Phe-Lys-NH2. Selective binding to ghrelin receptor.",
+    "practical_notes": {
+      "reconstitution": "Reconstitute with bacteriostatic water. Store refrigerated at 2-8°C. Avoid freezing. Protect from light. Stability: 4-6 weeks when refrigerated.",
+      "administration": "Rotate injection sites. Clean area with alcohol before injection. Use insulin syringes. Consider combining with CJC-1295 for synergistic effects.",
+      "cycling": "4-6 months on, 1-2 months off. Some prefer 5 days on, 2 days off weekly. Continuous use may lead to receptor desensitization."
+    },
+    "side_effects": {
+      "common": [
+        "Mild hunger increase (much less than GHRP-6)",
+        "Temporary water retention (minimal)",
+        "Tingling or flushing sensation after injection"
+      ],
+      "less_common": [
+        "Headaches",
+        "Dizziness",
+        "Lethargy"
+      ],
+      "rare": [
+        "Injection site reactions",
+        "Changes in insulin sensitivity",
+        "Carpal tunnel-like symptoms (long-term use)"
+      ]
+    }
+  },
+  {
+    "slug": "kpv",
+    "name": "KPV",
+    "description": "Alpha-MSH fragment for anti-inflammatory and gut health research",
+    "category": "Immunity",
+    "is_free": false,
+    "presentations": [
+      "10mg",
+      "30mg"
+    ],
+    "also_known_as": [
+      "Alpha-MSH Fragment 11-13"
+    ],
+    "overview": {
+      "function": "Anti-inflammatory, skin healing, gut protection",
+      "mechanism_of_action": "KPV is a tripeptide fragment of alpha-MSH with potent anti-inflammatory effects. It downregulates pro-inflammatory cytokines like TNF-alpha and IL-1B, and supports healing in gut and skin tissue. Also studied in IBD models.",
+      "considerations": "Well tolerated. Topical forms preferred for local inflammation. Promising for skin and gut health."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "As per research protocol"
+      },
+      "dosages": [
+        {
+          "indication": "Anti-inflammatory effects",
+          "schedule": "Subcutaneous, daily",
+          "dose": "100 mcg"
+        },
+        {
+          "indication": "Gut health improvement",
+          "schedule": "Subcutaneous, every other day",
+          "dose": "150 mcg"
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Weeks 1-2",
+          "dose": "50 mcg"
+        },
+        {
+          "number": 2,
+          "phase": "Weeks 3-4",
+          "dose": "100 mcg"
+        },
+        {
+          "number": 3,
+          "phase": "Weeks 5-6",
+          "dose": "150 mcg"
+        }
+      ],
+      "reconstitution_steps": [
+        "Step 1: Gather all necessary materials including KPV peptide vial and bacteriostatic water.",
+        "Step 2: Clean the top of the peptide vial with an alcohol wipe.",
+        "Step 3: Measure the appropriate amount of bacteriostatic water as per required dosage.",
+        "Step 4: Slowly inject the bacteriostatic water into the vial containing the KPV peptide.",
+        "Step 5: Gently swirl the vial to mix, avoiding vigorous shaking to prevent foaming.",
+        "Step 6: Store the reconstituted peptide at 2-8°C and use within the recommended time frame."
+      ]
+    },
+    "research": {
+      "mechanism": "The mechanism of action of KPV is under active investigation.",
+      "steps": [],
+      "references": []
+    },
+    "synergy": {
+      "interactions": [],
+      "stacks": []
+    },
+    "has_product": true,
+    "background": "KPV is the C-terminal tripeptide of α-MSH (alpha melanocyte-stimulating hormone). It retains the potent anti-inflammatory and immunomodulatory properties of α-MSH without its melanotropic (skin darkening) effects, making it suitable for systemic and topical therapeutic use.",
+    "clinical_applications": [
+      "Inflammatory Bowel Conditions (Experimental/Off-Label): Potential benefit for ulcerative colitis, Crohn's disease, inflammatory IBS, and intestinal permeability/leaky gut — reducing mucosal inflammation and supporting healing.",
+      "Skin Conditions: Useful in atopic dermatitis (eczema), psoriasis, contact dermatitis, rosacea, and other localized inflammatory skin rashes. Topical formulations for targeted anti-inflammatory action.",
+      "General Inflammatory Support: Balanced reduction of excessive inflammation without full immunosuppression; adjunct to dietary/lifestyle/pharmacologic strategies.",
+      "Recovery and Healing Support: Reduces over-exuberant inflammation during healing; supports tissue repair while preserving necessary immune activity; may minimize scarring."
+    ],
+    "contraindications": [
+      "Pregnancy and breastfeeding (insufficient human safety data)",
+      "Active infections (inflammation is needed for pathogen clearance; excessive suppression may be detrimental)",
+      "Children and adolescents (use only under strict medical supervision)",
+      "Known hypersensitivity or allergic reactions to KPV or formulation components"
+    ],
+    "interactions": {
+      "medications": [
+        "Immunosuppressants: potential additive immunomodulatory effects; increased infection susceptibility if combined excessively",
+        "Other anti-inflammatory medications (NSAIDs, biologics): potentially additive; may allow dose reductions but require monitoring",
+        "Corticosteroids: potentially complementary, but combined use increases overall anti-inflammatory load"
+      ],
+      "supplements": [
+        "Anti-inflammatory supplements (omega-3, curcumin, resveratrol): likely additive or synergistic",
+        "Immune-stimulating supplements (medicinal mushrooms, echinacea): potentially opposing effects; use deliberately and supervised",
+        "Gut-health supplements (glutamine, probiotics, prebiotics): complementary in gut-focused protocols"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Mild injection site pain or irritation (systemic use)",
+        "Temporary redness, tingling, or stinging at application sites (topical use)"
+      ],
+      "less_common": [
+        "Temporary fatigue or mild lethargy (uncommon and usually transient)"
+      ],
+      "rare": [
+        "Mild skin irritation in sensitive individuals (topical use)",
+        "Allergic reactions"
+      ]
+    }
+  },
+  {
+    "slug": "selank",
+    "name": "Selank",
+    "description": "Synthetic tuftsin analogue for anxiolytic and cognitive research",
+    "category": "Nootropic / Cognitive",
+    "is_free": false,
+    "presentations": [
+      "10mg"
+    ],
+    "also_known_as": [
+      "TP-7",
+      "Selanc",
+      "Tuftsin Analog"
+    ],
+    "overview": {
+      "function": "Anxiolytic, cognitive support, immune modulation",
+      "mechanism_of_action": "Selank is a synthetic heptapeptide based on tuftsin, designed to modulate the immune and nervous systems. It enhances serotonin and GABA activity, making it effective for anxiety reduction and cognitive clarity.",
+      "considerations": "Generally well tolerated. Some users report mild nasal irritation. Used off-label in nootropic circles."
+    },
+    "protocols": {
+      "title": "Intranasal / SC Protocol",
+      "standard": {
+        "route": "Intranasal or Subcutaneous",
+        "frequency": "1-3x per day"
+      },
+      "dosages": [
+        {
+          "indication": "Anxiety",
+          "schedule": "1-3x per day intranasal",
+          "dose": "300-600 mcg/day"
+        }
+      ],
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Intranasal (standard)",
+          "dose": "300-600 mcg/day"
+        },
+        {
+          "number": 2,
+          "phase": "Subcutaneous",
+          "dose": "250-500 mcg/day"
+        }
+      ],
+      "reconstitution_steps": [
+        "For SC use: reconstitute with bacteriostatic water.",
+        "For intranasal: use ready-made formulation.",
+        "Refrigerate at 2-8°C.",
+        "Use within 30 days."
+      ],
+      "reconstitution": "For SC: reconstitute with bacteriostatic water. For intranasal: use ready-made formulation. Store at 2-8°C."
+    },
+    "research": {
+      "mechanism": "Selank allosterically modulates GABA-A receptors similarly to low-dose benzodiazepines, but without sedation or dependency. It increases BDNF, regulating neuroplasticity. Its tuftsin portion confers immunomodulatory properties.",
+      "steps": [
+        "Increase in BDNF levels",
+        "Regulation of serotonin, dopamine and norepinephrine",
+        "Modulation of gene expression of enkephalins",
+        "Immunomodulatory properties via tuftsin"
+      ],
+      "references": [
+        {
+          "title": "Selank Administration Affects the Expression of Some Genes Involved in GABAergic",
+          "metadata": [
+            "Research"
+          ],
+          "summary": ""
+        },
+        {
+          "title": "Neurotransmission",
+          "metadata": [
+            "Rats",
+            "In vivo",
+            "2016",
+            "2016"
+          ],
+          "summary": ""
+        },
+        {
+          "title": "Study demonstrating GABAergic modulation by Selank.",
+          "metadata": [
+            "Research"
+          ],
+          "summary": ""
+        }
+      ]
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "DSIP",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Epitalon",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Oxytocin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "PT-141",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Tesamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Perimenopause Balancer Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Feminine Vitality & Libido Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Sleep & Emotional Reset Stack",
+          "category": "Female Optimization"
+        }
+      ]
+    },
+    "classification": "Synthetic Heptapeptide (Tuftsin Analog)",
+    "evidence_level": "Clinical Phase III",
+    "half_life": "~5-10 minutes (intranasal; prolonged effects)",
+    "reconstitution_difficulty": "Easy",
+    "has_product": true,
+    "background": "Selank was developed in Russia as a synthetic analog of tuftsin, a natural immunomodulatory peptide. It was designed to combine anxiolytic and nootropic properties. Like Semax, it has been approved as a medication in Russia for certain neurological and psychiatric applications.",
+    "clinical_applications": [
+      "Anxiety Reduction: Decreased anxiety without sedation, enhanced stress resilience, support for GAD, social anxiety, and performance anxiety.",
+      "Cognitive Enhancement: Improves focus, learning, memory, mental clarity, and cognitive performance under stress.",
+      "Mood Support: Mild mood stabilization, potential antidepressant-like properties, enhanced emotional resilience.",
+      "Immune Modulation: Supports balanced immune function and neuroimmune interactions.",
+      "Neurological and Immune Support: Recovery from illness affecting cognition/mood, general neuroimmune health support.",
+      "Adjunct Therapy: Adjunct for panic symptoms and mild-to-moderate depression."
+    ],
+    "contraindications": [
+      "Pregnancy and breastfeeding (limited research)",
+      "Children, unless medically supervised",
+      "Severe psychiatric conditions, particularly psychotic disorders",
+      "History of significant adverse reactions to peptide therapies",
+      "Certain immune disorders without appropriate medical oversight"
+    ],
+    "interactions": {
+      "medications": [
+        "Benzodiazepines and other anxiolytics: potentially synergistic; may allow dose reduction",
+        "Antidepressants: complex interactions possible; careful monitoring recommended",
+        "Immunomodulatory drugs: theoretical interactions with immune system function",
+        "Cognitive enhancers and stimulants: generally complementary; monitor for overstimulation"
+      ],
+      "supplements": [
+        "GABAergic supplements (GABA, L-theanine, phenibut): potentially synergistic",
+        "Adaptogens (ashwagandha, rhodiola): generally complementary",
+        "Immune-modulating supplements: interactions may be complex; individual monitoring advised",
+        "Other nootropics: usually complementary in cognitive enhancement strategies"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Mild nasal irritation with intranasal use",
+        "Temporary mild headache",
+        "Slight dizziness (uncommon)"
+      ],
+      "less_common": [
+        "Changes in energy levels (calmer or slightly more energized)",
+        "Mild digestive discomfort",
+        "Temporary changes in mood",
+        "Mild sleep changes (often improved sleep; occasionally insomnia or vivid dreams)"
+      ],
+      "rare": [
+        "Allergic reactions",
+        "Significant mood changes",
+        "Paradoxical anxiety (very rare)",
+        "Immune system changes (mainly theoretical)"
+      ]
+    }
+  },
+  {
+    "slug": "semax",
+    "name": "Semax",
+    "description": "Synthetic ACTH analogue neuropeptide for cognitive enhancement research",
+    "category": "Nootropic / Cognitive",
+    "is_free": false,
+    "presentations": [
+      "10mg"
+    ],
+    "also_known_as": [
+      "MEHFPGP",
+      "ACTH(4-10) analog"
+    ],
+    "overview": {
+      "function": "Nootropic, neuroprotection, stroke recovery",
+      "mechanism_of_action": "A synthetic peptide derived from ACTH fragments, Semax increases BDNF levels and supports neurogenesis and memory. It modulates neurotransmitter levels and promotes recovery from brain injuries.",
+      "considerations": "Minimal side effects. Some users report improved cognition and alertness. Not widely approved outside Russia."
+    },
+    "protocols": {
+      "title": "Subcutaneous Protocol",
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "Consult a healthcare professional"
+      },
+      "dosages": [
+        {
+          "indication": "General Use",
+          "schedule": "Consult a professional",
+          "dose": "Variable"
+        }
+      ],
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Standard",
+          "dose": "Consult specific protocol"
+        }
+      ],
+      "reconstitution_steps": [
+        "Aspirate bacteriostatic water with a sterile syringe.",
+        "Slowly inject into the vial; avoid foam.",
+        "Gently swirl until dissolved (do not shake).",
+        "Label and refrigerate at 2-8°C, protected from light."
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8°C, protected from light."
+    },
+    "research": {
+      "mechanism": "Semax retains the neurotropic properties of ACTH without endocrine effects. It increases BDNF, promotes neuroplasticity, and modulates dopaminergic and serotonergic systems. Intranasal doses of 0.25-1.0 mg produce nootropic effects lasting 20-24 hours.",
+      "steps": [
+        "Dopaminergic and serotonergic modulation",
+        "Protection against excitotoxicity",
+        "Improvement of cerebral microcirculation",
+        "Regulation of neuronal gene expression"
+      ],
+      "references": [
+        {
+          "title": "Synthetic ACTH analogue Semax displays nootropic-like activity in humans",
+          "metadata": [
+            "Humans",
+            "1996",
+            "1996"
+          ],
+          "summary": ""
+        },
+        {
+          "title": "Study demonstrating nootropic properties of Semax in humans.",
+          "metadata": [
+            "Research"
+          ],
+          "summary": ""
+        }
+      ]
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "5-Amino-1MQ",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Cerebrolysin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "DSIP",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Dihexa",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "GHK-Cu",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "PRL-8-53",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Cognitive & Clarity Stack (Brain Fog Fix)",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Brain Fog & Fatigue Fix Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The CNS Reload Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Reaction Speed & Reflex Stack",
+          "category": "Combat Sports"
+        }
+      ]
+    },
+    "classification": "Synthetic Heptapeptide (ACTH 4-10 Analog)",
+    "evidence_level": "Clinical Phase III",
+    "half_life": "~3-5 minutes (intranasal; effects 20-24h)",
+    "reconstitution_difficulty": "Easy",
+    "has_product": true,
+    "background": "Semax was developed in Russia in the 1980s-1990s, derived from a fragment of adrenocorticotropic hormone (ACTH) but lacking ACTH's hormonal effects. It has been approved as a medication in Russia and some Eastern European countries for various neurological and cognitive indications.",
+    "clinical_applications": [
+      "Cognitive Enhancement: Improves focus, attention, memory formation/recall, learning capacity, mental clarity, and processing speed.",
+      "Neuroprotection: Protects against neuronal damage, supports recovery after concussion/mild TBI, and may benefit neurodegenerative concerns.",
+      "Mood and Anxiety Regulation: Mild anxiolytic effects, mood stabilization, enhanced stress resilience, emotional regulation support.",
+      "Neurological Recovery: Accelerates recovery after stroke, supports rehabilitation in TBI cases, aids neurological rehabilitation in clinical settings.",
+      "Specific Neurological Conditions: Off-label use for attention deficit disorders, mild cognitive impairment, certain headaches, and asthenic conditions (physical/mental fatigue).",
+      "Preventative Neuroprotection: Prevention of age-related cognitive decline, protection during high-risk periods for brain injury, general brain health maintenance."
+    ],
+    "contraindications": [
+      "Pregnancy and breastfeeding (limited research)",
+      "Children, unless medically supervised",
+      "Severe psychiatric conditions, particularly psychotic disorders",
+      "Severe hypertension",
+      "History of significant adverse reactions to peptide therapies",
+      "Immediately before or after major neurosurgery without specialist oversight"
+    ],
+    "interactions": {
+      "medications": [
+        "Stimulants (ADHD medications): potential additive stimulant effects",
+        "Antidepressants: complex interactions possible; monitoring recommended",
+        "MAO inhibitors: theoretical interactions with monoamine systems",
+        "Blood pressure medications: blood pressure should be monitored"
+      ],
+      "supplements": [
+        "Other nootropics: generally synergistic; lower initial doses recommended",
+        "Stimulatory supplements (caffeine-heavy products): potential additive stimulation",
+        "Choline sources: often complementary, especially for memory support",
+        "Adaptogens: generally complementary for stress resilience"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Mild headache (typically transient)",
+        "Temporary nasal irritation with intranasal application",
+        "Mild stimulation or increased alertness",
+        "Occasional mild anxiety in sensitive individuals"
+      ],
+      "less_common": [
+        "Mild changes in blood pressure",
+        "Insomnia if used too late in the day",
+        "Irritability in some individuals",
+        "Temporary mood changes"
+      ],
+      "rare": [
+        "Allergic reactions",
+        "Significant changes in neurotransmitter balance",
+        "Exacerbation of certain psychiatric conditions",
+        "Paradoxical reactions (e.g., increased fatigue)"
+      ]
+    }
+  },
+  {
+    "slug": "tb-500",
+    "name": "TB-500",
+    "description": "Thymosin Beta-4 for tissue repair, wound healing, and recovery research",
+    "category": "Recovery",
+    "is_free": false,
+    "presentations": [
+      "10mg",
+      "20mg"
+    ],
+    "also_known_as": [
+      "Thymosin Beta-4",
+      "TB4"
+    ],
+    "overview": {
+      "function": "Wound healing, tissue regeneration, anti-inflammatory",
+      "mechanism_of_action": "TB-4 is a naturally occurring peptide that modulates actin dynamics, promotes angiogenesis, and accelerates tissue repair. It plays a central role in cell migration and inflammation resolution.",
+      "considerations": "Generally safe; mild fatigue or injection site irritation reported. Popular for musculoskeletal injuries."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "As per research protocol"
+      },
+      "dosages": [
+        {
+          "indication": "Tissue repair",
+          "schedule": "Subcutaneous, once daily",
+          "dose": "200 mcg"
+        },
+        {
+          "indication": "Wound healing",
+          "schedule": "Subcutaneous, every other day",
+          "dose": "250 mcg"
+        },
+        {
+          "indication": "Recovery support",
+          "schedule": "Subcutaneous, twice weekly",
+          "dose": "300 mcg"
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Initial loading phase for 4 weeks",
+          "dose": "300 mcg"
+        },
+        {
+          "number": 2,
+          "phase": "Maintenance phase for 8 weeks",
+          "dose": "200 mcg"
+        },
+        {
+          "number": 3,
+          "phase": "Follow-up assessment phase for 4 weeks",
+          "dose": "150 mcg"
+        }
+      ],
+      "reconstitution_steps": [
+        "Step 1: Gather the necessary materials: TB-500 vial, bacteriostatic water, syringe, and alcohol swab.",
+        "Step 2: Clean the top of the TB-500 vial with an alcohol swab to disinfect.",
+        "Step 3: Draw the appropriate volume of bacteriostatic water into the syringe.",
+        "Step 4: Inject the bacteriostatic water slowly into the vial containing TB-500 to prevent foaming.",
+        "Step 5: Gently swirl the vial to mix until the peptide is fully dissolved.",
+        "Step 6: Store the reconstituted solution at 2-8°C for stability."
+      ]
+    },
+    "research": {
+      "mechanism": "The mechanism of action of TB-500 is under active investigation.",
+      "steps": [],
+      "references": []
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "5-Amino-1MQ",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "BPC-157",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "CJC-1295 + Ipamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "GHK-Cu",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "IGF-1 LR3",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Kisspeptin-10",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Pentadecapeptide",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Female Fat Loss Stack",
+          "category": "Fat Loss"
+        },
+        {
+          "name": "The Skin, Hair & Glow Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Skin & Collagen Rescue Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Joint & Bone Support Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Cold Sensitivity & Circulation Stack",
+          "category": "Thyroid Support"
+        },
+        {
+          "name": "The Leydig Cell Support Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Post-Orchitis Testicular Recovery Stack",
+          "category": "Fertility & Sperm Health"
+        },
+        {
+          "name": "The Recovery & Repair Stack",
+          "category": "Muscle Growth"
+        },
+        {
+          "name": "The Tendon Armor Stack",
+          "category": "Strength & Powerlifting"
+        },
+        {
+          "name": "The WOD Resilience Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Grip & Pull Stack",
+          "category": "CrossFit & Functional Fitness"
+        },
+        {
+          "name": "The Impact Recovery Stack",
+          "category": "Combat Sports"
+        }
+      ]
+    },
+    "has_product": true,
+    "background": "Thymosin Beta-4 (TB-4) is a naturally occurring 43-amino-acid peptide found in virtually all cells except red blood cells. TB-500 is the synthetic version of TB-4. While TB-500 is widely discussed for healing and regeneration, it also exerts potent immune modulatory and inflammation resolving effects.",
+    "clinical_applications": [
+      "Inflammatory Conditions: Support for chronic inflammatory states, systemic or organ-specific inflammation, and acute inflammatory episodes (joint, pulmonary, GI, post-surgical).",
+      "Autoimmune Support: Adjunct to standard care for autoimmune disease management and flare tissue protection (MS, RA models). Aims to balance rather than broadly suppress immunity.",
+      "Infection Recovery: Support during recovery from severe infections when the immune system is dysregulated; helps rebuild mucosal barriers post-viral syndromes.",
+      "Immune-Related Tissue Damage: Potential applications in lung inflammation/pulmonary fibrosis, neuroinflammation, inflammatory skin conditions, and GI inflammatory diseases.",
+      "Tissue Repair & Regeneration: Promotes angiogenesis, cell migration, and accelerates wound healing in soft tissue and muscle injuries.",
+      "Anti-fibrotic Support: May reduce scar tissue formation during healing phases."
+    ],
+    "contraindications": [
+      "Active, untreated serious infections (particularly bacterial sepsis) without specialist supervision",
+      "Uncontrolled autoimmune conditions with very high disease activity",
+      "Pregnancy and breastfeeding (insufficient safety data)",
+      "Organ transplant recipients without transplant/immunology specialist oversight",
+      "Known immune dysregulation disorders where additional modulation may be unpredictable"
+    ],
+    "interactions": {
+      "medications": [
+        "Immunosuppressants (corticosteroids, calcineurin inhibitors, biologics): complex interplay requiring specialist supervision",
+        "Immunostimulants: potential additive effects; combined use could push immune system toward over-activation",
+        "Anti-inflammatory medications (NSAIDs, biologics): generally complementary for resolution and tissue protection",
+        "Anticoagulants and antiplatelet agents: theoretical concerns due to angiogenic effects; monitor coagulation"
+      ],
+      "supplements": [
+        "Immune-stimulating herbs (echinacea, medicinal mushrooms): potentially additive immune activation",
+        "Anti-inflammatory supplements (omega-3, curcumin): generally complementary",
+        "Antioxidants: typically synergistic against oxidative stress",
+        "Other peptides (BPC-157, GHK-Cu): complex interactions possible; often used together in advanced protocols"
+      ],
+      "foods": []
+    },
+    "side_effects": {
+      "common": [
+        "Fatigue or mild lethargy",
+        "Headache",
+        "Injection site reactions (redness, itching, mild pain)",
+        "Nausea (usually mild and transient)"
+      ],
+      "less_common": [
+        "Temporary changes in immune parameters (laboratory markers)",
+        "Altered response to infections during treatment (often improved defense)",
+        "Changes in autoimmune disease activity (commonly improvement)"
+      ],
+      "rare": [
+        "Theoretical risk of impaired infection response at very high/prolonged doses",
+        "May theoretically trigger or worsen flares in some autoimmune conditions"
+      ]
+    }
+  },
+  {
+    "slug": "tesamorelin",
+    "name": "Tesamorelin",
+    "description": "GHRH analogue for visceral fat reduction and GH research",
+    "category": "GH / Secretagogues",
+    "is_free": false,
+    "presentations": [
+      "10mg",
+      "20mg"
+    ],
+    "also_known_as": [
+      "Egrifta"
+    ],
+    "overview": {
+      "function": "Growth hormone stimulation, fat loss (especially visceral fat)",
+      "mechanism_of_action": "A GHRH analog approved for HIV-related lipodystrophy, Tesamorelin increases endogenous growth hormone levels and reduces abdominal fat. Also researched for cognitive benefits in aging.",
+      "considerations": "FDA-approved for specific indications. May cause joint pain, injection site reactions, or insulin sensitivity changes."
+    },
+    "protocols": {
+      "standard": {
+        "route": "Subcutaneous",
+        "frequency": "As per research protocol"
+      },
+      "dosages": [
+        {
+          "indication": "Visceral fat reduction",
+          "schedule": "Subcutaneous, once daily",
+          "dose": "2 mg"
+        },
+        {
+          "indication": "Growth hormone research",
+          "schedule": "Subcutaneous, every other day",
+          "dose": "1 mg"
+        }
+      ],
+      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "phases": [
+        {
+          "number": 1,
+          "phase": "Week 1-4",
+          "dose": "2 mg"
+        },
+        {
+          "number": 2,
+          "phase": "Week 5-8",
+          "dose": "1.5 mg"
+        },
+        {
+          "number": 3,
+          "phase": "Week 9-12",
+          "dose": "1 mg"
+        }
+      ],
+      "reconstitution_steps": [
+        "Step 1: Gather bacteriostatic water and tesamorelin vial.",
+        "Step 2: Clean the tops of the tesamorelin vial and the bacteriostatic water vial with an alcohol swab.",
+        "Step 3: Draw up the appropriate amount of bacteriostatic water into a syringe.",
+        "Step 4: Slowly inject the bacteriostatic water into the tesamorelin vial, allowing it to dissolve.",
+        "Step 5: Gently swirl the vial to ensure complete dissolution; do not shake.",
+        "Step 6: Store the reconstituted solution in a refrigerator at 2-8C."
+      ]
+    },
+    "research": {
+      "mechanism": "The mechanism of action of Tesamorelin is under active investigation.",
+      "steps": [],
+      "references": []
+    },
+    "synergy": {
+      "interactions": [
+        {
+          "peptide": "5-Amino-1MQ",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "AOD-9604",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "BPC-157",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "CJC-1295 + Ipamorelin",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Epitalon",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "MOTS-c",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        },
+        {
+          "peptide": "Selank",
+          "status": "SYNERGISTIC",
+          "description": "Used together in stack protocols"
+        }
+      ],
+      "stacks": [
+        {
+          "name": "The Fat-for-Fuel Endurance Stack",
+          "category": "Fat Loss"
+        },
+        {
+          "name": "The Perimenopause Balancer Stack",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Lean & Toned Stack for Women",
+          "category": "Female Optimization"
+        },
+        {
+          "name": "The Lean Mass Builder (Recomp Stack)",
+          "category": "Muscle Growth"
+        }
+      ]
+    },
+    "has_product": true,
+    "background": "Tesamorelin is an FDA-approved GHRH analog specifically indicated for reducing excess abdominal visceral adipose tissue in HIV-infected patients with lipodystrophy. It is a synthetic 44-amino-acid analog of human GHRH with a trans-3-hexenoic acid group added to the N-terminus for increased stability and potency.",
+    "clinical_applications": [
+      "Visceral Fat Management: Addresses excess abdominal fat distribution, supports metabolic health improvement, body composition optimization.",
+      "Metabolic Health Optimization: Supports healthy lipid profiles, potential benefits for liver health and fatty liver, addresses metabolic syndrome components.",
+      "Growth Hormone Optimization: Significant increase in GH release, enhancement of GH pulsatility, elevation of IGF-1 with regular use.",
+      "Body Composition Effects: Favorable fat-to-muscle ratio changes, potential preservation of lean body mass during fat loss.",
+      "Anti-Aging and Wellness: Combats age-related changes in body composition, supports vitality and metabolic function with aging.",
+      "Synergistic Protocols: Combined with GHRPs for greater GH release; included in comprehensive body composition and metabolic health protocols."
+    ],
+    "contraindications": [
+      "Active or recent cancer",
+      "Uncontrolled diabetes or severe insulin resistance",
+      "Active pituitary tumors",
+      "Critical illness",
+      "Pregnancy and breastfeeding",
+      "Children and adolescents",
+      "Hypersensitivity to Tesamorelin or mannitol"
+    ],
+    "interactions": {
+      "medications": [
+        "Glucocorticoids: may reduce effectiveness",
+        "Diabetes medications: may require dose adjustments due to changes in glucose handling",
+        "Growth hormone: overlapping mechanism can lead to excessive GH/IGF-1",
+        "Estrogens: may modulate GH responsiveness"
+      ],
+      "supplements": [
+        "Arginine and GH-stimulating amino acids: potentially synergistic",
+        "Blood sugar-regulating supplements: may need adjustment"
+      ],
+      "foods": [
+        "Carbohydrates and fats within ~2 hours before dosing reduce GH response",
+        "Protein has less impact but can still modestly blunt effect"
+      ]
+    },
+    "side_effects": {
+      "common": [
+        "Mild injection site reactions (redness, itching)",
+        "Temporary water retention",
+        "Mild hunger increase (appetite stimulation)",
+        "Tingling or flushing sensation after injection"
+      ],
+      "less_common": [
+        "Headaches",
+        "Dizziness",
+        "Lethargy or fatigue",
+        "Mild changes in blood glucose (monitor if diabetic)"
+      ],
+      "rare": [
+        "Carpal tunnel-like symptoms (with prolonged or high-dose use)",
+        "Changes in insulin sensitivity",
+        "Joint stiffness or swelling",
+        "Allergic reactions"
+      ]
+    }
+  }
+]
