@@ -1,50 +1,49 @@
 [
   {
-    "id": "7c179c33-f677-45d9-a514-f529f2188dac",
+    "id": "a79ae822-c3cf-420d-bf3a-20080b7d9f30",
     "slug": "mito-melt-stack",
     "name": "Mito-Melt Stack",
     "category": "Fat Loss",
-    "goal": "Boost cellular metabolism and mitochondrial efficiency.",
+    "goal": "Boost cellular metabolism and mitochondrial efficiency",
     "peptides": [
       "MOTS-c",
       "5-Amino-1MQ",
-      "GHK-Cu"
+      "GHK-Cu (optional)"
     ],
-    "why_it_works": "MOTS-c and 5-Amino-1MQ hit fat stores from the inside-out by increasing mitochondrial efficiency and altering metabolic gene expression. Great for stubborn belly fat.",
+    "why_it_works": "MOTS-c and 5-Amino-1MQ hit fat stores from the inside-out by increasing mitochondrial efficiency and altering metabolic gene expression. This is a great stack for stubborn belly fat and metabolic syndrome risk.",
     "how_to_use": [
-      "MOTS-c: 5-7 days on, rest 7 days",
-      "5-Amino-1MQ: 10-20 mg/day orally, 4-6 weeks",
-      "GHK-Cu: 100 mcg/day topical or SubQ"
+      "MOTS-c: 5\u20137 days on, rest 7 days",
+      "5-Amino-1MQ: 10\u201320 mg/day orally, 4\u20136 weeks"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774304+00:00"
+    "created_at": "2026-04-27T14:25:36.067186+00:00"
   },
   {
-    "id": "198202b1-a717-4f99-8266-1f5cdb00916d",
+    "id": "64333dd8-54be-47bd-ad17-8cc0d13604e8",
     "slug": "the-anabolic-growth-stack",
     "name": "The Anabolic Growth Stack",
     "category": "Muscle Growth",
-    "goal": "Maximize hypertrophy via GH/IGF-1 pathway.",
+    "goal": "Maximize hypertrophy via GH/IGF-1 pathway",
     "peptides": [
-      "CJC-1295 DAC",
+      "CJC-1295 (w/ DAC)",
       "Ipamorelin",
       "IGF-1 LR3"
     ],
-    "why_it_works": "GH promotes IGF-1 release from the liver, adding IGF-1 LR3 provides direct action on muscle tissue, enhancing protein synthesis and recovery speed.",
+    "why_it_works": "GH promotes the release of IGF-1 from the liver, but adding IGF-1 LR3 provides direct action on muscle tissue, enhancing protein synthesis, nutrient partitioning, and recovery speed. CJC + Ipamorelin lays the foundation.",
     "how_to_use": [
-      "CJC-1295: 2 mg 1-2x/week",
+      "CJC-1295: 2 mg 1\u20132x/week",
       "Ipamorelin: 300 mcg/day, 5 days on",
-      "IGF-1 LR3: 20-40 mcg/day post workout (rotate injection sites)"
+      "IGF-1 LR3: 20\u201340 mcg/day post workout (rotate injection sites)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774463+00:00"
+    "created_at": "2026-04-27T15:50:31.037052+00:00"
   },
   {
-    "id": "da49cfc4-d9e2-46a0-bbb0-8323927f35ca",
+    "id": "c6ccef03-2232-40fc-a1fc-22bb9732cec9",
     "slug": "the-belly-fat-insulin-reset-stack",
     "name": "The Belly Fat & Insulin Reset Stack",
-    "category": "Fat Loss",
-    "goal": "Reduce abdominal weight gain and insulin resistance.",
+    "category": "Female Optimization",
+    "goal": "Reduce abdominal weight gain and insulin resistance common in menopause",
     "peptides": [
       "MOTS-c",
       "5-Amino-1MQ",
@@ -53,39 +52,61 @@
     "why_it_works": "Attacks belly fat from the inside out: energy metabolism, hormone sensitivity, and fat oxidation all supported here.",
     "how_to_use": [
       "MOTS-c: 10 mg/day x 7 days on, 7 off",
-      "5-Amino-1MQ: 10-20 mg/day orally",
+      "5-Amino-1MQ: 10\u201320 mg/day orally",
       "AOD-9604: 300 mcg/day AM or pre-cardio"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774321+00:00"
+    "created_at": "2026-04-27T14:25:36.067475+00:00"
   },
   {
-    "id": "80b6edc3-0b64-4254-a3ab-f237415b2172",
+    "id": "70fe11e7-25e8-4497-9074-41b9cbd18d26",
+    "slug": "the-brain-fog-fatigue-fix-stack",
+    "name": "The Brain Fog & Fatigue Fix Stack",
+    "category": "Thyroid Support",
+    "goal": "Reboot mental clarity, alertness, and mitochondrial drive",
+    "peptides": [
+      "Dihexa",
+      "Semax",
+      "5-Amino-1MQ"
+    ],
+    "why_it_works": "Thyroid fog is both mitochondrial and neuroinflammatory. This stack targets both.",
+    "how_to_use": [
+      "Dihexa: 4\u20138 mg, 5x/week",
+      "Semax: 300 mcg intranasal/subQ AM",
+      "5-Amino-1MQ: 10 mg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170443+00:00"
+  },
+  {
+    "id": "c4b091dc-5c19-45a6-b066-00ed30ea1ca3",
     "slug": "the-cns-reload-stack",
     "name": "The CNS Reload Stack",
     "category": "CrossFit & Functional Fitness",
-    "goal": "Support neural recovery from EMOMs, AMRAPs, PR attempts.",
+    "goal": "Support neural recovery from EMOMs, AMRAPs, PR attempts",
     "peptides": [
       "Semax",
+      "DSIP",
       "Cerebrolysin"
     ],
     "why_it_works": "Targets brain and sleep recovery \u2014 often neglected in CrossFit.",
     "how_to_use": [
       "Semax: AM",
       "DSIP: PM",
-      "Cerebrolysin: 5 ml IM 2-3x/week"
+      "Cerebrolysin: 5 ml IM 2\u20133x/week"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774553+00:00"
+    "created_at": "2026-04-27T15:50:31.037449+00:00"
   },
   {
-    "id": "36924503-e46f-488e-864b-06309c9ce53a",
+    "id": "93d35107-3750-46cd-987d-0474c5d77f9e",
     "slug": "the-cns-reset-stack",
     "name": "The CNS Reset Stack",
     "category": "Strength & Powerlifting",
-    "goal": "Recover faster from heavy lifting-induced CNS fatigue.",
+    "goal": "Recover faster from heavy lifting-induced CNS fatigue",
     "peptides": [
       "Cerebrolysin",
+      "DSIP",
       "BPC-157"
     ],
     "why_it_works": "Supports brain recovery, sleep depth, and systemic repair.",
@@ -95,14 +116,54 @@
       "BPC-157: 250 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774513+00:00"
+    "created_at": "2026-04-27T15:50:31.037248+00:00"
   },
   {
-    "id": "01f5602b-548f-4447-bf16-7ce40d793bc7",
+    "id": "2aef774b-e950-4071-a8a0-9b2b0b926bf6",
+    "slug": "the-cognitive-clarity-stack-brain-fog-fix",
+    "name": "The Cognitive & Clarity Stack (Brain Fog Fix)",
+    "category": "Female Optimization",
+    "goal": "Restore memory, reduce brain fog, and sharpen verbal flow",
+    "peptides": [
+      "Dihexa",
+      "Semax",
+      "GHK-Cu"
+    ],
+    "why_it_works": "Estrogen withdrawal impacts cognition. This stack helps rewire brain plasticity and oxygenation.",
+    "how_to_use": [
+      "Dihexa: 4\u20138 mg orally, 3\u20135x/week",
+      "Semax: 300 mcg intranasal AM",
+      "GHK-Cu: 100 mcg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170252+00:00"
+  },
+  {
+    "id": "583ba3f0-cd85-4a49-b949-44842594f763",
+    "slug": "the-cold-sensitivity-circulation-stack",
+    "name": "The Cold Sensitivity & Circulation Stack",
+    "category": "Thyroid Support",
+    "goal": "Address cold hands/feet and poor thermoregulation",
+    "peptides": [
+      "GHK-Cu",
+      "BPC-157",
+      "TB-500"
+    ],
+    "why_it_works": "These peptides boost microvascular health, crucial for resolving thyroid-related cold intolerance.",
+    "how_to_use": [
+      "GHK-Cu: 100 mcg/day",
+      "BPC-157: 250 mcg/day",
+      "TB-500: 2 mg/week"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170467+00:00"
+  },
+  {
+    "id": "42b03cfc-659d-4b7b-8433-71a8601bdd9d",
     "slug": "the-combat-endurance-stack",
     "name": "The Combat Endurance Stack",
     "category": "Combat Sports",
-    "goal": "Maintain explosiveness into later rounds.",
+    "goal": "Maintain explosiveness into later rounds",
     "peptides": [
       "MOTS-c",
       "5-Amino-1MQ",
@@ -111,94 +172,78 @@
     "why_it_works": "Boosts ATP, fat metabolism, and reduces central fatigue.",
     "how_to_use": [
       "MOTS-c: 7-day cycle before fight",
-      "5-Amino-1MQ: 10-20 mg oral/day",
+      "5-Amino: 10\u201320 mg/day",
       "GHK-Cu: 100 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774585+00:00"
+    "created_at": "2026-04-27T15:50:31.037526+00:00"
   },
   {
-    "id": "947a6c38-1450-4e5d-9003-d6de9fefa5c7",
+    "id": "ab39ed6e-7a16-46c8-8abd-9052251c6583",
     "slug": "the-estrogen-control-stack",
     "name": "The Estrogen Control Stack",
     "category": "Hormonal Recovery",
-    "goal": "Balance rebound estrogen after cycle cessation.",
+    "goal": "Balance rebound estrogen after cycle cessation",
     "peptides": [
       "BPC-157",
-      "GHK-Cu"
+      "GHK-Cu",
+      "Arimistane (non-peptide adjunct)"
     ],
     "why_it_works": "Supports liver detox, gut hormone recycling, and inflammation reduction.",
     "how_to_use": [
       "BPC-157: 250 mcg/day oral",
-      "GHK-Cu: 100 mcg/day"
+      "GHK-Cu: 100 mcg/day",
+      "Arimistane: 25\u201350 mg/day (short term)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774406+00:00"
+    "created_at": "2026-04-27T14:46:22.170540+00:00"
   },
   {
-    "id": "b20c70ab-1a7b-43a2-a2de-987e84d2b79a",
+    "id": "132004cc-6c8b-4aa3-8ded-d37e521a9abb",
     "slug": "the-estrogen-reset-stack",
     "name": "The Estrogen Reset Stack",
     "category": "Female Optimization",
-    "goal": "Balance estrogen dominance or deficiency symptoms.",
+    "goal": "Balance estrogen dominance or deficiency symptoms (mood, belly fat, PMS, breast tenderness)",
     "peptides": [
-      "Kisspeptin",
+      "Kisspeptin-10",
       "BPC-157",
       "GHK-Cu"
     ],
     "why_it_works": "Kisspeptin gently encourages natural estrogen/progesterone cycling. BPC-157 clears gut-driven estrogen reabsorption. GHK-Cu enhances tissue tone.",
     "how_to_use": [
-      "Kisspeptin-10: 10-20 mcg 2-3x/week",
-      "BPC-157: 250 mcg/day oral or SubQ",
-      "GHK-Cu: 100 mcg/day topical or SubQ"
+      "Kisspeptin-10: 10\u201320 mcg 2\u20133x/week (cycle-dependent)",
+      "BPC-157: 250 mcg/day oral or subQ",
+      "GHK-Cu: 100 mcg/day, topical or subQ"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774351+00:00"
+    "created_at": "2026-04-27T14:25:36.067211+00:00"
   },
   {
-    "id": "199e6e6f-899a-47f1-856e-6c9cb057e21c",
+    "id": "36a40877-3beb-40bd-afc0-d0f07ae6a05f",
     "slug": "the-explosive-speed-stack",
     "name": "The Explosive Speed Stack",
     "category": "Sprinting & Speed",
-    "goal": "Increase fast-twitch muscle fiber recruitment and sprint power.",
+    "goal": "Increase fast-twitch muscle fiber recruitment and sprint power",
     "peptides": [
-      "IGF-1 LR3",
+      "IGF-1 DES",
+      "Follistatin 344",
       "GHK-Cu"
     ],
     "why_it_works": "IGF-1 DES acts locally on trained muscle; Follistatin inhibits myostatin to allow more growth; GHK-Cu improves oxygen delivery.",
     "how_to_use": [
       "IGF-1 DES: 20 mcg IM post-sprint",
-      "Follistatin 344: 100 mcg/day, 10-20 days (cycle)",
-      "GHK-Cu: 100 mcg/day topical or SubQ"
+      "Follistatin 344: 100 mcg/day, 10\u201320 days (cycle)",
+      "GHK-Cu: 100 mcg/day topical or subQ"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774599+00:00"
+    "created_at": "2026-04-27T15:50:31.037565+00:00"
   },
   {
-    "id": "d1c327c0-4011-4516-aa8b-7ffb0c0fad3e",
-    "slug": "the-fasted-burner-stack",
-    "name": "The Fasted Burner Stack",
-    "category": "Fat Loss",
-    "goal": "Maximize fat oxidation during intermittent fasting or cardio.",
-    "peptides": [
-      "Tesamorelin",
-      "AOD-9604"
-    ],
-    "why_it_works": "Tesamorelin is FDA-approved for reducing abdominal fat. Pairing with AOD-9604 boosts effect on adipose tissue. Use in fasted state before cardio for best results.",
-    "how_to_use": [
-      "Tesamorelin: 2 mg daily, 8-12 weeks",
-      "AOD-9604: 300 mcg/day AM",
-      "Use in fasted state before cardio for best results"
-    ],
-    "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774313+00:00"
-  },
-  {
-    "id": "e165cfce-2525-4df9-867d-a1865df8351a",
+    "id": "c7d4855c-2158-49ec-ad10-a1f6af8aab1b",
     "slug": "the-fat-for-fuel-endurance-stack",
     "name": "The Fat-for-Fuel Endurance Stack",
     "category": "Fat Loss",
-    "goal": "Enhance endurance performance through better fat oxidation and glycogen sparing.",
+    "goal": "Enhance endurance performance through better fat oxidation and glycogen sparing",
     "peptides": [
       "MOTS-c",
       "Tesamorelin",
@@ -207,98 +252,138 @@
     "why_it_works": "This stack helps the body tap into fat stores for energy \u2014 especially powerful during fasted cardio or long sessions.",
     "how_to_use": [
       "MOTS-c: 10 mg/day for 7 days before peak training",
-      "Tesamorelin: 1-2 mg/day PM",
+      "Tesamorelin: 1\u20132 mg/day PM",
       "AOD-9604: 300 mcg/day AM or pre-training"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774248+00:00"
+    "created_at": "2026-04-27T14:25:36.067051+00:00"
   },
   {
-    "id": "efda5642-ea38-474f-afc0-b1051efb2dba",
+    "id": "0ee443f2-5c86-4397-8645-6fa104cebf06",
     "slug": "the-female-fat-loss-stack",
     "name": "The Female Fat Loss Stack",
-    "category": "Female Optimization",
-    "goal": "Target stubborn estrogen-related fat (hips, thighs, belly).",
+    "category": "Fat Loss",
+    "goal": "Target stubborn estrogen-related fat (hips, thighs, belly)",
     "peptides": [
       "TB-500",
-      "CJC-1295",
-      "Ipamorelin",
-      "Kisspeptin"
+      "CJC-1295 + Ipamorelin",
+      "Kisspeptin-10"
     ],
-    "why_it_works": "For perimenopausal or postmenopausal women, this stack helps reduce inflammatory and hormonal drivers of fat gain.",
+    "why_it_works": "For perimenopausal or postmenopausal women, this stack helps reduce inflammatory and hormonal drivers of fat gain. Kisspeptin is emerging as a regulatory peptide for fertility and metabolism.",
     "how_to_use": [
-      "TB-500: 2-5 mg/week for 4 weeks",
+      "TB-500: 2\u20135 mg/week for 4 weeks",
       "CJC/Ipamorelin: 5 days/week, PM",
-      "Kisspeptin: 10-20 mcg 2-3x per week (cycle 4 weeks on / 2 off)"
+      "Kisspeptin: 10\u201320 mcg 2\u20133x per week (cycle 4 weeks on / 2 off)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774331+00:00"
+    "created_at": "2026-04-27T14:25:36.067127+00:00"
   },
   {
-    "id": "d47be02c-9e7b-4368-81e3-f516b1e02e25",
+    "id": "f5fdc11e-42c0-42fb-81e1-42839b78e064",
+    "slug": "the-feminine-vitality-libido-stack",
+    "name": "The Feminine Vitality & Libido Stack",
+    "category": "Female Optimization",
+    "goal": "Boost arousal, sensitivity, mood, and connection",
+    "peptides": [
+      "PT-141",
+      "Oxytocin",
+      "Selank (optional)"
+    ],
+    "why_it_works": "PT-141 activates the brain's sexual centers, not hormones. Oxytocin strengthens emotional and physical responsiveness. Selank removes psychological barriers.",
+    "how_to_use": [
+      "PT-141: 0.5\u20131 mg 30\u201360 min before intimacy (test low)",
+      "Oxytocin: 10\u201320 IU intranasal pre-activity",
+      "Selank: 300 mcg intranasal as needed"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067354+00:00"
+  },
+  {
+    "id": "61eacc66-0701-4119-849d-03ca9cdceaeb",
+    "slug": "the-fertility-cycle-harmony-stack",
+    "name": "The Fertility & Cycle Harmony Stack",
+    "category": "Female Optimization",
+    "goal": "Regulate ovulation, improve uterine lining, and enhance egg quality",
+    "peptides": [
+      "Kisspeptin-10",
+      "Thymalin",
+      "GHK-Cu"
+    ],
+    "why_it_works": "Reproductive health requires a stable HPG axis, balanced immune tolerance, and healthy endometrial environment. This stack covers all.",
+    "how_to_use": [
+      "Kisspeptin-10: 10 mcg 2\u20133x/week",
+      "Thymalin: 10 mg/day for 5\u201310 days",
+      "GHK-Cu: 100\u2013200 mcg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067377+00:00"
+  },
+  {
+    "id": "ce835903-c6d6-4566-b4ef-5d594c484aef",
     "slug": "the-fertility-reboot-stack",
     "name": "The Fertility Reboot Stack",
     "category": "Fertility & Sperm Health",
-    "goal": "Restore sperm count and motility post-cycle.",
+    "goal": "Restore sperm count and motility post-cycle",
     "peptides": [
-      "HCG",
-      "Kisspeptin"
+      "hCG",
+      "Kisspeptin-10",
+      "Thymalin"
     ],
     "why_it_works": "hCG maintains spermatogenesis, Kisspeptin restores upstream signaling.",
     "how_to_use": [
       "hCG: 500 IU 2x/week",
-      "Kisspeptin: 20 mcg 2-3x/week",
+      "Kisspeptin: 20 mcg 2\u20133x/week",
       "Thymalin: 10 mg/day x 10 days"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774430+00:00"
+    "created_at": "2026-04-27T14:46:22.170624+00:00"
   },
   {
-    "id": "58328184-8d47-4f48-94cd-418f7a75df45",
+    "id": "94add133-d43c-48dd-9268-ab5028a4c6e5",
     "slug": "the-functional-vo2-stack",
     "name": "The Functional VO2 Stack",
     "category": "CrossFit & Functional Fitness",
-    "goal": "Improve CrossFit engine for metcons and rowing.",
+    "goal": "Improve CrossFit engine for metcons and rowing",
     "peptides": [
       "MOTS-c",
-      "Epithalon",
+      "Epitalon",
       "GHK-Cu"
     ],
     "why_it_works": "Boosts aerobic ceiling and endurance output.",
     "how_to_use": [
-      "MOTS-c: 10 mg/day, 7 on/7 off",
+      "MOTS-c: 10 mg/day, 7 on / 7 off",
       "Epitalon: 10 mg/day for 10 days",
       "GHK-Cu: 100 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774540+00:00"
+    "created_at": "2026-04-27T15:50:31.037405+00:00"
   },
   {
-    "id": "46f87f8c-55b3-4edd-9a70-cad645c4525b",
+    "id": "55d59d6d-48e9-41c5-a4a2-9597021fecd5",
     "slug": "the-gh-boost-metabolic-stack",
     "name": "The GH-Boost Metabolic Stack",
     "category": "Fat Loss",
-    "goal": "Torch fat while preserving muscle.",
+    "goal": "Torch fat while preserving muscle",
     "peptides": [
-      "CJC-1295 DAC",
+      "CJC-1295 (w/ DAC)",
       "Ipamorelin",
       "AOD-9604"
     ],
-    "why_it_works": "CJC-1295 and Ipamorelin synergize to increase natural growth hormone and IGF-1 levels, promoting lipolysis and lean mass retention. AOD-9604 specifically targets adipose tissue.",
+    "why_it_works": "CJC-1295 and Ipamorelin synergize to increase natural growth hormone and IGF-1 levels, promoting lipolysis and lean mass retention. AOD-9604, a GH fragment, specifically targets adipose tissue and enhances breakdown of stored fat.",
     "how_to_use": [
       "5 days on / 2 days off",
       "Evening injections for GH stack (CJC + Ipamorelin)",
       "AOD-9604 can be morning or pre-workout"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774294+00:00"
+    "created_at": "2026-04-27T14:25:36.067161+00:00"
   },
   {
-    "id": "88aa6895-157c-459b-88c8-6838bbc116fd",
+    "id": "bc1d8219-3eea-4822-8b9e-8e9c73f5a406",
     "slug": "the-grip-pull-stack",
     "name": "The Grip & Pull Stack",
     "category": "CrossFit & Functional Fitness",
-    "goal": "Strengthen forearms, tendons, and pulling muscles.",
+    "goal": "Strengthen forearms, tendons, and pulling muscles",
     "peptides": [
       "IGF-1 LR3",
       "BPC-157",
@@ -306,39 +391,119 @@
     ],
     "why_it_works": "Enhances recovery and growth of high-frequency-use muscles.",
     "how_to_use": [
-      "IGF-1 LR3: 20-40 mcg into biceps or forearms",
+      "IGF-1 LR3: 20\u201340 mcg into biceps or forearms",
       "BPC-157: local injection",
       "TB-500: 2 mg/week"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774546+00:00"
+    "created_at": "2026-04-27T15:50:31.037429+00:00"
   },
   {
-    "id": "7adf452b-bc56-443e-bd2d-0f1d025f3edd",
+    "id": "1630a9c7-4cae-4a35-8b3b-536cda55e3ac",
+    "slug": "the-hair-skin-nail-support-stack",
+    "name": "The Hair, Skin & Nail Support Stack",
+    "category": "Thyroid Support",
+    "goal": "Restore strength, hydration, and turnover in thyroid-depleted tissues",
+    "peptides": [
+      "GHK-Cu",
+      "BPC-157",
+      "Epitalon"
+    ],
+    "why_it_works": "These signs often come from slowed cell turnover. This stack enhances regeneration from root to tip.",
+    "how_to_use": [
+      "GHK-Cu: Topical and/or subQ 100\u2013200 mcg/day",
+      "BPC-157: 250 mcg/day oral",
+      "Epitalon: 10 mg/day x 10\u201320 days"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170417+00:00"
+  },
+  {
+    "id": "38a12b9a-f202-49e0-b9af-224d83774995",
+    "slug": "the-hashimotos-immune-reset-stack",
+    "name": "The Hashimoto's Immune Reset Stack",
+    "category": "Thyroid Support",
+    "goal": "Reduce TPO antibodies and autoimmune attacks on thyroid tissue",
+    "peptides": [
+      "Thymalin",
+      "Thymosin Alpha-1",
+      "BPC-157"
+    ],
+    "why_it_works": "Hashimoto's is a misfiring immune condition. These peptides can down-train the autoimmune loop.",
+    "how_to_use": [
+      "Thymalin: 10 mg/day x 5\u201310 days/month",
+      "Thymosin Alpha-1: 1.5 mg 2\u20133x/week",
+      "BPC-157: 250\u2013500 mcg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170358+00:00"
+  },
+  {
+    "id": "cbb62561-566a-4eba-922a-a6dc2532a0df",
+    "slug": "the-heavy-squat-stack",
+    "name": "The Heavy Squat Stack",
+    "category": "Strength & Powerlifting",
+    "goal": "Improve quad, glute, and hip drive power",
+    "peptides": [
+      "IGF-1 DES",
+      "Follistatin",
+      "MOTS-c"
+    ],
+    "why_it_works": "Enhances mitochondrial drive and tissue hypertrophy in target muscle groups.",
+    "how_to_use": [
+      "IGF-1 DES: IM into glutes/quads post-session",
+      "Follistatin: 100 mcg/day, 10-day pulse",
+      "MOTS-c: 7-day cycle monthly"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T15:50:31.037327+00:00"
+  },
+  {
+    "id": "6f1925e0-dbd9-46d0-9850-8fa1a0ae20e5",
+    "slug": "the-hormone-rhythm-stabilizer-stack",
+    "name": "The Hormone Rhythm Stabilizer Stack",
+    "category": "Female Optimization",
+    "goal": "Restore natural hormone cycling and reduce PMS, hot flashes, and mood swings",
+    "peptides": [
+      "Kisspeptin-10",
+      "BPC-157",
+      "Thymalin"
+    ],
+    "why_it_works": "Helps re-coordinate the hypothalamus-pituitary-ovarian axis and supports immune tolerance that often derails hormone rhythms in perimenopause.",
+    "how_to_use": [
+      "Kisspeptin-10: 10\u201320 mcg 2\u20133x/week",
+      "BPC-157: 250 mcg/day oral",
+      "Thymalin: 10 mg/day for 5\u201310 days"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067452+00:00"
+  },
+  {
+    "id": "14a8b954-6566-42b8-9e64-ef338df0b65b",
     "slug": "the-hpta-reboot-stack",
     "name": "The HPTA Reboot Stack",
     "category": "Hormonal Recovery",
-    "goal": "Kickstart hypothalamic-pituitary-testicular axis.",
+    "goal": "Kickstart hypothalamus-pituitary-testicular axis",
     "peptides": [
-      "Kisspeptin",
-      "CJC-1295",
-      "Ipamorelin"
+      "Kisspeptin-10",
+      "Gonadorelin",
+      "CJC-1295 + Ipamorelin"
     ],
     "why_it_works": "Kisspeptin and Gonadorelin stimulate GnRH and LH; GH peptides support anabolic rebound.",
     "how_to_use": [
-      "Kisspeptin: 20-50 mcg, 2-3x/week",
-      "Gonadorelin: 100-250 mcg/day for 2-4 weeks",
+      "Kisspeptin: 20\u201350 mcg, 2\u20133x/week",
+      "Gonadorelin: 100\u2013250 mcg/day for 2\u20134 weeks",
       "CJC/Ipamorelin: nightly, 5 days/week"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774391+00:00"
+    "created_at": "2026-04-27T14:46:22.170489+00:00"
   },
   {
-    "id": "7e3ce942-192a-4f1f-9b73-083e65959279",
+    "id": "3d4b1541-9bb0-4c12-815a-24378d28ea19",
     "slug": "the-impact-recovery-stack",
     "name": "The Impact Recovery Stack",
     "category": "Combat Sports",
-    "goal": "Heal from bruises, minor sprains, and joint trauma.",
+    "goal": "Heal from bruises, minor sprains, and joint trauma",
     "peptides": [
       "TB-500",
       "BPC-157",
@@ -347,20 +512,42 @@
     "why_it_works": "Reduces inflammation and promotes tissue repair.",
     "how_to_use": [
       "TB-500: 2 mg post-training",
-      "BPC-157: daily",
-      "GHK-Cu: topical or SubQ"
+      "BPC: daily",
+      "GHK-Cu: topical or subQ"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774569+00:00"
+    "created_at": "2026-04-27T15:50:31.037487+00:00"
   },
   {
-    "id": "47389189-cd70-4498-9bf2-9035b759483a",
+    "id": "c713bdb6-aa76-4dfd-b8f8-0f7a1b8408a5",
+    "slug": "the-joint-bone-support-stack",
+    "name": "The Joint & Bone Support Stack",
+    "category": "Female Optimization",
+    "goal": "Prevent joint degeneration and loss of bone density post-estrogen",
+    "peptides": [
+      "BPC-157",
+      "GHK-Cu",
+      "TB-500"
+    ],
+    "why_it_works": "Estrogen protects joints and bones \u2014 this stack mimics that protection during decline and loss.",
+    "how_to_use": [
+      "BPC-157: 250\u2013500 mcg/day",
+      "GHK-Cu: 100 mcg/day subQ",
+      "TB-500: 2 mg/week"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170310+00:00"
+  },
+  {
+    "id": "d8b16af4-a023-4bbd-87ef-2f4745ff75da",
     "slug": "the-knockout-sleep-stack",
     "name": "The Knockout Sleep Stack",
     "category": "Combat Sports",
-    "goal": "Deepen sleep to improve fight-night recovery.",
+    "goal": "Deepen sleep to improve fight-night recovery",
     "peptides": [
-      "Epithalon"
+      "DSIP",
+      "Epitalon",
+      "Oxytocin (optional)"
     ],
     "why_it_works": "Targets thalamus, sleep hormones, and nervous system tone.",
     "how_to_use": [
@@ -369,55 +556,54 @@
       "Oxytocin: 5 IU intranasal at night (optional)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774592+00:00"
+    "created_at": "2026-04-27T15:50:31.037546+00:00"
   },
   {
-    "id": "1b9df305-803a-4f9b-8ca0-3c1099118177",
-    "slug": "the-lean-mass-builder-stack",
-    "name": "The Lean Mass Builder Stack",
+    "id": "b549bc00-226d-4017-b1fc-328d14aa71f1",
+    "slug": "the-lean-mass-builder-recomp-stack",
+    "name": "The Lean Mass Builder (Recomp Stack)",
     "category": "Muscle Growth",
-    "goal": "Build lean muscle while staying shredded.",
+    "goal": "Build lean muscle while staying shredded",
     "peptides": [
       "Tesamorelin",
       "5-Amino-1MQ",
       "BPC-157"
     ],
-    "why_it_works": "Tesamorelin shifts body comp toward lean tissue, while 5-Amino-1MQ increases NAD+ and muscle metabolism. Clean bulk or recomp stack.",
+    "why_it_works": "Tesamorelin helps shift body comp toward lean tissue, while 5-Amino-1MQ increases NAD+ and muscle metabolism. This is a clean bulk or recomp stack, with minimal water retention or fat gain.",
     "how_to_use": [
       "Tesamorelin: 2 mg daily (evening)",
-      "5-Amino-1MQ: 10-20 mg orally, daily",
-      "BPC-157: 250 mcg/day or oral capsule form"
+      "5-Amino-1MQ: 10 mg, daily",
+      "BPC-157: 250 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774491+00:00"
+    "created_at": "2026-04-27T15:50:31.037176+00:00"
   },
   {
-    "id": "c320ccf9-1436-4740-bc1f-dc8881842567",
+    "id": "779c0af2-7238-4954-9f08-61f450b40c71",
     "slug": "the-lean-toned-stack-for-women",
     "name": "The Lean & Toned Stack for Women",
     "category": "Female Optimization",
-    "goal": "Burn fat while preserving curves and muscle.",
+    "goal": "Burn fat while preserving curves and muscle",
     "peptides": [
       "Tesamorelin",
-      "Ipamorelin",
-      "AOD-9604",
-      "CJC-1295"
+      "CJC-1295 + Ipamorelin",
+      "AOD-9604"
     ],
-    "why_it_works": "GH-based peptides benefit women if dosed smartly \u2014 this stack keeps it safe, with minimal androgenic risk.",
+    "why_it_works": "GH-based peptides can benefit women if dosed smartly \u2014 this stack keeps it safe, with minimal androgenic risk.",
     "how_to_use": [
-      "Tesamorelin: 1-2 mg/day, PM",
+      "Tesamorelin: 1\u20132 mg/day, PM",
       "CJC/Ipamorelin: 100 mcg each, PM 5 days/week",
       "AOD-9604: 300 mcg AM or pre-workout"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774376+00:00"
+    "created_at": "2026-04-27T14:25:36.067400+00:00"
   },
   {
-    "id": "4ea2f95d-eb6c-4abc-86e3-ac9874546151",
+    "id": "a34ee14d-8811-4790-af02-a6659f3e9abd",
     "slug": "the-leydig-cell-support-stack",
     "name": "The Leydig Cell Support Stack",
     "category": "Fertility & Sperm Health",
-    "goal": "Protect testicular cells from oxidative damage.",
+    "goal": "Protect testicular cells from oxidative damage",
     "peptides": [
       "GHK-Cu",
       "TB-500",
@@ -425,135 +611,159 @@
     ],
     "why_it_works": "Reduces inflammation, improves mitochondrial function in Leydig tissue.",
     "how_to_use": [
-      "GHK-Cu: topical or SubQ 100 mcg/day",
+      "GHK-Cu: subQ 100 mcg/day",
       "TB-500: 2 mg/week",
       "MOTS-c: 10 mg/day for 7 days"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774444+00:00"
+    "created_at": "2026-04-27T14:46:22.170669+00:00"
   },
   {
-    "id": "fce1721d-9397-4ddd-8642-bf2ecdd750ba",
+    "id": "34b4c81d-4c5d-442a-ac83-59d6d7e58d0b",
     "slug": "the-lh-fsh-recovery-stack",
     "name": "The LH & FSH Recovery Stack",
     "category": "Hormonal Recovery",
-    "goal": "Normalize LH/FSH levels and restore testicular function.",
+    "goal": "Normalize LH/FSH levels and restore testicular function",
     "peptides": [
-      "HCG",
-      "Kisspeptin"
+      "Gonadorelin",
+      "hCG",
+      "Kisspeptin-10"
     ],
     "why_it_works": "Mimics physiologic LH/FSH pulses and testicular stimulation.",
     "how_to_use": [
       "Gonadorelin: 100 mcg/day",
       "hCG: 500 IU 2x/week",
-      "Kisspeptin: 20 mcg 2-3x/week"
+      "Kisspeptin: 20 mcg 2\u20133x/week"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774399+00:00"
+    "created_at": "2026-04-27T14:46:22.170518+00:00"
   },
   {
-    "id": "5ab40ce3-4be3-4fd1-94c6-8dc7f77bc036",
+    "id": "fb369a80-7e21-48db-9102-8536c55c475c",
+    "slug": "the-libido-connection-revival-stack",
+    "name": "The Libido & Connection Revival Stack",
+    "category": "Female Optimization",
+    "goal": "Restore sexual desire, intimacy sensitivity, and emotional bonding",
+    "peptides": [
+      "PT-141",
+      "Oxytocin",
+      "Kisspeptin-10 (low dose)"
+    ],
+    "why_it_works": "This addresses both the neurobiological and emotional dimensions of low libido \u2014 ideal for re-establishing connection and body trust.",
+    "how_to_use": [
+      "PT-141: 0.5\u20131 mg subQ 30\u201360 min before intimacy",
+      "Oxytocin: 10\u201320 IU intranasal pre-interaction",
+      "Kisspeptin-10: 10 mcg 2x/week"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170232+00:00"
+  },
+  {
+    "id": "34c4f488-71b0-4bbc-9643-07950e1b6307",
+    "slug": "the-metabolic-drag-reversal-stack",
+    "name": "The Metabolic Drag Reversal Stack",
+    "category": "Thyroid Support",
+    "goal": "Boost metabolism, fat burning, and thyroid-related thermogenesis",
+    "peptides": [
+      "CJC-1295 + Ipamorelin",
+      "AOD-9604",
+      "MOTS-c"
+    ],
+    "why_it_works": "Thyroid controls metabolic rate \u2014 these peptides mimic and support that thermogenic drive.",
+    "how_to_use": [
+      "CJC/Ipamorelin: 100 mcg each PM",
+      "AOD-9604: 300 mcg/day",
+      "MOTS-c: 10 mg/day, 7\u201310 days/month"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170382+00:00"
+  },
+  {
+    "id": "74f2da0b-8a10-41c4-a70f-fd92a43e9a36",
     "slug": "the-mobility-joint-stack",
     "name": "The Mobility & Joint Stack",
     "category": "CrossFit & Functional Fitness",
-    "goal": "Keep shoulders, knees, and wrists mobile under high volume.",
+    "goal": "Keep shoulders, knees, and wrists mobile under high volume",
     "peptides": [
       "BPC-157",
-      "GHK-Cu"
+      "GHK-Cu",
+      "Pentadecapeptide"
     ],
     "why_it_works": "Supports cartilage and synovial membrane health.",
     "how_to_use": [
-      "BPC-157: near joint",
-      "GHK-Cu: inject near or topical"
+      "BPC: near joint",
+      "GHK-Cu: inject near or topical",
+      "Pentadecapeptide: oral/injectable, per practitioner"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774533+00:00"
+    "created_at": "2026-04-27T15:50:31.037386+00:00"
   },
   {
-    "id": "d8552fcc-d465-4e2a-bd63-624981c3264b",
+    "id": "9024b433-8727-451c-bb7c-fe5131cb9399",
     "slug": "the-mtor-activation-stack",
     "name": "The mTOR Activation Stack",
     "category": "Muscle Growth",
-    "goal": "Activate muscle-building pathways on a cellular level.",
+    "goal": "Activate muscle-building pathways on a cellular level",
     "peptides": [
-      "IGF-1 LR3",
-      "Epithalon"
+      "Follistatin 344",
+      "IGF-1 DES",
+      "Epitalon (optional)"
     ],
-    "why_it_works": "Follistatin blocks myostatin. Pairing with IGF-1 DES creates a hyper-anabolic microenvironment. Epitalon extends the window of regeneration.",
+    "why_it_works": "Follistatin blocks myostatin, which limits how much muscle you can build. Pairing with IGF-1 DES (shorter half-life, localized action) post-workout creates a hyper-anabolic microenvironment. Epitalon can extend the window of regeneration over time.",
     "how_to_use": [
-      "Follistatin: 100 mcg/day for 10-20 days (cycle carefully)",
-      "IGF-1 DES: 20-40 mcg IM post-training",
-      "Epitalon: 5-10 mg daily for 10-20 days"
+      "Follistatin: 100 mcg/day for 10\u201320 days (cycle carefully)",
+      "IGF-1 DES: 20\u201340 mcg IM, immediately post-training in muscle group worked",
+      "Epitalon: 5\u201310 mg daily for 10\u201320 days"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774475+00:00"
+    "created_at": "2026-04-27T15:50:31.037148+00:00"
   },
   {
-    "id": "feda44e6-815e-4873-90cc-eb429fc87598",
-    "slug": "the-natural-test-boost-stack",
-    "name": "The Natural Test Boost Stack",
-    "category": "Muscle Growth",
-    "goal": "Support testosterone, pituitary, and downstream anabolic hormones.",
-    "peptides": [
-      "Kisspeptin",
-      "CJC-1295",
-      "Ipamorelin"
-    ],
-    "why_it_works": "Kisspeptin primes the hypothalamus; Gonadorelin delivers the spike; CJC/Ipamorelin supports muscle-building via GH axis.",
-    "how_to_use": [
-      "Kisspeptin: 20-50 mcg, 2-3x/week",
-      "Gonadorelin: 100-250 mcg, 1-2x/week",
-      "CJC/Ipamorelin: nightly, 5 on/2 off"
-    ],
-    "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774482+00:00"
-  },
-  {
-    "id": "799df22a-de65-4bcc-a1c9-db089893ce22",
+    "id": "47adbf30-09b1-4234-9a13-8601791cb75a",
     "slug": "the-pcos-metabolic-stack",
     "name": "The PCOS & Metabolic Stack",
     "category": "Female Optimization",
-    "goal": "Improve insulin sensitivity, ovulation, and reduce androgen symptoms.",
+    "goal": "Improve insulin sensitivity, ovulation, and reduce androgen symptoms",
     "peptides": [
       "MOTS-c",
       "5-Amino-1MQ",
       "BPC-157"
     ],
-    "why_it_works": "Improves energy regulation, reduces insulin resistance, and supports hormonal harmony \u2014 ideal for PCOS body types.",
+    "why_it_works": "This combo improves energy regulation, reduces insulin resistance, and supports hormonal harmony \u2014 ideal for PCOS body types.",
     "how_to_use": [
       "MOTS-c: 10 mg/day x 7 days (cycle monthly)",
-      "5-Amino-1MQ: 10-20 mg/day",
-      "BPC-157: 250-500 mcg/day"
+      "5-Amino-1MQ: 10\u201320 mg/day",
+      "BPC-157: 250\u2013500 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774368+00:00"
+    "created_at": "2026-04-27T14:25:36.067300+00:00"
   },
   {
-    "id": "785713f4-b266-430c-85f5-35957dd3bf1b",
+    "id": "59fb70ee-2369-42e6-bb89-b0d093d6adfe",
     "slug": "the-perimenopause-balancer-stack",
     "name": "The Perimenopause Balancer Stack",
     "category": "Female Optimization",
-    "goal": "Ease mood swings, hot flashes, sleep disruption, and weight changes.",
+    "goal": "Ease mood swings, hot flashes, sleep disruption, and weight changes",
     "peptides": [
-      "Epithalon",
-      "Tesamorelin",
+      "Epitalon",
+      "Tesamorelin (low dose)",
       "Selank"
     ],
-    "why_it_works": "This stack supports the fading circadian and hormonal rhythms \u2014 without synthetic hormone therapy.",
+    "why_it_works": "This stack supports the fading circadian and hormonal rhythms that drive perimenopausal chaos \u2014 without synthetic hormone therapy.",
     "how_to_use": [
-      "Epitalon: 10 mg/day for 10-20 days",
+      "Epitalon: 10 mg/day for 10\u201320 days",
       "Tesamorelin: 1 mg/day, 5 days/week",
       "Selank: 300 mcg intranasal daily or as needed"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774360+00:00"
+    "created_at": "2026-04-27T14:25:36.067234+00:00"
   },
   {
-    "id": "b36a2a56-d0e0-4370-bf80-8ee277c3947c",
-    "slug": "the-post-orchitis-recovery-stack",
-    "name": "The Post-Orchitis Recovery Stack",
+    "id": "901d2e14-ef12-426a-970c-03c5983ab913",
+    "slug": "the-post-orchitis-testicular-recovery-stack",
+    "name": "The Post-Orchitis Testicular Recovery Stack",
     "category": "Fertility & Sperm Health",
-    "goal": "Heal inflammation or trauma post-cycle.",
+    "goal": "Heal inflammation or trauma post-cycle",
     "peptides": [
       "TB-500",
       "BPC-157",
@@ -562,23 +772,22 @@
     "why_it_works": "Accelerates tissue healing and restores microvascular integrity.",
     "how_to_use": [
       "TB-500: 2 mg/week",
-      "BPC-157: 500 mcg/day (SubQ or systemic)",
+      "BPC-157: 500 mcg/day near testicles (subQ or systemic)",
       "GHK-Cu: 100 mcg/day topical"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774456+00:00"
+    "created_at": "2026-04-27T14:46:22.170713+00:00"
   },
   {
-    "id": "a8ecac0a-da58-47c0-8a3c-86409b77a19e",
+    "id": "f12878ca-906d-4d4a-91a6-7e5ded34a0df",
     "slug": "the-raw-power-stack",
     "name": "The Raw Power Stack",
     "category": "Strength & Powerlifting",
-    "goal": "Build maximal strength via GH and androgenic synergy.",
+    "goal": "Build maximal strength via GH and androgenic synergy",
     "peptides": [
-      "CJC-1295",
-      "Ipamorelin",
+      "CJC-1295 + Ipamorelin",
       "IGF-1 LR3",
-      "Kisspeptin"
+      "Kisspeptin-10"
     ],
     "why_it_works": "GH and IGF-1 increase contractile tissue, Kisspeptin supports T output.",
     "how_to_use": [
@@ -587,92 +796,74 @@
       "Kisspeptin: 20 mcg 3x/week"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774497+00:00"
+    "created_at": "2026-04-27T15:50:31.037199+00:00"
   },
   {
-    "id": "5ed0422e-72f7-41fd-a03a-9641c3614e2c",
+    "id": "eb69b7a3-0ee5-41cf-94ae-745082901fef",
     "slug": "the-reaction-speed-reflex-stack",
     "name": "The Reaction Speed & Reflex Stack",
     "category": "Combat Sports",
-    "goal": "Improve reflexes, twitch response, and mental clarity.",
+    "goal": "Improve reflexes, twitch response, and mental clarity",
     "peptides": [
       "Semax",
-      "Dihexa"
+      "Dihexa",
+      "PRL-8-53 (optional)"
     ],
     "why_it_works": "Enhances neuroplasticity, synapse firing, and visual-motor tracking.",
     "how_to_use": [
       "Semax: 300 mcg intranasal AM",
-      "Dihexa: 4 mg pre-session"
+      "Dihexa: 4 mg pre-session",
+      "PRL-8-53: 5 mg oral (optional)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774559+00:00"
+    "created_at": "2026-04-27T15:50:31.037469+00:00"
   },
   {
-    "id": "77fc40f3-9f87-4238-a39d-a182245977a9",
-    "slug": "the-reaction-time-reset-stack",
-    "name": "The Reaction Time Reset Stack",
-    "category": "Sprinting & Speed",
-    "goal": "Sharpen CNS firing speed and reduce neural fatigue.",
-    "peptides": [
-      "Semax",
-      "Cerebrolysin",
-      "Dihexa"
-    ],
-    "why_it_works": "Boosts neurotransmission, synaptic plasticity, and neuroprotection \u2014 ideal for starts and agility.",
-    "how_to_use": [
-      "Semax: 300 mcg intranasal pre-session",
-      "Cerebrolysin: 5 ml IM every other day",
-      "Dihexa: 4-8 mg pre-training"
-    ],
-    "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774606+00:00"
-  },
-  {
-    "id": "9631219c-c4dd-4071-a3e1-3dec7b48591c",
+    "id": "cf43f451-33d6-4b4f-aa30-aded3b6ba695",
     "slug": "the-recovery-repair-stack",
     "name": "The Recovery & Repair Stack",
     "category": "Muscle Growth",
-    "goal": "Rebuild faster, reduce soreness, recover tendons and muscle fibers.",
+    "goal": "Rebuild faster, reduce soreness, recover tendons and muscle fibers",
     "peptides": [
       "BPC-157",
       "TB-500",
       "GHK-Cu"
     ],
-    "why_it_works": "BPC-157 and TB-500 work systemically to repair microtrauma, while GHK-Cu restores connective tissue and boosts satellite cell recruitment.",
+    "why_it_works": "This is the stack for injured lifters, overtrained athletes, or older individuals. BPC-157 and TB-500 work systemically to repair microtrauma, while GHK-Cu restores connective tissue and boosts satellite cell recruitment.",
     "how_to_use": [
-      "BPC-157: 250-500 mcg/day",
-      "TB-500: 2-5 mg/week (loading phase)",
-      "GHK-Cu: 100-200 mcg/day (inject or topical)"
+      "BPC-157: 250\u2013500 mcg/day",
+      "TB-500: 2\u20135 mg/week (loading phase)",
+      "GHK-Cu: 100\u2013200 mcg/day (inject or topical)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774469+00:00"
+    "created_at": "2026-04-27T15:50:31.037111+00:00"
   },
   {
-    "id": "dcbd557c-8bfe-4743-a391-4e4a65c75528",
+    "id": "0f88f217-d8e4-4029-8c98-1672c577baac",
     "slug": "the-semen-volume-stack",
     "name": "The Semen Volume Stack",
     "category": "Fertility & Sperm Health",
-    "goal": "Boost seminal fluid and prostate support.",
+    "goal": "Boost seminal fluid and prostate support",
     "peptides": [
-      "HCG",
-      "Kisspeptin",
+      "hCG",
+      "Kisspeptin-10",
       "BPC-157"
     ],
     "why_it_works": "hCG maintains seminal gland activity; BPC-157 supports prostate healing.",
     "how_to_use": [
       "hCG: 500 IU 2x/week",
-      "Kisspeptin: 20 mcg 2-3x/week",
-      "BPC-157: 250 mcg/day orally"
+      "Kisspeptin: 20 mcg 2\u20133x/week",
+      "BPC-157: 250 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774450+00:00"
+    "created_at": "2026-04-27T14:46:22.170692+00:00"
   },
   {
-    "id": "e3afd577-f70c-49e1-b2f8-85333cac6f4e",
+    "id": "c4704dee-8337-4ec6-81d7-10117e570b9a",
     "slug": "the-shred-stack",
     "name": "The Shred Stack",
     "category": "Fat Loss",
-    "goal": "Accelerate fat loss while preserving lean muscle.",
+    "goal": "Accelerate fat loss while preserving lean muscle",
     "peptides": [
       "AOD-9604",
       "MOTS-c",
@@ -681,18 +872,18 @@
     "why_it_works": "Enhances fat oxidation, mitochondrial activity, NAD+ support, and lipolysis \u2014 a modern metabolic peptide blend.",
     "how_to_use": [
       "AOD-9604: 300 mcg SubQ daily (AM)",
-      "MOTS-c: 10 mg SubQ 2-3x weekly",
+      "MOTS-c: 10 mg SubQ 2\u20133x weekly",
       "5-Amino-1MQ: 10 mg oral daily"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774278+00:00"
+    "created_at": "2026-04-27T14:25:36.067098+00:00"
   },
   {
-    "id": "f80f40f5-270c-4998-b6b1-e466fc8121a8",
-    "slug": "the-skin-hair-glow-stack",
-    "name": "The Skin, Hair & Glow Stack",
+    "id": "f6dce889-aced-47cd-ac38-a359e5251dbd",
+    "slug": "the-skin-collagen-rescue-stack",
+    "name": "The Skin & Collagen Rescue Stack",
     "category": "Female Optimization",
-    "goal": "Improve collagen, reduce fine lines, regrow hair, enhance complexion.",
+    "goal": "Reduce skin thinning, dryness, and fine lines caused by estrogen drop",
     "peptides": [
       "GHK-Cu",
       "TB-500",
@@ -700,21 +891,61 @@
     ],
     "why_it_works": "These peptides support fibroblast activity, vascular tone, and skin regeneration that estrogen normally maintains.",
     "how_to_use": [
-      "GHK-Cu: 100-200 mcg/day topical or SubQ",
+      "GHK-Cu: 100\u2013200 mcg/day topical or subQ to affected areas",
       "TB-500: 2 mg/week (1x or 2x dosing)",
-      "BPC-157: 250 mcg/day oral or SubQ"
+      "BPC-157: 250 mcg/day subQ"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774384+00:00"
+    "created_at": "2026-04-27T14:46:22.170193+00:00"
   },
   {
-    "id": "34125cc0-2f49-478b-8f37-e99a6d9cec69",
+    "id": "ab18bc6b-359c-4d22-88e9-5cb981d9803b",
+    "slug": "the-skin-hair-glow-stack",
+    "name": "The Skin, Hair & Glow Stack",
+    "category": "Female Optimization",
+    "goal": "Improve collagen, reduce fine lines, regrow hair, enhance complexion",
+    "peptides": [
+      "GHK-Cu",
+      "TB-500",
+      "BPC-157"
+    ],
+    "why_it_works": "Beauty starts with repair. These peptides support collagen, skin hydration, and hair vitality \u2014 all from the inside out.",
+    "how_to_use": [
+      "GHK-Cu: Topical or injectable 100\u2013200 mcg/day",
+      "TB-500: 2 mg/week",
+      "BPC-157: 250 mcg/day subQ"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067430+00:00"
+  },
+  {
+    "id": "6aae3d7c-bbd7-4448-9bc9-cdfa50b89440",
+    "slug": "the-sleep-emotional-reset-stack",
+    "name": "The Sleep & Emotional Reset Stack",
+    "category": "Female Optimization",
+    "goal": "Improve sleep quality, calm anxiety, and support mood stability",
+    "peptides": [
+      "DSIP",
+      "Selank",
+      "Oxytocin"
+    ],
+    "why_it_works": "Hormonal shifts in menopause disrupt GABA, oxytocin, and sleep neurochemistry. This trio helps recalibrate without drugs.",
+    "how_to_use": [
+      "DSIP: 100 mcg subQ 30 min before bed",
+      "Selank: 300 mcg intranasal 1\u20132x/day",
+      "Oxytocin: 10 IU intranasal during emotional dysregulation"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067497+00:00"
+  },
+  {
+    "id": "8b081426-318a-484c-a7d5-fb59c229acf3",
     "slug": "the-spartan-stack",
     "name": "The Spartan Stack",
     "category": "Strength & Powerlifting",
-    "goal": "Build strength, power, and recovery capacity.",
+    "goal": "Build strength, power, and recovery capacity",
     "peptides": [
-      "CJC-1295 DAC",
+      "CJC-1295",
       "Ipamorelin",
       "IGF-1 LR3",
       "BPC-157"
@@ -727,95 +958,158 @@
       "BPC-157: 250 mcg SubQ daily"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774507+00:00"
+    "created_at": "2026-04-27T15:50:31.037225+00:00"
   },
   {
-    "id": "1f76dcca-fa2c-4353-9f64-d056c31a7519",
+    "id": "a3e4685a-6919-4cc5-a5d2-00680a783ade",
     "slug": "the-sperm-quality-optimizer-stack",
     "name": "The Sperm Quality Optimizer Stack",
     "category": "Fertility & Sperm Health",
-    "goal": "Improve sperm morphology and DNA integrity.",
+    "goal": "Improve sperm morphology and DNA integrity",
     "peptides": [
       "BPC-157",
       "GHK-Cu",
-      "Epithalon"
+      "Epitalon"
     ],
     "why_it_works": "Enhances testicular microcirculation and antioxidant repair.",
     "how_to_use": [
       "BPC-157: 500 mcg/day",
       "GHK-Cu: 100 mcg/day",
-      "Epitalon: 10 mg/day for 10-20 days"
+      "Epitalon: 10 mg/day for 10\u201320 days"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774437+00:00"
+    "created_at": "2026-04-27T14:46:22.170647+00:00"
   },
   {
-    "id": "0a37e5d2-23db-4209-8c85-4879bb7d4bd1",
+    "id": "15827a10-76f5-4150-955c-8ff97197f469",
+    "slug": "the-strength-sleep-synergy-stack",
+    "name": "The Strength & Sleep Synergy Stack",
+    "category": "Strength & Powerlifting",
+    "goal": "Improve sleep quality for max strength recovery",
+    "peptides": [
+      "DSIP",
+      "Epitalon",
+      "CJC-1295"
+    ],
+    "why_it_works": "GH release happens in deep sleep \u2014 stack amplifies this window.",
+    "how_to_use": [
+      "DSIP: 100 mcg pre-bed",
+      "Epitalon: 10 mg/day for 10\u201320 days",
+      "CJC: 2 mg 2x/week"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T15:50:31.037348+00:00"
+  },
+  {
+    "id": "ce1683f8-9807-4015-91e3-02f34eb9096e",
     "slug": "the-t-boost-gh-sync-stack",
     "name": "The T-Boost & GH Sync Stack",
     "category": "Hormonal Recovery",
-    "goal": "Restore testosterone while supporting GH/IGF balance.",
+    "goal": "Restore testosterone while supporting GH/IGF balance",
     "peptides": [
-      "Kisspeptin",
-      "CJC-1295",
-      "Ipamorelin",
-      "IGF-1 LR3"
+      "Kisspeptin-10",
+      "CJC-1295 + Ipamorelin",
+      "IGF-1 LR3 (low dose)"
     ],
     "why_it_works": "Promotes natural hormone synergy to avoid catabolic rebound.",
     "how_to_use": [
-      "Kisspeptin: 20-50 mcg 3x/week",
+      "Kisspeptin: 20\u201350 mcg 3x/week",
       "CJC/Ipamorelin: PM, 5 on/2 off",
-      "IGF-1 LR3: 10-20 mcg post-workout (2-3x/week)"
+      "IGF-1 LR3: 10\u201320 mcg post-workout (2\u20133x/week)"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774413+00:00"
+    "created_at": "2026-04-27T14:46:22.170566+00:00"
   },
   {
-    "id": "1d07886b-f968-4194-a166-78f433cae1c6",
+    "id": "751f2082-4725-4147-93c2-74badc5266cc",
+    "slug": "the-t3-t4-sensitivity-enhancer-stack",
+    "name": "The T3/T4 Sensitivity Enhancer Stack",
+    "category": "Thyroid Support",
+    "goal": "Improve how tissues respond to circulating thyroid hormones",
+    "peptides": [
+      "5-Amino-1MQ",
+      "MOTS-c",
+      "GHK-Cu"
+    ],
+    "why_it_works": "Supports better utilization of thyroid hormone even if blood levels are normal \u2014 key for resolving 'normal labs, still tired.'",
+    "how_to_use": [
+      "5-Amino-1MQ: 10 mg/day",
+      "MOTS-c: 10 mg/day x 7\u201314 days",
+      "GHK-Cu: 100\u2013200 mcg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:46:22.170340+00:00"
+  },
+  {
+    "id": "d056c981-bcc5-492e-ad74-d7db930c3641",
     "slug": "the-tendon-armor-stack",
     "name": "The Tendon Armor Stack",
     "category": "Strength & Powerlifting",
-    "goal": "Fortify tendons for heavy lifts.",
+    "goal": "Fortify tendons for heavy lifts",
     "peptides": [
       "BPC-157",
-      "TB-500"
+      "TB-500",
+      "Pentadecapeptide"
     ],
-    "why_it_works": "Prevents microtears and tendinitis, improves pliability under load.",
+    "why_it_works": "Prevents microtears and tendonitis, improves pliability under load.",
     "how_to_use": [
       "BPC-157: near joint or systemic",
-      "TB-500: 2 mg/week"
+      "TB-500: 2 mg/week",
+      "Pentadecapeptide: per guidance"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774519+00:00"
+    "created_at": "2026-04-27T15:50:31.037302+00:00"
   },
   {
-    "id": "a1e5629e-9f2e-401b-8f4f-e83057fc641e",
+    "id": "9c088618-fbdc-4a7b-879c-f025a6ee9370",
+    "slug": "the-thyroid-support-stack",
+    "name": "The Thyroid Support Stack",
+    "category": "Female Optimization",
+    "goal": "Boost T3/T4 conversion and support energy, mood, and metabolism",
+    "peptides": [
+      "GHK-Cu",
+      "Thymosin Alpha-1",
+      "BPC-157"
+    ],
+    "why_it_works": "Addresses multiple drivers of sluggish thyroid: inflammation, autoimmunity, gut permeability, and oxidative stress.",
+    "how_to_use": [
+      "GHK-Cu: 100\u2013200 mcg/day",
+      "Thymosin Alpha-1: 1 mg 2\u20133x/week",
+      "BPC-157: 500 mcg/day"
+    ],
+    "is_free": false,
+    "created_at": "2026-04-27T14:25:36.067330+00:00"
+  },
+  {
+    "id": "cce499aa-08ca-4539-bd36-2d03718637dd",
     "slug": "the-trt-off-ramp-stack",
     "name": "The TRT Off-Ramp Stack",
     "category": "Hormonal Recovery",
-    "goal": "Come off TRT gradually and restart natural production.",
+    "goal": "Come off TRT gradually and restart natural production",
     "peptides": [
-      "Kisspeptin",
+      "Kisspeptin-10",
+      "Gonadorelin",
       "BPC-157"
     ],
     "why_it_works": "Stimulates endogenous axis, supports neuroendocrine recovery.",
     "how_to_use": [
       "Kisspeptin: 20 mcg 3x/week",
       "Gonadorelin: 100 mcg/day",
-      "BPC-157: 250-500 mcg/day"
+      "BPC-157: 250\u2013500 mcg/day"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774420+00:00"
+    "created_at": "2026-04-27T14:46:22.170593+00:00"
   },
   {
-    "id": "e0ced73f-842a-44c3-93a2-c0c46aa79d83",
+    "id": "6c4b2ed8-0272-4e9a-8b23-10852012c79e",
     "slug": "the-weight-cut-recovery-stack",
     "name": "The Weight-Cut Recovery Stack",
     "category": "Combat Sports",
-    "goal": "Bounce back post-cut with gut, brain, and hydration support.",
+    "goal": "Bounce back post-cut with gut, brain, and hydration support",
     "peptides": [
       "BPC-157",
-      "GHK-Cu"
+      "GHK-Cu",
+      "Thymalin"
     ],
     "why_it_works": "Restores gut lining, mood, and immune system.",
     "how_to_use": [
@@ -824,14 +1118,14 @@
       "Thymalin: 10 mg/day for 5 days post-cut"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774579+00:00"
+    "created_at": "2026-04-27T15:50:31.037506+00:00"
   },
   {
-    "id": "1c48bbff-a691-467d-8442-cff95d3a1f76",
+    "id": "7b29b732-e2b0-4bd9-b97d-02cf088c1f38",
     "slug": "the-wod-resilience-stack",
     "name": "The WOD Resilience Stack",
     "category": "CrossFit & Functional Fitness",
-    "goal": "Recover between intense, multi-modality workouts.",
+    "goal": "Recover between intense, multi-modality workouts",
     "peptides": [
       "BPC-157",
       "5-Amino-1MQ",
@@ -839,11 +1133,11 @@
     ],
     "why_it_works": "Fights inflammation, supports muscle ATP regeneration, reduces DOMS.",
     "how_to_use": [
-      "BPC-157: 500 mcg/day",
-      "5-Amino-1MQ: 10-20 mg/day",
+      "BPC: 500 mcg/day",
+      "5-Amino-1MQ: 10\u201320 mg/day",
       "TB-500: 2 mg post-WOD"
     ],
     "is_free": false,
-    "created_at": "2026-04-13T19:06:23.774526+00:00"
+    "created_at": "2026-04-27T15:50:31.037367+00:00"
   }
 ]
