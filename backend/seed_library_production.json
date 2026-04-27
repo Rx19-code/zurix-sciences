@@ -4079,7 +4079,7 @@
     "also_known_as": [],
     "overview": {
       "function": "Growth hormone stimulation, anti-aging, improved recovery",
-      "mechanism_of_action": "Ipamorelin is a selective ghrelin receptor agonist that stimulates GH release without raising cortisol or prolactin. It mimics natural pulses of GH, making it popular for anti-aging, fat loss, and muscle preservation. Often stacked with CJC-1295 for synergy.",
+      "mechanism_of_action": "Ipamorelin is a selective ghrelin receptor agonist that stimulates GH release without raising cortisol or prolactin. It binds specifically to the ghrelin receptor (GHS-R1a) in the pituitary, stimulating growth hormone release and amplifying natural GH pulses. Key distinguishing feature: minimal impact on cortisol and prolactin levels, less pronounced effect on appetite than GHRP-2 or GHRP-6, and more selective for GH release than earlier GHRPs.",
       "considerations": "Mild side effects. Well-tolerated with low desensitization risk. Consider baseline GH levels for effectiveness."
     },
     "protocols": {
@@ -4089,19 +4089,24 @@
       },
       "dosages": [
         {
-          "indication": "Growth Hormone Release",
-          "schedule": "Subcutaneous injection once daily",
-          "dose": "100 mcg"
+          "indication": "Standard dose",
+          "schedule": "2-3x daily on empty stomach",
+          "dose": "200 mcg per dose"
         },
         {
-          "indication": "Potential Muscle Gain",
-          "schedule": "Subcutaneous injection twice daily",
-          "dose": "200 mcg"
+          "indication": "Anti-aging / wellness",
+          "schedule": "Pre-sleep + AM, 5 days on/2 off",
+          "dose": "100-200 mcg per dose"
         },
         {
-          "indication": "Anti-Aging Therapy",
-          "schedule": "Subcutaneous injection every other day",
-          "dose": "300 mcg"
+          "indication": "Athletic recovery",
+          "schedule": "Pre-sleep + post-workout",
+          "dose": "200-300 mcg per dose"
+        },
+        {
+          "indication": "Body composition",
+          "schedule": "2-3x daily, 4-6 months on / 1-2 months off",
+          "dose": "200 mcg per dose"
         }
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
@@ -4145,7 +4150,71 @@
       "interactions": [],
       "stacks": []
     },
-    "has_product": true
+    "has_product": true,
+    "background": "Third-generation GHRP developed in the late 1990s. Specifically designed to provide GH-releasing benefits while minimizing unwanted side effects.",
+    "benefits": [
+      "Significant increase in GH release and enhancement of natural GH pulsatility",
+      "Elevation of IGF-1 with regular use",
+      "Favorable effects on body composition and fat reduction",
+      "Support for lean mass preservation",
+      "Improved sleep quality and enhanced recovery from exercise",
+      "Support for tissue repair",
+      "Minimal side effects compared to other GHRPs"
+    ],
+    "classification": "Growth hormone secretagogue, ghrelin mimetic",
+    "clinical_applications": [
+      "Anti-aging: Addressing age-related decline in GH production",
+      "Athletic recovery: Enhancing recovery between training sessions",
+      "Sensitive individuals: Those who experience side effects with other GHRPs",
+      "Aesthetic goals: Supporting skin health and body composition improvement"
+    ],
+    "contraindications": [
+      "Active or recent cancer",
+      "Uncontrolled diabetes or severe insulin resistance",
+      "Active pituitary tumors",
+      "Uncontrolled hypertension",
+      "Pregnancy and breastfeeding",
+      "Children and adolescents (unless medically supervised)"
+    ],
+    "interactions": {
+      "medications": [
+        "Dopamine agonists (may interfere)",
+        "Diabetes medications (may require adjustment)",
+        "Growth hormone (redundant and potentially excessive)"
+      ],
+      "supplements": [
+        "Arginine and amino acids that stimulate GH (potentially synergistic)",
+        "Melatonin (may enhance sleep-related GH release)",
+        "Blood sugar-regulating supplements (may need adjustment)"
+      ],
+      "foods": [
+        "Carbohydrates and fats reduce effectiveness if consumed within 2-3 hours before",
+        "Protein has less impact but still somewhat reduces effectiveness"
+      ]
+    },
+    "molecular_structure": "Pentapeptide: Aib-His-D-2-Nal-D-Phe-Lys-NH2. Selective binding to ghrelin receptor.",
+    "practical_notes": {
+      "reconstitution": "Reconstitute with bacteriostatic water. Store refrigerated at 2-8\u00b0C. Avoid freezing. Protect from light. Stability: 4-6 weeks when refrigerated.",
+      "administration": "Rotate injection sites. Clean area with alcohol before injection. Use insulin syringes. Consider combining with CJC-1295 for synergistic effects.",
+      "cycling": "4-6 months on, 1-2 months off. Some prefer 5 days on, 2 days off weekly. Continuous use may lead to receptor desensitization."
+    },
+    "side_effects": {
+      "common": [
+        "Mild hunger increase (much less than GHRP-6)",
+        "Temporary water retention (minimal)",
+        "Tingling or flushing sensation after injection"
+      ],
+      "less_common": [
+        "Headaches",
+        "Dizziness",
+        "Lethargy"
+      ],
+      "rare": [
+        "Injection site reactions",
+        "Changes in insulin sensitivity",
+        "Carpal tunnel-like symptoms (long-term use)"
+      ]
+    }
   },
   {
     "slug": "kisspeptin",
