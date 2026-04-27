@@ -322,7 +322,7 @@ function OverviewContent({ peptide }) {
   var ov = peptide.overview;
   if (!ov) return <EmptyState text="Overview data coming soon." />;
 
-  // New format (function, mechanism_of_action, typical_dosage_range, considerations)
+  // New format (function, mechanism_of_action, considerations)
   if (ov.function || ov.mechanism_of_action) {
     return (
       <>
@@ -334,11 +334,6 @@ function OverviewContent({ peptide }) {
         {ov.mechanism_of_action && (
           <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
             <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
-          </Card>
-        )}
-        {ov.typical_dosage_range && (
-          <Card icon={<Beaker className="w-5 h-5" />} title="Typical Dosage Range">
-            <p className="text-gray-600 leading-relaxed">{ov.typical_dosage_range}</p>
           </Card>
         )}
         {ov.considerations && (
