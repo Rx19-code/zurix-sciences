@@ -322,7 +322,10 @@ function OverviewContent({ peptide }) {
   var ov = peptide.overview;
   if (!ov) return <EmptyState text="Overview data coming soon." />;
 
-  // New format (function, mechanism_of_action, considerations)
+  var benefitsList = peptide.benefits || [];
+  var clinicalList = peptide.clinical_applications || [];
+
+  // New format (function, mechanism_of_action)
   if (ov.function || ov.mechanism_of_action) {
     return (
       <>
@@ -331,9 +334,32 @@ function OverviewContent({ peptide }) {
             <p className="text-gray-600 leading-relaxed">{ov.function}</p>
           </Card>
         )}
+        {peptide.background && (
+          <Card icon={<BookOpen className="w-5 h-5" />} title="Background">
+            <p className="text-gray-600 leading-relaxed">{peptide.background}</p>
+          </Card>
+        )}
         {ov.mechanism_of_action && (
           <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
             <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
+          </Card>
+        )}
+        {benefitsList.length > 0 && (
+          <Card icon={<Award className="w-5 h-5" />} title="Benefits">
+            <ul className="space-y-2">
+              {benefitsList.map(function(b, i) {
+                return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />{b}</li>;
+              })}
+            </ul>
+          </Card>
+        )}
+        {clinicalList.length > 0 && (
+          <Card icon={<Beaker className="w-5 h-5" />} title="Clinical Applications">
+            <ul className="space-y-2">
+              {clinicalList.map(function(c, i) {
+                return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />{c}</li>;
+              })}
+            </ul>
           </Card>
         )}
       </>
@@ -485,6 +511,92 @@ function ProtocolsContent({ peptide }) {
           {pr.reconstitution && <p className="text-gray-500 text-sm mt-3">{pr.reconstitution}</p>}
         </Card>
       )}
+
+      {/* Side Effects */}
+      {peptide.side_effects && (function() {
+        var se = peptide.side_effects;
+        var commonList = se.common || [];
+        var lessCommonList = se.less_common || [];
+        var rareList = se.rare || [];
+        return (
+        <Card icon={<Info className="w-5 h-5" />} title="Side Effects">
+          {commonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Common</h4>
+              <ul className="space-y-1.5">
+                {commonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-yellow-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {lessCommonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Less Common</h4>
+              <ul className="space-y-1.5">
+                {lessCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {rareList.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Rare</h4>
+              <ul className="space-y-1.5">
+                {rareList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+        </Card>
+        );
+      })()}
+
+      {/* Contraindications */}
+      {(function() {
+        var contraList = peptide.contraindications || [];
+        if (contraList.length === 0) return null;
+        return (
+        <Card icon={<Info className="w-5 h-5" />} title="Contraindications">
+          <ul className="space-y-2">
+            {contraList.map(function(c, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0"></span>{c}</li>; })}
+          </ul>
+        </Card>
+        );
+      })()}
+
+      {/* Interactions */}
+      {peptide.interactions && (function() {
+        var inter = peptide.interactions;
+        var medsList = inter.medications || [];
+        var suppList = inter.supplements || [];
+        var foodList = inter.foods || [];
+        if (medsList.length === 0 && suppList.length === 0 && foodList.length === 0) return null;
+        return (
+        <Card icon={<GitCompare className="w-5 h-5" />} title="Interactions">
+          {medsList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Medications</h4>
+              <ul className="space-y-1.5">
+                {medsList.map(function(m, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></span>{m}</li>; })}
+              </ul>
+            </div>
+          )}
+          {suppList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Supplements</h4>
+              <ul className="space-y-1.5">
+                {suppList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {foodList.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Foods</h4>
+              <ul className="space-y-1.5">
+                {foodList.map(function(f, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2 shrink-0"></span>{f}</li>; })}
+              </ul>
+            </div>
+          )}
+        </Card>
+        );
+      })()}
     </>
   );
 }
