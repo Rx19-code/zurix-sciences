@@ -323,28 +323,12 @@ function OverviewContent({ peptide }) {
   if (!ov) return <EmptyState text="Overview data coming soon." />;
 
   var benefitsList = peptide.benefits || [];
-  var clinicalList = peptide.clinical_applications || [];
 
-  // New format (function, mechanism_of_action)
+  // New format
   if (ov.function || ov.mechanism_of_action) {
     return (
       <>
-        {ov.function && (
-          <Card icon={<FlaskConical className="w-5 h-5" />} title="Function">
-            <p className="text-gray-600 leading-relaxed">{ov.function}</p>
-          </Card>
-        )}
-        {peptide.background && (
-          <Card icon={<BookOpen className="w-5 h-5" />} title="Background">
-            <p className="text-gray-600 leading-relaxed">{peptide.background}</p>
-          </Card>
-        )}
-        {ov.mechanism_of_action && (
-          <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
-            <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
-          </Card>
-        )}
-        {benefitsList.length > 0 && (
+        {benefitsList.length > 0 ? (
           <Card icon={<Award className="w-5 h-5" />} title="Benefits">
             <ul className="space-y-2">
               {benefitsList.map(function(b, i) {
@@ -352,14 +336,14 @@ function OverviewContent({ peptide }) {
               })}
             </ul>
           </Card>
-        )}
-        {clinicalList.length > 0 && (
-          <Card icon={<Beaker className="w-5 h-5" />} title="Clinical Applications">
-            <ul className="space-y-2">
-              {clinicalList.map(function(c, i) {
-                return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />{c}</li>;
-              })}
-            </ul>
+        ) : ov.function ? (
+          <Card icon={<Award className="w-5 h-5" />} title="Benefits">
+            <p className="text-gray-600 leading-relaxed">{ov.function}</p>
+          </Card>
+        ) : null}
+        {ov.mechanism_of_action && (
+          <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
+            <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
           </Card>
         )}
       </>
@@ -512,91 +496,6 @@ function ProtocolsContent({ peptide }) {
         </Card>
       )}
 
-      {/* Side Effects */}
-      {peptide.side_effects && (function() {
-        var se = peptide.side_effects;
-        var commonList = se.common || [];
-        var lessCommonList = se.less_common || [];
-        var rareList = se.rare || [];
-        return (
-        <Card icon={<Info className="w-5 h-5" />} title="Side Effects">
-          {commonList.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Common</h4>
-              <ul className="space-y-1.5">
-                {commonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-yellow-400 mt-2 shrink-0"></span>{s}</li>; })}
-              </ul>
-            </div>
-          )}
-          {lessCommonList.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Less Common</h4>
-              <ul className="space-y-1.5">
-                {lessCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0"></span>{s}</li>; })}
-              </ul>
-            </div>
-          )}
-          {rareList.length > 0 && (
-            <div>
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Rare</h4>
-              <ul className="space-y-1.5">
-                {rareList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0"></span>{s}</li>; })}
-              </ul>
-            </div>
-          )}
-        </Card>
-        );
-      })()}
-
-      {/* Contraindications */}
-      {(function() {
-        var contraList = peptide.contraindications || [];
-        if (contraList.length === 0) return null;
-        return (
-        <Card icon={<Info className="w-5 h-5" />} title="Contraindications">
-          <ul className="space-y-2">
-            {contraList.map(function(c, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0"></span>{c}</li>; })}
-          </ul>
-        </Card>
-        );
-      })()}
-
-      {/* Interactions */}
-      {peptide.interactions && (function() {
-        var inter = peptide.interactions;
-        var medsList = inter.medications || [];
-        var suppList = inter.supplements || [];
-        var foodList = inter.foods || [];
-        if (medsList.length === 0 && suppList.length === 0 && foodList.length === 0) return null;
-        return (
-        <Card icon={<GitCompare className="w-5 h-5" />} title="Interactions">
-          {medsList.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Medications</h4>
-              <ul className="space-y-1.5">
-                {medsList.map(function(m, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></span>{m}</li>; })}
-              </ul>
-            </div>
-          )}
-          {suppList.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Supplements</h4>
-              <ul className="space-y-1.5">
-                {suppList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0"></span>{s}</li>; })}
-              </ul>
-            </div>
-          )}
-          {foodList.length > 0 && (
-            <div>
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Foods</h4>
-              <ul className="space-y-1.5">
-                {foodList.map(function(f, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2 shrink-0"></span>{f}</li>; })}
-              </ul>
-            </div>
-          )}
-        </Card>
-        );
-      })()}
     </>
   );
 }
@@ -604,13 +503,74 @@ function ProtocolsContent({ peptide }) {
 /* ══════════════════ RESEARCH ══════════════════ */
 function ResearchContent({ peptide }) {
   var rs = peptide.research;
-  if (!rs) return <EmptyState text="Research data coming soon." />;
-  var stepsList = rs.steps || [];
-  var refsList = rs.references || [];
+  var clinicalList = peptide.clinical_applications || [];
+  var contraList = peptide.contraindications || [];
+  var se = peptide.side_effects;
+  var seCommonList = se ? (se.common || []) : [];
+  var seLessCommonList = se ? (se.less_common || []) : [];
+  var seRareList = se ? (se.rare || []) : [];
+  var hasSideEffects = seCommonList.length > 0 || seLessCommonList.length > 0 || seRareList.length > 0;
+  var hasResearch = rs || peptide.background || clinicalList.length > 0 || hasSideEffects || contraList.length > 0;
+  if (!hasResearch) return <EmptyState text="Research data coming soon." />;
+  var stepsList = rs ? (rs.steps || []) : [];
+  var refsList = rs ? (rs.references || []) : [];
   return (
     <>
-      {rs.mechanism && (
-        <Card icon={<BookOpen className="w-5 h-5" />} title="Mechanism of Action">
+      {peptide.background && (
+        <Card icon={<BookOpen className="w-5 h-5" />} title="Background">
+          <p className="text-gray-600 leading-relaxed">{peptide.background}</p>
+        </Card>
+      )}
+
+      {clinicalList.length > 0 && (
+        <Card icon={<Beaker className="w-5 h-5" />} title="Clinical Applications">
+          <ul className="space-y-2">
+            {clinicalList.map(function(c, i) {
+              return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />{c}</li>;
+            })}
+          </ul>
+        </Card>
+      )}
+
+      {hasSideEffects && (
+        <Card icon={<Info className="w-5 h-5" />} title="Side Effects">
+          {seCommonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Common</h4>
+              <ul className="space-y-1.5">
+                {seCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-yellow-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {seLessCommonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Less Common</h4>
+              <ul className="space-y-1.5">
+                {seLessCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {seRareList.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Rare</h4>
+              <ul className="space-y-1.5">
+                {seRareList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+        </Card>
+      )}
+
+      {contraList.length > 0 && (
+        <Card icon={<Info className="w-5 h-5" />} title="Contraindications">
+          <ul className="space-y-2">
+            {contraList.map(function(c, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0"></span>{c}</li>; })}
+          </ul>
+        </Card>
+      )}
+
+      {rs && rs.mechanism && (
+        <Card icon={<FlaskConical className="w-5 h-5" />} title="Research Mechanism">
           <p className="text-gray-600 leading-relaxed mb-4">{rs.mechanism}</p>
           {stepsList.length > 0 && (
             <div className="space-y-2.5 mt-4 pt-4 border-t border-gray-100">
@@ -656,18 +616,54 @@ function ResearchContent({ peptide }) {
 /* ══════════════════ SYNERGY ══════════════════ */
 function SynergyContent({ peptide }) {
   var sy = peptide.synergy;
-  if (!sy) return <EmptyState text="Synergy data coming soon." />;
-  var interList = sy.interactions || [];
-  var stackList = sy.stacks || [];
-  if (interList.length === 0 && stackList.length === 0) {
-    return <EmptyState text="Synergy data coming soon for this peptide." />;
-  }
+  var inter = peptide.interactions;
+  var hasData = (sy && ((sy.interactions || []).length > 0 || (sy.stacks || []).length > 0)) || inter;
+  if (!hasData) return <EmptyState text="Synergy data coming soon." />;
+  var interList = sy ? (sy.interactions || []) : [];
+  var stackList = sy ? (sy.stacks || []) : [];
+
   return (
     <>
+      {/* Drug/Supplement/Food Interactions */}
+      {inter && (function() {
+        var medsList = inter.medications || [];
+        var suppList = inter.supplements || [];
+        var foodList = inter.foods || [];
+        if (medsList.length === 0 && suppList.length === 0 && foodList.length === 0) return null;
+        return (
+        <Card icon={<Info className="w-5 h-5" />} title="Interactions">
+          {medsList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Medications</h4>
+              <ul className="space-y-1.5">
+                {medsList.map(function(m, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0" />{m}</li>; })}
+              </ul>
+            </div>
+          )}
+          {suppList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Supplements</h4>
+              <ul className="space-y-1.5">
+                {suppList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {foodList.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Foods</h4>
+              <ul className="space-y-1.5">
+                {foodList.map(function(f, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />{f}</li>; })}
+              </ul>
+            </div>
+          )}
+        </Card>
+        );
+      })()}
+
+      {/* Synergistic Peptides */}
       {interList.length > 0 && (
-        <Card icon={<GitCompare className="w-5 h-5" />} title="Interactions with Other Peptides">
-          {/* Summary Table */}
-          <div className="overflow-x-auto border border-gray-200 rounded-lg mb-5">
+        <Card icon={<GitCompare className="w-5 h-5" />} title="Synergistic Peptides">
+          <div className="overflow-x-auto border border-gray-200 rounded-lg">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gray-50">
@@ -687,43 +683,18 @@ function SynergyContent({ peptide }) {
               </tbody>
             </table>
           </div>
-          {/* Detail Cards */}
-          <div className="space-y-3">
-            {interList.map(function(item, i) {
-              var borderColor = item.status === 'SYNERGISTIC' ? 'border-l-green-500 bg-green-50/50' : item.status === 'MONITOR' ? 'border-l-amber-500 bg-amber-50/50' : 'border-l-cyan-500 bg-cyan-50/50';
-              return (
-                <div key={i} className={'rounded-lg p-4 border border-gray-100 border-l-[3px] ' + borderColor}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-gray-900 font-semibold">{item.peptide}</span>
-                    <StatusBadge status={item.status} />
-                  </div>
-                  <p className="text-gray-500 text-sm">{item.description}</p>
-                </div>
-              );
-            })}
-          </div>
         </Card>
       )}
 
+      {/* Stacks this peptide appears in */}
       {stackList.length > 0 && (
-        <Card icon={<Layers className="w-5 h-5" />} title="Recommended Stacks">
-          <div className="space-y-4">
+        <Card icon={<Layers className="w-5 h-5" />} title="Appears in Stacks">
+          <div className="space-y-3">
             {stackList.map(function(stack, i) {
-              var pepNames = stack.peptides || [];
               return (
-                <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <h4 className="text-gray-900 font-bold">{stack.name}</h4>
-                    {stack.goal && (
-                      <span className="text-xs bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-medium">{stack.goal}</span>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {pepNames.map(function(pName, j) {
-                      return <span key={j} className="text-xs bg-green-100 text-green-700 border border-green-200 px-2.5 py-1 rounded-full font-semibold">{pName}</span>;
-                    })}
-                  </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">{stack.description}</p>
+                <div key={i} className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                  <h4 className="text-gray-900 font-semibold text-sm">{stack.name}</h4>
+                  {stack.category && <span className="text-xs text-gray-500">{stack.category}</span>}
                 </div>
               );
             })}

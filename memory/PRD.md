@@ -53,8 +53,11 @@ Comprehensive "Peptide Library" with 96 peptides + 43 stacks. Toggle "Peptides |
 - [x] Stack detail page with locked "Why It Works" and "How to Use"
 - [x] Navbar: Sign In / User / Logout
 - [x] Product verification (QR), Calculator, Admin panel, Labels, Maintenance mode
+- [x] PeptideDetail tabs refactored (Feb 2026): Overview = Benefits + Mechanism; Research = Background + Clinical Applications + Side Effects + Contraindications; Synergy = Interactions + auto-generated Synergistic Peptides (from stacks) + Appears in Stacks
+- [x] Ipamorelin populated with ultra-detailed data (Background, Clinical Applications, Side Effects, Contraindications, Interactions)
 
 ## Pending Tasks
+- [ ] P1: Populate remaining 22 active peptides with ultra-detailed data (Background, Clinical Applications, Side Effects, Contraindications, Interactions) — waiting on user input
 - [ ] P1: Deploy auth + payment + stacks to production
 - [ ] P1: Admin panel - manage users (grant/revoke lifetime access)
 - [ ] P2: Product images (waiting for correct images from user)
