@@ -1066,10 +1066,39 @@ function LabelsTab({ password, apiUrl, codes, batches, lastImportBatchId }) {
 
   var exportCodes = getExportCodes();
 
+  var handleExportAll = function() {
+    var url = apiUrl + '/api/admin/codes/export-all';
+    fetch(url, { headers: { 'X-Admin-Password': password } })
+      .then(function(r) {
+        if (!r.ok) throw new Error('Failed');
+        return r.blob();
+      })
+      .then(function(blob) {
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'zurix_all_codes.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(function() { alert('Failed to export all codes'); });
+  };
+
   return (
     <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700" data-testid="labels-tab">
       <h2 className="text-xl font-bold text-white mb-2">Export Codes for Labels</h2>
       <p className="text-gray-400 text-sm mb-6">Export verification codes as CSV to import into Niimbot app or Excel for printing labels</p>
+
+      <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-700/50 rounded-xl p-4 mb-6 flex items-center justify-between">
+        <div>
+          <h3 className="text-white font-semibold">Export ALL Batches</h3>
+          <p className="text-gray-300 text-sm">Download every code from every batch in a single CSV file.</p>
+        </div>
+        <button onClick={handleExportAll} data-testid="export-all-codes-btn"
+          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition whitespace-nowrap">
+          Download All CSV
+        </button>
+      </div>
 
       <div className="flex gap-2 mb-6">
         {[

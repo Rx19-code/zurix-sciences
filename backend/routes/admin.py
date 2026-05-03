@@ -380,6 +380,52 @@ async def export_leads_csv(
     )
 
 
+@router.get("/admin/codes/export-all")
+async def export_all_codes_csv(x_admin_password: str = Header(None)):
+    """Export ALL verification codes (every batch) as a single CSV spreadsheet."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    codes = await db.unique_codes.find({}, {"_id": 0}).sort("created_at", -1).to_list(None)
+
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Code",
+        "Verification URL",
+        "Product",
+        "Batch",
+        "Purity",
+        "Expiry Date",
+        "Verification Count",
+        "Created At",
+    ])
+
+    for c in codes:
+        code_raw = (c.get("code") or "").replace("-", "")
+        writer.writerow([
+            c.get("code", ""),
+            f"https://zurixsciences.com/verify?code={code_raw}",
+            c.get("product_name", ""),
+            c.get("batch_number", ""),
+            c.get("purity", ""),
+            c.get("expiry_date", ""),
+            c.get("verification_count", 0),
+            (c.get("created_at") or "")[:19] if c.get("created_at") else "",
+        ])
+
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=zurix_all_codes.csv"},
+    )
+
+
 @router.post("/admin/generate-labels")
 async def generate_labels(request: Request, x_admin_password: str = Header(None)):
     """Generate printable QR code labels for Niimbot 14x22mm labels."""
