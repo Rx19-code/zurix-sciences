@@ -22,6 +22,7 @@ class Product(BaseModel):
     coa_url: str
     featured: bool = False
     image_url: Optional[str] = None
+    coming_soon: bool = False
 
 
 class Representative(BaseModel):

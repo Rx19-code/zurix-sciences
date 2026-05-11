@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle, FlaskConical } from 'lucide-react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 
@@ -31,6 +31,7 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
+    if (product?.coming_soon) return;
     addToCart(product, quantity);
     navigate('/products');
   };
@@ -74,12 +75,22 @@ const ProductDetail = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Product Image */}
-          <div className="bg-white rounded-xl shadow-sm p-8">
+          <div className="bg-white rounded-xl shadow-sm p-8 relative">
+            {product.coming_soon && (
+              <div className="absolute top-4 right-4 z-10 bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md" data-testid="coming-soon-badge-detail">
+                Coming Soon
+              </div>
+            )}
             <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
               {product.image_url ? (
                 <img src={product.image_url} alt={product.name} className="max-w-full max-h-full object-contain" />
               ) : (
-                <Package className="w-32 h-32 text-blue-300" />
+                <div className="flex flex-col items-center justify-center text-gray-300">
+                  <FlaskConical className="w-32 h-32" strokeWidth={1.25} />
+                  {product.coming_soon && (
+                    <span className="mt-3 text-sm text-gray-400 font-medium uppercase tracking-wider">Image Soon</span>
+                  )}
+                </div>
               )}
             </div>
             <p className="text-xs text-gray-400 text-center mt-3 italic">
@@ -119,35 +130,54 @@ const ProductDetail = () => {
 
               {/* Price and Add to Cart */}
               <div className="bg-gray-50 rounded-lg p-6">
-                <div className="flex items-center space-x-4 mb-4">
-                  <span className="text-gray-600">Quantity:</span>
-                  <div className="flex items-center space-x-2">
+                {product.coming_soon ? (
+                  <div className="text-center" data-testid="coming-soon-block">
+                    <div className="inline-flex items-center justify-center w-14 h-14 bg-amber-100 rounded-full mb-3">
+                      <FlaskConical className="w-7 h-7 text-amber-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">Coming Soon</h3>
+                    <p className="text-sm text-gray-600 mb-4">This product will be available soon. Stay tuned for updates.</p>
                     <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      data-testid="decrease-quantity"
-                      className="w-10 h-10 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50"
+                      disabled
+                      data-testid="coming-soon-cta-detail"
+                      className="w-full flex items-center justify-center space-x-2 bg-gray-200 text-gray-500 font-semibold py-3 rounded-lg cursor-not-allowed"
                     >
-                      -
-                    </button>
-                    <span className="w-12 text-center font-medium" data-testid="quantity-display">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      data-testid="increase-quantity"
-                      className="w-10 h-10 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50"
-                    >
-                      +
+                      <span>Not Available Yet</span>
                     </button>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <div className="flex items-center space-x-4 mb-4">
+                      <span className="text-gray-600">Quantity:</span>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          data-testid="decrease-quantity"
+                          className="w-10 h-10 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50"
+                        >
+                          -
+                        </button>
+                        <span className="w-12 text-center font-medium" data-testid="quantity-display">{quantity}</span>
+                        <button
+                          onClick={() => setQuantity(quantity + 1)}
+                          data-testid="increase-quantity"
+                          className="w-10 h-10 flex items-center justify-center bg-white border border-gray-300 rounded hover:bg-gray-50"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  data-testid="add-to-cart-button"
-                  className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  <span>Add to Cart</span>
-                </button>
+                    <button
+                      onClick={handleAddToCart}
+                      data-testid="add-to-cart-button"
+                      className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                    >
+                      <ShoppingCart className="w-5 h-5" />
+                      <span>Add to Cart</span>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
