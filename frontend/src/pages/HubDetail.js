@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles } from 'lucide-react';
+import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles, Clock, Syringe } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import StarRating from '../components/StarRating';
+import { calculateUI } from '../utils/peptideUI';
 
 var API = process.env.REACT_APP_BACKEND_URL;
 
@@ -127,7 +128,15 @@ export default function HubDetail() {
                   <span className="bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">Protocol</span>
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-1 leading-snug">{p.name}</h3>
-                <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">{p.goal}</p>
+                <p className="text-gray-500 text-sm mb-3 line-clamp-2 flex-1">{p.goal}</p>
+
+                {/* Duration pill */}
+                {p.duration && (
+                  <div className="inline-flex items-center gap-1 text-[11px] text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md font-medium mb-3 w-fit">
+                    <Clock className="w-3 h-3" />
+                    {p.duration}
+                  </div>
+                )}
 
                 {/* Compounds chips */}
                 {compounds.length > 0 && (
@@ -206,13 +215,25 @@ function ProtocolModal({ protocol, hubSlug, onClose, index }) {
           <ProtocolSection icon={<Beaker className="w-4 h-4" />} title="Compounds">
             <ul className="space-y-2">
               {(protocol.compounds || []).map(function(c, i) {
+                var uiInfo = calculateUI(c.name, c.dose);
                 return (
-                  <li key={i} className="flex items-start gap-2.5 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
-                    <div className="flex-1 flex flex-wrap justify-between gap-2">
-                      <span className="font-semibold text-gray-900">{c.name}</span>
-                      <span className="text-gray-600 font-medium">{c.dose}</span>
+                  <li key={i} className="text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                    <div className="flex items-start gap-2.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
+                      <div className="flex-1 flex flex-wrap justify-between gap-2">
+                        <span className="font-semibold text-gray-900">{c.name}</span>
+                        <span className="text-gray-600 font-medium">{c.dose}</span>
+                      </div>
                     </div>
+                    {uiInfo && (
+                      <div className="mt-1 ml-4 flex items-center gap-1.5 text-[11px] text-blue-700">
+                        <Syringe className="w-3 h-3" />
+                        <span>
+                          <strong>{uiInfo.ui} UI</strong> on insulin syringe
+                          <span className="text-gray-500"> · {uiInfo.vialMg}mg vial in {uiInfo.diluentMl}ml water</span>
+                        </span>
+                      </div>
+                    )}
                   </li>
                 );
               })}
@@ -235,6 +256,12 @@ function ProtocolModal({ protocol, hubSlug, onClose, index }) {
           <ProtocolSection icon={<Users className="w-4 h-4" />} title="Best For">
             <p className="text-gray-700 text-sm">{protocol.best_for}</p>
           </ProtocolSection>
+
+          {protocol.duration && (
+            <ProtocolSection icon={<Clock className="w-4 h-4" />} title="Duration">
+              <p className="text-gray-700 text-sm">{protocol.duration}</p>
+            </ProtocolSection>
+          )}
 
           {/* Rating block */}
           <div className="pt-4 border-t border-gray-100">
