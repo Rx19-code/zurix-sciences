@@ -57,23 +57,72 @@ export default function HubDetail() {
   var protocolsList = hub.protocols || [];
   var coreInfo = hub.core_info || {};
   var pairings = coreInfo.common_pairings || [];
+  var avgRatingAll = (() => {
+    var rated = protocolsList.filter(p => (p.rating_count || 0) > 0);
+    if (!rated.length) return 0;
+    var sum = rated.reduce((a, p) => a + (p.rating_avg || 0) * (p.rating_count || 0), 0);
+    var n = rated.reduce((a, p) => a + (p.rating_count || 0), 0);
+    return n > 0 ? Math.round((sum / n) * 10) / 10 : 0;
+  })();
 
   return (
     <div className="min-h-screen bg-gray-50" data-testid="hub-detail-page">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      {/* Hero — compact, image + content */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 text-white">
+        {/* Decorative blobs */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -left-20 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 relative">
           <button onClick={() => navigate('/protocols')} className="inline-flex items-center gap-1.5 text-purple-200 hover:text-white text-sm mb-4 transition-colors" data-testid="back-to-library">
             <ChevronLeft className="w-4 h-4" />
             Back to Library
           </button>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-white/15 border border-white/25 text-white text-xs font-semibold px-2.5 py-1 rounded-full">{protocolsList.length} Protocols</span>
-            <span className="bg-yellow-500/20 border border-yellow-300/30 text-yellow-200 text-xs font-semibold px-2.5 py-1 rounded-full">PREMIUM</span>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            {/* Image */}
+            <div className="md:col-span-1 flex justify-center md:justify-start">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl blur-xl" />
+                {hub.image_url ? (
+                  <img
+                    src={`${API}${hub.image_url}`}
+                    alt={hub.peptide_name}
+                    className="relative w-44 h-44 sm:w-56 sm:h-56 object-contain drop-shadow-2xl"
+                  />
+                ) : (
+                  <div className="relative w-44 h-44 sm:w-56 sm:h-56 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20">
+                    <FlaskConical className="w-20 h-20 text-white/60" strokeWidth={1.2} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                <span className="inline-flex items-center gap-1 bg-yellow-500/20 border border-yellow-300/40 text-yellow-200 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">
+                  <Sparkles className="w-3 h-3" />
+                  PREMIUM
+                </span>
+                <span className="bg-white/15 border border-white/25 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">
+                  {hub.peptide_name}
+                </span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 leading-tight" data-testid="hub-title">
+                {hub.title}
+              </h1>
+              <p className="text-xs sm:text-sm text-purple-200 mb-4 uppercase tracking-[0.2em] font-semibold">{hub.subtitle}</p>
+              <p className="text-sm sm:text-base text-purple-100/90 max-w-2xl leading-relaxed">{hub.description}</p>
+
+              {/* Stats strip */}
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+                <Stat label="Protocols" value={protocolsList.length} />
+                {coreInfo.common_cycle && <Stat label="Cycle Length" value={coreInfo.common_cycle} />}
+                {avgRatingAll > 0 && <Stat label="Avg Rating" value={`${avgRatingAll} \u2605`} />}
+              </div>
+            </div>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold mb-1" data-testid="hub-title">{hub.title}</h1>
-          <p className="text-sm sm:text-base text-purple-200 mb-3 uppercase tracking-wider">{hub.subtitle}</p>
-          <p className="text-sm sm:text-base text-purple-100 max-w-3xl">{hub.description}</p>
         </div>
       </div>
 
@@ -280,6 +329,15 @@ function InfoBlock({ label, value }) {
     <div>
       <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-0.5">{label}</p>
       <p className="text-sm text-gray-900">{value}</p>
+    </div>
+  );
+}
+
+function Stat({ label, value }) {
+  return (
+    <div>
+      <p className="text-2xl font-bold text-white leading-none">{value}</p>
+      <p className="text-[11px] text-purple-200 uppercase tracking-wider font-medium mt-1">{label}</p>
     </div>
   );
 }
