@@ -57,6 +57,9 @@ export default function HubDetail() {
   var protocolsList = hub.protocols || [];
   var coreInfo = hub.core_info || {};
   var pairings = coreInfo.common_pairings || [];
+  var akaList = hub.also_known_as || [];
+  var catSlug = hub.category_slug || (hub.category || '').toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
+  var heroImg = API + '/api/library/category-image/' + catSlug;
   var avgRatingAll = (() => {
     var rated = protocolsList.filter(p => (p.rating_count || 0) > 0);
     if (!rated.length) return 0;
@@ -67,61 +70,54 @@ export default function HubDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50" data-testid="hub-detail-page">
-      {/* Hero — compact, image + content */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 text-white">
-        {/* Decorative blobs */}
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-20 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+      {/* Hero — immersive with background image */}
+      <div className="relative bg-[#0f1729]">
+        <div className="h-44 sm:h-60 lg:h-72 relative overflow-hidden">
+          <img src={heroImg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f1729] via-[#0f1729]/70 to-[#0f1729]/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f1729]/40 via-transparent to-transparent" />
+        </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 relative">
-          <button onClick={() => navigate('/protocols')} className="inline-flex items-center gap-1.5 text-purple-200 hover:text-white text-sm mb-4 transition-colors" data-testid="back-to-library">
+        <div className="relative px-4 sm:px-6 pb-7 pt-4 max-w-6xl mx-auto">
+          <button onClick={() => navigate('/protocols')} className="inline-flex items-center gap-1.5 text-gray-300 hover:text-white text-sm mb-3 transition-colors" data-testid="back-to-library">
             <ChevronLeft className="w-4 h-4" />
             Back to Library
           </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            {/* Image */}
-            <div className="md:col-span-1 flex justify-center md:justify-start">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl blur-xl" />
-                {hub.image_url ? (
-                  <img
-                    src={`${API}${hub.image_url}`}
-                    alt={hub.peptide_name}
-                    className="relative w-44 h-44 sm:w-56 sm:h-56 object-contain drop-shadow-2xl"
-                  />
-                ) : (
-                  <div className="relative w-44 h-44 sm:w-56 sm:h-56 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20">
-                    <FlaskConical className="w-20 h-20 text-white/60" strokeWidth={1.2} />
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            {hub.category && (
+              <span className="bg-white/15 border border-white/25 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur">{hub.category}</span>
+            )}
+            {hub.classification && (
+              <span className="bg-white/10 border border-white/20 text-gray-200 text-xs px-2.5 py-1 rounded-full backdrop-blur">{hub.classification}</span>
+            )}
+            <span className="inline-flex items-center gap-1 bg-yellow-500/20 border border-yellow-300/40 text-yellow-200 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">
+              <Sparkles className="w-3 h-3" />
+              PREMIUM
+            </span>
+            <span className="bg-purple-500/30 text-purple-100 border border-purple-300/40 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">{protocolsList.length} Protocols</span>
+          </div>
 
-            {/* Content */}
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-3 flex-wrap">
-                <span className="inline-flex items-center gap-1 bg-yellow-500/20 border border-yellow-300/40 text-yellow-200 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">
-                  <Sparkles className="w-3 h-3" />
-                  PREMIUM
-                </span>
-                <span className="bg-white/15 border border-white/25 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur">
-                  {hub.peptide_name}
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 leading-tight" data-testid="hub-title">
-                {hub.title}
-              </h1>
-              <p className="text-xs sm:text-sm text-purple-200 mb-4 uppercase tracking-[0.2em] font-semibold">{hub.subtitle}</p>
-              <p className="text-sm sm:text-base text-purple-100/90 max-w-2xl leading-relaxed">{hub.description}</p>
+          <h1 className="text-3xl sm:text-5xl font-bold mb-2 text-white" data-testid="hub-title">
+            {hub.peptide_name}
+          </h1>
+          <p className="text-xs sm:text-sm text-purple-300 mb-3 uppercase tracking-[0.18em] font-semibold">{hub.subtitle || 'Premium Protocol Collection'}</p>
+          <p className="text-sm sm:text-base text-gray-300 mb-3 max-w-3xl leading-relaxed">{hub.description}</p>
 
-              {/* Stats strip */}
-              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
-                <Stat label="Protocols" value={protocolsList.length} />
-                {coreInfo.common_cycle && <Stat label="Cycle Length" value={coreInfo.common_cycle} />}
-                {avgRatingAll > 0 && <Stat label="Avg Rating" value={`${avgRatingAll} \u2605`} />}
-              </div>
+          {akaList.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <span className="text-xs text-gray-400">Also known as:</span>
+              {akaList.map(function(aka, i) {
+                return <span key={i} className="text-xs text-gray-300 bg-white/10 px-2.5 py-1 rounded-full">{aka}</span>;
+              })}
             </div>
+          )}
+
+          {/* Stats strip */}
+          <div className="mt-5 flex flex-wrap gap-x-7 gap-y-3 text-sm pt-4 border-t border-white/10">
+            <Stat label="Protocols" value={protocolsList.length} />
+            {coreInfo.common_cycle && <Stat label="Cycle Length" value={coreInfo.common_cycle} />}
+            {avgRatingAll > 0 && <Stat label="Avg Rating" value={`${avgRatingAll} \u2605`} />}
           </div>
         </div>
       </div>
