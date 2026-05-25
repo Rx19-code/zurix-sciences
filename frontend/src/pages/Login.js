@@ -31,10 +31,12 @@ export default function Login() {
         body: JSON.stringify(body),
       });
 
-      var data = await resp.json();
+      var data = {};
+      try { data = await resp.json(); } catch (e) { data = {}; }
 
       if (!resp.ok) {
-        setError(data.detail || 'Something went wrong');
+        var msg = data.detail || data.message || ('Error ' + resp.status);
+        setError(msg);
         setLoading(false);
         return;
       }
@@ -42,7 +44,7 @@ export default function Login() {
       login(data.user, data.token);
       navigate('/protocols');
     } catch (err) {
-      setError('Connection error. Please try again.');
+      setError('Network error. Check your connection and try again.');
     }
     setLoading(false);
   }
@@ -169,6 +171,14 @@ export default function Login() {
               {isRegister ? 'Sign In' : 'Create Account'}
             </button>
           </p>
+
+          {!isRegister && (
+            <p className="text-center text-sm mt-3">
+              <Link to="/forgot-password" className="text-gray-500 hover:text-blue-600 hover:underline" data-testid="forgot-password-link">
+                Forgot your password?
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

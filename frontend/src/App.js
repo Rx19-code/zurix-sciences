@@ -20,6 +20,8 @@ import PeptideDetailPage from './pages/PeptideDetail';
 import PeptigenLogos from './components/PeptigenLogos';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import AuthCallback from './pages/AuthCallback';
 import StackDetail from './pages/StackDetail';
 import './App.css';
@@ -30,8 +32,10 @@ function Layout({ children }) {
   const isAdmin = location.pathname === '/admin';
   const isLogin = location.pathname === '/login';
   const isCallback = location.pathname === '/auth/callback';
+  const isForgot = location.pathname === '/forgot-password';
+  const isReset = location.pathname === '/reset-password';
   
-  if (isAdmin || isLogin || isCallback) {
+  if (isAdmin || isLogin || isCallback || isForgot || isReset) {
     return <>{children}</>;
   }
   
@@ -130,6 +134,8 @@ function AppRouter() {
       <Route path="/logos" element={<PeptigenLogos />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
     </Routes>
   );

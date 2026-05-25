@@ -266,3 +266,115 @@ async def _find_slug_for_product(product_name: str) -> str:
             return slug
 
     return ""
+
+
+
+# ─────────────────────── PASSWORD RESET ───────────────────────
+
+import secrets
+from database import RESEND_API_KEY, SENDER_EMAIL
+
+
+@router.post("/auth/forgot-password")
+@limiter.limit("3/minute")
+async def forgot_password(request: Request):
+    """Send password reset email with a one-time token (valid 1h)."""
+    body = await request.json()
+    email = (body.get("email") or "").lower().strip()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required")
+
+    user = await db.users.find_one({"email": email}, {"_id": 0})
+
+    # Always return success to prevent email enumeration
+    success_msg = {"success": True, "message": "If the email exists, a reset link has been sent."}
+
+    if not user:
+        return success_msg
+
+    if user.get("auth_provider") == "google" and not user.get("password_hash"):
+        return success_msg
+
+    token = secrets.token_urlsafe(32)
+    expires_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
+    await db.password_resets.insert_one({
+        "token": token,
+        "email": email,
+        "expires_at": expires_at,
+        "used": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    if not RESEND_API_KEY:
+        logging.warning("RESEND_API_KEY not set; password reset email not sent.")
+        return success_msg
+
+    reset_url = f"https://zurixsciences.com/reset-password?token={token}"
+    try:
+        import resend
+        resend.Emails.send({
+            "from": SENDER_EMAIL,
+            "to": [email],
+            "subject": "Reset Your Zurix Sciences Password",
+            "html": f"""
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #2563eb;">Zurix Sciences</h2>
+                    <p>Hello{(' ' + user.get('name', '')) if user.get('name') else ''},</p>
+                    <p>We received a request to reset your password. Click the button below to set a new one. This link expires in 1 hour.</p>
+                    <p style="text-align: center; margin: 30px 0;">
+                        <a href="{reset_url}" style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">Reset Password</a>
+                    </p>
+                    <p style="color: #666; font-size: 13px;">If you didn't request this, you can safely ignore this email.</p>
+                    <p style="color: #999; font-size: 12px;">Or copy this link: {reset_url}</p>
+                </div>
+            """,
+        })
+    except Exception as e:
+        logging.error(f"Failed to send reset email: {e}")
+
+    return success_msg
+
+
+@router.post("/auth/reset-password")
+@limiter.limit("5/minute")
+async def reset_password(request: Request):
+    """Consume a reset token and set a new password."""
+    body = await request.json()
+    token = (body.get("token") or "").strip()
+    new_password = body.get("new_password") or ""
+
+    if not token or not new_password:
+        raise HTTPException(status_code=400, detail="Token and new password are required")
+
+    if len(new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+
+    record = await db.password_resets.find_one({"token": token}, {"_id": 0})
+    if not record:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
+
+    if record.get("used"):
+        raise HTTPException(status_code=400, detail="This reset link has already been used")
+
+    expires_at = record.get("expires_at", "")
+    try:
+        exp_dt = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid token")
+
+    if datetime.now(timezone.utc) > exp_dt:
+        raise HTTPException(status_code=400, detail="This reset link has expired. Please request a new one.")
+
+    email = record["email"]
+    new_hash = hash_password(new_password)
+
+    await db.users.update_one(
+        {"email": email},
+        {"$set": {"password_hash": new_hash, "auth_provider": "email"}},
+    )
+    await db.password_resets.update_one(
+        {"token": token},
+        {"$set": {"used": True, "used_at": datetime.now(timezone.utc).isoformat()}},
+    )
+
+    return {"success": True, "message": "Password updated. You can now sign in with your new password."}
