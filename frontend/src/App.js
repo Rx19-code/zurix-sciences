@@ -24,6 +24,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import AuthCallback from './pages/AuthCallback';
 import StackDetail from './pages/StackDetail';
+import HubDetail from './pages/HubDetail';
 import './App.css';
 
 // Layout wrapper that hides navbar/footer for admin and login
@@ -128,6 +129,7 @@ function AppRouter() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/protocols" element={<Protocols />} />
       <Route path="/protocols/stack/:slug" element={<StackDetail />} />
+      <Route path="/stacks/:slug" element={<HubDetail />} />
       <Route path="/protocols/:slug" element={<PeptideDetailPage />} />
       <Route path="/library" element={<Library />} />
       <Route path="/library/:slug" element={<PeptideDetailPage />} />

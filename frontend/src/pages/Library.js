@@ -27,8 +27,7 @@ export default function Library() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('peptides');
-  const [stacks, setStacks] = useState([]);
-  const [stackCategories, setStackCategories] = useState([]);
+  const [hubs, setHubs] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
   const showStacks = user && user.has_lifetime_access;
@@ -43,11 +42,10 @@ export default function Library() {
       })
       .catch(() => setLoading(false));
 
-    fetch(`${API}/api/stacks`)
+    fetch(`${API}/api/hubs`)
       .then(r => r.json())
       .then(data => {
-        setStacks(data.stacks || []);
-        setStackCategories(data.categories || []);
+        setHubs(data.hubs || []);
       })
       .catch(() => {});
   }, []);
@@ -67,25 +65,19 @@ export default function Library() {
     return list;
   }, [peptides, activeCategory, search]);
 
-  const freeCount = useMemo(() => peptides.filter(p => p.is_free).length, [peptides]);
-
-  const filteredStacks = useMemo(() => {
-    let list = stacks;
-    if (activeCategory !== 'All') {
-      list = list.filter(s => s.category === activeCategory);
-    }
+  const filteredHubs = useMemo(() => {
+    let list = hubs;
     if (search.trim()) {
       const q = search.toLowerCase();
-      list = list.filter(s =>
-        s.name.toLowerCase().includes(q) ||
-        s.goal.toLowerCase().includes(q) ||
-        s.peptides.some(p => p.toLowerCase().includes(q))
+      list = list.filter(h =>
+        (h.peptide_name && h.peptide_name.toLowerCase().includes(q)) ||
+        (h.title && h.title.toLowerCase().includes(q))
       );
     }
     return list;
-  }, [stacks, activeCategory, search]);
+  }, [hubs, search]);
 
-  const currentCategories = viewMode === 'peptides' ? categories : stackCategories;
+  const currentCategories = viewMode === 'peptides' ? categories : [];
 
   if (loading) {
     return (
@@ -125,7 +117,7 @@ export default function Library() {
                 onClick={() => { setViewMode('stacks'); setActiveCategory('All'); }}
                 className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${viewMode === 'stacks' ? 'bg-white text-blue-700 shadow-sm' : 'text-white hover:bg-white/10'}`}
               >
-                Stacks ({stacks.length})
+                Stack Hubs ({hubs.length})
               </button>
             </div>
           </div>
@@ -134,7 +126,7 @@ export default function Library() {
           <p className="text-center text-sm text-blue-200 mb-6">
             {viewMode === 'peptides'
               ? `${peptides.length} peptide protocols available`
-              : `${stacks.length} stack protocols available`
+              : `${hubs.length} stack hubs · multiple protocols per hub`
             }
           </p>
 
@@ -145,12 +137,13 @@ export default function Library() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               data-testid="library-search"
-              placeholder={viewMode === 'peptides' ? "Search peptide by name..." : "Search stack by name or peptide..."}
+              placeholder={viewMode === 'peptides' ? "Search peptide by name..." : "Search hub by peptide name..."}
               className="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/30 text-sm"
             />
           </div>
 
           {/* Categories */}
+          {viewMode === 'peptides' && (
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => setActiveCategory('All')}
@@ -168,6 +161,7 @@ export default function Library() {
               </button>
             ))}
           </div>
+          )}
         </div>
       </div>
 
@@ -219,39 +213,34 @@ export default function Library() {
           })}
         </div>
         ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="stacks-grid">
-          {filteredStacks.map(stack => {
-            const pepList = stack.peptides || [];
-            return (
-              <div
-                key={stack.slug}
-                data-testid={`stack-card-${stack.slug}`}
-                onClick={() => navigate(`/protocols/stack/${stack.slug}`)}
-                className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/60 relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-100 to-transparent rounded-bl-full" />
-                <div className="flex items-center justify-between mb-3">
-                  <span className="bg-purple-50 text-purple-600 border border-purple-200 text-xs font-medium px-2 py-0.5 rounded-full">{stack.category}</span>
-                  <span className="bg-yellow-50 text-yellow-600 border border-yellow-200 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
-                    PRO
-                  </span>
-                </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{stack.name}</h3>
-                <p className="text-gray-500 text-sm mb-3 line-clamp-2">{stack.goal}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {pepList.map(function(p, i) {
-                    return <span key={i} className="text-xs bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded-full">{p}</span>;
-                  })}
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="hubs-grid">
+          {filteredHubs.map(hub => (
+            <div
+              key={hub.slug}
+              data-testid={`hub-card-${hub.slug}`}
+              onClick={() => navigate(`/stacks/${hub.slug}`)}
+              className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/60 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-100 to-transparent rounded-bl-full" />
+              <div className="flex items-center justify-between mb-3 relative">
+                <span className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  {hub.protocols_count} Protocols
+                </span>
+                <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
+                  PRO
+                </span>
               </div>
-            );
-          })}
+              <h3 className="text-lg font-bold text-gray-900 mb-1">{hub.title}</h3>
+              <p className="text-xs text-purple-600 font-medium mb-2 uppercase tracking-wider">{hub.subtitle}</p>
+              <p className="text-gray-500 text-sm line-clamp-3">{hub.description}</p>
+            </div>
+          ))}
         </div>
         )}
-        {((viewMode === 'peptides' && filtered.length === 0) || (viewMode === 'stacks' && filteredStacks.length === 0)) && (
+        {((viewMode === 'peptides' && filtered.length === 0) || (viewMode === 'stacks' && filteredHubs.length === 0)) && (
           <div className="text-center py-12 text-gray-500">
-            <p>No {viewMode === 'peptides' ? 'peptides' : 'stacks'} found matching your criteria</p>
+            <p>No {viewMode === 'peptides' ? 'peptides' : 'stack hubs'} found matching your criteria</p>
           </div>
         )}
       </div>

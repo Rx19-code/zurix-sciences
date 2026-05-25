@@ -86,7 +86,6 @@ export default function PeptideDetail() {
         <div className="flex border-b border-gray-200 bg-white rounded-t-lg -mt-px overflow-x-auto">
           <TabBtn active={tab === 'overview'} onClick={function() { setTab('overview'); }} icon={<Info className="w-4 h-4" />} label="Overview" tid="tab-overview" />
           <TabBtn active={tab === 'protocols'} onClick={function() { setTab('protocols'); }} icon={<Beaker className="w-4 h-4" />} label="Protocols" tid="tab-protocols" />
-          <TabBtn active={tab === 'research'} onClick={function() { setTab('research'); }} icon={<BookOpen className="w-4 h-4" />} label="Research" tid="tab-research" />
           <TabBtn active={tab === 'synergy'} onClick={function() { setTab('synergy'); }} icon={<GitCompare className="w-4 h-4" />} label="Synergy" tid="tab-synergy" />
         </div>
 
@@ -95,7 +94,6 @@ export default function PeptideDetail() {
           <div className="lg:col-span-2 space-y-5">
             {tab === 'overview' && <OverviewContent peptide={peptide} />}
             {tab === 'protocols' && (hasAccess ? <ProtocolsContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
-            {tab === 'research' && (hasAccess ? <ResearchContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
             {tab === 'synergy' && (hasAccess ? <SynergyContent peptide={peptide} /> : <LockedContent navigate={navigate} user={user} token={token} slug={slug} />)}
           </div>
           <div className="lg:col-span-1">
@@ -320,47 +318,112 @@ function Card({ icon, title, children }) {
 /* ══════════════════ OVERVIEW ══════════════════ */
 function OverviewContent({ peptide }) {
   var ov = peptide.overview;
-  if (!ov) return <EmptyState text="Overview data coming soon." />;
-
   var benefitsList = peptide.benefits || [];
+  var clinicalList = peptide.clinical_applications || [];
+  var contraList = peptide.contraindications || [];
+  var se = peptide.side_effects;
+  var seCommonList = se ? (se.common || []) : [];
+  var seLessCommonList = se ? (se.less_common || []) : [];
+  var seRareList = se ? (se.rare || []) : [];
+  var hasSideEffects = seCommonList.length > 0 || seLessCommonList.length > 0 || seRareList.length > 0;
 
-  // New format
-  if (ov.function || ov.mechanism_of_action) {
-    return (
-      <>
-        {benefitsList.length > 0 ? (
-          <Card icon={<Award className="w-5 h-5" />} title="Benefits">
-            <ul className="space-y-2">
-              {benefitsList.map(function(b, i) {
-                return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />{b}</li>;
-              })}
-            </ul>
-          </Card>
-        ) : ov.function ? (
-          <Card icon={<Award className="w-5 h-5" />} title="Benefits">
-            <p className="text-gray-600 leading-relaxed">{ov.function}</p>
-          </Card>
-        ) : null}
-        {ov.mechanism_of_action && (
-          <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
-            <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
-          </Card>
-        )}
-      </>
-    );
+  if (!ov && !peptide.background && !benefitsList.length && !clinicalList.length) {
+    return <EmptyState text="Overview data coming soon." />;
   }
 
-  // Old format (what_is, mechanism_summary)
+  var hasNewFormat = ov && (ov.function || ov.mechanism_of_action);
+  var hasOldFormat = ov && (ov.what_is || ov.mechanism_summary);
+
   return (
     <>
-      {ov.what_is && (
+      {/* Benefits */}
+      {benefitsList.length > 0 ? (
+        <Card icon={<Award className="w-5 h-5" />} title="Benefits">
+          <ul className="space-y-2">
+            {benefitsList.map(function(b, i) {
+              return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />{b}</li>;
+            })}
+          </ul>
+        </Card>
+      ) : hasNewFormat && ov.function ? (
+        <Card icon={<Award className="w-5 h-5" />} title="Benefits">
+          <p className="text-gray-600 leading-relaxed">{ov.function}</p>
+        </Card>
+      ) : null}
+
+      {/* Mechanism */}
+      {hasNewFormat && ov.mechanism_of_action && (
+        <Card icon={<Info className="w-5 h-5" />} title="Mechanism of Action">
+          <p className="text-gray-600 leading-relaxed">{ov.mechanism_of_action}</p>
+        </Card>
+      )}
+
+      {/* Old format fallback */}
+      {!hasNewFormat && hasOldFormat && ov.what_is && (
         <Card icon={<FlaskConical className="w-5 h-5" />} title={'What is ' + peptide.name}>
           <p className="text-gray-600 leading-relaxed">{ov.what_is}</p>
         </Card>
       )}
-      {ov.mechanism_summary && (
+      {!hasNewFormat && hasOldFormat && ov.mechanism_summary && (
         <Card icon={<Info className="w-5 h-5" />} title="Mechanism Summary">
           <p className="text-gray-600 leading-relaxed">{ov.mechanism_summary}</p>
+        </Card>
+      )}
+
+      {/* Background */}
+      {peptide.background && (
+        <Card icon={<BookOpen className="w-5 h-5" />} title="Background">
+          <p className="text-gray-600 leading-relaxed">{peptide.background}</p>
+        </Card>
+      )}
+
+      {/* Clinical Applications */}
+      {clinicalList.length > 0 && (
+        <Card icon={<Beaker className="w-5 h-5" />} title="Clinical Applications">
+          <ul className="space-y-2">
+            {clinicalList.map(function(c, i) {
+              return <li key={i} className="flex items-start gap-2 text-gray-600 text-sm"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />{c}</li>;
+            })}
+          </ul>
+        </Card>
+      )}
+
+      {/* Side Effects */}
+      {hasSideEffects && (
+        <Card icon={<Info className="w-5 h-5" />} title="Side Effects">
+          {seCommonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Common</h4>
+              <ul className="space-y-1.5">
+                {seCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-yellow-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {seLessCommonList.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Less Common</h4>
+              <ul className="space-y-1.5">
+                {seLessCommonList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+          {seRareList.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Rare</h4>
+              <ul className="space-y-1.5">
+                {seRareList.map(function(s, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0"></span>{s}</li>; })}
+              </ul>
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* Contraindications */}
+      {contraList.length > 0 && (
+        <Card icon={<Info className="w-5 h-5" />} title="Contraindications">
+          <ul className="space-y-2">
+            {contraList.map(function(c, i) { return <li key={i} className="flex items-start gap-2 text-sm text-gray-600"><span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0"></span>{c}</li>; })}
+          </ul>
         </Card>
       )}
     </>
