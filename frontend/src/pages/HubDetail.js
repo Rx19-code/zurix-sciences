@@ -72,7 +72,7 @@ export default function HubDetail() {
     <div className="min-h-screen bg-gray-50" data-testid="hub-detail-page">
       {/* Hero — immersive with background image */}
       <div className="relative bg-[#0f1729]">
-        <div className="h-44 sm:h-60 lg:h-72 relative overflow-hidden">
+        <div className="h-28 sm:h-36 lg:h-44 relative overflow-hidden">
           <img src={heroImg} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0f1729] via-[#0f1729]/70 to-[#0f1729]/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0f1729]/40 via-transparent to-transparent" />
