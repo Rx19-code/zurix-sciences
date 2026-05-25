@@ -1,0 +1,1622 @@
+[
+  {
+    "slug": "aod-9604",
+    "peptide_slug": "aod-9604",
+    "peptide_name": "AOD-9604",
+    "title": "AOD-9604 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "description": "AOD-9604 is a modified fragment of human growth hormone (176–191) designed to stimulate lipolysis without significantly affecting IGF-1 or blood glucose pathways. Below are 15 curated protocol variations for different goals — from beginner fat loss to stage prep.",
+    "core_info": {
+      "function": "Fat loss, metabolic support, lipolysis activation.",
+      "typical_dosage": "200–500 mcg daily.",
+      "administration": "Subcutaneous injection.",
+      "best_timing": "Morning, fasted, pre-cardio, or pre-workout.",
+      "common_cycle": "4–12 weeks.",
+      "common_pairings": [
+        "CJC-1295",
+        "Ipamorelin",
+        "Berberine",
+        "L-Carnitine",
+        "GHK-Cu",
+        "Yohimbine",
+        "DIM",
+        "BPC-157"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "d304f3b8-787e-4919-a4db-cfee0c11ef2a",
+        "order": 1,
+        "name": "Beginner Fat Loss Stack",
+        "goal": "Entry-level fat loss and metabolic activation.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Carnitine Tartrate",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Morning fasted administration",
+          "Optional fasted cardio",
+          "4–6 week duration"
+        ],
+        "best_for": "Beginners and first-time users.",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "8f59c1c0-f7cf-480c-8411-bca595212e47",
+        "order": 2,
+        "name": "Rapid Cut Stack",
+        "goal": "Aggressive short-term fat reduction.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg AM"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg PM"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg PM"
+          }
+        ],
+        "protocol": [
+          "Morning fasted injection",
+          "Night GH support",
+          "Low-carb / high-protein nutrition"
+        ],
+        "best_for": "Photoshoots, rapid cuts, short-term conditioning.",
+        "duration": "3–4 weeks"
+      },
+      {
+        "id": "b9c9753f-4b6b-4e29-bce4-87c21f2267ac",
+        "order": 3,
+        "name": "Keto Fat Adaptation Stack",
+        "goal": "Ketosis optimization and metabolic flexibility.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "MCT Oil",
+            "dose": "1 tbsp"
+          }
+        ],
+        "protocol": [
+          "Morning fasted administration",
+          "Ketogenic nutrition support"
+        ],
+        "best_for": "Keto users and biohackers.",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "65305f0f-94c7-4654-8c92-70611878516c",
+        "order": 4,
+        "name": "Women's Hormonal Shred Stack",
+        "goal": "Female hormonal fat-loss support.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "250–300 mcg"
+          },
+          {
+            "name": "GHK-Cu",
+            "dose": "100 mcg topical"
+          },
+          {
+            "name": "DIM",
+            "dose": "150 mg"
+          }
+        ],
+        "protocol": [
+          "Morning dosing",
+          "Skin tightening support",
+          "Hormonal optimization support"
+        ],
+        "best_for": "Women over 35 and hormonal fat distribution.",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "04ddc7fa-6895-4cd8-b11a-f893abc8b029",
+        "order": 5,
+        "name": "Visceral Fat & Insulin Reset Stack",
+        "goal": "Reduce visceral fat and improve insulin sensitivity.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg PM"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg 2x/day"
+          }
+        ],
+        "protocol": [
+          "Morning fat oxidation",
+          "Evening GH support",
+          "Insulin sensitivity support"
+        ],
+        "best_for": "Abdominal fat and metabolic syndrome profiles.",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "3951bce4-1b2f-4c33-8d4d-3a0dbb54ae58",
+        "order": 6,
+        "name": "Recomp & Lean Physique Stack",
+        "goal": "Body recomposition while preserving lean mass.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          }
+        ],
+        "protocol": [
+          "Morning fat oxidation",
+          "Night GH optimization",
+          "High-protein training phase"
+        ],
+        "best_for": "Athletes and lean physique goals.",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "f0a41817-6122-4f05-8268-a64782ecb81b",
+        "order": 7,
+        "name": "Busy Lifestyle Fat Loss Stack",
+        "goal": "Stress-friendly fat loss support.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Morning administration",
+          "Cortisol / stress support"
+        ],
+        "best_for": "Busy professionals and high-stress lifestyles.",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "0c1f6b29-0842-4769-b5e8-9ae76c2d1bde",
+        "order": 8,
+        "name": "Appetite Control Stack",
+        "goal": "Craving reduction and appetite management.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "5-HTP",
+            "dose": "100 mg"
+          }
+        ],
+        "protocol": [
+          "Morning injection",
+          "Appetite support throughout the day"
+        ],
+        "best_for": "Cravings and appetite dysregulation.",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "9064c35a-e8b7-4429-8aba-fa972e0aa70c",
+        "order": 9,
+        "name": "Athletic Conditioning Stack",
+        "goal": "Performance-focused cutting and conditioning.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Yohimbine HCl",
+            "dose": "5 mg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg PM"
+          }
+        ],
+        "protocol": [
+          "Fasted cardio support",
+          "Conditioning-focused protocol"
+        ],
+        "best_for": "Athletes and advanced conditioning phases.",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "9fc3f9a3-f7f1-4caa-bba6-917ae9910d92",
+        "order": 10,
+        "name": "Recovery & Metabolic Reset Stack",
+        "goal": "Recovery support with metabolic restoration.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Ashwagandha",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Recovery-focused administration",
+          "Stress reduction support"
+        ],
+        "best_for": "Overtraining and post-diet recovery.",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "c70fcd65-3add-4140-8116-dc0005504427",
+        "order": 11,
+        "name": "Fasted Morning GH Burn Stack",
+        "goal": "Maximum fasted-state fat oxidation.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          }
+        ],
+        "protocol": [
+          "Immediate morning administration",
+          "Fasted cardio optimized"
+        ],
+        "best_for": "Morning training and advanced fat burning.",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "05721593-0b94-4f2c-96a9-f5022b6aa38a",
+        "order": 12,
+        "name": "Anti-Bloat & Dry Look Stack",
+        "goal": "Reduce water retention and tighten appearance.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Dandelion Root Extract",
+            "dose": "250 mg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          }
+        ],
+        "protocol": [
+          "Morning administration",
+          "Water retention support"
+        ],
+        "best_for": "Travel rebound and cosmetic tightening.",
+        "duration": "2–3 weeks"
+      },
+      {
+        "id": "fb9683ee-a96a-46e2-be4c-b6c3a26cdaab",
+        "order": 13,
+        "name": "Long-Term Sustainable Cut Stack",
+        "goal": "Gradual long-term fat reduction.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          }
+        ],
+        "protocol": [
+          "Moderate calorie deficit",
+          "Long-term cycling"
+        ],
+        "best_for": "Lifestyle users and sustainable dieting.",
+        "duration": "12–16 weeks"
+      },
+      {
+        "id": "922e7efd-a1bc-4748-95a6-4abf67fe68d9",
+        "order": 14,
+        "name": "Shift Worker Metabolic Stack",
+        "goal": "Support metabolism during circadian disruption.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          }
+        ],
+        "protocol": [
+          "Flexible administration timing",
+          "Circadian-support optimization"
+        ],
+        "best_for": "Night shifts, travelers, rotating schedules.",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "9e8c0faf-fc23-4d2c-a5b8-5118007e7486",
+        "order": 15,
+        "name": "Ultra-Lean Stage Prep Stack",
+        "goal": "Extreme conditioning and final-stage fat reduction.",
+        "compounds": [
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Yohimbine HCl",
+            "dose": "5 mg"
+          }
+        ],
+        "protocol": [
+          "Fasted cardio optimization",
+          "Short-term aggressive conditioning"
+        ],
+        "best_for": "Stage prep and ultra-lean physique goals.",
+        "duration": "2–4 weeks"
+      }
+    ],
+    "also_known_as": [
+      "Anti-Obesity Drug 9604",
+      "hGH Fragment 177-191",
+      "Tyr-hGH177-191"
+    ],
+    "category": "Weight Loss / GLP-1",
+    "category_slug": "weight-loss-glp-1",
+    "classification": "hGH Peptide Fragment (16 amino acids)"
+  },
+  {
+    "slug": "bpc-157",
+    "peptide_slug": "bpc-157",
+    "peptide_name": "BPC-157",
+    "title": "BPC-157 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Healing & Recovery",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Pentadecapeptide (15 amino acids)",
+    "also_known_as": [
+      "Body Protection Compound 157"
+    ],
+    "description": "BPC-157 is a synthetic peptide derived from the Body Protection Compound found in gastric juice. Known for tissue repair, anti-inflammatory and cytoprotective effects, with applications spanning gut health, joints, tendons, and muscle recovery.",
+    "core_info": {
+      "function": "Accelerates healing of muscles, tendons, ligaments, and gut tissue. Anti-inflammatory and cytoprotective.",
+      "typical_dosage": "250–500 mcg, 1–2x daily",
+      "administration": "Subcutaneous injection (oral also possible)",
+      "best_timing": "Anytime; often near training or injury site",
+      "common_cycle": "4–8 weeks",
+      "common_pairings": [
+        "TB-500",
+        "IGF-1 LR3",
+        "CJC-1295/Ipamorelin",
+        "GHK-Cu",
+        "L-Glutamine",
+        "Collagen Hydrolysate",
+        "Curcumin",
+        "Fish Oil"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "fe844194-6594-4a58-8a32-31fcadf19353",
+        "order": 1,
+        "name": "Gut Repair & Integrity Stack",
+        "goal": "Heal the GI tract, reduce digestive inflammation, recover after antibiotic use.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "500 mcg"
+          },
+          {
+            "name": "Zinc Carnosine",
+            "dose": "75 mg"
+          },
+          {
+            "name": "L-Glutamine",
+            "dose": "5 g"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157, Zinc Carnosine, and L-Glutamine.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Leaky gut, digestive inflammation, post-antibiotic recovery",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "f257db94-f468-40bc-bb9d-ca0cf56e5955",
+        "order": 2,
+        "name": "Joint & Connective Tissue Stack",
+        "goal": "Promote repair and regeneration of joints, tendons, and ligaments.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "500 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "5 mg"
+          },
+          {
+            "name": "Collagen Hydrolysate",
+            "dose": "10 g"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Take Collagen Hydrolysate daily."
+        ],
+        "best_for": "Joint degeneration, tendon stress, osteoarthritis",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "e2bc1aa9-c429-425f-8d26-f0e66389688d",
+        "order": 3,
+        "name": "Chronic Inflammation Reset Stack",
+        "goal": "Reduce systemic inflammation and autoimmune-related fatigue.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "500 mcg"
+          },
+          {
+            "name": "Curcumin",
+            "dose": "500 mg"
+          },
+          {
+            "name": "Fish Oil",
+            "dose": "2 g EPA/DHA"
+          }
+        ],
+        "protocol": [
+          "Administer BPC-157 daily.",
+          "Take Curcumin and Fish Oil with meals."
+        ],
+        "best_for": "Chronic inflammation, autoimmune discomfort, systemic fatigue",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "a7f7db56-80b3-4a4d-9208-22917b3766d4",
+        "order": 4,
+        "name": "Anti-Aging Regeneration Stack",
+        "goal": "Support longevity, cellular regeneration, and optimize recovery.",
+        "compounds": [
+          {
+            "name": "Epitalon",
+            "dose": "10 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "500 mcg"
+          },
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Combine Epitalon, BPC-157, and GHK-Cu.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Longevity, cellular regeneration, recovery optimization",
+        "duration": "20-day cycles"
+      },
+      {
+        "id": "947c23b5-e0aa-4018-be41-5c8fa1f31bfe",
+        "order": 5,
+        "name": "Tendon & Ligament Rapid Repair Stack",
+        "goal": "Accelerate healing of microtears and strains in soft tissue.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Tendon microtears, ligament strain, soft tissue injuries",
+        "duration": "7–14 days"
+      },
+      {
+        "id": "d62436bd-7a21-44b5-9e8b-4a88460e7d75",
+        "order": 6,
+        "name": "Daily Recovery Maintenance Stack",
+        "goal": "Support daily recovery and adaptation for high-volume training.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Take BPC-157 as per instructions."
+        ],
+        "best_for": "High-volume training and daily recovery",
+        "duration": "2–4 weeks"
+      },
+      {
+        "id": "a66364fd-caa2-4bb4-ab67-176642bcfe4a",
+        "order": 7,
+        "name": "High-Volume Training Recovery Stack",
+        "goal": "Enhance recovery and support hypertrophy during high-frequency training.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "optional"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and IGF-1 LR3.",
+          "Add TB-500 if desired for enhanced connective tissue support."
+        ],
+        "best_for": "High-frequency training and hypertrophy phases",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "de3200e2-3776-4c3c-a5ec-7983227dcb0d",
+        "order": 8,
+        "name": "CrossFit & HIIT Recovery Stack",
+        "goal": "Optimize recovery from HIIT and CrossFit activities.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157, TB-500, and IGF-1 LR3.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "CrossFit, HIIT, functional training",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "3870ed2d-1f9e-42b3-b1a0-608dc2d6145d",
+        "order": 9,
+        "name": "Endurance Joint Protection Stack",
+        "goal": "Protect joints and support recovery for endurance athletes.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Take Magnesium Glycinate daily."
+        ],
+        "best_for": "Marathon prep, triathlon, endurance athletes",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "5f1b041a-1a6a-4bb7-a664-d8d8c55b26dc",
+        "order": 10,
+        "name": "Plantar Fascia & Foot Recovery Stack",
+        "goal": "Aid healing of plantar fasciitis and running foot injuries.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Plantar fasciitis, running injuries",
+        "duration": "2–4 weeks"
+      },
+      {
+        "id": "e6c9afa5-d6e7-411f-860e-9c823f569858",
+        "order": 11,
+        "name": "Functional Fitness Tissue Conditioning Stack",
+        "goal": "Enhance tissue conditioning and overall mobility.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Collagen Peptides",
+            "dose": "10 g"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Take Collagen Peptides daily."
+        ],
+        "best_for": "Functional fitness and mobility",
+        "duration": "3–6 weeks"
+      },
+      {
+        "id": "298002ec-2742-402f-8b20-3858b80c2b0f",
+        "order": 12,
+        "name": "Deload Week Regenerative Stack",
+        "goal": "Facilitate recovery and regeneration during deload phases.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Deload blocks and recovery phases",
+        "duration": "1–2 weeks"
+      },
+      {
+        "id": "f2758bd3-48b1-41f6-aa81-97f178ef645b",
+        "order": 13,
+        "name": "Fasted Training Preservation Stack",
+        "goal": "Preserve muscle mass and aid recovery during fasted training.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "20 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Combine IGF-1 LR3 and BPC-157.",
+          "Administer as per individual compound instructions."
+        ],
+        "best_for": "Fasted training and muscle preservation",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "a6934094-5ec4-4c57-a53c-08e0ba019ad6",
+        "order": 14,
+        "name": "Injury Prevention & Prehab Stack",
+        "goal": "Support injury prevention and prepare tissues for high-volume training.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "1 mg"
+          },
+          {
+            "name": "Fish Oil",
+            "dose": "2000 mg"
+          }
+        ],
+        "protocol": [
+          "Combine BPC-157 and TB-500.",
+          "Take Fish Oil daily."
+        ],
+        "best_for": "Injury prevention and high-volume training",
+        "duration": "4–8 weeks"
+      },
+      {
+        "id": "f5c74a60-815b-40e5-9ba9-8578653fd16f",
+        "order": 15,
+        "name": "Gut-Muscle Axis Recovery Stack",
+        "goal": "Support GI stress and digestive recovery for the gut-muscle axis.",
+        "compounds": [
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Probiotic Complex",
+            "dose": "daily"
+          }
+        ],
+        "protocol": [
+          "Take BPC-157 as per instructions.",
+          "Take Probiotic Complex daily."
+        ],
+        "best_for": "GI stress and digestive recovery",
+        "duration": "2–3 weeks"
+      }
+    ]
+  },
+  {
+    "slug": "cjc-1295",
+    "peptide_slug": "cjc-1295-dac",
+    "peptide_name": "CJC-1295",
+    "title": "CJC-1295 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "GH / Secretagogues",
+    "category_slug": "gh-secretagogues",
+    "classification": "GHRH Analog",
+    "also_known_as": [
+      "CJC-1295 DAC",
+      "CJC-1295 no DAC",
+      "Modified GRF 1-29 with DAC"
+    ],
+    "description": "CJC-1295 is a synthetic analog of growth hormone-releasing hormone (GHRH) that stimulates the pituitary to increase natural GH secretion. The DAC version offers a long half-life (weekly dosing); the no-DAC version is short-acting (pulse-style).",
+    "core_info": {
+      "function": "Growth hormone stimulation, recovery optimization, anti-aging support, body recomposition and fat loss.",
+      "typical_dosage": "DAC: 1–2 mg weekly  |  no-DAC: 100–300 mcg daily",
+      "administration": "Subcutaneous injection",
+      "best_timing": "Varies by protocol — often pre-workout or pre-bed",
+      "common_cycle": "8–12 weeks",
+      "common_pairings": [
+        "Ipamorelin",
+        "Epitalon",
+        "BPC-157",
+        "L-Carnitine",
+        "Beta-Alanine",
+        "Berberine",
+        "Magnesium Glycinate",
+        "Ashwagandha",
+        "5-HTP",
+        "L-Tyrosine",
+        "DIM"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "aea67c80-c0fe-484b-89ab-7adb748d5127",
+        "order": 1,
+        "name": "GH Optimization & Recomposition Stack",
+        "goal": "Body recomposition and lean muscle retention.",
+        "compounds": [
+          {
+            "name": "CJC-1295 DAC",
+            "dose": "2 mg weekly"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "300 mcg nightly"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 DAC at 2 mg weekly.",
+          "Administer Ipamorelin at 300 mcg nightly."
+        ],
+        "best_for": "Body recomposition and lean muscle retention",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "9aa0fd3c-df8f-47fc-a217-e94caab5d22b",
+        "order": 2,
+        "name": "Muscle Preservation & Sarcopenia Stack",
+        "goal": "Muscle preservation and combating sarcopenia.",
+        "compounds": [
+          {
+            "name": "CJC-1295 no DAC",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "Creatine",
+            "dose": "5 g"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 no DAC at 200 mcg.",
+          "Administer Ipamorelin at 200 mcg.",
+          "Take 5 g of Creatine daily."
+        ],
+        "best_for": "40+ athletes and catabolic states",
+        "duration": "8 weeks"
+      },
+      {
+        "id": "c8e9c48a-0fb3-45fd-83a4-ad33926ce7de",
+        "order": 3,
+        "name": "Longevity & Hormonal Optimization Stack",
+        "goal": "Longevity and hormonal optimization.",
+        "compounds": [
+          {
+            "name": "Epitalon",
+            "dose": "10 mg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "200 mcg"
+          }
+        ],
+        "protocol": [
+          "Administer Epitalon at 10 mg.",
+          "Administer CJC-1295 at 200 mcg.",
+          "Administer Ipamorelin at 200 mcg."
+        ],
+        "best_for": "Anti-aging optimization",
+        "duration": "20-day cycles + 8-week GH cycle"
+      },
+      {
+        "id": "e6a21bbc-5131-4eec-9f2e-02600bab8896",
+        "order": 4,
+        "name": "Post-Fast GH Pulse Stack",
+        "goal": "GH pulse after fasting.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "optional"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Consider BPC-157 if desired."
+        ],
+        "best_for": "Intermittent fasting users",
+        "duration": "2–3x weekly"
+      },
+      {
+        "id": "28e51da0-68d5-4cab-bc54-1c71c0f02f17",
+        "order": 5,
+        "name": "Pre-Workout Fat Oxidation Stack",
+        "goal": "Fat oxidation before workouts.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "L-Carnitine",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Take 500 mg of L-Carnitine."
+        ],
+        "best_for": "Cutting phases and fat-loss training",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "f55f26fa-5ccd-4393-8b71-f8896ddfd05b",
+        "order": 6,
+        "name": "HIIT Performance & Fat Adaptation Stack",
+        "goal": "Performance and fat adaptation during HIIT.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Beta-Alanine",
+            "dose": "2 g"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Take 2 g of Beta-Alanine."
+        ],
+        "best_for": "HIIT and CrossFit athletes",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "eacc5f2d-1935-4210-9de8-22f0b6058fc4",
+        "order": 7,
+        "name": "Glycemic Reset Stack",
+        "goal": "Glycemic reset and glucose control.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "Chromium Picolinate",
+            "dose": "200 mcg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 500 mg of Berberine.",
+          "Take 200 mcg of Chromium Picolinate."
+        ],
+        "best_for": "Carb reintroduction and glucose control",
+        "duration": "30 days"
+      },
+      {
+        "id": "c6b8f33c-8f1d-410a-9d5d-78623010db10",
+        "order": 8,
+        "name": "Sleep Optimization GH Stack",
+        "goal": "Sleep support, especially during dieting.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "400 mg"
+          },
+          {
+            "name": "Valerian Root",
+            "dose": "optional"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 400 mg of Magnesium Glycinate.",
+          "Consider Valerian Root if needed."
+        ],
+        "best_for": "Sleep support during dieting",
+        "duration": "4–8 weeks"
+      },
+      {
+        "id": "d979d674-a1fe-4cfb-b05f-ecdcbbb4ce78",
+        "order": 9,
+        "name": "Post-Cheat Day Metabolic Reset Stack",
+        "goal": "Metabolic reset after cheat days or refeeds.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Take 500 mg of Berberine."
+        ],
+        "best_for": "Cheat days and refeeds",
+        "duration": "24–48 hour reset"
+      },
+      {
+        "id": "1bb33cc0-b029-4b28-9f8d-44d7054e9220",
+        "order": 10,
+        "name": "Slow Metabolism Repair Stack",
+        "goal": "Repair slow metabolism in low-energy/chronic dieting.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "L-Tyrosine",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Take 500 mg of L-Tyrosine."
+        ],
+        "best_for": "Low-energy and chronic dieting",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "9e126639-ef4e-42da-a02e-f31bcb62a45b",
+        "order": 11,
+        "name": "Appetite & Mood Stability Stack",
+        "goal": "Appetite and mood stability.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "5-HTP",
+            "dose": "100 mg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 100 mg of 5-HTP.",
+          "Take 200 mg of Magnesium Glycinate."
+        ],
+        "best_for": "Stress eating and cravings",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "c8b2d3b6-af5a-4583-ae22-9e63b94e27ec",
+        "order": 12,
+        "name": "Insulin Sensitivity Enhancement Stack",
+        "goal": "Enhance insulin sensitivity and metabolic flexibility.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg 2x/day"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 500 mg of Berberine twice per day."
+        ],
+        "best_for": "Insulin resistance and metabolic flexibility",
+        "duration": "4–8 weeks"
+      },
+      {
+        "id": "8edc4a28-9d76-43f7-b60a-39d318904b9d",
+        "order": 13,
+        "name": "Anti-Cortisol Body Composition Stack",
+        "goal": "Reduce cortisol and improve body composition.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ashwagandha",
+            "dose": "600 mg"
+          },
+          {
+            "name": "Phosphatidylserine",
+            "dose": "300 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 600 mg of Ashwagandha.",
+          "Take 300 mg of Phosphatidylserine."
+        ],
+        "best_for": "Stress-related fat retention",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "dcf21851-f7da-4245-bafc-873fd3271608",
+        "order": 14,
+        "name": "High-Stress Metabolism Support Stack",
+        "goal": "Support metabolism during high stress.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Rhodiola Rosea",
+            "dose": "200 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "100 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Take 200 mg of Rhodiola Rosea.",
+          "Take 100 mg of L-Theanine."
+        ],
+        "best_for": "Burnout and mental fatigue",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "1b4efcb3-5891-44cd-acea-8f9a7ecd861b",
+        "order": 15,
+        "name": "Post-Menopause Body Composition Stack",
+        "goal": "Body composition support post-menopause.",
+        "compounds": [
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "DIM",
+            "dose": "150 mg"
+          }
+        ],
+        "protocol": [
+          "Administer CJC-1295 at 100 mcg.",
+          "Administer Ipamorelin at 100 mcg.",
+          "Take 150 mg of DIM."
+        ],
+        "best_for": "Postmenopausal body composition support",
+        "duration": "6–8 weeks"
+      }
+    ]
+  },
+  {
+    "slug": "pt-141",
+    "peptide_slug": "pt-141",
+    "peptide_name": "PT-141",
+    "title": "PT-141 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Hormonal / Sexual Health",
+    "category_slug": "hormonal-sexual-health",
+    "classification": "Melanocortin Receptor Agonist",
+    "also_known_as": [
+      "Bremelanotide"
+    ],
+    "description": "PT-141 is a melanocortin receptor agonist that stimulates MC-3 and MC-4 receptors in the brain, enhancing sexual arousal through central nervous system pathways — not direct vascular mechanisms.",
+    "core_info": {
+      "function": "Libido enhancement, erectile support, sexual desire enhancement for men and women.",
+      "typical_dosage": "1.25–2 mg subcutaneous injection",
+      "administration": "Subcutaneous injection",
+      "best_timing": "30–60 minutes before sexual activity",
+      "common_cycle": "As-needed only — not for daily use",
+      "common_pairings": [
+        "Melanotan II",
+        "Selank",
+        "Sildenafil / Tadalafil",
+        "Oxytocin",
+        "Kisspeptin"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "54f0dfce-3c22-4b8f-8350-3eb0af11a81a",
+        "order": 1,
+        "name": "Libido & Performance Enhancement Stack",
+        "goal": "Enhance libido, arousal, mood, confidence, and overall sexual performance.",
+        "compounds": [
+          {
+            "name": "PT-141",
+            "dose": "1.75 mg"
+          },
+          {
+            "name": "Melanotan II",
+            "dose": "0.25–1 mg"
+          },
+          {
+            "name": "Selank",
+            "dose": "250–500 mcg / nostril"
+          }
+        ],
+        "protocol": [
+          "PT-141: Inject 1.75 mg subcutaneously 45–60 min before sexual activity. Not for daily use.",
+          "Melanotan II: 0.25–1 mg, 2–3x weekly. Start low to assess tolerance.",
+          "Selank: 250–500 mcg intranasally 1–2x daily or as needed for calmness and mood."
+        ],
+        "best_for": "Libido support, sexual wellness optimization, confidence enhancement",
+        "duration": "As needed"
+      }
+    ]
+  },
+  {
+    "slug": "dsip",
+    "peptide_slug": "dsip",
+    "peptide_name": "DSIP",
+    "title": "DSIP Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Sleep & Recovery",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Sleep / Neuroendocrine Peptide",
+    "also_known_as": [
+      "Delta Sleep-Inducing Peptide"
+    ],
+    "description": "DSIP (Delta Sleep-Inducing Peptide) is a naturally occurring peptide in mammals that promotes delta-wave activity during deep sleep stages. It influences corticotropin release and neuroendocrine regulation, supporting adrenal recovery and reducing chronic stress.",
+    "core_info": {
+      "function": "Sleep induction, stress reduction, hormonal balance, nervous system recovery.",
+      "typical_dosage": "100–500 mcg",
+      "administration": "Subcutaneous injection",
+      "best_timing": "30–60 minutes before bedtime",
+      "common_cycle": "4–6 weeks",
+      "common_pairings": [
+        "Epitalon",
+        "CJC-1295",
+        "Ipamorelin",
+        "Magnesium Glycinate",
+        "Glycine"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "2bd3556e-dca3-41e1-8e39-eab4c26abcc6",
+        "order": 1,
+        "name": "Sleep Optimization + Recovery Stack",
+        "goal": "Enhance deep sleep cycles, hormonal balance, and overnight recovery.",
+        "compounds": [
+          {
+            "name": "DSIP",
+            "dose": "300 mcg nightly"
+          },
+          {
+            "name": "Epitalon",
+            "dose": "5 mg twice weekly"
+          },
+          {
+            "name": "CJC-1295 + Ipamorelin",
+            "dose": "100 mcg each nightly"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "200 mg nightly"
+          }
+        ],
+        "protocol": [
+          "Administer DSIP subcutaneously 30 min before bedtime.",
+          "Inject Epitalon subcutaneously twice weekly in the evening.",
+          "Combine CJC-1295 and Ipamorelin and inject subcutaneously at night.",
+          "Take magnesium glycinate orally with a light evening meal."
+        ],
+        "best_for": "Poor sleep quality, nighttime restlessness, stress-related fatigue",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "17239e5b-cc03-4aee-ad40-f32f8f899a95",
+        "order": 2,
+        "name": "Deep Sleep & Regenerative Hormone Support Stack",
+        "goal": "Increase deep sleep quality, improve GH pulses, and enhance overnight recovery.",
+        "compounds": [
+          {
+            "name": "DSIP",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "300 mg"
+          },
+          {
+            "name": "Glycine powder",
+            "dose": "3 g"
+          }
+        ],
+        "protocol": [
+          "Inject DSIP subcutaneously 30 min before bedtime.",
+          "Take magnesium and glycine together 1 hour before sleep."
+        ],
+        "best_for": "Sleep disturbances, burnout recovery, nighttime cortisol issues",
+        "duration": "5 nights/week; cycle monthly"
+      }
+    ]
+  },
+  {
+    "slug": "ghk-cu",
+    "peptide_slug": "ghk-cu",
+    "peptide_name": "GHK-Cu",
+    "title": "GHK-Cu Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Aesthetics / Skin",
+    "category_slug": "aesthetics-skin",
+    "classification": "Signal Peptide (Copper-Binding)",
+    "also_known_as": [
+      "Copper Peptide",
+      "GHK-Copper"
+    ],
+    "description": "GHK-Cu is a copper-binding tripeptide naturally present in human plasma. It supports collagen synthesis, tissue remodeling, antioxidant defense, and hair follicle stimulation.",
+    "core_info": {
+      "function": "Skin regeneration, wound healing, anti-aging, hair growth.",
+      "typical_dosage": "Topical 0.05–0.5% or injectable 2–5 mg subcutaneously",
+      "administration": "Topical or subcutaneous injection",
+      "best_timing": "Varies by protocol",
+      "common_cycle": "Varies (typically 4–12 weeks)",
+      "common_pairings": [
+        "TB-500",
+        "Epitalon",
+        "Collagen Peptides",
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "L-Arginine",
+        "CoQ10"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "d0ffcac5-6125-460a-8abd-82478bff5b4f",
+        "order": 1,
+        "name": "Skin Collagen Remodeling & Firmness Stack",
+        "goal": "Stimulate collagen production, improve elasticity, and reduce wrinkles.",
+        "compounds": [
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Microneedling roller",
+            "dose": "0.25 mm"
+          },
+          {
+            "name": "Distilled water",
+            "dose": "5 mL"
+          }
+        ],
+        "protocol": [
+          "Mix 2 mg of GHK-Cu with 5 mL distilled water.",
+          "Apply topically after microneedling 2–3x weekly.",
+          "Do not wash off for at least 6 hours."
+        ],
+        "best_for": "Aging skin and firmness enhancement",
+        "duration": "8 weeks"
+      },
+      {
+        "id": "71ee990a-85ea-401e-90a2-341e3839ceb1",
+        "order": 2,
+        "name": "Anti-Fibrotic & Skin Elasticity Restoration Stack",
+        "goal": "Improve elasticity and skin structure.",
+        "compounds": [
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2.5 mg"
+          },
+          {
+            "name": "Vitamin A serum",
+            "dose": "0.5%"
+          }
+        ],
+        "protocol": [
+          "Inject GHK-Cu and TB-500 twice weekly.",
+          "Apply vitamin A serum nightly.",
+          "Continue for 6 weeks."
+        ],
+        "best_for": "Stretch marks and loose skin",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "37e2ff26-d63c-4e2c-8def-60e8de09ee7c",
+        "order": 3,
+        "name": "Anti-Glycation Skin Rejuvenation Protocol",
+        "goal": "Reduce glycation damage and improve tone.",
+        "compounds": [
+          {
+            "name": "GHK-Cu topical serum",
+            "dose": "1–2 mg"
+          },
+          {
+            "name": "Carnosine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "Alpha-lipoic acid",
+            "dose": "100 mg"
+          }
+        ],
+        "protocol": [
+          "Apply GHK-Cu daily to face and neck.",
+          "Take carnosine and ALA with meals.",
+          "Cycle every 3 months."
+        ],
+        "best_for": "Dull or sugar-damaged skin",
+        "duration": "3 months (cycled)"
+      },
+      {
+        "id": "9a597b85-54f0-4995-a080-53486c10c998",
+        "order": 4,
+        "name": "Cardiovascular & Endothelial Protection Stack",
+        "goal": "Support circulation and vascular health.",
+        "compounds": [
+          {
+            "name": "GHK-Cu injectable",
+            "dose": "2 mg"
+          },
+          {
+            "name": "L-Arginine",
+            "dose": "3 g"
+          },
+          {
+            "name": "CoQ10 Ubiquinol",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Inject GHK-Cu 3x weekly.",
+          "Take L-arginine in the morning.",
+          "Take CoQ10 with meals."
+        ],
+        "best_for": "Healthy aging support",
+        "duration": "8 weeks"
+      },
+      {
+        "id": "83829f83-7311-4f5d-82a4-5922ba393ebf",
+        "order": 5,
+        "name": "Advanced Collagen Synthesis & Firmness Stack",
+        "goal": "Enhance collagen density and firmness.",
+        "compounds": [
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Vitamin C",
+            "dose": "1000 mg"
+          },
+          {
+            "name": "Proline + Lysine Complex",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Apply GHK-Cu serum daily.",
+          "Take vitamin C and amino acids with meals.",
+          "Maintain for at least 8 weeks."
+        ],
+        "best_for": "Post-weight loss or mature skin",
+        "duration": "8+ weeks"
+      },
+      {
+        "id": "5d39a6b9-1c83-46bf-ba9f-f7b5f9019487",
+        "order": 6,
+        "name": "Aging Skin Rejuvenation Stack",
+        "goal": "Improve elasticity and reduce fine lines.",
+        "compounds": [
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Epitalon",
+            "dose": "5 mg"
+          },
+          {
+            "name": "Collagen Peptides",
+            "dose": "10 g"
+          }
+        ],
+        "protocol": [
+          "Inject GHK-Cu in the morning on alternating days.",
+          "Inject Epitalon in the evening twice weekly.",
+          "Mix collagen into a morning smoothie."
+        ],
+        "best_for": "Visible anti-aging support",
+        "duration": "20-day cycles"
+      },
+      {
+        "id": "4f9bf3b5-a125-408a-bc44-19aa1f673cae",
+        "order": 7,
+        "name": "Light Rejuvenation & Beginner Anti-Aging Stack",
+        "goal": "Promote collagen support and hydration.",
+        "compounds": [
+          {
+            "name": "GHK-Cu injectable",
+            "dose": "1 mg"
+          },
+          {
+            "name": "Hyaluronic acid serum",
+            "dose": "2%"
+          },
+          {
+            "name": "CoQ10",
+            "dose": "100 mg"
+          }
+        ],
+        "protocol": [
+          "Inject GHK-Cu twice weekly.",
+          "Apply hyaluronic acid serum daily.",
+          "Take CoQ10 with breakfast."
+        ],
+        "best_for": "Beginner anti-aging protocol",
+        "duration": "4–6 weeks"
+      }
+    ]
+  }
+]
