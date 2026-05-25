@@ -10,39 +10,59 @@
  * Edit VIAL_SIZES_MG below to match the vials you sell.
  */
 
-// Default vial sizes per peptide (mg per vial)
+// Default vial sizes per peptide (mg per vial) — based on Zurix Sciences catalog
 export const VIAL_SIZES_MG = {
   'AOD-9604': 5,
   'CJC-1295': 5,
   'CJC-1295 DAC': 5,
-  'Ipamorelin': 5,
-  'BPC-157': 5,
+  'CJC1295 DAC': 5,
+  'CJC-1295 no DAC': 5,
+  'CJC-1295/Ipamorelin Blend': 5,        // each component 5mg
+  'Ipamorelin': 10,
+  'BPC-157': 10,
+  'BPC-157 + TB-500 Blend': 10,
+  'BPC-157/TB-500 Blend': 10,
+  'BPC-157 + TB4 Blend': 5,
+  'BPC-157/TB4 Blend': 5,
   'TB-500': 10,
   'TB500': 10,
-  'GHK-Cu': 100,        // mostly used topical (not converted to UI)
   'Tesamorelin': 10,
+  'Tesamorelin + Ipamorelin Blend': 5,   // each component 5mg
   'Sermorelin': 10,
-  'Semaglutide': 5,
-  'Tirzepatide': 10,
-  'Retatrutide': 10,
-  'Selank': 5,
-  'Semax': 5,
+  'Tirzepatide': 10,                      // default (also sold in 15/20/60mg)
+  'Retatrutide': 10,                      // default (also 40mg)
+  'Selank': 10,
+  'Semax': 10,
   'PT-141': 10,
+  'PT141': 10,
   'MOTS-c': 10,
   'NAD+': 500,
   'NAD': 500,
-  '5-Amino-1MQ': 50,
-  'Kisspeptin-10': 5,
-  'Kisspeptin': 5,
-  'Oxytocin': 5,
-  'HGH Fragment 176-191': 10,
+  '5-Amino-1MQ': 10,
+  'Kisspeptin-10': 10,
+  'Kisspeptin': 10,
+  'Oxytocin': 10,
+  'HGH 176-191': 5,
+  'HGH Fragment': 5,
+  'HGH Fragment 176-191': 5,
+  'HGH Fragments': 5,
   'IGF-1 LR3': 1,
+  'IGF-1': 1,
   'KPV': 10,
+  'GHK-Cu': 50,                            // smaller vial size
+  'GHK-Cu/KPV Blend': 50,
+  'AHK-Cu': 100,
   'Thymosin Alpha': 5,
+  'Thymosin Alpha-1': 5,
   'DSIP': 5,
-  'AHK-Cu': 50,
+  'Cartalax': 20,
+  'Glow Blend': 70,
+  'Klow Blend': 80,
   'SLU-PP-332': 0,      // tablet — no UI
-  'Glutathione': 0,     // IV/oral — no UI
+  'Glutathione': 0,     // not measured in UI
+  'HGH': 0,             // measured in iu directly
+  'Bacteriostatic Water': 0,
+  'Epitalon': 10,        // common — for reference only (not in catalog)
 };
 
 // Compounds that are NOT injectable peptides (no UI conversion)
