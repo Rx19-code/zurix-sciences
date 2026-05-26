@@ -2810,6 +2810,809 @@
         ],
         "best_for": "Exam prep, research sprints, content absorption",
         "duration": "4 weeks"
+      },
+      {
+        "id": "a05c2293-cd86-4924-a47d-6abe67e52e32",
+        "order": 11,
+        "name": "Semax AM Cognitive Sharpness Stack",
+        "goal": "Clarity, focus, brain energy for demanding mornings.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg (1–2 sprays)"
+          },
+          {
+            "name": "Omega-3 DHA",
+            "dose": "1000 mg"
+          },
+          {
+            "name": "Rhodiola Rosea",
+            "dose": "250 mg"
+          },
+          {
+            "name": "Vitamin B12",
+            "dose": "1000 mcg"
+          }
+        ],
+        "protocol": [
+          "Administer 1–2 sprays intranasally upon waking.",
+          "Take Omega-3, Rhodiola, and B12 with water.",
+          "Begin mentally demanding work within 30 minutes."
+        ],
+        "best_for": "Demanding mornings, meetings, mental fatigue",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "1fc53120-2cb1-4dbc-8850-22e64940d755",
+        "order": 12,
+        "name": "Academic Study Focus",
+        "goal": "Concentration, verbal recall, learning depth.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Caffeine",
+            "dose": "50–100 mg"
+          },
+          {
+            "name": "Citicoline",
+            "dose": "250 mg"
+          },
+          {
+            "name": "L-Tyrosine",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Take Citicoline and L-Tyrosine 30 min before studying.",
+          "Use Semax immediately before study session.",
+          "Add caffeine only if needed for alertness."
+        ],
+        "best_for": "Long reading or dense information absorption",
+        "duration": "As needed"
+      },
+      {
+        "id": "8f456b3c-0f39-4063-8f4c-0ed7bb761b3d",
+        "order": 13,
+        "name": "Deep Learning Retention Protocol",
+        "goal": "Memory encoding and neural efficiency.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Uridine Monophosphate",
+            "dose": "250 mg"
+          },
+          {
+            "name": "DHA",
+            "dose": "1000 mg"
+          },
+          {
+            "name": "Citicoline",
+            "dose": "250 mg"
+          }
+        ],
+        "protocol": [
+          "Take uridine, citicoline, and DHA with breakfast.",
+          "Use Semax 15–30 min before studying.",
+          "Take short mental breaks every hour."
+        ],
+        "best_for": "Certifications or new skill acquisition",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "36ca7814-c3f9-4c2f-9fa5-ceb482d1ae86",
+        "order": 14,
+        "name": "Semax + Selank Stress-Focus Dual Protocol",
+        "goal": "Balance mental alertness with calm.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Vitamin C",
+            "dose": "500 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Administer Semax in one nostril and Selank in the other.",
+          "Take L-Theanine and Vitamin C post-application.",
+          "Use during emotionally taxing days."
+        ],
+        "best_for": "Interviews, public speaking, emotionally taxing days",
+        "duration": "As needed"
+      },
+      {
+        "id": "84029dde-5a6c-4d45-ab7e-1f76a46cc4e4",
+        "order": 15,
+        "name": "Jet Lag Brain Realignment",
+        "goal": "Reduce brain fog and accelerate circadian reset.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Melatonin",
+            "dose": "0.5–1 mg"
+          },
+          {
+            "name": "Dihexa",
+            "dose": "10 mg"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "1000 IU"
+          }
+        ],
+        "protocol": [
+          "Use Semax upon waking in new time zone.",
+          "Take Dihexa in the morning.",
+          "Use melatonin at local bedtime."
+        ],
+        "best_for": "After long international flights",
+        "duration": "1 week"
+      }
+    ]
+  },
+  {
+    "slug": "tb-500",
+    "peptide_slug": "tb-500",
+    "peptide_name": "TB-500",
+    "title": "TB-500 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Healing & Recovery",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Synthetic Thymosin Beta-4",
+    "also_known_as": [
+      "TB4",
+      "Thymosin Beta-4"
+    ],
+    "description": "TB-4 is a naturally occurring peptide that modulates actin dynamics, promotes angiogenesis, supports cell migration, and accelerates tissue repair. TB-500 is the synthetic version used in regenerative and performance protocols.",
+    "core_info": {
+      "function": "Wound healing, tissue regeneration, anti-inflammatory support.",
+      "typical_dosage": "1–5 mg subcutaneously, 2–3x weekly",
+      "administration": "Subcutaneous injection",
+      "best_timing": "During recovery or injury phases",
+      "common_cycle": "4–6 weeks",
+      "common_pairings": [
+        "BPC-157",
+        "IGF-1 LR3",
+        "Collagen hydrolysate",
+        "Vitamin D3",
+        "Thymosin Beta-4"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "89d9e908-ef1e-4f38-b651-25b42433d5c9",
+        "order": 1,
+        "name": "Full-Body Tissue Regeneration",
+        "goal": "Accelerate soft tissue healing, support fascia, reduce inflammation.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg (5mg vial in 2 ml water; inject 0.25 ml)"
+          }
+        ],
+        "protocol": [
+          "Reconstitute 5 mg of TB-500 with 2 mL bacteriostatic water.",
+          "Inject 0.25 mL subcutaneously 2x weekly for 4–6 weeks.",
+          "Reduce to 1 injection every 10–14 days for maintenance."
+        ],
+        "best_for": "Injury recovery, post-surgery, chronic wear and tear",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "fd4b1921-f946-4732-8d61-c114b189c0cb",
+        "order": 2,
+        "name": "Joint & Connective Tissue Longevity",
+        "goal": "Support joint flexibility and connective tissue repair.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "5 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "500 mcg"
+          },
+          {
+            "name": "Collagen hydrolysate",
+            "dose": "10 g"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 subcutaneously twice weekly for 4 weeks.",
+          "Use BPC-157 daily near affected joint or systemically.",
+          "Take collagen hydrolysate daily."
+        ],
+        "best_for": "Osteoarthritis, joint degeneration, connective tissue stress",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "7ff89d00-a7b5-441d-a714-b6bbb2dc5ff1",
+        "order": 3,
+        "name": "Joint Longevity Performance Support",
+        "goal": "Long-term joint resilience and mobility.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Collagen peptides",
+            "dose": "10 g oral"
+          }
+        ],
+        "protocol": [
+          "Use TB-500 twice weekly to reduce inflammation.",
+          "Inject BPC-157 near commonly stressed joints.",
+          "Take collagen daily to support cartilage integrity."
+        ],
+        "best_for": "Strength athletes or training over age 40",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "fba14e99-7edd-41c0-af26-115477693a93",
+        "order": 4,
+        "name": "Functional Fitness Tissue Conditioning",
+        "goal": "Strengthen connective tissue and reduce stiffness.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Collagen supplement",
+            "dose": "optional"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 every 3–4 days for 3 weeks.",
+          "Use BPC-157 daily for soft tissue reinforcement.",
+          "Combine with collagen post-training."
+        ],
+        "best_for": "High-load or high-volume athletic training",
+        "duration": "3 weeks"
+      },
+      {
+        "id": "ab5b47b6-07c8-4dfb-94ee-6faeb6d82702",
+        "order": 5,
+        "name": "Mid-Season Athlete Regeneration",
+        "goal": "Sustain recovery and performance during long competitive seasons.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "5000 IU oral"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 at beginning and midpoint of training weeks.",
+          "Use BPC-157 five days weekly.",
+          "Supplement Vitamin D3 daily."
+        ],
+        "best_for": "Athletes in sports seasons over 8 weeks",
+        "duration": "8+ weeks"
+      },
+      {
+        "id": "65d40d5a-4cfe-4b06-92af-6ce161345bad",
+        "order": 6,
+        "name": "CNS Recovery & Neuromuscular Reset",
+        "goal": "Nervous system recovery and strength restoration.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 subcutaneously at end of training week.",
+          "Use IGF-1 LR3 IM after CNS-heavy sessions.",
+          "Cycle weekly during neurological stress periods."
+        ],
+        "best_for": "Powerlifting or explosive athletic phases",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "2e1ac6fa-2819-428e-8efb-dd3da70a89d6",
+        "order": 7,
+        "name": "3-Day Sprint Interval Repair",
+        "goal": "Reduce DOMS and improve sprint recovery.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 24 hours before sprint blocks.",
+          "Use BPC-157 after sprint sessions.",
+          "Repeat weekly for up to 3 weeks."
+        ],
+        "best_for": "HIIT, sprinting, track athletes",
+        "duration": "Up to 3 weeks"
+      },
+      {
+        "id": "f6e87ee4-2ba0-4fca-8685-bfac4b7805c3",
+        "order": 8,
+        "name": "TB-500 + Thymosin Beta-4 Tissue Rescue",
+        "goal": "Promote extracellular matrix repair and tissue regeneration.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg/week"
+          },
+          {
+            "name": "Thymosin Beta-4",
+            "dose": "1 mg 2x weekly"
+          },
+          {
+            "name": "Collagen peptides",
+            "dose": "10 g/day"
+          }
+        ],
+        "protocol": [
+          "Inject both peptides on alternating days.",
+          "Take collagen daily with Vitamin C.",
+          "Continue for 4–6 weeks depending on injury severity."
+        ],
+        "best_for": "Tendonitis, post-surgical recovery, ligament injuries",
+        "duration": "4–6 weeks"
+      }
+    ]
+  },
+  {
+    "slug": "tesamorelin",
+    "peptide_slug": "tesamorelin",
+    "peptide_name": "Tesamorelin",
+    "title": "Tesamorelin Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "GH / Secretagogues",
+    "category_slug": "gh-secretagogues",
+    "classification": "Synthetic GHRH Analog",
+    "also_known_as": [
+      "GHRH analog",
+      "Egrifta"
+    ],
+    "description": "Tesamorelin is a synthetic GHRH analog that stimulates endogenous growth hormone release. Originally approved for HIV-related lipodystrophy, it is researched for visceral fat reduction, metabolic support, and cognitive benefits.",
+    "core_info": {
+      "function": "GH stimulation, visceral fat reduction, body composition optimization.",
+      "typical_dosage": "2 mg subcutaneously daily",
+      "administration": "Subcutaneous injection",
+      "best_timing": "Morning, pre-cardio, or before sleep",
+      "common_cycle": "8–12 weeks",
+      "common_pairings": [
+        "AOD-9604",
+        "CJC-1295",
+        "Ipamorelin",
+        "DHEA",
+        "Berberine",
+        "Amlexanox",
+        "Omega-3",
+        "Magnesium Glycinate",
+        "L-Theanine"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "929f04c8-56c2-4fc4-ba9f-ebe1b74730fe",
+        "order": 1,
+        "name": "Longevity Hormonal Synergy Support",
+        "goal": "Hormonal optimization and age-related metabolic support.",
+        "compounds": [
+          {
+            "name": "Tesamorelin",
+            "dose": "2 mg (reconstituted with 1 mL water; inject 0.2–0.25 mL SC daily)"
+          },
+          {
+            "name": "DHEA",
+            "dose": "25 mg capsule"
+          }
+        ],
+        "protocol": [
+          "Reconstitute Tesamorelin with 1 mL bacteriostatic water.",
+          "Inject 0.2–0.25 mL subcutaneously daily.",
+          "Take DHEA each morning with food."
+        ],
+        "best_for": "Hormonal optimization and age-related metabolic support",
+        "duration": "3 months"
+      },
+      {
+        "id": "60a1db9a-5308-4e94-8120-35d1d800abba",
+        "order": 2,
+        "name": "The Fasted Burner Stack",
+        "goal": "Maximize fat oxidation and visceral fat reduction during fasting.",
+        "compounds": [
+          {
+            "name": "Tesamorelin",
+            "dose": "2 mg daily"
+          },
+          {
+            "name": "Amlexanox",
+            "dose": "100–200 mg oral"
+          },
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          }
+        ],
+        "protocol": [
+          "Use Tesamorelin daily.",
+          "Take Amlexanox in the morning before fasted cardio.",
+          "Use AOD-9604 pre-cardio or during fasting windows."
+        ],
+        "best_for": "Intermittent fasting and cardio cutting phases",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "dced4f02-f06b-44a0-bb18-a539058dcd13",
+        "order": 3,
+        "name": "Lean & Toned Stack for Women",
+        "goal": "Lean physique support while preserving muscle and feminine shape.",
+        "compounds": [
+          {
+            "name": "Tesamorelin",
+            "dose": "1–2 mg PM"
+          },
+          {
+            "name": "CJC-1295 + Ipamorelin",
+            "dose": "100 mcg each"
+          },
+          {
+            "name": "AOD-9604",
+            "dose": "300 mcg"
+          }
+        ],
+        "protocol": [
+          "Use Tesamorelin nightly.",
+          "Inject CJC-1295 + Ipamorelin 5 days weekly before sleep.",
+          "Take AOD-9604 in morning or pre-workout."
+        ],
+        "best_for": "Body recomposition and toned physique goals",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "6513c48e-e15c-4827-8a0f-65ecc504da72",
+        "order": 4,
+        "name": "Visceral Fat Reduction Optimization",
+        "goal": "Support abdominal fat reduction and metabolic flexibility.",
+        "compounds": [
+          {
+            "name": "Tesamorelin",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Berberine",
+            "dose": "500 mg"
+          },
+          {
+            "name": "Omega-3 DHA/EPA",
+            "dose": "2 g"
+          }
+        ],
+        "protocol": [
+          "Inject Tesamorelin before sleep daily.",
+          "Take Berberine with carbohydrate-heavy meals.",
+          "Supplement Omega-3 daily with food."
+        ],
+        "best_for": "Metabolic syndrome or stubborn midsection fat",
+        "duration": "12 weeks"
+      },
+      {
+        "id": "f2d49416-d26e-455c-999c-fe7f2768406a",
+        "order": 5,
+        "name": "Advanced GH Pulse Recovery",
+        "goal": "Enhance sleep-related GH pulses and recovery.",
+        "compounds": [
+          {
+            "name": "Tesamorelin",
+            "dose": "2 mg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "400 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Inject Tesamorelin before bedtime.",
+          "Take Magnesium and L-Theanine 30–60 min before sleep.",
+          "Maintain deep sleep hygiene during the cycle."
+        ],
+        "best_for": "Recovery phases, sleep support, hormonal restoration",
+        "duration": "8 weeks"
+      }
+    ]
+  },
+  {
+    "slug": "thymosin-alpha",
+    "peptide_slug": "thymosin-alpha",
+    "peptide_name": "Thymosin Alpha-1",
+    "title": "Thymosin Alpha-1 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Immune Support",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Immune-modulating Peptide",
+    "also_known_as": [
+      "Ta1",
+      "Tα1"
+    ],
+    "description": "Thymosin Alpha-1 enhances T-cell activity, improves cytokine signaling, and supports immune checkpoint regulation. Researched in hepatitis, oncology support, viral defense, and autoimmune modulation.",
+    "core_info": {
+      "function": "Immune enhancement, antiviral defense, immune modulation, recovery support.",
+      "typical_dosage": "1–1.6 mg subcutaneously, 2–3x weekly",
+      "administration": "Subcutaneous injection",
+      "best_timing": "Before high-risk periods or during illness onset",
+      "common_cycle": "5 days to 4–6 weeks (varies)",
+      "common_pairings": [
+        "LL-37",
+        "BPC-157",
+        "TB-500",
+        "Vitamin C",
+        "Vitamin D3",
+        "NAD+",
+        "Resveratrol",
+        "Melatonin",
+        "Omega-3"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "f3ddeb54-9518-4a9e-9f14-f28f1d7b4045",
+        "order": 1,
+        "name": "Immunity Booster Stack for Travel Seasons",
+        "goal": "Enhance infection resistance and immune readiness during high-risk travel.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg 2x weekly"
+          },
+          {
+            "name": "LL-37",
+            "dose": "50 mcg daily for 7 days"
+          },
+          {
+            "name": "Vitamin C",
+            "dose": "1000 mg 2x daily"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 two days apart weekly.",
+          "Use LL-37 during the first week of travel.",
+          "Take Vitamin C morning and evening with meals."
+        ],
+        "best_for": "Before international travel, conferences, or flu season",
+        "duration": "2 weeks"
+      },
+      {
+        "id": "47b1b335-e13c-4bb5-9c98-6246e229525f",
+        "order": 2,
+        "name": "Autoimmune Modulation + Resilience",
+        "goal": "Immune modulation and inflammation control.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg 2x weekly"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg weekly"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "5000 IU daily"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 on non-consecutive days.",
+          "Use TB-500 weekly.",
+          "Take Vitamin D3 with the largest meal."
+        ],
+        "best_for": "Immune dysregulation and autoimmune support",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "ffd03e60-9603-4c4c-bd6b-c572c51bfa5a",
+        "order": 3,
+        "name": "Emergency Immune Boost 5-Day Protocol",
+        "goal": "Rapid immune readiness and inflammatory defense.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg daily"
+          },
+          {
+            "name": "LL-37",
+            "dose": "100 mcg daily"
+          },
+          {
+            "name": "Vitamin C",
+            "dose": "2 g daily"
+          },
+          {
+            "name": "Quercetin",
+            "dose": "500 mg 2x daily"
+          }
+        ],
+        "protocol": [
+          "Inject peptides daily for 5 days.",
+          "Split supplements between morning and evening.",
+          "Resume normal supplementation after completion."
+        ],
+        "best_for": "At first signs of illness or viral exposure",
+        "duration": "5 days"
+      },
+      {
+        "id": "da3244ee-6afe-47cc-bf2e-78c6fd4e7411",
+        "order": 4,
+        "name": "Pre-Travel Immune Fortification",
+        "goal": "Strengthen immunity against travel stress and airborne pathogens.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg/day for 5 days"
+          },
+          {
+            "name": "LL-37",
+            "dose": "100 mcg/day"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "10000 IU daily"
+          }
+        ],
+        "protocol": [
+          "Begin injections 5 days before departure.",
+          "Take Vitamin D3 daily.",
+          "Continue LL-37 for 2–3 days after arrival if needed."
+        ],
+        "best_for": "Before long flights and crowded events",
+        "duration": "5–7 days"
+      },
+      {
+        "id": "a18999cc-de80-4651-b9d6-1ec688bae1e5",
+        "order": 5,
+        "name": "Immunosenescence Prevention",
+        "goal": "Support healthy immune aging and cellular repair.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "750 mcg 3x/week"
+          },
+          {
+            "name": "NAD+",
+            "dose": "100 mg weekly"
+          },
+          {
+            "name": "Resveratrol",
+            "dose": "200 mg daily"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 three times weekly.",
+          "Administer NAD+ weekly.",
+          "Take resveratrol with a fatty meal."
+        ],
+        "best_for": "Longevity-focused immune support",
+        "duration": "8–12 weeks"
+      },
+      {
+        "id": "9faef006-e6e8-46df-bd63-379f50895785",
+        "order": 6,
+        "name": "Nighttime Immune Regeneration",
+        "goal": "Sleep-driven immune repair and recovery.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "750 mcg before bed"
+          },
+          {
+            "name": "Melatonin",
+            "dose": "3 mg"
+          },
+          {
+            "name": "Magnesium glycinate",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 in the evening.",
+          "Take melatonin and magnesium 30 min before sleep.",
+          "Continue nightly for up to 4 weeks."
+        ],
+        "best_for": "High stress, poor sleep, or low immunity",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "1d0b17bb-1343-46ae-a38b-2bfc6f5fdefb",
+        "order": 7,
+        "name": "Ta1 + BPC-157 Mucosal Immunity",
+        "goal": "Support mucosal immunity and gut-lung barriers.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg 3x/week"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg daily"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 Monday, Wednesday, and Friday.",
+          "Use BPC-157 daily.",
+          "Continue protocol for 4–6 weeks."
+        ],
+        "best_for": "Respiratory weakness or gut-immune support",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "7f3aadd2-f968-49ec-9d34-a0cdc61cfe3b",
+        "order": 8,
+        "name": "Anti-Inflammatory Weekend Defense",
+        "goal": "Fast anti-inflammatory and immune support.",
+        "compounds": [
+          {
+            "name": "TB-500",
+            "dose": "2 mg Friday"
+          },
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg Saturday"
+          },
+          {
+            "name": "Omega-3",
+            "dose": "2 g/day"
+          }
+        ],
+        "protocol": [
+          "Inject peptides on consecutive days.",
+          "Take Omega-3 with food.",
+          "Repeat weekly during inflammatory periods."
+        ],
+        "best_for": "Recovery weekends or inflammatory flare-ups",
+        "duration": "Weekly cycles"
       }
     ]
   }
