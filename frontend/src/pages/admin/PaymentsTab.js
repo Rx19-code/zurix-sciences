@@ -48,6 +48,11 @@ export default function PaymentsTab({ adminPassword }) {
   const [granting, setGranting] = useState(false);
   const [grantResult, setGrantResult] = useState(null);
 
+  // Revoke modal
+  const [revokeTarget, setRevokeTarget] = useState(null); // order object
+  const [revoking, setRevoking] = useState(false);
+  const [revokeError, setRevokeError] = useState('');
+
   const fetchStats = useCallback(async () => {
     try {
       const r = await fetch(`${API_URL}/api/admin/payments/stats`, {
@@ -123,6 +128,28 @@ export default function PaymentsTab({ adminPassword }) {
       setGrantResult({ ok: false, message: err.message });
     } finally {
       setGranting(false);
+    }
+  };
+
+  const confirmRevoke = async () => {
+    if (!revokeTarget) return;
+    setRevoking(true);
+    setRevokeError('');
+    try {
+      const r = await fetch(`${API_URL}/api/admin/payments/revoke-access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+        body: JSON.stringify({ email: revokeTarget.user_email }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
+      setRevokeTarget(null);
+      await fetchStats();
+      await fetchOrders();
+    } catch (err) {
+      setRevokeError(err.message);
+    } finally {
+      setRevoking(false);
     }
   };
 
@@ -205,26 +232,41 @@ export default function PaymentsTab({ adminPassword }) {
                 <th className="px-4 py-3 text-left">Currency</th>
                 <th className="px-4 py-3 text-left">Created</th>
                 <th className="px-4 py-3 text-left">Confirmed</th>
+                <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700">
               {loading && (
-                <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-500">Loading…</td></tr>
+                <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-500">Loading…</td></tr>
               )}
               {!loading && orders.length === 0 && (
-                <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-500">No orders found</td></tr>
+                <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-500">No orders found</td></tr>
               )}
-              {!loading && orders.map((o) => (
-                <tr key={o.order_id} className="hover:bg-gray-700/30" data-testid={`order-row-${o.order_id}`}>
-                  <td className="px-4 py-2 text-gray-300 font-mono text-xs">{o.order_id}</td>
-                  <td className="px-4 py-2 text-gray-200">{o.user_email || '—'}</td>
-                  <td className="px-4 py-2"><StatusBadge status={o.status} /></td>
-                  <td className="px-4 py-2 text-right text-gray-200">${(o.price || 0).toFixed(2)}</td>
-                  <td className="px-4 py-2 text-gray-400 uppercase text-xs">{o.pay_currency || '—'}</td>
-                  <td className="px-4 py-2 text-gray-400 text-xs">{fmtDate(o.created_at)}</td>
-                  <td className="px-4 py-2 text-gray-400 text-xs">{fmtDate(o.confirmed_at)}</td>
-                </tr>
-              ))}
+              {!loading && orders.map((o) => {
+                const isPaid = ['finished', 'confirmed'].includes(o.status);
+                return (
+                  <tr key={o.order_id} className="hover:bg-gray-700/30" data-testid={`order-row-${o.order_id}`}>
+                    <td className="px-4 py-2 text-gray-300 font-mono text-xs">{o.order_id}</td>
+                    <td className="px-4 py-2 text-gray-200">{o.user_email || '—'}</td>
+                    <td className="px-4 py-2"><StatusBadge status={o.status} /></td>
+                    <td className="px-4 py-2 text-right text-gray-200">${(o.price || 0).toFixed(2)}</td>
+                    <td className="px-4 py-2 text-gray-400 uppercase text-xs">{o.pay_currency || '—'}</td>
+                    <td className="px-4 py-2 text-gray-400 text-xs">{fmtDate(o.created_at)}</td>
+                    <td className="px-4 py-2 text-gray-400 text-xs">{fmtDate(o.confirmed_at)}</td>
+                    <td className="px-4 py-2 text-right">
+                      {isPaid && o.user_email && (
+                        <button
+                          onClick={() => { setRevokeTarget(o); setRevokeError(''); }}
+                          className="text-red-400 hover:text-red-300 text-xs font-semibold px-2 py-1 rounded hover:bg-red-900/30 transition"
+                          data-testid={`revoke-btn-${o.order_id}`}
+                        >
+                          🚫 Revoke
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -272,6 +314,65 @@ export default function PaymentsTab({ adminPassword }) {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Revoke Confirmation Modal */}
+      {revokeTarget && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" onClick={() => !revoking && setRevokeTarget(null)}>
+          <div className="bg-gray-800 rounded-xl border border-red-800 max-w-md w-full p-6" onClick={(e) => e.stopPropagation()} data-testid="revoke-modal">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-red-900/40 border border-red-700 flex items-center justify-center text-xl">🚫</div>
+              <h3 className="text-xl font-bold text-white">Revoke Lifetime Access?</h3>
+            </div>
+
+            <div className="bg-gray-900 rounded-lg p-3 mb-4 border border-gray-700 text-sm">
+              <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">User</p>
+              <p className="text-white font-medium" data-testid="revoke-target-email">{revokeTarget.user_email}</p>
+              <p className="text-gray-400 text-xs uppercase tracking-wider mt-3 mb-1">Order</p>
+              <p className="text-gray-300 font-mono text-xs">{revokeTarget.order_id}</p>
+              {revokeTarget.price > 0 && (
+                <>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mt-3 mb-1">Original Price</p>
+                  <p className="text-gray-300">${revokeTarget.price.toFixed(2)}</p>
+                </>
+              )}
+            </div>
+
+            <p className="text-sm text-gray-300 mb-2">
+              This will <strong className="text-red-400">immediately remove</strong> Premium access from this user.
+            </p>
+            <p className="text-xs text-gray-500 mb-4">
+              Use this for refunds, chargebacks, ToS violations, or to undo a mistaken Grant Access. The action is reversible — you can Grant Access again at any time.
+            </p>
+
+            {revokeError && (
+              <div className="bg-red-900/40 border border-red-800 text-red-300 px-3 py-2 rounded-lg text-sm mb-3" data-testid="revoke-error">
+                {revokeError}
+              </div>
+            )}
+
+            <div className="flex gap-2 justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setRevokeTarget(null)}
+                disabled={revoking}
+                className="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50"
+                data-testid="revoke-cancel-btn"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmRevoke}
+                disabled={revoking}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50"
+                data-testid="revoke-confirm-btn"
+              >
+                {revoking ? 'Revoking…' : 'Yes, Revoke Access'}
+              </button>
+            </div>
           </div>
         </div>
       )}
