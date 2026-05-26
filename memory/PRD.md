@@ -55,6 +55,8 @@ Comprehensive "Peptide Library" with 96 peptides + 43 stacks. Toggle "Peptides |
 - [x] Product verification (QR), Calculator, Admin panel, Labels, Maintenance mode
 - [x] PeptideDetail tabs refactored (Feb 2026): Overview = Benefits + Mechanism; Research = Background + Clinical Applications + Side Effects + Contraindications; Synergy = Interactions + auto-generated Synergistic Peptides (from stacks) + Appears in Stacks
 - [x] Ipamorelin populated with ultra-detailed data (Background, Clinical Applications, Side Effects, Contraindications, Interactions)
+- [x] Feb 2026 — Stack Hubs pivot: 13 hubs, 130 protocols (Thymosin Alpha-1 expanded from 8 → 17 protocols via merge_thymosin_alpha1_expanded.py)
+- [x] Feb 2026 — Confirmed both Tesamorelin PDFs are byte-identical (no update needed)
 
 ## Pending Tasks
 - [ ] P1: Populate remaining 22 active peptides with ultra-detailed data (Background, Clinical Applications, Side Effects, Contraindications, Interactions) — waiting on user input

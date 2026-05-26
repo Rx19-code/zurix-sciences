@@ -3613,6 +3613,249 @@
         ],
         "best_for": "Recovery weekends or inflammatory flare-ups",
         "duration": "Weekly cycles"
+      },
+      {
+        "id": "b913cb49-c41a-4502-83e2-e5bf65778d81",
+        "order": 9,
+        "name": "Thymosin Alpha-1 Immune Priming Cycle",
+        "goal": "Supports T-cell activation and immune readiness.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg per dose"
+          },
+          {
+            "name": "Bacteriostatic water",
+            "dose": "as needed"
+          },
+          {
+            "name": "Insulin syringe",
+            "dose": "1 mL"
+          }
+        ],
+        "protocol": [
+          "Reconstitute with bacteriostatic water.",
+          "Inject subcutaneously into the abdominal area.",
+          "Use 5 days weekly for 4 weeks."
+        ],
+        "best_for": "Useful before travel, seasonal exposure, or immune reset",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "9c205f1b-ffcc-4706-b260-0090e28d8738",
+        "order": 10,
+        "name": "Triple Shield: Ta1 + LL-37 + TB-500",
+        "goal": "Comprehensive immune and recovery support.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "750 mcg"
+          },
+          {
+            "name": "LL-37",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Administer Ta1 and LL-37 daily.",
+          "Use TB-500 twice weekly.",
+          "Cycle 3 weeks on, 1 week off."
+        ],
+        "best_for": "High-stress environments or immune recovery",
+        "duration": "3 weeks on, 1 week off"
+      },
+      {
+        "id": "eea57910-6445-4cd6-ad9d-14a4d03e46ff",
+        "order": 11,
+        "name": "Long COVID Immune Reboot Cycle",
+        "goal": "Supports post-viral recovery and inflammation reduction.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg 2x/week"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg 2x/week"
+          },
+          {
+            "name": "LL-37",
+            "dose": "100 mcg daily"
+          }
+        ],
+        "protocol": [
+          "Administer peptides subcutaneously.",
+          "Continue for 6 weeks.",
+          "Optional mitochondrial support may be added."
+        ],
+        "best_for": "Long COVID and post-viral fatigue recovery",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "d8d0bb8e-1e23-4585-aa71-45df1be578f1",
+        "order": 12,
+        "name": "Autoimmune Inflammation Modulation Stack",
+        "goal": "Helps calm systemic inflammation and immune overactivation.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "750 mcg 3x/week"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg daily"
+          },
+          {
+            "name": "Omega-3",
+            "dose": "2–3 g/day"
+          }
+        ],
+        "protocol": [
+          "Administer peptides subcutaneously.",
+          "Take Omega-3 daily.",
+          "Monitor symptoms with practitioner oversight."
+        ],
+        "best_for": "Autoimmune flare prevention cycles",
+        "duration": "Cycle-based"
+      },
+      {
+        "id": "1b32d936-2dd8-4b85-8f00-9c5eb4bbfea4",
+        "order": 13,
+        "name": "Chronic Fatigue Immune Recovery Plan",
+        "goal": "Supports energy recovery and immune regulation.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg 3x/week"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg weekly"
+          },
+          {
+            "name": "Adaptogenic herbs",
+            "dose": "as directed"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 Monday/Wednesday/Friday.",
+          "Administer TB-500 weekly.",
+          "Continue for 6 weeks."
+        ],
+        "best_for": "After illness or immune burnout",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "d91959ea-0b53-45c1-bb9e-320089f69d15",
+        "order": 14,
+        "name": "Seasonal Immune Prep Stack",
+        "goal": "Enhances seasonal immune resistance.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1 mg 3x/week"
+          },
+          {
+            "name": "LL-37",
+            "dose": "100 mcg/day"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "5000 IU/day"
+          }
+        ],
+        "protocol": [
+          "Begin protocol 2 weeks before exposure season.",
+          "Use Ta1 Monday/Wednesday/Friday.",
+          "Continue Vitamin D3 daily."
+        ],
+        "best_for": "Before winter season or travel",
+        "duration": "2 weeks pre-season + ongoing"
+      },
+      {
+        "id": "8fa9f19a-6eae-4341-8ce6-6d0256029bca",
+        "order": 15,
+        "name": "Thymus Rejuvenation & Immune Optimization",
+        "goal": "Supports thymic regeneration and immune resilience.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg"
+          },
+          {
+            "name": "Thymosin Beta-4",
+            "dose": "2.5 mg"
+          },
+          {
+            "name": "Vitamin D3",
+            "dose": "5000 IU"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 and TB-4 twice weekly.",
+          "Use for 6 weeks.",
+          "Repeat every 6 months if needed."
+        ],
+        "best_for": "Aging adults or post-viral recovery",
+        "duration": "6 weeks (repeat every 6 months)"
+      },
+      {
+        "id": "f2a44703-085c-4d44-abd2-a8b51868bbbc",
+        "order": 16,
+        "name": "Cellular Inflammation Suppression & Oxidative Defense",
+        "goal": "Supports antioxidant defense and inflammatory balance.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg"
+          },
+          {
+            "name": "NAC",
+            "dose": "600 mg"
+          },
+          {
+            "name": "Curcumin",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Inject Ta1 2–3x weekly.",
+          "Take NAC and curcumin daily.",
+          "Cycle curcumin 3 months on, 1 month off."
+        ],
+        "best_for": "Chronic inflammatory states",
+        "duration": "3 months on, 1 month off (curcumin)"
+      },
+      {
+        "id": "4530cacf-46c3-4874-9ae3-7bd36371b2f7",
+        "order": 17,
+        "name": "Inflammaging Reduction & Immune Rebalancing",
+        "goal": "Supports immune modulation and healthy aging.",
+        "compounds": [
+          {
+            "name": "Thymosin Alpha-1",
+            "dose": "1.5 mg"
+          },
+          {
+            "name": "Bacteriostatic water",
+            "dose": "as needed"
+          },
+          {
+            "name": "Insulin syringe",
+            "dose": "1 mL"
+          }
+        ],
+        "protocol": [
+          "Reconstitute peptide with bacteriostatic water.",
+          "Inject 3x weekly for 6–8 weeks.",
+          "Repeat 2–4 cycles yearly."
+        ],
+        "best_for": "Low-grade chronic inflammation",
+        "duration": "6–8 weeks per cycle"
       }
     ]
   }
