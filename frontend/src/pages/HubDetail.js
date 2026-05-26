@@ -1,11 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles, Clock, Syringe } from 'lucide-react';
+import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles, Clock, Syringe, Flame, Star, List } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import StarRating from '../components/StarRating';
 import { calculateUI } from '../utils/peptideUI';
 
 var API = process.env.REACT_APP_BACKEND_URL;
+
+// Bayesian average for trending — prevents 1 vote (5★) from beating 50 votes (4.8★)
+function trendingScore(p, globalAvg, minVotes) {
+  var v = p.rating_count || 0;
+  var avg = p.rating_avg || 0;
+  return (v * avg + minVotes * globalAvg) / (v + minVotes || 1);
+}
+
+function sortProtocols(list, mode) {
+  if (!list || !list.length) return [];
+  var rated = list.filter(p => (p.rating_count || 0) > 0);
+  if (mode === 'default' || rated.length === 0) {
+    return [...list].sort((a, b) => (a.order || 0) - (b.order || 0));
+  }
+  // Global avg for Bayesian smoothing
+  var totalVotes = rated.reduce((s, p) => s + (p.rating_count || 0), 0);
+  var globalAvg = totalVotes ? rated.reduce((s, p) => s + (p.rating_avg || 0) * (p.rating_count || 0), 0) / totalVotes : 4.5;
+  var minVotes = 10;
+  if (mode === 'trending') {
+    return [...list].sort((a, b) => trendingScore(b, globalAvg, minVotes) - trendingScore(a, globalAvg, minVotes));
+  }
+  if (mode === 'top') {
+    return [...list].sort((a, b) => {
+      var diff = (b.rating_avg || 0) - (a.rating_avg || 0);
+      if (Math.abs(diff) > 0.01) return diff;
+      return (b.rating_count || 0) - (a.rating_count || 0);
+    });
+  }
+  return list;
+}
 
 export default function HubDetail() {
   var params = useParams();
@@ -15,6 +45,7 @@ export default function HubDetail() {
   var [hub, setHub] = useState(null);
   var [loading, setLoading] = useState(true);
   var [selectedProtocol, setSelectedProtocol] = useState(null);
+  var [sortMode, setSortMode] = useState('default');
 
   useEffect(() => {
     fetch(API + '/api/hubs/' + slug)
@@ -26,6 +57,14 @@ export default function HubDetail() {
       })
       .catch(() => navigate('/protocols'));
   }, [slug, navigate]);
+
+  // Hooks must run unconditionally — derive memoized lists from hub (may be null during loading)
+  var protocolsListMemo = (hub && hub.protocols) || [];
+  var sortedProtocols = useMemo(() => sortProtocols(protocolsListMemo, sortMode), [protocolsListMemo, sortMode]);
+  var trendingTopIds = useMemo(() => {
+    var ranked = sortProtocols(protocolsListMemo, 'trending').slice(0, 3);
+    return new Set(ranked.map(p => p.id));
+  }, [protocolsListMemo]);
 
   if (loading || !hub) {
     return (
@@ -59,6 +98,7 @@ export default function HubDetail() {
   var pairings = coreInfo.common_pairings || [];
   var akaList = hub.also_known_as || [];
   var heroImg = API + '/api/hubs/hero-image/' + (hub.peptide_slug || hub.slug || '');
+  var hasAnyRatings = protocolsList.some(p => (p.rating_count || 0) > 0);
   var avgRatingAll = (() => {
     var rated = protocolsList.filter(p => (p.rating_count || 0) > 0);
     if (!rated.length) return 0;
@@ -152,24 +192,65 @@ export default function HubDetail() {
 
       {/* Protocols Grid */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-600" />
-          {protocolsList.length} Protocol Variations
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-purple-600" />
+            {protocolsList.length} Protocol Variations
+          </h2>
+          {hasAnyRatings && (
+            <div className="inline-flex items-center bg-white border border-gray-200 rounded-lg p-1 shadow-sm" data-testid="sort-toggle">
+              <button
+                onClick={() => setSortMode('default')}
+                className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${sortMode === 'default' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                data-testid="sort-default-btn"
+              >
+                <List className="w-3.5 h-3.5" />
+                Default
+              </button>
+              <button
+                onClick={() => setSortMode('trending')}
+                className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${sortMode === 'trending' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                data-testid="sort-trending-btn"
+              >
+                <Flame className="w-3.5 h-3.5" />
+                Trending
+              </button>
+              <button
+                onClick={() => setSortMode('top')}
+                className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${sortMode === 'top' ? 'bg-yellow-500 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                data-testid="sort-top-btn"
+              >
+                <Star className="w-3.5 h-3.5" />
+                Top Rated
+              </button>
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="protocols-grid">
-          {protocolsList.map(function(p, idx) {
+          {sortedProtocols.map(function(p, idx) {
             var compounds = p.compounds || [];
+            var isTrending = trendingTopIds.has(p.id);
             return (
               <div
                 key={p.id}
                 onClick={() => setSelectedProtocol(p)}
-                className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-100/60 hover:border-purple-200 relative overflow-hidden flex flex-col"
+                className={`bg-white border rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg relative overflow-hidden flex flex-col ${isTrending ? 'border-orange-300 hover:shadow-orange-100/60 hover:border-orange-400' : 'border-gray-200 hover:shadow-purple-100/60 hover:border-purple-200'}`}
                 data-testid={`protocol-card-${p.id}`}
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-50 to-transparent rounded-bl-full" />
+                {isTrending && (
+                  <div className="absolute top-0 right-0 z-10">
+                    <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-bl-lg flex items-center gap-1 shadow-md" data-testid={`trending-badge-${p.id}`}>
+                      <Flame className="w-3 h-3" />
+                      Trending
+                    </div>
+                  </div>
+                )}
+                <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-full ${isTrending ? 'bg-gradient-to-bl from-orange-50 to-transparent' : 'bg-gradient-to-bl from-purple-50 to-transparent'}`} />
                 <div className="flex items-start justify-between mb-3 relative">
-                  <div className="w-9 h-9 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold text-sm shrink-0">{idx + 1}</div>
-                  <span className="bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">Protocol</span>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${isTrending ? 'bg-orange-100 text-orange-700' : 'bg-purple-100 text-purple-700'}`}>{idx + 1}</div>
+                  {!isTrending && (
+                    <span className="bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">Protocol</span>
+                  )}
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-1 leading-snug">{p.name}</h3>
                 <p className="text-gray-500 text-sm mb-3 line-clamp-2 flex-1">{p.goal}</p>
@@ -214,7 +295,7 @@ export default function HubDetail() {
           protocol={selectedProtocol}
           hubSlug={hub.slug}
           onClose={() => setSelectedProtocol(null)}
-          index={protocolsList.findIndex(x => x.id === selectedProtocol.id) + 1}
+          index={sortedProtocols.findIndex(x => x.id === selectedProtocol.id) + 1}
         />
       )}
     </div>
