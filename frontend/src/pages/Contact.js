@@ -20,7 +20,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // In a real application, this would send the form data to a backend
-    console.log('Form submitted:', formData);
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);

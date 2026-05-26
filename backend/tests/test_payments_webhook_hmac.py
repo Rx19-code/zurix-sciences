@@ -18,7 +18,7 @@ sys.path.insert(0, str(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 from server import app  # noqa: E402
 
 
-TEST_SECRET = "test-ipn-secret-12345"
+TEST_SECRET = os.environ.get("TEST_IPN_SECRET", "test-ipn-secret-12345")
 
 
 def _sign(body_dict: dict, secret: str = TEST_SECRET) -> tuple[bytes, str]:

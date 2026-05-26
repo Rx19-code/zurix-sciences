@@ -63,6 +63,8 @@ export default function PaymentsTab({ adminPassword }) {
     } catch (e) {
       setError(`Failed to load stats: ${e.message}`);
     }
+    // API_URL is a module constant (process.env), safe to omit from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminPassword]);
 
   const fetchOrders = useCallback(async () => {
@@ -84,6 +86,8 @@ export default function PaymentsTab({ adminPassword }) {
     } finally {
       setLoading(false);
     }
+    // API_URL is a module constant (process.env), safe to omit from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminPassword, statusFilter, searchQ]);
 
   useEffect(() => { fetchStats(); }, [fetchStats]);

@@ -11,9 +11,9 @@ import uuid
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 
-# Test credentials from test_credentials.md
-TEST_EMAIL = "test@test.com"
-TEST_PASSWORD = "test123"
+# Test credentials from test_credentials.md (overridable via env)
+TEST_EMAIL = os.environ.get('TEST_EMAIL', 'test@test.com')
+TEST_PASSWORD = os.environ.get('TEST_PASSWORD', 'test123')
 
 
 class TestHealthAndBasics:

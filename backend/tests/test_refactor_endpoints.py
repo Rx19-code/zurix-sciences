@@ -7,8 +7,8 @@ import requests
 import os
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
-ADMIN_PASSWORD = "Rx050217!"
-TEST_VERIFICATION_CODE = "ZX-260312-GHK50-1-TEST01"
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'Rx050217!')
+TEST_VERIFICATION_CODE = os.environ.get('TEST_VERIFICATION_CODE', 'ZX-260312-GHK50-1-TEST01')
 
 
 class TestHealthEndpoint:

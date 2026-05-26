@@ -56,6 +56,8 @@ export default function HubDetail() {
         setLoading(false);
       })
       .catch(() => navigate('/protocols'));
+    // API is a module-level constant from process.env; safe to omit
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, navigate]);
 
   // Hooks must run unconditionally — derive memoized lists from hub (may be null during loading)
