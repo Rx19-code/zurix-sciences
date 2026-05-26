@@ -1,19 +1,123 @@
+import asyncio
 import hashlib
 import hmac
 import json
 import logging
+import os
 import uuid
 from datetime import datetime, timezone
 
 import httpx
 from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi.responses import HTMLResponse
 
-from database import db, NOWPAYMENTS_API_KEY, NOWPAYMENTS_IPN_SECRET, ENVIRONMENT, LIFETIME_ACCESS_PRICE
+from database import db, NOWPAYMENTS_API_KEY, NOWPAYMENTS_IPN_SECRET, ENVIRONMENT, LIFETIME_ACCESS_PRICE, RESEND_API_KEY, SENDER_EMAIL
 from utils.security import get_current_user
 
 router = APIRouter(prefix="/api")
 
 NOWPAYMENTS_API = "https://api.nowpayments.io/v1"
+SITE_URL = os.environ.get("SITE_URL", "https://zurixsciences.com")
+
+
+async def _send_welcome_email(user_id: str) -> bool:
+    """Send Lifetime Access welcome email via Resend. Idempotent — only sends once per user.
+
+    Returns True if email was sent (or already had been); False on any failure.
+    """
+    if not RESEND_API_KEY:
+        logging.warning("RESEND_API_KEY not set; welcome email skipped.")
+        return False
+
+    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not user:
+        logging.warning(f"Welcome email: user {user_id} not found")
+        return False
+
+    if user.get("welcome_email_sent_at"):
+        logging.info(f"Welcome email already sent to {user.get('email')} at {user.get('welcome_email_sent_at')}")
+        return True
+
+    email = user.get("email")
+    if not email:
+        return False
+
+    name = user.get("name") or email.split("@")[0]
+    html = build_welcome_email_html(name)
+
+    try:
+        import resend
+        await asyncio.to_thread(resend.Emails.send, {
+            "from": SENDER_EMAIL,
+            "to": [email],
+            "subject": "Welcome to Zurix Sciences Lifetime Access 🎉",
+            "html": html,
+        })
+        await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"welcome_email_sent_at": datetime.now(timezone.utc).isoformat()}},
+        )
+        logging.info(f"Welcome email sent to {email}")
+        return True
+    except Exception as e:
+        logging.error(f"Failed to send welcome email to {email}: {e}")
+        return False
+
+
+def build_welcome_email_html(name: str | None) -> str:
+    greeting = f" {name}" if name else ""
+    return f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #ffffff; color: #1a1a1a;">
+            <div style="text-align: center; padding: 24px 0; border-bottom: 3px solid #7c3aed;">
+                <h1 style="color: #2563eb; margin: 0; font-size: 28px;">Zurix Sciences</h1>
+                <p style="color: #6b7280; margin: 4px 0 0 0; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Premium Research Compounds</p>
+            </div>
+
+            <div style="padding: 32px 0;">
+                <h2 style="color: #111827; font-size: 22px; margin: 0 0 16px 0;">Welcome to Lifetime Access{greeting}! 🎉</h2>
+                <p style="color: #374151; line-height: 1.6; font-size: 15px;">
+                    Your payment has been confirmed and your <strong>Lifetime Premium Access</strong> is now active.
+                    You now have unlimited access to:
+                </p>
+
+                <ul style="color: #374151; line-height: 1.8; font-size: 15px; padding-left: 20px;">
+                    <li>📚 <strong>130+ Premium Protocols</strong> across 13 peptide Stack Hubs</li>
+                    <li>🔬 <strong>Detailed dosing instructions</strong> with auto-calculated Insulin Units (UI)</li>
+                    <li>⭐ <strong>Community-driven Trending protocols</strong> ranked by user ratings</li>
+                    <li>🔄 <strong>Future updates</strong> — new protocols and hubs added regularly, free forever</li>
+                </ul>
+
+                <p style="text-align: center; margin: 32px 0;">
+                    <a href="{SITE_URL}/protocols" style="background: #7c3aed; color: white; padding: 14px 32px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 15px; display: inline-block;">
+                        Explore Your Stack Hubs →
+                    </a>
+                </p>
+
+                <div style="background: #f3f4f6; border-left: 4px solid #2563eb; padding: 16px; border-radius: 6px; margin: 24px 0;">
+                    <p style="margin: 0; color: #4b5563; font-size: 13px;">
+                        <strong>Tip:</strong> Bookmark <a href="{SITE_URL}/protocols" style="color: #2563eb;">{SITE_URL}/protocols</a> for quick access to your premium library.
+                    </p>
+                </div>
+
+                <p style="color: #6b7280; line-height: 1.6; font-size: 13px; margin-top: 32px;">
+                    Need help or have questions? Just reply to this email and we'll get back to you.
+                </p>
+            </div>
+
+            <div style="border-top: 1px solid #e5e7eb; padding-top: 16px; text-align: center; color: #9ca3af; font-size: 12px;">
+                <p style="margin: 4px 0;">© 2026 Zurix Sciences — Premium Research Compounds</p>
+                <p style="margin: 4px 0;">For research purposes only. Not for human consumption.</p>
+            </div>
+        </div>
+    """
+
+
+@router.get("/payment/email-preview", response_class=HTMLResponse)
+async def payment_email_preview(type: str = "welcome"):
+    """Preview payment-related email templates in the browser."""
+    if type == "welcome":
+        return HTMLResponse(content=build_welcome_email_html("Preview Tester"))
+    raise HTTPException(status_code=400, detail=f"Unknown email type: {type}")
 
 
 def _verify_nowpayments_signature(raw_body: bytes, signature: str) -> bool:
@@ -122,6 +226,7 @@ async def check_payment_status(payment_id: int, user: dict = Depends(get_current
                 "access_granted_at": datetime.now(timezone.utc).isoformat(),
             }}
         )
+        await _send_welcome_email(user["id"])
         return {"success": True, "status": "confirmed", "has_lifetime_access": True}
 
     return {"success": True, "status": status, "has_lifetime_access": False}
@@ -185,6 +290,7 @@ async def nowpayments_webhook(request: Request):
                     "access_granted_at": datetime.now(timezone.utc).isoformat(),
                 }}
             )
+            await _send_welcome_email(order["user_id"])
             logging.info(f"Lifetime access granted to user {order['user_id']} via webhook")
 
     return {"success": True}
