@@ -1,3 +1,6 @@
+import hashlib
+import hmac
+import json
 import logging
 import uuid
 from datetime import datetime, timezone
@@ -5,12 +8,36 @@ from datetime import datetime, timezone
 import httpx
 from fastapi import APIRouter, HTTPException, Depends, Request
 
-from database import db, NOWPAYMENTS_API_KEY, LIFETIME_ACCESS_PRICE
+from database import db, NOWPAYMENTS_API_KEY, NOWPAYMENTS_IPN_SECRET, ENVIRONMENT, LIFETIME_ACCESS_PRICE
 from utils.security import get_current_user
 
 router = APIRouter(prefix="/api")
 
 NOWPAYMENTS_API = "https://api.nowpayments.io/v1"
+
+
+def _verify_nowpayments_signature(raw_body: bytes, signature: str) -> bool:
+    """Verify NOWPayments IPN signature using HMAC-SHA512.
+
+    NOWPayments sorts JSON keys alphabetically before signing, so we replicate that here.
+    Returns True if valid; False otherwise. Uses constant-time comparison to prevent
+    timing attacks.
+    """
+    if not NOWPAYMENTS_IPN_SECRET:
+        return False
+    if not signature:
+        return False
+    try:
+        parsed = json.loads(raw_body)
+        sorted_body = json.dumps(parsed, sort_keys=True, separators=(",", ":"))
+    except (ValueError, TypeError):
+        return False
+    expected = hmac.new(
+        NOWPAYMENTS_IPN_SECRET.encode("utf-8"),
+        sorted_body.encode("utf-8"),
+        hashlib.sha512,
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
 
 
 @router.post("/payment/create-invoice")
@@ -22,8 +49,6 @@ async def create_lifetime_invoice(request: Request, user: dict = Depends(get_cur
     order_id = f"LTA-{uuid.uuid4().hex[:12].upper()}"
 
     headers = {"x-api-key": NOWPAYMENTS_API_KEY, "Content-Type": "application/json"}
-
-    body = await request.json() if request.headers.get("content-type", "").startswith("application/json") else {}
 
     payload = {
         "price_amount": LIFETIME_ACCESS_PRICE,
@@ -104,13 +129,46 @@ async def check_payment_status(payment_id: int, user: dict = Depends(get_current
 
 @router.post("/payment/nowpayments-webhook")
 async def nowpayments_webhook(request: Request):
-    """NOWPayments IPN webhook — auto-grant access on confirmed payment."""
-    body = await request.json()
+    """NOWPayments IPN webhook — auto-grant access on confirmed payment.
+
+    Verifies HMAC-SHA512 signature using NOWPAYMENTS_IPN_SECRET to prevent
+    forged requests from granting free lifetime access.
+
+    - Production (ENVIRONMENT=production): invalid/missing signature → 401
+    - Development: invalid signature logs warning but still processes (for local testing)
+    """
+    raw_body = await request.body()
+    signature = request.headers.get("x-nowpayments-sig", "")
+    client_ip = request.client.host if request.client else "unknown"
+
+    is_valid = _verify_nowpayments_signature(raw_body, signature)
+
+    if not is_valid:
+        is_prod = ENVIRONMENT == "production"
+        if not NOWPAYMENTS_IPN_SECRET:
+            logging.warning(
+                f"NOWPayments webhook called but NOWPAYMENTS_IPN_SECRET is not configured. "
+                f"IP={client_ip}. {'BLOCKING (prod)' if is_prod else 'Allowing (dev mode)'}."
+            )
+        else:
+            logging.warning(
+                f"Invalid NOWPayments webhook signature from {client_ip}. "
+                f"sig_present={bool(signature)}. "
+                f"{'BLOCKING (prod)' if is_prod else 'Allowing (dev mode)'}."
+            )
+        if is_prod:
+            raise HTTPException(status_code=401, detail="Invalid webhook signature")
+
+    try:
+        body = json.loads(raw_body)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+
     payment_status = body.get("payment_status")
     order_id = body.get("order_id")
     payment_id = body.get("payment_id")
 
-    logging.info(f"NOWPayments webhook: order={order_id} status={payment_status}")
+    logging.info(f"NOWPayments webhook: order={order_id} status={payment_status} verified={is_valid}")
 
     if payment_status in ("finished", "confirmed"):
         order = await db.lifetime_orders.find_one({"order_id": order_id}, {"_id": 0})
