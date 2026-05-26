@@ -272,7 +272,36 @@ async def _find_slug_for_product(product_name: str) -> str:
 # ─────────────────────── PASSWORD RESET ───────────────────────
 
 import secrets
+from fastapi.responses import HTMLResponse
 from database import RESEND_API_KEY, SENDER_EMAIL
+
+
+def build_password_reset_email_html(user_name: str | None, reset_url: str) -> str:
+    greeting = f" {user_name}" if user_name else ""
+    return f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #2563eb;">Zurix Sciences</h2>
+            <p>Hello{greeting},</p>
+            <p>We received a request to reset your password. Click the button below to set a new one. This link expires in 1 hour.</p>
+            <p style="text-align: center; margin: 30px 0;">
+                <a href="{reset_url}" style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">Reset Password</a>
+            </p>
+            <p style="color: #666; font-size: 13px;">If you didn't request this, you can safely ignore this email.</p>
+            <p style="color: #999; font-size: 12px;">Or copy this link: {reset_url}</p>
+        </div>
+    """
+
+
+@router.get("/auth/email-preview", response_class=HTMLResponse)
+async def email_preview(request: Request, type: str = "reset"):
+    """Preview transactional email templates in the browser."""
+    if type == "reset":
+        html = build_password_reset_email_html(
+            "Preview Tester",
+            "https://zurixsciences.com/reset-password?token=PREVIEW_TOKEN_EXAMPLE_12345",
+        )
+        return HTMLResponse(content=html)
+    raise HTTPException(status_code=400, detail=f"Unknown email type: {type}")
 
 
 @router.post("/auth/forgot-password")
@@ -316,18 +345,7 @@ async def forgot_password(request: Request):
             "from": SENDER_EMAIL,
             "to": [email],
             "subject": "Reset Your Zurix Sciences Password",
-            "html": f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #2563eb;">Zurix Sciences</h2>
-                    <p>Hello{(' ' + user.get('name', '')) if user.get('name') else ''},</p>
-                    <p>We received a request to reset your password. Click the button below to set a new one. This link expires in 1 hour.</p>
-                    <p style="text-align: center; margin: 30px 0;">
-                        <a href="{reset_url}" style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">Reset Password</a>
-                    </p>
-                    <p style="color: #666; font-size: 13px;">If you didn't request this, you can safely ignore this email.</p>
-                    <p style="color: #999; font-size: 12px;">Or copy this link: {reset_url}</p>
-                </div>
-            """,
+            "html": build_password_reset_email_html(user.get("name"), reset_url),
         })
     except Exception as e:
         logging.error(f"Failed to send reset email: {e}")

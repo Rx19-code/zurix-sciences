@@ -2,6 +2,7 @@
 
 ## User Accounts
 - **Test User**: test@test.com / test123 (has_lifetime_access: false)
+- **Preview Tester (Lifetime Access)**: preview@zurixsciences.com / Preview2026! (has_lifetime_access: true)
 
 ## Admin
 - **Admin Password**: Rx050217!
