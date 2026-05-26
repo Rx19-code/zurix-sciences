@@ -1618,5 +1618,1199 @@
         "duration": "4–6 weeks"
       }
     ]
+  },
+  {
+    "slug": "igf-1-lr3",
+    "peptide_slug": "igf-1-lr3",
+    "peptide_name": "IGF-1 LR3",
+    "title": "IGF-1 LR3 Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Muscle Growth & Recovery",
+    "category_slug": "muscle-growth",
+    "classification": "Long-Acting IGF-1 Analog",
+    "also_known_as": [
+      "Insulin-like Growth Factor 1 LR3",
+      "Long R3 IGF-1"
+    ],
+    "description": "A modified IGF-1 with extended half-life that promotes nitrogen retention, protein synthesis and hyperplasia while resisting IGF-binding proteins for superior bioavailability.",
+    "core_info": {
+      "function": "Muscle growth, recovery, fat loss, cellular regeneration.",
+      "typical_dosage": "20–80 mcg post-exercise, 5 days/week",
+      "administration": "Subcutaneous or intramuscular injection",
+      "best_timing": "Immediately post-workout",
+      "common_cycle": "4–6 weeks",
+      "common_pairings": [
+        "BPC-157",
+        "TB-500",
+        "Creatine",
+        "Acetyl-L-Carnitine",
+        "Fast-digesting carbs"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "97496bf0-5736-4ad3-b20f-2e2dc2c6f395",
+        "order": 1,
+        "name": "Anabolic Response Window",
+        "goal": "Boost hypertrophy, glucose uptake, and accelerate recovery.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "40 mcg"
+          },
+          {
+            "name": "Bacteriostatic water",
+            "dose": "1 mL"
+          }
+        ],
+        "protocol": [
+          "Reconstitute IGF-1 LR3 with bacteriostatic water.",
+          "Draw 40 mcg post-workout.",
+          "Inject intramuscularly into the trained muscle."
+        ],
+        "best_for": "Intense workouts",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "67f78cab-b441-4b15-91a2-ca5f5d9a177f",
+        "order": 2,
+        "name": "Post-Leg Day Reinforcement",
+        "goal": "Fast quad/hamstring recovery, reduce soreness, improve adaptation.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "40 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg (optional)"
+          }
+        ],
+        "protocol": [
+          "Administer IGF-1 LR3 intramuscularly into quads post-leg training.",
+          "Inject BPC-157 subcutaneously near knees/hamstrings.",
+          "Use TB-500 weekly if extra repair needed."
+        ],
+        "best_for": "Heavy leg sessions, DOMS-prone athletes",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "8f7083c5-768d-476a-94d6-a560410d2589",
+        "order": 3,
+        "name": "CNS Recovery & Neuromuscular Reset",
+        "goal": "Rebalance the nervous system and restore strength output.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Inject TB-500 subcutaneously at end of training week.",
+          "Use IGF-1 LR3 IM after CNS-heavy training.",
+          "Cycle weekly during high neurological loads."
+        ],
+        "best_for": "Power training, CNS recovery",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "55b0f706-f0dd-4741-add4-18f962432bc7",
+        "order": 4,
+        "name": "Fasted Training Tissue Preservation",
+        "goal": "Prevent muscle loss and aid post-fasted recovery.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "20 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 immediately post fasted training.",
+          "Use BPC-157 subcutaneously before bed.",
+          "Follow 5-day cycles with 2-day breaks."
+        ],
+        "best_for": "Intermittent fasting or empty-stomach training",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "826751fa-074d-49ba-9756-15341c41659d",
+        "order": 5,
+        "name": "High-Volume Recovery Stack",
+        "goal": "Prevent overtraining fatigue and restore intensity.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg (optional)"
+          }
+        ],
+        "protocol": [
+          "Inject BPC-157 daily during deload weeks.",
+          "Use IGF-1 LR3 post-training every other session.",
+          "TB-500 weekly if fatigue is high."
+        ],
+        "best_for": "High-frequency splits and advanced hypertrophy",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "b64dd0a2-582f-4f88-8012-8c334e21d396",
+        "order": 6,
+        "name": "Microdosing Power Builder",
+        "goal": "Lean muscle growth, recovery, and strength.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "20 mcg"
+          },
+          {
+            "name": "Bacteriostatic water",
+            "dose": "1 mL"
+          }
+        ],
+        "protocol": [
+          "Reconstitute IGF-1 LR3.",
+          "Draw 20 mcg and inject IM post-workout.",
+          "Use on alternate training days."
+        ],
+        "best_for": "Power without bloating",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "37dd7367-346d-4f87-8b55-3d51dcbc6851",
+        "order": 7,
+        "name": "Age-Adjusted Anabolic Recovery",
+        "goal": "Faster recovery for aging athletes, retain strength, protect joints.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "20 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 post-training 2x/week.",
+          "Use BPC-157 daily in evening.",
+          "Monitor recovery and reduce frequency if needed."
+        ],
+        "best_for": "Athletes 40+ training at high intensity",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "e390d89f-24dd-4998-b580-d35b2ec09118",
+        "order": 8,
+        "name": "Lean Mass Rebuilder",
+        "goal": "Enhance lean mass retention and faster recovery.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          },
+          {
+            "name": "Creatine monohydrate",
+            "dose": "5 g"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 post-workout.",
+          "Take creatine daily with post-workout shake.",
+          "Repeat 5 days/week."
+        ],
+        "best_for": "Lean muscle gain during low-calorie phases",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "06e622bb-4c2b-4a5d-bb79-cf32b87aef71",
+        "order": 9,
+        "name": "Muscle Density & Repair Stabilization",
+        "goal": "Improve muscle quality and aid recovery from overtraining.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "25 mcg"
+          },
+          {
+            "name": "TB-500",
+            "dose": "2 mg"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 into target muscle post heavy session.",
+          "Use TB-500 weekly for deeper tissue support.",
+          "Run during stabilization training."
+        ],
+        "best_for": "Lifters returning to full intensity",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "4d67c3b0-0873-4489-b5e6-b0bb4f975c08",
+        "order": 10,
+        "name": "Lagging Body Parts IM Cycle",
+        "goal": "Stimulate underdeveloped muscles via localized hypertrophy.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject directly into the lagging muscle group post-training.",
+          "Use 4–5 days/week targeting different weak points."
+        ],
+        "best_for": "Lifters bringing up weak body parts",
+        "duration": "3–4 weeks"
+      },
+      {
+        "id": "9e5eaf1e-a172-4cd9-8264-52bb13bdce6a",
+        "order": 11,
+        "name": "Neural-Muscular Coordination",
+        "goal": "Enhance motor control, neural drive, and synaptic plasticity.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "25 mcg"
+          },
+          {
+            "name": "Acetyl-L-Carnitine",
+            "dose": "500 mg oral"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 into trained muscles post fine-motor exercises.",
+          "Take ALCAR daily in the morning.",
+          "Use 4x/week."
+        ],
+        "best_for": "Olympic lifters, gymnasts, martial artists",
+        "duration": "3 weeks"
+      },
+      {
+        "id": "0b1c407a-458a-4f6a-bf04-48d86dd8a9bb",
+        "order": 12,
+        "name": "Glycogen Recovery Timing Cycle",
+        "goal": "Enhance glycogen re-synthesis and restore endurance.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "30 mcg"
+          },
+          {
+            "name": "Fast-digesting carbs",
+            "dose": "30 g oral"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 post workout into large muscle group.",
+          "Consume carbs within 15 minutes of injection.",
+          "Use on high-depletion days."
+        ],
+        "best_for": "Endurance / high-volume athletes",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "fa62c94a-7bd4-49cc-b164-edc3e88f675c",
+        "order": 13,
+        "name": "Strength Plateau Breakthrough",
+        "goal": "Boost strength progression and output.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "40 mcg"
+          },
+          {
+            "name": "Creatine monohydrate",
+            "dose": "5 g"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 post-heavy workout.",
+          "Take creatine daily.",
+          "Use BPC-157 every other day."
+        ],
+        "best_for": "Lifters breaking strength plateaus",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "dedac201-1a99-42fc-80c7-12227fc7813a",
+        "order": 14,
+        "name": "Functional Mass Builder",
+        "goal": "Lean muscle gain and joint resilience.",
+        "compounds": [
+          {
+            "name": "IGF-1 LR3",
+            "dose": "40 mcg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg"
+          }
+        ],
+        "protocol": [
+          "Inject IGF-1 LR3 IM into trained muscle.",
+          "Use BPC-157 at night.",
+          "Follow sessions with a protein-rich meal."
+        ],
+        "best_for": "Strength without fat gain",
+        "duration": "4–6 weeks"
+      }
+    ]
+  },
+  {
+    "slug": "ipamorelin",
+    "peptide_slug": "ipamorelin",
+    "peptide_name": "Ipamorelin",
+    "title": "Ipamorelin Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "GH / Secretagogues",
+    "category_slug": "gh-secretagogues",
+    "classification": "Selective GH Secretagogue (Pentapeptide)",
+    "also_known_as": [],
+    "description": "Ipamorelin is a synthetic pentapeptide that mimics ghrelin to selectively stimulate GH release from the pituitary, with minimal impact on cortisol or prolactin.",
+    "core_info": {
+      "function": "Selective growth hormone release without affecting other hormones.",
+      "typical_dosage": "100–200 mcg",
+      "administration": "Subcutaneous or intramuscular injection",
+      "best_timing": "Pre-workout, post-dinner, or bedtime",
+      "common_cycle": "8 weeks on / 2 weeks off",
+      "common_pairings": [
+        "CJC-1295",
+        "AOD-9604",
+        "GHK-Cu",
+        "Caffeine",
+        "Citrulline Malate",
+        "Melatonin"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "07f47661-ecb7-467c-a357-cea4fac67b48",
+        "order": 1,
+        "name": "Pre-Workout Mild Energy Enhancer",
+        "goal": "Energy enhancement, fat oxidation, GH release, blood flow.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Caffeine",
+            "dose": "100 mg"
+          },
+          {
+            "name": "Beetroot powder",
+            "dose": "1 tsp"
+          }
+        ],
+        "protocol": [
+          "Inject Ipamorelin 30 min before workout.",
+          "Take caffeine and beetroot mixed in water.",
+          "Begin workout 15–20 minutes later."
+        ],
+        "best_for": "Light to medium-intensity workouts",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "9e7d4ec7-111d-4ae1-a6f4-6c6212b64d26",
+        "order": 2,
+        "name": "Pre-Workout GH Peptide Energy Cycle",
+        "goal": "Promotes blood flow, GH spike, and recovery.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Arginine",
+            "dose": "6 g"
+          },
+          {
+            "name": "Citrulline Malate",
+            "dose": "8 g"
+          }
+        ],
+        "protocol": [
+          "Inject Ipamorelin 30 min before fasted workouts.",
+          "Mix Arginine and Citrulline in a pre-workout shake.",
+          "Train 30–60 minutes after."
+        ],
+        "best_for": "Morning or high-intensity training",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "a712ccc6-78ca-4787-bad5-d75e8c3669fa",
+        "order": 3,
+        "name": "Post-Fast GH Pulse Enhancement",
+        "goal": "Amplify post-fasting GH surge, retain muscle, speed metabolic recovery.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "CJC-1295",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "Electrolytes (Na/K/Mg)",
+            "dose": "blend"
+          }
+        ],
+        "protocol": [
+          "Inject Ipamorelin + CJC-1295 immediately after breaking a fast.",
+          "Rehydrate with a full-spectrum electrolyte drink.",
+          "Resume normal nutrition post-dose."
+        ],
+        "best_for": "24–72h fasts or intermittent fasting",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "d6cbb04b-c1f9-4569-96e8-72741c07f876",
+        "order": 4,
+        "name": "Hormonal Balance Stack for Women 40+",
+        "goal": "Hormonal rhythm support, skin/hair, mood stability.",
+        "compounds": [
+          {
+            "name": "CJC-1295 + Ipamorelin",
+            "dose": "100 mcg each nightly"
+          },
+          {
+            "name": "GHK-Cu",
+            "dose": "2 mg 3x weekly"
+          },
+          {
+            "name": "Omega-3",
+            "dose": "1000 mg daily"
+          }
+        ],
+        "protocol": [
+          "Inject CJC-1295 + Ipamorelin at bedtime.",
+          "Inject GHK-Cu in the morning, 3 days/week.",
+          "Take Omega-3 with breakfast."
+        ],
+        "best_for": "Perimenopause and menopause",
+        "duration": "8 weeks"
+      },
+      {
+        "id": "6d643fd2-70a8-4d01-a7f8-1a8b2c0adb42",
+        "order": 5,
+        "name": "High-Protein Diet Peptide Enhancer",
+        "goal": "Satiety, recovery, optimized protein metabolism.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "100 mcg"
+          },
+          {
+            "name": "AOD-9604",
+            "dose": "250 mcg"
+          },
+          {
+            "name": "Magnesium glycinate",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Inject AOD-9604 pre-breakfast.",
+          "Inject Ipamorelin post-dinner or pre-sleep.",
+          "Magnesium before bed for muscle recovery."
+        ],
+        "best_for": "High-protein, low-carb cutting diets",
+        "duration": "6–8 weeks"
+      },
+      {
+        "id": "8a89ba33-4b1a-4c23-8125-514dfdcdc535",
+        "order": 6,
+        "name": "Nighttime Fat Burn + Deep Sleep",
+        "goal": "Sleep quality, GH release overnight, fat burning.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "Melatonin",
+            "dose": "3 mg"
+          }
+        ],
+        "protocol": [
+          "Inject Ipamorelin 30 min before bed.",
+          "Take melatonin capsule immediately after.",
+          "Avoid screens and stimulants after injection."
+        ],
+        "best_for": "Cutting phases (nightly use)",
+        "duration": "6 weeks"
+      },
+      {
+        "id": "cf7cf23c-7d92-40c6-81f2-3c9dd4281089",
+        "order": 7,
+        "name": "Muscle Preservation & Sarcopenia Stack",
+        "goal": "Lean muscle, GH release, strength support.",
+        "compounds": [
+          {
+            "name": "Ipamorelin",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "CJC-1295 no DAC",
+            "dose": "200 mcg"
+          },
+          {
+            "name": "Creatine monohydrate",
+            "dose": "5 g"
+          }
+        ],
+        "protocol": [
+          "Inject Ipamorelin + CJC-1295 together SC before bed.",
+          "Daily injections 8 weeks, then 2 weeks off.",
+          "Take creatine daily."
+        ],
+        "best_for": "40+ athletes and catabolic states",
+        "duration": "8 weeks on / 2 weeks off"
+      }
+    ]
+  },
+  {
+    "slug": "selank",
+    "peptide_slug": "selank",
+    "peptide_name": "Selank",
+    "title": "Selank Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Nootropic / Cognitive",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Synthetic Heptapeptide (Tuftsin Analog)",
+    "also_known_as": [],
+    "description": "Selank is a synthetic heptapeptide based on tuftsin that modulates immune and nervous systems. Enhances serotonin and GABA activity for anxiety reduction and cognitive clarity.",
+    "core_info": {
+      "function": "Anxiolytic, cognitive support, immune modulation.",
+      "typical_dosage": "250–600 mcg intranasally, 1–2x/day",
+      "administration": "Intranasal spray",
+      "best_timing": "Morning or before stressful tasks",
+      "common_cycle": "2–6 weeks",
+      "common_pairings": [
+        "Ashwagandha",
+        "L-Theanine",
+        "Magnesium Glycinate",
+        "Rhodiola",
+        "Holy Basil",
+        "Vitamin B6",
+        "Ginkgo"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "7675fdbd-8069-4370-923f-3fda4f42db9f",
+        "order": 1,
+        "name": "Weekend Brain Focus + Calm Blend",
+        "goal": "Relaxed focus, mental sharpness, emotional balance.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg nasal spray"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Magnesium glycinate",
+            "dose": "300 mg"
+          }
+        ],
+        "protocol": [
+          "Administer Selank in the morning via nasal spray.",
+          "Take L-Theanine and magnesium with first meal.",
+          "Use for 2–3 consecutive days during downtime."
+        ],
+        "best_for": "Weekend decompression",
+        "duration": "2–3 days"
+      },
+      {
+        "id": "646017cb-6a95-4ff4-8c12-50d448da58b9",
+        "order": 2,
+        "name": "Stress Resilience & Mood Modulation",
+        "goal": "Reduces anxiety, supports stress management, stabilizes mood.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg nasal spray"
+          },
+          {
+            "name": "Ashwagandha extract",
+            "dose": "600 mg"
+          },
+          {
+            "name": "Magnesium threonate",
+            "dose": "1000 mg"
+          }
+        ],
+        "protocol": [
+          "Administer Selank intranasally in morning.",
+          "Take ashwagandha + magnesium with first meal.",
+          "Avoid high caffeine intake."
+        ],
+        "best_for": "High-stress work or emotional fatigue",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "a18eef63-6593-4e7e-af86-70d7c6476b14",
+        "order": 3,
+        "name": "Adrenal Health + Mood Balance",
+        "goal": "Stabilize cortisol, reduce anxiety, recover from chronic stress.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg intranasal"
+          },
+          {
+            "name": "Ashwagandha",
+            "dose": "600 mg"
+          },
+          {
+            "name": "BPC-157",
+            "dose": "250 mcg daily"
+          }
+        ],
+        "protocol": [
+          "Use Selank during high-stress windows.",
+          "Take Ashwagandha with breakfast or lunch.",
+          "Inject BPC-157 systemically once daily."
+        ],
+        "best_for": "Entrepreneurs, caregivers, prolonged stress",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "459ad55a-471a-4ba7-8da7-f8c05a18c264",
+        "order": 4,
+        "name": "Mood Stability + Anxiety Reduction",
+        "goal": "Calm anxiety, emotional resilience, mood regulation.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg intranasally"
+          },
+          {
+            "name": "Ashwagandha extract",
+            "dose": "600 mg daily"
+          },
+          {
+            "name": "Magnesium glycinate",
+            "dose": "400 mg nightly"
+          }
+        ],
+        "protocol": [
+          "Use Selank in morning or before stressful tasks.",
+          "Take Ashwagandha after meals.",
+          "Magnesium before bed."
+        ],
+        "best_for": "Stress-induced mood swings, mild anxiety, burnout",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "b3cff539-6904-4465-b054-b1f35c5cc5a9",
+        "order": 5,
+        "name": "Public Speaking Mental Edge",
+        "goal": "Vocal clarity, reduced social anxiety, presence.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Citicoline",
+            "dose": "250 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Rhodiola Rosea",
+            "dose": "250 mg"
+          }
+        ],
+        "protocol": [
+          "Take Citicoline + Rhodiola 90 min before event.",
+          "Use Selank 15–30 min before stage.",
+          "L-Theanine earlier to manage jitters."
+        ],
+        "best_for": "Keynotes, speeches, presentations",
+        "duration": "As needed"
+      },
+      {
+        "id": "af8d8d3c-73ea-441e-9e97-bbe6acae0b60",
+        "order": 6,
+        "name": "Performance Anxiety Reduction",
+        "goal": "Reduce anticipatory stress, calm the mind, improve clarity.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "400 mg"
+          },
+          {
+            "name": "Holy Basil Extract",
+            "dose": "250 mg"
+          }
+        ],
+        "protocol": [
+          "Selank 30–60 min before event.",
+          "L-Theanine + Holy Basil earlier in the day.",
+          "Magnesium at night for regulation."
+        ],
+        "best_for": "Speeches, tests, high-pressure meetings",
+        "duration": "As needed"
+      },
+      {
+        "id": "85925cc2-42ac-4502-bac4-5b1156250bbc",
+        "order": 7,
+        "name": "Brain Fog Reset with Adaptogens",
+        "goal": "Calm mental clutter, reset neurotransmitters, improve energy.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Rhodiola Rosea",
+            "dose": "250 mg"
+          },
+          {
+            "name": "Ashwagandha",
+            "dose": "300 mg"
+          },
+          {
+            "name": "Vitamin C",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Use Selank late morning or before focus tasks.",
+          "Adaptogens with breakfast.",
+          "Vitamin C mid-afternoon to reduce cortisol."
+        ],
+        "best_for": "High-stress periods or post-travel recovery",
+        "duration": "2–4 weeks"
+      },
+      {
+        "id": "99665651-0e10-49e2-959b-0c2c8bf1fafc",
+        "order": 8,
+        "name": "Creative Flow State Enhancer",
+        "goal": "Verbal fluency, reduced inner chatter, idea flow.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Phosphatidylserine",
+            "dose": "100 mg"
+          },
+          {
+            "name": "Cold-brew green tea",
+            "dose": "8 oz"
+          }
+        ],
+        "protocol": [
+          "L-Theanine + phosphatidylserine 30 min before creative task.",
+          "Sip cold-brew green tea slowly while working.",
+          "Selank just before starting."
+        ],
+        "best_for": "Writing, design, brainstorming sessions",
+        "duration": "As needed"
+      },
+      {
+        "id": "b6c1a82e-5101-4b48-a328-be9b76da3308",
+        "order": 9,
+        "name": "High-Stakes Presentation Clarity",
+        "goal": "Sharpen speech, reduce anxiety, improve confidence and recall.",
+        "compounds": [
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Vitamin B6",
+            "dose": "50 mg"
+          },
+          {
+            "name": "Ginkgo Biloba",
+            "dose": "120 mg"
+          }
+        ],
+        "protocol": [
+          "Selank 15–20 min before event.",
+          "Theanine + B6 an hour prior.",
+          "Ginkgo daily for verbal fluidity."
+        ],
+        "best_for": "Speaking events, negotiations, on-camera roles",
+        "duration": "As needed"
+      }
+    ]
+  },
+  {
+    "slug": "semax",
+    "peptide_slug": "semax",
+    "peptide_name": "Semax",
+    "title": "Semax Stack Library",
+    "subtitle": "Premium Protocol Collection",
+    "category": "Nootropic / Cognitive",
+    "category_slug": "nootropic-cognitive",
+    "classification": "Synthetic ACTH (4-10) Analog",
+    "also_known_as": [],
+    "description": "A synthetic heptapeptide derived from ACTH fragments that increases BDNF levels and supports neurogenesis, memory, and recovery from brain injuries.",
+    "core_info": {
+      "function": "Nootropic, neuroprotection, dopamine modulation, stroke recovery.",
+      "typical_dosage": "200–600 mcg intranasally, 1–2x/day",
+      "administration": "Intranasal spray",
+      "best_timing": "Morning, before mental tasks, or before high-stakes events",
+      "common_cycle": "2–6 weeks",
+      "common_pairings": [
+        "Selank",
+        "L-Theanine",
+        "Alpha-GPC",
+        "Citicoline",
+        "Lion's Mane",
+        "Caffeine"
+      ]
+    },
+    "protocols": [
+      {
+        "id": "f80ba60f-4bce-4b80-a0f0-4748e61d402a",
+        "order": 1,
+        "name": "Executive Focus + Decision-Making",
+        "goal": "Executive function, working memory, decision clarity.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Caffeine + L-Theanine",
+            "dose": "100 mg / 200 mg"
+          },
+          {
+            "name": "Creatine",
+            "dose": "5 g daily"
+          }
+        ],
+        "protocol": [
+          "Use Semax before high-pressure decision sessions.",
+          "Caffeine/theanine combo mid-morning.",
+          "Add creatine to a morning shake."
+        ],
+        "best_for": "High cognitive load situations",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "3d06eb56-c29c-4d82-b59c-d5d3b3889d70",
+        "order": 2,
+        "name": "Cognitive Performance Under Stress",
+        "goal": "Calm focus, neuroprotection, improved decision-making.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Selank",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Semax in the morning for clarity.",
+          "Selank in afternoon during high-stress phases.",
+          "L-Theanine with or without caffeine as needed."
+        ],
+        "best_for": "Deadline pressure, anxiety-prone days",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "321d7590-77d2-45db-bf53-ee6a171e1faf",
+        "order": 3,
+        "name": "Nootropic Focus + Memory Enhancement",
+        "goal": "Enhance focus, memory retention, support neurogenesis.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Dihexa",
+            "dose": "10 mg orally"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          }
+        ],
+        "protocol": [
+          "Semax via nasal spray before mental tasks.",
+          "Dihexa orally in the morning.",
+          "Combine L-Theanine with caffeine for smooth stimulation."
+        ],
+        "best_for": "Students, executives, creatives",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "7bba56ff-5942-468f-b1ed-abaa22cc334d",
+        "order": 4,
+        "name": "Executive Brain Optimization Cycle",
+        "goal": "Strategic thinking, multi-tasking, stress resistance.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Dihexa",
+            "dose": "10 mg"
+          },
+          {
+            "name": "Alpha-GPC",
+            "dose": "300 mg"
+          },
+          {
+            "name": "Magnesium L-Threonate",
+            "dose": "2000 mg"
+          }
+        ],
+        "protocol": [
+          "Dihexa + Alpha-GPC in the morning.",
+          "Semax before high-stakes decision-making.",
+          "Magnesium in the evening to reset the nervous system."
+        ],
+        "best_for": "CEOs, team leads, decision-makers",
+        "duration": "4 weeks"
+      },
+      {
+        "id": "dac318e3-66ab-47b6-a926-ebd4d507703c",
+        "order": 5,
+        "name": "Podcast Host Verbal Fluidity",
+        "goal": "Speech recall, fluidity, on-air mental agility.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Citicoline",
+            "dose": "250 mg"
+          },
+          {
+            "name": "Rhodiola Rosea",
+            "dose": "300 mg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "100 mg"
+          }
+        ],
+        "protocol": [
+          "Citicoline + Rhodiola 60 min before recording.",
+          "Semax right before going on air.",
+          "L-Theanine if under pressure."
+        ],
+        "best_for": "Podcasting, interviews, webinars",
+        "duration": "As needed"
+      },
+      {
+        "id": "0fc5883f-5dcb-479a-8cf9-5da5b5681c11",
+        "order": 6,
+        "name": "Focus + Flow + Recovery Combo",
+        "goal": "Enter flow state, calm focus, speed recovery.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "L-Theanine",
+            "dose": "200 mg"
+          },
+          {
+            "name": "GABA",
+            "dose": "100 mg"
+          },
+          {
+            "name": "Magnesium Glycinate",
+            "dose": "400 mg"
+          }
+        ],
+        "protocol": [
+          "Semax before deep work session.",
+          "L-Theanine + GABA with water during breaks.",
+          "Magnesium in the evening for recovery."
+        ],
+        "best_for": "Long creative or coding sessions",
+        "duration": "4–6 weeks"
+      },
+      {
+        "id": "8df0b5bd-8197-42bc-aafc-4fe8f4837ba8",
+        "order": 7,
+        "name": "Sleep Deprivation Cognitive Support",
+        "goal": "Maintain clarity and memory when under-rested.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "N-Acetyl L-Tyrosine",
+            "dose": "350 mg"
+          },
+          {
+            "name": "Alpha-GPC",
+            "dose": "300 mg"
+          },
+          {
+            "name": "Ashwagandha",
+            "dose": "300 mg"
+          }
+        ],
+        "protocol": [
+          "Semax upon waking from limited sleep.",
+          "Alpha-GPC + Tyrosine mid-morning.",
+          "Ashwagandha in afternoon to reduce cortisol buildup."
+        ],
+        "best_for": "Red-eye flights, late deadlines, parenting",
+        "duration": "As needed"
+      },
+      {
+        "id": "a18db5d4-89ca-4105-a273-36d239d4303d",
+        "order": 8,
+        "name": "Startup Founder Focus & Resilience",
+        "goal": "Sharp focus, cognitive endurance, innovation.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Caffeine",
+            "dose": "50–100 mg"
+          },
+          {
+            "name": "Panax Ginseng",
+            "dose": "200 mg"
+          },
+          {
+            "name": "Lion's Mane",
+            "dose": "1000 mg"
+          }
+        ],
+        "protocol": [
+          "Lion's Mane + Ginseng at start of workday.",
+          "Semax before creative or problem-solving sessions.",
+          "Caffeine only as needed."
+        ],
+        "best_for": "Long workdays, product launches, brainstorming",
+        "duration": "4–8 weeks"
+      },
+      {
+        "id": "5a6989c2-649f-4602-a416-5efa3acec26a",
+        "order": 9,
+        "name": "Cold Shower Morning Wake-Up",
+        "goal": "Dopamine boost, alertness, peak performance priming.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Vitamin B12",
+            "dose": "1000 mcg sublingual"
+          },
+          {
+            "name": "MCT Oil",
+            "dose": "1 tbsp"
+          },
+          {
+            "name": "L-Tyrosine",
+            "dose": "500 mg"
+          }
+        ],
+        "protocol": [
+          "Semax immediately upon waking.",
+          "B12, MCT oil, L-Tyrosine after a cold shower.",
+          "Most mentally demanding task within 30 minutes."
+        ],
+        "best_for": "Early-morning work or sleep-deprived starts",
+        "duration": "As needed"
+      },
+      {
+        "id": "d47dc52e-6936-494f-85c5-880d2666aad2",
+        "order": 10,
+        "name": "High-Volume Reading & Recall",
+        "goal": "Mental stamina, reading comprehension, memory retention.",
+        "compounds": [
+          {
+            "name": "Semax",
+            "dose": "300 mcg"
+          },
+          {
+            "name": "Citicoline",
+            "dose": "250 mg"
+          },
+          {
+            "name": "Lion's Mane",
+            "dose": "1000 mg"
+          },
+          {
+            "name": "Omega-3 (DHA)",
+            "dose": "1000 mg"
+          }
+        ],
+        "protocol": [
+          "Lion's Mane + Omega-3 with breakfast.",
+          "Citicoline 30 min before reading sessions.",
+          "Semax before starting high-volume study."
+        ],
+        "best_for": "Exam prep, research sprints, content absorption",
+        "duration": "4 weeks"
+      }
+    ]
   }
 ]
