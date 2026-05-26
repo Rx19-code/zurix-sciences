@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
+import PaymentsTab from './admin/PaymentsTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -461,6 +462,7 @@ export default function Admin() {
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'leads', label: 'Leads', icon: '📊' },
+            { id: 'payments', label: 'Payments', icon: '💰' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
             { id: 'email', label: 'Email', icon: '✉️' },
           ].map(tab => (
@@ -905,6 +907,11 @@ export default function Admin() {
               </div>
             )}
           </div>
+        )}
+
+        {/* Payments Tab */}
+        {activeTab === 'payments' && (
+          <PaymentsTab adminPassword={password} />
         )}
 
         {/* Logs Tab */}

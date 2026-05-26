@@ -522,3 +522,197 @@ async def download_stacks_pdf(password: str = None, x_admin_password: str = Head
         raise HTTPException(status_code=404, detail="PDF not found")
     
     return FileResponse(pdf_path, media_type="application/pdf", filename="zurix_stacks_all.pdf")
+
+
+# ──────────────────── ADMIN: PAYMENTS DASHBOARD ────────────────────
+
+from fastapi.responses import StreamingResponse
+import csv
+
+
+def _require_admin(x_admin_password: str):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+@router.get("/admin/payments/stats")
+async def admin_payment_stats(x_admin_password: str = Header(None)):
+    """Dashboard KPIs: revenue, paid orders, pending orders, conversion rate."""
+    _require_admin(x_admin_password)
+
+    PAID = {"finished", "confirmed"}
+    PENDING = {"waiting", "confirming", "sending", "partially_paid"}
+
+    pipeline = [
+        {"$group": {
+            "_id": "$status",
+            "count": {"$sum": 1},
+            "revenue": {"$sum": "$price"},
+        }}
+    ]
+    by_status = {x["_id"]: x async for x in db.lifetime_orders.aggregate(pipeline)}
+
+    paid_count = sum(by_status.get(s, {}).get("count", 0) for s in PAID)
+    pending_count = sum(by_status.get(s, {}).get("count", 0) for s in PENDING)
+    revenue_total = sum(by_status.get(s, {}).get("revenue", 0) for s in PAID)
+    total_orders = sum(x.get("count", 0) for x in by_status.values())
+    conversion_rate = round((paid_count / total_orders) * 100, 1) if total_orders else 0
+
+    users_with_access = await db.users.count_documents({"has_lifetime_access": True})
+
+    return {
+        "success": True,
+        "revenue_total": round(revenue_total, 2),
+        "paid_orders": paid_count,
+        "pending_orders": pending_count,
+        "total_orders": total_orders,
+        "conversion_rate": conversion_rate,
+        "users_with_access": users_with_access,
+        "by_status": {k: {"count": v.get("count", 0), "revenue": round(v.get("revenue", 0), 2)} for k, v in by_status.items()},
+    }
+
+
+@router.get("/admin/payments/orders")
+async def admin_payment_orders(
+    x_admin_password: str = Header(None),
+    status: Optional[str] = None,
+    q: Optional[str] = None,
+    limit: int = 100,
+    skip: int = 0,
+):
+    """Paginated list of payment orders with optional filters."""
+    _require_admin(x_admin_password)
+
+    query = {}
+    if status and status != "all":
+        if status == "paid":
+            query["status"] = {"$in": ["finished", "confirmed"]}
+        elif status == "pending":
+            query["status"] = {"$in": ["waiting", "confirming", "sending", "partially_paid"]}
+        else:
+            query["status"] = status
+    if q:
+        query["$or"] = [
+            {"user_email": {"$regex": q, "$options": "i"}},
+            {"order_id": {"$regex": q, "$options": "i"}},
+            {"pay_address": {"$regex": q, "$options": "i"}},
+        ]
+
+    total = await db.lifetime_orders.count_documents(query)
+    orders = await db.lifetime_orders.find(query, {"_id": 0}).sort("created_at", -1).skip(skip).limit(min(limit, 500)).to_list(None)
+    return {"success": True, "orders": orders, "total": total, "skip": skip, "limit": limit}
+
+
+@router.get("/admin/payments/export.csv")
+async def admin_payment_export_csv(x_admin_password: str = Header(None)):
+    """Export all payment orders as CSV."""
+    _require_admin(x_admin_password)
+
+    orders = await db.lifetime_orders.find({}, {"_id": 0}).sort("created_at", -1).to_list(None)
+
+    def gen():
+        buf = io.StringIO()
+        writer = csv.writer(buf)
+        writer.writerow([
+            "order_id", "user_email", "user_id", "status", "price_usd",
+            "pay_amount", "pay_currency", "pay_address",
+            "np_payment_id", "created_at", "confirmed_at",
+        ])
+        yield buf.getvalue()
+        for o in orders:
+            buf.seek(0)
+            buf.truncate(0)
+            writer.writerow([
+                o.get("order_id", ""),
+                o.get("user_email", ""),
+                o.get("user_id", ""),
+                o.get("status", ""),
+                o.get("price", ""),
+                o.get("pay_amount", ""),
+                o.get("pay_currency", ""),
+                o.get("pay_address", ""),
+                o.get("np_payment_id", ""),
+                o.get("created_at", ""),
+                o.get("confirmed_at", ""),
+            ])
+            yield buf.getvalue()
+
+    filename = f"zurix_payments_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
+    return StreamingResponse(
+        gen(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+@router.post("/admin/payments/grant-access")
+async def admin_grant_access(request: Request, x_admin_password: str = Header(None)):
+    """Manually grant Lifetime Access to a user by email. Creates a manual order record."""
+    _require_admin(x_admin_password)
+    body = await request.json()
+    email = (body.get("email") or "").lower().strip()
+    note = (body.get("note") or "").strip()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required")
+
+    user = await db.users.find_one({"email": email}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User not found: {email}")
+
+    if user.get("has_lifetime_access"):
+        return {"success": True, "already_had_access": True, "user_id": user["id"]}
+
+    now = datetime.now(timezone.utc).isoformat()
+    order_id = f"MANUAL-{uuid.uuid4().hex[:10].upper()}"
+
+    await db.lifetime_orders.insert_one({
+        "order_id": order_id,
+        "user_id": user["id"],
+        "user_email": email,
+        "np_payment_id": None,
+        "price": 0,
+        "pay_amount": 0,
+        "pay_currency": "manual",
+        "pay_address": None,
+        "status": "confirmed",
+        "source": "admin_manual",
+        "admin_note": note,
+        "created_at": now,
+        "confirmed_at": now,
+    })
+
+    await db.users.update_one(
+        {"id": user["id"]},
+        {"$set": {
+            "has_lifetime_access": True,
+            "payment_id": order_id,
+            "access_granted_at": now,
+        }}
+    )
+
+    logging.info(f"Admin manually granted Lifetime Access to {email} (order={order_id}, note='{note}')")
+    return {"success": True, "user_id": user["id"], "order_id": order_id, "user_email": email}
+
+
+@router.post("/admin/payments/revoke-access")
+async def admin_revoke_access(request: Request, x_admin_password: str = Header(None)):
+    """Revoke Lifetime Access from a user (e.g. refund, chargeback)."""
+    _require_admin(x_admin_password)
+    body = await request.json()
+    email = (body.get("email") or "").lower().strip()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required")
+
+    user = await db.users.find_one({"email": email}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User not found: {email}")
+
+    await db.users.update_one(
+        {"id": user["id"]},
+        {"$set": {
+            "has_lifetime_access": False,
+            "access_revoked_at": datetime.now(timezone.utc).isoformat(),
+        }}
+    )
+    logging.info(f"Admin revoked Lifetime Access from {email}")
+    return {"success": True, "user_email": email}
