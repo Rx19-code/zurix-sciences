@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 router = APIRouter()
 
 CATEGORY_IMG_DIR = Path(__file__).resolve().parent.parent / "product_images" / "categories"
+HUB_IMG_DIR = Path(__file__).resolve().parent.parent / "product_images" / "hubs"
 
 CATEGORY_IMAGE_MAP = {
     "Nootropic / Cognitive": "nootropic.jpg",
@@ -39,6 +40,19 @@ async def get_category_image(category_slug: str):
     if fallback.exists():
         return FileResponse(fallback, media_type="image/jpeg")
     return {"error": "Image not found"}
+
+
+@router.get("/api/hubs/hero-image/{peptide_slug}")
+async def get_hub_hero_image(peptide_slug: str):
+    """Serve a unique cinematic hero image per Stack Hub."""
+    filepath = HUB_IMG_DIR / f"{peptide_slug}.png"
+    if filepath.exists():
+        return FileResponse(filepath, media_type="image/png")
+    # Fallback to molecule image
+    fallback = CATEGORY_IMG_DIR / "molecule.jpg"
+    if fallback.exists():
+        return FileResponse(fallback, media_type="image/jpeg")
+    raise HTTPException(status_code=404, detail="Hero image not found")
 
 LIBRARY_PROJECTION = {
     "_id": 0,

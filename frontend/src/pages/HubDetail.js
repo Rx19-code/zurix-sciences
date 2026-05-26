@@ -58,8 +58,7 @@ export default function HubDetail() {
   var coreInfo = hub.core_info || {};
   var pairings = coreInfo.common_pairings || [];
   var akaList = hub.also_known_as || [];
-  var catSlug = hub.category_slug || (hub.category || '').toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
-  var heroImg = API + '/api/library/category-image/' + catSlug;
+  var heroImg = API + '/api/hubs/hero-image/' + (hub.peptide_slug || hub.slug || '');
   var avgRatingAll = (() => {
     var rated = protocolsList.filter(p => (p.rating_count || 0) > 0);
     if (!rated.length) return 0;
