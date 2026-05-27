@@ -18,51 +18,56 @@
       "considerations": "Early-stage research compound. Generally well tolerated, but long-term data is limited."
     },
     "protocols": {
-      "title": "Subcutaneous Protocol (2 mL = 5 mg/mL)",
+      "title": "Subcutaneous Protocol (vial 10 mg, 2 mL bac water = 5 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
-        "frequency": "Once or twice daily"
+        "frequency": "Once daily, morning on empty stomach"
       },
       "dosages": [
         {
-          "indication": "Fat loss / metabolic boost",
-          "schedule": "1x daily (morning, fasted)",
-          "dose": "25-50 mg/day"
+          "indication": "Tolerance assessment (week 1)",
+          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
+          "dose": "2.5 mg/day"
+        },
+        {
+          "indication": "Standard fat loss / metabolic boost",
+          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
+          "dose": "5 mg/day"
         },
         {
           "indication": "Plateau breaking / accelerated cut",
-          "schedule": "25 mg morning + 25 mg afternoon",
-          "dose": "50-75 mg/day"
+          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
+          "dose": "7.5 mg/day"
         },
         {
-          "indication": "Anti-aging / NNMT inhibition",
-          "schedule": "1x daily (5 days ON / 2 OFF)",
-          "dose": "25 mg/day"
-        },
-        {
-          "indication": "Pre-competition finisher",
-          "schedule": "1x daily",
-          "dose": "75 mg/day"
+          "indication": "Peak research dose",
+          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
+          "dose": "10 mg/day"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Days 1-2 (Tolerance)",
-          "dose": "2.5 mg 1x/day"
+          "phase": "Tolerance (Week 1)",
+          "dose": "2.5 mg/day SC — 5 on / 2 off"
         },
         {
           "number": 2,
-          "phase": "Days 3-4 (Standard)",
-          "dose": "5 mg 1x/day"
+          "phase": "Standard (Weeks 2-3)",
+          "dose": "5 mg/day SC — 5 on / 2 off"
         },
         {
           "number": 3,
-          "phase": "Alternative BID",
-          "dose": "2.5 mg 2x/day"
+          "phase": "Peak (Weeks 4-6)",
+          "dose": "7.5-10 mg/day SC — 5 on / 2 off"
+        },
+        {
+          "number": 4,
+          "phase": "Off cycle (Weeks 7-8)",
+          "dose": "Washout — 2 weeks rest"
         }
       ],
-      "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
+      "reconstitution": "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water (final concentration 5 mg/mL). Store at 2-8\u00b0C after reconstitution.",
       "reconstitution_steps": [
         "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
