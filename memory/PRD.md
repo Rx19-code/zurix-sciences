@@ -69,3 +69,6 @@ Professional e-commerce site for peptide research products with:
 - PM2 process: zurix-backend
 - Nginx config: /etc/nginx/sites-enabled/zurix
 - IPN URL configured at NOWPayments: https://zurixsciences.com/api/payment/nowpayments-webhook
+
+## Changelog
+- 2026-02-27: Added red "SITE UNDER UPDATE" top banner (UpdateNoticeBanner.js) above the yellow regulatory banner — non-dismissible, English copy, responsive, animated alert icons.

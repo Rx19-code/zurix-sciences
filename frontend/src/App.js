@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation, useSearchParams } from 'reac
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import RegulatoryBanner from './components/RegulatoryBanner';
+import UpdateNoticeBanner from './components/UpdateNoticeBanner';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -43,6 +44,7 @@ function Layout({ children }) {
   
   return (
     <div className="flex flex-col min-h-screen">
+      <UpdateNoticeBanner />
       <RegulatoryBanner />
       <Navbar />
       <main className="flex-grow">
