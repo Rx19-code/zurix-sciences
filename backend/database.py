@@ -34,6 +34,13 @@ PDF_STORAGE_DIR.mkdir(exist_ok=True)
 PRODUCT_IMG_DIR = Path(os.environ.get('PRODUCT_IMG_DIR', str(ROOT_DIR / "product_images")))
 PRODUCT_IMG_DIR.mkdir(exist_ok=True)
 
+# Maintenance mode
+MAINTENANCE_FLAG_FILE = os.environ.get(
+    'MAINTENANCE_FLAG_FILE',
+    str(Path(__file__).resolve().parent.parent / "maintenance.flag")
+)
+MAINTENANCE_BYPASS_KEY = os.environ.get('MAINTENANCE_BYPASS_KEY', 'zurix-admin-2026')
+
 # Resend email setup
 if RESEND_API_KEY:
     import resend

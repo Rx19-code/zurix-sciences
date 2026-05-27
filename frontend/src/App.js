@@ -25,6 +25,7 @@ import ResetPassword from './pages/ResetPassword';
 import AuthCallback from './pages/AuthCallback';
 import StackDetail from './pages/StackDetail';
 import HubDetail from './pages/HubDetail';
+import MaintenancePage from './pages/Maintenance';
 import './App.css';
 
 // Layout wrapper that hides navbar/footer for admin and login
@@ -53,60 +54,6 @@ function Layout({ children }) {
 }
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
-function MaintenancePage() {
-  return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      padding: '20px'
-    }}>
-      <div style={{ textAlign: 'center', maxWidth: '500px' }}>
-        <div style={{ fontSize: '64px', marginBottom: '24px' }}>
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="1.5" style={{margin: '0 auto'}}>
-            <path d="M12 6V12L16 14" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        <h1 style={{
-          color: '#f8fafc',
-          fontSize: '32px',
-          fontWeight: '700',
-          marginBottom: '12px',
-          letterSpacing: '-0.5px'
-        }}>
-          Zurix Sciences
-        </h1>
-        <p style={{
-          color: '#94a3b8',
-          fontSize: '18px',
-          lineHeight: '1.6',
-          marginBottom: '32px'
-        }}>
-          We are currently updating our website to serve you better.<br/>
-          We'll be back soon!
-        </p>
-        <div style={{
-          background: 'rgba(59, 130, 246, 0.1)',
-          border: '1px solid rgba(59, 130, 246, 0.2)',
-          borderRadius: '12px',
-          padding: '16px 24px',
-          color: '#60a5fa',
-          fontSize: '14px',
-          lineHeight: '1.8'
-        }}>
-          For urgent inquiries:<br/>
-          <strong>Email:</strong> RxpeptidesHK@proton.me<br/>
-          <strong>Threema ID:</strong> 2D9DAD9R
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function AppRouter() {
   var location = useLocation();
@@ -145,19 +92,30 @@ function AppRouter() {
 
 function AppContent() {
   var [maintenance, setMaintenance] = useState(false);
+  var [bypassed, setBypassed] = useState(false);
   var [checked, setChecked] = useState(false);
   var [searchParams] = useSearchParams();
-  var bypass = searchParams.get('bypass') === 'zurix2026';
+  var legacyBypass = searchParams.get('bypass') === 'zurix2026';
 
   useEffect(function() {
-    fetch((BACKEND_URL || '') + '/api/maintenance')
+    fetch((BACKEND_URL || '') + '/api/maintenance/status', { credentials: 'include' })
       .then(function(r) { return r.json(); })
-      .then(function(d) { setMaintenance(d.maintenance); setChecked(true); })
-      .catch(function() { setChecked(true); });
+      .then(function(d) {
+        setMaintenance(!!d.active);
+        setBypassed(!!d.bypass);
+        setChecked(true);
+      })
+      .catch(function() {
+        // Fallback to legacy endpoint
+        fetch((BACKEND_URL || '') + '/api/maintenance')
+          .then(function(r) { return r.json(); })
+          .then(function(d) { setMaintenance(!!d.maintenance); setChecked(true); })
+          .catch(function() { setChecked(true); });
+      });
   }, []);
 
   if (!checked) return null;
-  if (maintenance && !bypass) return <MaintenancePage />;
+  if (maintenance && !bypassed && !legacyBypass) return <MaintenancePage />;
 
   return (
     <Layout>

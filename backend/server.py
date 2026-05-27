@@ -20,6 +20,7 @@ from routes.payments import router as payments_router
 from routes.admin import router as admin_router
 from routes.verification import router as verification_router
 from routes.library import router as library_router
+from routes.maintenance import router as maintenance_router
 
 # Create app
 app = FastAPI()
@@ -34,12 +35,13 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 async def root():
     return {"message": "Zurix Sciences API", "version": "2.0.0"}
 
-# Maintenance mode
+# Legacy maintenance endpoint — kept for backwards-compat with cached frontends.
+# New code should use /api/maintenance/status.
 @app.get("/api/maintenance")
 async def get_maintenance_status():
-    import pathlib
-    flag_file = pathlib.Path(__file__).parent / "maintenance.flag"
-    return {"maintenance": flag_file.exists()}
+    import os
+    from database import MAINTENANCE_FLAG_FILE
+    return {"maintenance": os.path.exists(MAINTENANCE_FLAG_FILE)}
 
 
 # Health check
@@ -65,6 +67,7 @@ app.include_router(payments_router)
 app.include_router(admin_router)
 app.include_router(verification_router)
 app.include_router(library_router)
+app.include_router(maintenance_router)
 
 # Middleware stack (order matters - last added = first executed)
 app.add_middleware(
