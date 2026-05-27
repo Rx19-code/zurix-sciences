@@ -59,17 +59,22 @@ async def main():
         slug = hub["slug"]
         for p in hub.get("protocols", []):
             pid = p["id"]
-            # Bias: first 3 protocols of each hub get higher avg + more votes ("classic stacks")
-            order = p.get("order", 99)
-            if order <= 3:
-                count = random.randint(18, 25)
-                target = round(random.uniform(4.5, 4.8), 1)
-            elif order <= 8:
-                count = random.randint(12, 20)
-                target = round(random.uniform(4.3, 4.7), 1)
+            num_peptides = len(p.get("compounds", []))
+
+            # Bias: stacks with 2+ peptides are "real stacks" → trend stronger.
+            # Solo-peptide protocols get fewer votes and slightly lower rating.
+            if num_peptides >= 3:
+                # Triple+ stacks → top trending tier
+                count = random.randint(22, 32)
+                target = round(random.uniform(4.6, 4.9), 1)
+            elif num_peptides == 2:
+                # Dual stacks → strong trending tier
+                count = random.randint(16, 24)
+                target = round(random.uniform(4.4, 4.7), 1)
             else:
-                count = random.randint(8, 16)
-                target = round(random.uniform(4.2, 4.6), 1)
+                # Solo peptide protocols → low/mid trending
+                count = random.randint(5, 11)
+                target = round(random.uniform(3.9, 4.4), 1)
 
             votes = _generate_votes(target, count)
             for stars in votes:
@@ -87,16 +92,25 @@ async def main():
 
     print(f"Inserted {total_votes} fake votes across {sum(len(h.get('protocols', [])) for h in hubs)} protocols in {len(hubs)} hubs.")
 
-    # Quick verification: show top 5 trending across all hubs
+    # Quick verification: show top 10 trending across all hubs (with peptide count)
     pipeline = [
         {"$group": {"_id": {"hub": "$hub_slug", "pid": "$protocol_id"}, "avg": {"$avg": "$stars"}, "count": {"$sum": 1}}},
-        {"$sort": {"avg": -1, "count": -1}},
-        {"$limit": 5},
+        {"$sort": {"count": -1, "avg": -1}},
+        {"$limit": 10},
     ]
-    top = await db.protocol_ratings.aggregate(pipeline).to_list(5)
-    print("\nTop 5 globally:")
+    top = await db.protocol_ratings.aggregate(pipeline).to_list(10)
+
+    # Build a lookup of protocol → compound count for the printout
+    proto_lookup = {}
+    for h in hubs:
+        for p in h.get("protocols", []):
+            proto_lookup[(h["slug"], p["id"])] = (p.get("name", "?"), len(p.get("compounds", [])))
+
+    print("\nTop 10 trending (most votes):")
     for t in top:
-        print(f"  {t['_id']['hub']:18} | pid={t['_id']['pid'][:8]}... | avg={round(t['avg'],2)} | votes={t['count']}")
+        key = (t["_id"]["hub"], t["_id"]["pid"])
+        name, n_pep = proto_lookup.get(key, ("?", 0))
+        print(f"  {t['_id']['hub']:18} | {name[:35]:35} | peptides={n_pep} | avg={round(t['avg'],2)} | votes={t['count']}")
 
     client.close()
 
