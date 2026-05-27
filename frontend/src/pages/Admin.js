@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import PaymentsTab from './admin/PaymentsTab';
+import MaintenanceTab from './admin/MaintenanceTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -463,6 +464,7 @@ export default function Admin() {
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'leads', label: 'Leads', icon: '📊' },
             { id: 'payments', label: 'Payments', icon: '💰' },
+            { id: 'maintenance', label: 'Maintenance', icon: '🚧' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
             { id: 'email', label: 'Email', icon: '✉️' },
           ].map(tab => (
@@ -912,6 +914,11 @@ export default function Admin() {
         {/* Payments Tab */}
         {activeTab === 'payments' && (
           <PaymentsTab adminPassword={password} />
+        )}
+
+        {/* Maintenance Tab */}
+        {activeTab === 'maintenance' && (
+          <MaintenanceTab adminPassword={password} />
         )}
 
         {/* Logs Tab */}
