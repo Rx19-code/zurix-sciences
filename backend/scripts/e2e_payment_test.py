@@ -35,7 +35,7 @@ load_dotenv()
 NP_API = "https://api.nowpayments.io/v1"
 NP_KEY = os.environ.get("NOWPAYMENTS_API_KEY")
 TEST_EMAIL = "e2e-test@zurixsciences.com"
-TEST_PRICE = 1.0  # USD (will use ~$1 USDT)
+TEST_PRICE = 2.0  # USD (NOWPayments minimum for USDT is ~$2)
 POLL_INTERVAL_SEC = 30
 MAX_WAIT_MINUTES = 30
 
