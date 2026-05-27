@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Lock, Loader2, Layers, Target, Beaker, Zap } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../context/AuthContext';
 
 var API = process.env.REACT_APP_BACKEND_URL;
@@ -160,6 +161,7 @@ function LockedStackContent({ navigate, user, token }) {
   }
 
   if (paymentData) {
+    const qrValue = 'tron:' + paymentData.pay_address + '?amount=' + paymentData.pay_amount;
     return (
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6" data-testid="payment-flow">
         <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Complete Payment</h3>
@@ -168,8 +170,14 @@ function LockedStackContent({ navigate, user, token }) {
           <p className="text-2xl font-bold text-gray-900">{paymentData.pay_amount} USDT</p>
           <p className="text-xs text-gray-400 mt-1">TRC20 Network</p>
         </div>
+        <div className="flex justify-center mb-4">
+          <div className="bg-white border-2 border-gray-200 p-3 rounded-xl shadow-sm">
+            <QRCodeSVG value={qrValue} size={180} level="M" data-testid="payment-qrcode" />
+            <p className="text-[10px] text-gray-400 text-center mt-2 uppercase tracking-wider">Scan with your crypto wallet</p>
+          </div>
+        </div>
         <div className="bg-gray-50 rounded-lg p-4 mb-4">
-          <p className="text-xs text-gray-500 mb-1">To this address:</p>
+          <p className="text-xs text-gray-500 mb-1">Or copy this address:</p>
           <p className="text-sm font-mono text-gray-900 break-all select-all bg-white p-2 rounded border">{paymentData.pay_address}</p>
         </div>
         <button onClick={handleCheckPayment} disabled={checking} className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
