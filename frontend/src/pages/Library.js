@@ -30,7 +30,7 @@ export default function Library() {
   const [hubs, setHubs] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const showStacks = user && user.has_lifetime_access;
+  const hasAccess = user && user.has_lifetime_access;
 
   useEffect(() => {
     fetch(`${API}/api/library`)
@@ -101,8 +101,7 @@ export default function Library() {
             </p>
           </div>
 
-          {/* View Mode Toggle - Only visible for lifetime access users */}
-          {showStacks && (
+          {/* View Mode Toggle - visible to everyone (paywall on detail) */}
           <div className="flex justify-center mb-5">
             <div className="inline-flex bg-white/10 border border-white/20 rounded-xl p-1">
               <button
@@ -118,10 +117,12 @@ export default function Library() {
                 className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${viewMode === 'stacks' ? 'bg-white text-blue-700 shadow-sm' : 'text-white hover:bg-white/10'}`}
               >
                 Stack Hubs ({hubs.length})
+                {!hasAccess && (
+                  <span className="ml-1.5 inline-flex items-center bg-yellow-400 text-yellow-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide">PRO</span>
+                )}
               </button>
             </div>
           </div>
-          )}
 
           <p className="text-center text-sm text-blue-200 mb-6">
             {viewMode === 'peptides'
@@ -219,21 +220,43 @@ export default function Library() {
               key={hub.slug}
               data-testid={`hub-card-${hub.slug}`}
               onClick={() => navigate(`/stacks/${hub.slug}`)}
-              className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/60 relative overflow-hidden"
+              className="bg-white border border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-200/60 relative overflow-hidden group"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-100 to-transparent rounded-bl-full" />
-              <div className="flex items-center justify-between mb-3 relative">
-                <span className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {hub.protocols_count} Protocols
-                </span>
-                <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
-                  PRO
-                </span>
+              {/* Hero image with overlay */}
+              <div className="relative h-32 overflow-hidden bg-gradient-to-br from-purple-900 to-blue-900">
+                <img
+                  src={`${API}/api/hubs/hero-image/${hub.peptide_slug || hub.slug}`}
+                  alt={hub.peptide_name || hub.title}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                {!hasAccess && (
+                  <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full flex items-center gap-1 border border-white/20">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
+                    Premium
+                  </div>
+                )}
+                <div className="absolute bottom-2 left-3 text-white">
+                  <h3 className="text-base font-bold drop-shadow-lg">{hub.peptide_name || hub.title}</h3>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">{hub.title}</h3>
-              <p className="text-xs text-purple-600 font-medium mb-2 uppercase tracking-wider">{hub.subtitle}</p>
-              <p className="text-gray-500 text-sm line-clamp-3">{hub.description}</p>
+
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                    {hub.protocols_count} Protocols
+                  </span>
+                  {!hasAccess && (
+                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m0 0v3m0-3h3m-3 0H9m12-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      Locked
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-purple-600 font-medium mb-1 uppercase tracking-wider">{hub.subtitle}</p>
+                <p className="text-gray-500 text-sm line-clamp-2">{hub.description}</p>
+              </div>
             </div>
           ))}
         </div>

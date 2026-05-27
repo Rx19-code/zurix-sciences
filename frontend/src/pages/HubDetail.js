@@ -79,17 +79,108 @@ export default function HubDetail() {
   var hasAccess = user && user.has_lifetime_access;
 
   if (!hasAccess) {
+    var heroImgPaywall = API + '/api/hubs/hero-image/' + (hub.peptide_slug || hub.slug || '');
+    var previewProtocols = (hub.protocols || []).slice(0, 6);
+    var totalProtocols = (hub.protocols || []).length;
+    var hubCoreInfo = hub.core_info || {};
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-md w-full text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-purple-100 rounded-full mb-3">
-            <Sparkles className="w-7 h-7 text-purple-600" />
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero — same as paid version, fully visible */}
+        <div className="relative h-72 sm:h-80 bg-gradient-to-br from-purple-900 to-blue-900 overflow-hidden">
+          <img src={heroImgPaywall} alt="" className="w-full h-full object-cover opacity-50" onError={(e) => { e.target.style.display = 'none'; }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-4 sm:px-6 py-6">
+            <div className="max-w-6xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 bg-yellow-500/90 text-yellow-950 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">
+                <Sparkles className="w-3.5 h-3.5" /> Premium Stack Hub
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg" data-testid="hub-title-locked">{hub.peptide_name || hub.title}</h1>
+              <p className="text-purple-200 text-sm mt-1">{hub.subtitle}</p>
+            </div>
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Premium Stack Hub</h2>
-          <p className="text-sm text-gray-500 mb-6">Unlock {hub.title} and all Premium protocols with Lifetime Access ($39.99 USDT).</p>
-          <Link to="/login" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors" data-testid="hub-paywall-cta">
-            Sign In to Unlock
-          </Link>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+          {/* Description — visible */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+            <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">About {hub.peptide_name}</h2>
+            <p className="text-gray-700 text-sm leading-relaxed">{hub.description}</p>
+            {hubCoreInfo.mechanism && (
+              <p className="text-gray-500 text-xs mt-3 italic"><strong>Mechanism:</strong> {hubCoreInfo.mechanism}</p>
+            )}
+          </div>
+
+          {/* Protocols preview — blurred names */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                {totalProtocols} Premium Protocols Inside
+              </h2>
+              <span className="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full">🔒 Locked</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
+              {previewProtocols.map((p, idx) => (
+                <div key={p.id || idx} className="bg-white border border-gray-200 rounded-lg p-4 relative overflow-hidden" data-testid={`protocol-preview-${idx}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold text-xs">{idx + 1}</div>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-600">Protocol</span>
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1 select-none filter blur-sm">{p.name}</h3>
+                  <p className="text-xs text-gray-500 line-clamp-2 select-none filter blur-sm">{p.goal || p.best_for}</p>
+                  <div className="mt-2 flex items-center gap-1 text-xs">
+                    <Clock className="w-3 h-3 text-gray-400" />
+                    <span className="text-gray-400 filter blur-sm">{p.duration || '4 weeks'}</span>
+                  </div>
+                </div>
+              ))}
+              {totalProtocols > 6 && (
+                <div className="bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-dashed border-purple-200 rounded-lg p-4 flex items-center justify-center">
+                  <p className="text-center text-purple-600 font-semibold text-sm">+ {totalProtocols - 6} more protocols</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* CTA section */}
+          <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-2xl p-8 text-center shadow-xl">
+            <h3 className="text-2xl font-bold text-white mb-2">Unlock Lifetime Access</h3>
+            <p className="text-purple-100 text-sm mb-1">Get all <strong>13 Stack Hubs</strong> and <strong>130+ Premium Protocols</strong></p>
+            <p className="text-purple-200 text-xs mb-6">One-time payment · Future updates included forever</p>
+
+            <div className="flex items-baseline justify-center gap-2 mb-6">
+              <span className="text-5xl font-bold text-white">$39.99</span>
+              <span className="text-purple-200 text-sm">USDT</span>
+            </div>
+
+            <Link
+              to={user ? '/checkout?product=lifetime' : '/login?redirect=/stacks/' + (hub.slug || '')}
+              className="inline-block bg-white hover:bg-purple-50 text-purple-700 font-bold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
+              data-testid="hub-paywall-cta"
+            >
+              {user ? 'Unlock Now' : 'Sign In & Unlock'}
+            </Link>
+
+            <p className="text-purple-200 text-[11px] mt-4">
+              {user ? 'Pay with USDT-TRC20 · Instant access' : 'No account? Sign up free, then unlock'}
+            </p>
+
+            {/* Trust signals */}
+            <div className="mt-6 pt-6 border-t border-white/20 grid grid-cols-3 gap-3 text-center">
+              <div>
+                <div className="text-white font-bold text-lg">130+</div>
+                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Protocols</div>
+              </div>
+              <div>
+                <div className="text-white font-bold text-lg">13</div>
+                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Stack Hubs</div>
+              </div>
+              <div>
+                <div className="text-white font-bold text-lg">∞</div>
+                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Updates</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
