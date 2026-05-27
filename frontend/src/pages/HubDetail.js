@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles, Clock, Syringe, Flame, Star, List } from 'lucide-react';
+import { ChevronLeft, X, Beaker, Target, Users, FlaskConical, Sparkles, Clock, Syringe, Flame, Star, List, Loader2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../context/AuthContext';
 import StarRating from '../components/StarRating';
 import { calculateUI } from '../utils/peptideUI';
@@ -41,11 +42,50 @@ export default function HubDetail() {
   var params = useParams();
   var slug = params.slug;
   var navigate = useNavigate();
-  var { user } = useAuth();
+  var { user, token } = useAuth();
   var [hub, setHub] = useState(null);
   var [loading, setLoading] = useState(true);
   var [selectedProtocol, setSelectedProtocol] = useState(null);
   var [sortMode, setSortMode] = useState('default');
+  // Lifetime Access payment flow (paywall)
+  var [paymentData, setPaymentData] = useState(null);
+  var [payLoading, setPayLoading] = useState(false);
+  var [payError, setPayError] = useState('');
+  var [checking, setChecking] = useState(false);
+  var [payStatus, setPayStatus] = useState(null);
+
+  function handleCreateInvoice() {
+    setPayError('');
+    setPayLoading(true);
+    fetch(API + '/api/payment/create-invoice', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.already_paid) { window.location.reload(); return; }
+        if (data.detail || data.error) { setPayError(data.detail || data.error); setPayLoading(false); return; }
+        setPaymentData(data);
+        setPayLoading(false);
+      })
+      .catch(() => { setPayError('Connection error. Please try again.'); setPayLoading(false); });
+  }
+
+  function handleCheckPayment() {
+    if (!paymentData) return;
+    setChecking(true);
+    fetch(API + '/api/payment/check/' + paymentData.payment_id, {
+      headers: { 'Authorization': 'Bearer ' + token },
+    })
+      .then(r => r.json())
+      .then(data => {
+        setPayStatus(data.status);
+        if (data.has_lifetime_access) { window.location.reload(); }
+        setChecking(false);
+      })
+      .catch(() => setChecking(false));
+  }
 
   useEffect(() => {
     fetch(API + '/api/hubs/' + slug)
@@ -144,42 +184,101 @@ export default function HubDetail() {
 
           {/* CTA section */}
           <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-2xl p-8 text-center shadow-xl">
-            <h3 className="text-2xl font-bold text-white mb-2">Unlock Lifetime Access</h3>
-            <p className="text-purple-100 text-sm mb-1">Get all <strong>13 Stack Hubs</strong> and <strong>130+ Premium Protocols</strong></p>
-            <p className="text-purple-200 text-xs mb-6">One-time payment · Future updates included forever</p>
+            {paymentData ? (
+              // Step 2: payment details shown after invoice created
+              <div data-testid="paywall-payment-flow">
+                <h3 className="text-2xl font-bold text-white mb-2">Complete Your Payment</h3>
+                <p className="text-purple-200 text-xs mb-5">Send the exact amount to the address below. Access unlocks automatically after blockchain confirmation.</p>
 
-            <div className="flex items-baseline justify-center gap-2 mb-6">
-              <span className="text-5xl font-bold text-white">$39.99</span>
-              <span className="text-purple-200 text-sm">USDT</span>
-            </div>
+                <div className="bg-white rounded-xl p-5 mb-4">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Send exactly</p>
+                  <p className="text-3xl font-bold text-gray-900" data-testid="pay-amount">{paymentData.pay_amount} USDT</p>
+                  <p className="text-xs text-gray-400">TRC20 Network</p>
+                </div>
 
-            <Link
-              to={user ? '/checkout?product=lifetime' : '/login?redirect=/stacks/' + (hub.slug || '')}
-              className="inline-block bg-white hover:bg-purple-50 text-purple-700 font-bold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
-              data-testid="hub-paywall-cta"
-            >
-              {user ? 'Unlock Now' : 'Sign In & Unlock'}
-            </Link>
+                <div className="bg-white rounded-xl p-4 inline-block mb-4">
+                  <QRCodeSVG value={`tron:${paymentData.pay_address}?amount=${paymentData.pay_amount}`} size={160} level="M" data-testid="paywall-qrcode" />
+                  <p className="text-[10px] text-gray-400 text-center mt-2 uppercase tracking-wider">Scan with your wallet</p>
+                </div>
 
-            <p className="text-purple-200 text-[11px] mt-4">
-              {user ? 'Pay with USDT-TRC20 · Instant access' : 'No account? Sign up free, then unlock'}
-            </p>
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 mb-4">
+                  <p className="text-purple-200 text-[10px] uppercase tracking-wider mb-1">Or copy address</p>
+                  <p className="text-white text-xs font-mono break-all select-all" data-testid="pay-address">{paymentData.pay_address}</p>
+                </div>
 
-            {/* Trust signals */}
-            <div className="mt-6 pt-6 border-t border-white/20 grid grid-cols-3 gap-3 text-center">
-              <div>
-                <div className="text-white font-bold text-lg">130+</div>
-                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Protocols</div>
+                <button
+                  onClick={handleCheckPayment}
+                  disabled={checking}
+                  className="bg-white hover:bg-purple-50 text-purple-700 font-bold px-6 py-2.5 rounded-xl text-sm disabled:opacity-50 mb-2"
+                  data-testid="check-payment-btn"
+                >
+                  {checking ? 'Checking…' : 'I have paid — Check Status'}
+                </button>
+                {payStatus && (
+                  <p className="text-purple-200 text-xs mt-2">
+                    Status: <span className="text-white font-semibold capitalize">{payStatus}</span>
+                  </p>
+                )}
+                <p className="text-purple-200 text-[10px] mt-3">
+                  This page auto-refreshes when payment is confirmed (usually 1-3 minutes).
+                </p>
               </div>
-              <div>
-                <div className="text-white font-bold text-lg">13</div>
-                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Stack Hubs</div>
-              </div>
-              <div>
-                <div className="text-white font-bold text-lg">∞</div>
-                <div className="text-purple-200 text-[10px] uppercase tracking-wider">Updates</div>
-              </div>
-            </div>
+            ) : (
+              // Step 1: pre-purchase pitch
+              <>
+                <h3 className="text-2xl font-bold text-white mb-2">Unlock Lifetime Access</h3>
+                <p className="text-purple-100 text-sm mb-1">Get all <strong>13 Stack Hubs</strong> and <strong>130+ Premium Protocols</strong></p>
+                <p className="text-purple-200 text-xs mb-6">One-time payment · Future updates included forever</p>
+
+                <div className="flex items-baseline justify-center gap-2 mb-6">
+                  <span className="text-5xl font-bold text-white">$39.99</span>
+                  <span className="text-purple-200 text-sm">USDT</span>
+                </div>
+
+                {user ? (
+                  <button
+                    onClick={handleCreateInvoice}
+                    disabled={payLoading}
+                    className="inline-flex items-center gap-2 bg-white hover:bg-purple-50 text-purple-700 font-bold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+                    data-testid="hub-paywall-cta"
+                  >
+                    {payLoading ? (<><Loader2 className="w-4 h-4 animate-spin" /> Generating invoice...</>) : 'Unlock Now'}
+                  </button>
+                ) : (
+                  <Link
+                    to={'/login?redirect=/stacks/' + (hub.slug || '')}
+                    className="inline-block bg-white hover:bg-purple-50 text-purple-700 font-bold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
+                    data-testid="hub-paywall-cta"
+                  >
+                    Sign In & Unlock
+                  </Link>
+                )}
+
+                {payError && (
+                  <p className="text-red-200 text-xs mt-3 bg-red-900/40 border border-red-700/40 rounded-lg px-3 py-2" data-testid="paywall-error">{payError}</p>
+                )}
+
+                <p className="text-purple-200 text-[11px] mt-4">
+                  {user ? 'Pay with USDT-TRC20 · Instant access' : 'No account? Sign up free, then unlock'}
+                </p>
+
+                {/* Trust signals */}
+                <div className="mt-6 pt-6 border-t border-white/20 grid grid-cols-3 gap-3 text-center">
+                  <div>
+                    <div className="text-white font-bold text-lg">130+</div>
+                    <div className="text-purple-200 text-[10px] uppercase tracking-wider">Protocols</div>
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-lg">13</div>
+                    <div className="text-purple-200 text-[10px] uppercase tracking-wider">Stack Hubs</div>
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-lg">∞</div>
+                    <div className="text-purple-200 text-[10px] uppercase tracking-wider">Updates</div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
