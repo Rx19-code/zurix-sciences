@@ -4862,47 +4862,47 @@
       },
       "dosages": [
         {
-          "indication": "Anti-aging intervention",
-          "schedule": "Subcutaneous, daily",
-          "dose": "10 mg"
+          "indication": "Initial titration (low dose)",
+          "schedule": "Subcutaneous, 2x per week (e.g. Mon/Thu)",
+          "dose": "2.5 mg per injection (5 mg/week)"
         },
         {
-          "indication": "Metabolic regulation study",
-          "schedule": "Subcutaneous, every other day",
-          "dose": "5 mg"
+          "indication": "Standard research dose",
+          "schedule": "Subcutaneous, 3x per week (e.g. Mon/Wed/Fri)",
+          "dose": "2.5 mg per injection (7.5 mg/week)"
         },
         {
-          "indication": "Exercise response research",
-          "schedule": "Subcutaneous, twice weekly",
-          "dose": "8 mg"
+          "indication": "Peak research dose",
+          "schedule": "Subcutaneous, 3x per week",
+          "dose": "3.3 mg per injection (10 mg/week)"
         },
         {
-          "indication": "General health improvement",
-          "schedule": "Subcutaneous, weekly",
-          "dose": "15 mg"
+          "indication": "Maintenance after cycle",
+          "schedule": "Subcutaneous, 2x per week",
+          "dose": "2.5 mg per injection (5 mg/week)"
         }
       ],
       "reconstitution": "Reconstitute with bacteriostatic water. Store at 2-8C after reconstitution.",
       "phases": [
         {
           "number": 1,
-          "phase": "Initial titration (Weeks 1-4)",
-          "dose": "5 mg"
+          "phase": "Initial titration (Weeks 1-2)",
+          "dose": "5 mg/week (split 2 injections)"
         },
         {
           "number": 2,
-          "phase": "Titration adjustment (Weeks 5-8)",
-          "dose": "10 mg"
+          "phase": "Standard dose (Weeks 3-4)",
+          "dose": "7.5 mg/week (split 3 injections)"
         },
         {
           "number": 3,
-          "phase": "Stabilization (Weeks 9-12)",
-          "dose": "15 mg"
+          "phase": "Peak research dose (Weeks 5-6)",
+          "dose": "10 mg/week (split 3 injections)"
         },
         {
           "number": 4,
-          "phase": "Maintenance phase (Weeks 13-16)",
-          "dose": "10 mg"
+          "phase": "Off cycle (Weeks 7-10)",
+          "dose": "Washout — 2 to 4 weeks rest"
         }
       ],
       "reconstitution_steps": [
