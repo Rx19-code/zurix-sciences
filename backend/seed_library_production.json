@@ -25,49 +25,24 @@
       },
       "dosages": [
         {
-          "indication": "Tolerance assessment (week 1)",
+          "indication": "Standard research dose",
           "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-          "dose": "2.5 mg/day"
-        },
-        {
-          "indication": "Standard fat loss / metabolic boost",
-          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-          "dose": "5 mg/day"
-        },
-        {
-          "indication": "Plateau breaking / accelerated cut",
-          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-          "dose": "7.5 mg/day"
-        },
-        {
-          "indication": "Peak research dose",
-          "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-          "dose": "10 mg/day"
+          "dose": "200 mcg/day"
         }
       ],
       "phases": [
         {
           "number": 1,
-          "phase": "Tolerance (Week 1)",
-          "dose": "2.5 mg/day SC — 5 on / 2 off"
+          "phase": "Standard cycle (Weeks 1-6)",
+          "dose": "200 mcg/day SC — 5 on / 2 off"
         },
         {
           "number": 2,
-          "phase": "Standard (Weeks 2-3)",
-          "dose": "5 mg/day SC — 5 on / 2 off"
-        },
-        {
-          "number": 3,
-          "phase": "Peak (Weeks 4-6)",
-          "dose": "7.5-10 mg/day SC — 5 on / 2 off"
-        },
-        {
-          "number": 4,
           "phase": "Off cycle (Weeks 7-8)",
           "dose": "Washout — 2 weeks rest"
         }
       ],
-      "reconstitution": "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water (final concentration 5 mg/mL). Store at 2-8\u00b0C after reconstitution.",
+      "reconstitution": "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water (final concentration 5 mg/mL = 5000 mcg/mL). At 5 mg/mL, a 200 mcg dose = 0.04 mL (about 4 units on a 100-unit insulin syringe). Store at 2-8\u00b0C after reconstitution.",
       "reconstitution_steps": [
         "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",

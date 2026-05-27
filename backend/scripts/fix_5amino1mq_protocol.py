@@ -1,6 +1,5 @@
 """
-Migration: fix 5-Amino-1MQ protocol to use only subcutaneous doses
-(remove oral references, vial 10mg, 2mL bac water = 5 mg/mL).
+Migration: fix 5-Amino-1MQ to correct subcutaneous dose 200 mcg/day (5 on / 2 off).
 
 Run on production:
   cd /var/www/zurix/backend && python3 scripts/fix_5amino1mq_protocol.py
@@ -25,35 +24,20 @@ NEW_STANDARD = {
 }
 NEW_DOSAGES = [
     {
-        "indication": "Tolerance assessment (week 1)",
+        "indication": "Standard research dose",
         "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-        "dose": "2.5 mg/day",
-    },
-    {
-        "indication": "Standard fat loss / metabolic boost",
-        "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-        "dose": "5 mg/day",
-    },
-    {
-        "indication": "Plateau breaking / accelerated cut",
-        "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-        "dose": "7.5 mg/day",
-    },
-    {
-        "indication": "Peak research dose",
-        "schedule": "1x daily, morning fasted (5 days on / 2 off)",
-        "dose": "10 mg/day",
-    },
+        "dose": "200 mcg/day",
+    }
 ]
 NEW_PHASES = [
-    {"number": 1, "phase": "Tolerance (Week 1)", "dose": "2.5 mg/day SC — 5 on / 2 off"},
-    {"number": 2, "phase": "Standard (Weeks 2-3)", "dose": "5 mg/day SC — 5 on / 2 off"},
-    {"number": 3, "phase": "Peak (Weeks 4-6)", "dose": "7.5-10 mg/day SC — 5 on / 2 off"},
-    {"number": 4, "phase": "Off cycle (Weeks 7-8)", "dose": "Washout — 2 weeks rest"},
+    {"number": 1, "phase": "Standard cycle (Weeks 1-6)", "dose": "200 mcg/day SC — 5 on / 2 off"},
+    {"number": 2, "phase": "Off cycle (Weeks 7-8)", "dose": "Washout — 2 weeks rest"},
 ]
 NEW_RECONSTITUTION = (
     "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water "
-    "(final concentration 5 mg/mL). Store at 2-8°C after reconstitution."
+    "(final concentration 5 mg/mL = 5000 mcg/mL). At 5 mg/mL, a 200 mcg dose "
+    "= 0.04 mL (about 4 units on a 100-unit insulin syringe). "
+    "Store at 2-8°C after reconstitution."
 )
 
 
@@ -69,7 +53,7 @@ async def main():
 
     doc = await db.peptide_library.find_one({"slug": "5-amino-1mq"}, {"_id": 0, "slug": 1})
     if not doc:
-        print("ERROR: 5-Amino-1MQ peptide not found in peptide_library collection.")
+        print("ERROR: 5-Amino-1MQ peptide not found.")
         sys.exit(1)
 
     result = await db.peptide_library.update_one(
@@ -99,7 +83,7 @@ async def main():
         print(f"  {p['number']}. {p['phase']} → {p['dose']}")
 
     client.close()
-    print("\nDone. 5-Amino-1MQ protocol updated to subcutaneous-only.")
+    print("\nDone. 5-Amino-1MQ corrected to 200 mcg/day SC.")
 
 
 if __name__ == "__main__":
