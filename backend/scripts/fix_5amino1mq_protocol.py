@@ -17,7 +17,7 @@ load_dotenv(BACKEND_DIR / ".env")
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-NEW_TITLE = "Subcutaneous Protocol (vial 10 mg, 2 mL bac water = 5 mg/mL)"
+NEW_TITLE = "Subcutaneous Protocol (vial 10 mg, 3 mL bac water = 3.33 mg/mL)"
 NEW_STANDARD = {
     "route": "Subcutaneous",
     "frequency": "Once daily, morning on empty stomach",
@@ -34,11 +34,18 @@ NEW_PHASES = [
     {"number": 2, "phase": "Off cycle (Weeks 7-8)", "dose": "Washout — 2 weeks rest"},
 ]
 NEW_RECONSTITUTION = (
-    "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water "
-    "(final concentration 5 mg/mL = 5000 mcg/mL). At 5 mg/mL, a 200 mcg dose "
-    "= 0.04 mL (about 4 units on a 100-unit insulin syringe). "
+    "Reconstitute the 10 mg vial with 3 mL of bacteriostatic water "
+    "(final concentration 3.33 mg/mL ≈ 3333 mcg/mL). At this concentration, "
+    "a 200 mcg dose = 0.06 mL (about 6 units on a 100-unit insulin syringe). "
     "Store at 2-8°C after reconstitution."
 )
+
+NEW_RECONSTITUTION_STEPS = [
+    "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
+    "Inject slowly down the side of the vial; avoid foam",
+    "Gently swirl until dissolved (do not shake)",
+    "Label and refrigerate at 2-8°C, protect from light",
+]
 
 
 async def main():
@@ -65,6 +72,7 @@ async def main():
                 "protocols.dosages": NEW_DOSAGES,
                 "protocols.phases": NEW_PHASES,
                 "protocols.reconstitution": NEW_RECONSTITUTION,
+                "protocols.reconstitution_steps": NEW_RECONSTITUTION_STEPS,
             }
         },
     )

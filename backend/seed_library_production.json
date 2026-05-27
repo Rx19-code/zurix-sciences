@@ -18,7 +18,7 @@
       "considerations": "Early-stage research compound. Generally well tolerated, but long-term data is limited."
     },
     "protocols": {
-      "title": "Subcutaneous Protocol (vial 10 mg, 2 mL bac water = 5 mg/mL)",
+      "title": "Subcutaneous Protocol (vial 10 mg, 3 mL bac water = 3.33 mg/mL)",
       "standard": {
         "route": "Subcutaneous",
         "frequency": "Once daily, morning on empty stomach"
@@ -42,9 +42,9 @@
           "dose": "Washout — 2 weeks rest"
         }
       ],
-      "reconstitution": "Reconstitute the 10 mg vial with 2 mL of bacteriostatic water (final concentration 5 mg/mL = 5000 mcg/mL). At 5 mg/mL, a 200 mcg dose = 0.04 mL (about 4 units on a 100-unit insulin syringe). Store at 2-8\u00b0C after reconstitution.",
+      "reconstitution": "Reconstitute the 10 mg vial with 3 mL of bacteriostatic water (final concentration 3.33 mg/mL ≈ 3333 mcg/mL). At this concentration, a 200 mcg dose = 0.06 mL (about 6 units on a 100-unit insulin syringe). Store at 2-8\u00b0C after reconstitution.",
       "reconstitution_steps": [
-        "Aspirate 2.0 mL of bacteriostatic water with a sterile syringe",
+        "Aspirate 3.0 mL of bacteriostatic water with a sterile syringe",
         "Inject slowly down the side of the vial; avoid foam",
         "Gently swirl until dissolved (do not shake)",
         "Label and refrigerate at 2-8\u00b0C, protect from light"
