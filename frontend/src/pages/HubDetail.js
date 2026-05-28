@@ -9,10 +9,15 @@ import { calculateUI } from '../utils/peptideUI';
 var API = process.env.REACT_APP_BACKEND_URL;
 
 // Bayesian average for trending — prevents 1 vote (5★) from beating 50 votes (4.8★)
+// Also boosts protocols that combine multiple peptides (real "stacks")
 function trendingScore(p, globalAvg, minVotes) {
   var v = p.rating_count || 0;
   var avg = p.rating_avg || 0;
-  return (v * avg + minVotes * globalAvg) / (v + minVotes || 1);
+  var bayes = (v * avg + minVotes * globalAvg) / (v + minVotes || 1);
+  // Stack boost: solo=0, dual=+0.35, triple+=+0.7 (caps at +0.9)
+  var nPep = Array.isArray(p.compounds) ? p.compounds.length : 1;
+  var stackBoost = Math.min(0.9, Math.max(0, (nPep - 1) * 0.35));
+  return bayes + stackBoost;
 }
 
 function sortProtocols(list, mode) {
