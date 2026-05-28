@@ -380,6 +380,136 @@ async def export_leads_csv(
     )
 
 
+# ════════════════════════ USERS MANAGEMENT ════════════════════════
+@router.get("/admin/users")
+async def get_admin_users(
+    x_admin_password: str = Header(None),
+    search: Optional[str] = None,
+    provider: Optional[str] = None,
+    lifetime: Optional[str] = None,
+    limit: int = 100,
+    skip: int = 0,
+):
+    """List all registered users with filters and pagination."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    query: dict = {}
+    if search:
+        query["$or"] = [
+            {"email": {"$regex": search, "$options": "i"}},
+            {"name": {"$regex": search, "$options": "i"}},
+        ]
+    if provider in ("email", "google"):
+        query["auth_provider"] = provider
+    if lifetime == "yes":
+        query["has_lifetime_access"] = True
+    elif lifetime == "no":
+        query["has_lifetime_access"] = {"$ne": True}
+
+    projection = {
+        "_id": 0,
+        "id": 1,
+        "email": 1,
+        "name": 1,
+        "auth_provider": 1,
+        "has_lifetime_access": 1,
+        "welcome_email_sent_at": 1,
+        "created_at": 1,
+    }
+
+    total = await db.users.count_documents(query)
+    users = (
+        await db.users.find(query, projection)
+        .sort("created_at", -1)
+        .skip(skip)
+        .limit(limit)
+        .to_list(limit)
+    )
+
+    # Aggregate stats
+    total_all = await db.users.count_documents({})
+    total_lifetime = await db.users.count_documents({"has_lifetime_access": True})
+    total_google = await db.users.count_documents({"auth_provider": "google"})
+    total_email = await db.users.count_documents({"auth_provider": "email"})
+
+    return {
+        "users": users,
+        "total": total,
+        "showing": len(users),
+        "skip": skip,
+        "has_more": skip + len(users) < total,
+        "stats": {
+            "total_all": total_all,
+            "total_lifetime": total_lifetime,
+            "total_google": total_google,
+            "total_email": total_email,
+        },
+    }
+
+
+@router.get("/admin/users/export")
+async def export_users_csv(x_admin_password: str = Header(None)):
+    """Export all registered users as CSV (no password hashes)."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    projection = {
+        "_id": 0,
+        "id": 1,
+        "email": 1,
+        "name": 1,
+        "auth_provider": 1,
+        "has_lifetime_access": 1,
+        "welcome_email_sent_at": 1,
+        "created_at": 1,
+    }
+    users = await db.users.find({}, projection).sort("created_at", -1).to_list(None)
+
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Email",
+        "Name",
+        "Auth Provider",
+        "Lifetime Access",
+        "Welcome Email Sent",
+        "Created At",
+    ])
+    for u in users:
+        writer.writerow([
+            u.get("email", ""),
+            u.get("name", ""),
+            u.get("auth_provider", ""),
+            "Yes" if u.get("has_lifetime_access") else "No",
+            (u.get("welcome_email_sent_at") or "")[:19],
+            (u.get("created_at") or "")[:19],
+        ])
+
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=zurix_users.csv"},
+    )
+
+
+@router.delete("/admin/users/{user_id}")
+async def delete_user(user_id: str, x_admin_password: str = Header(None)):
+    """Permanently delete a user account."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    result = await db.users.delete_one({"id": user_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"success": True, "deleted_id": user_id}
+
+
 @router.get("/admin/codes/export-all")
 async def export_all_codes_csv(x_admin_password: str = Header(None)):
     """Export ALL verification codes (every batch) as a single CSV spreadsheet."""
