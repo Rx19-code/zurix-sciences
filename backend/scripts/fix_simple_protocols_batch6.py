@@ -23,47 +23,47 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 
 # Composition (80 mg total per vial):
-#   KPV          30 mg  (37.5%)  — anti-inflammatory, antimicrobial
-#   GHK-Cu       30 mg  (37.5%)  — collagen synthesis, skin regen
+#   GHK-Cu       50 mg  (62.5%)  — collagen synthesis, skin regen
+#   KPV          10 mg  (12.5%)  — anti-inflammatory, antimicrobial
 #   BPC-157      10 mg  (12.5%)  — angiogenesis, gut/joint healing
 #   TB-500       10 mg  (12.5%)  — tissue repair, actin modulation
 #
 # Reconstituted with 3 mL bac water → 26.67 mg/mL blend
 # Per injection (0.10 mL = 10 units):
-#   KPV     ≈ 1.0 mg (1000 mcg)
-#   GHK-Cu  ≈ 1.0 mg (1000 mcg)
+#   GHK-Cu  ≈ 1.67 mg
+#   KPV     ≈ 333 mcg
 #   BPC-157 ≈ 333 mcg
 #   TB-500  ≈ 333 mcg
 
 UPDATES = {
     "klow-blend": {
         "description": (
-            "Advanced 4-peptide blend combining KPV, GHK-Cu, BPC-157 and TB-500 in a single "
-            "vial. Designed for anti-inflammatory support, skin regeneration and accelerated "
+            "Advanced 4-peptide blend combining GHK-Cu, KPV, BPC-157 and TB-500 in a single "
+            "vial. Designed for skin regeneration, anti-inflammatory support and accelerated "
             "tissue healing research."
         ),
         "composition": [
-            {"peptide": "KPV", "dose": "30 mg", "role": "Potent anti-inflammatory, antimicrobial, autoimmune modulation"},
-            {"peptide": "GHK-Cu", "dose": "30 mg", "role": "Collagen & elastin synthesis, copper-mediated skin regeneration"},
+            {"peptide": "GHK-Cu", "dose": "50 mg", "role": "Collagen & elastin synthesis, copper-mediated skin regeneration"},
+            {"peptide": "KPV", "dose": "10 mg", "role": "Anti-inflammatory, antimicrobial, autoimmune modulation"},
             {"peptide": "BPC-157", "dose": "10 mg", "role": "Angiogenesis, gut/joint healing, anti-inflammatory"},
             {"peptide": "TB-500", "dose": "10 mg", "role": "Tissue repair, actin modulation, accelerated recovery"},
         ],
         "overview": {
-            "function": "Anti-inflammatory, skin regeneration, deep tissue healing (4-peptide blend)",
+            "function": "Skin regeneration, anti-inflammatory, deep tissue healing (4-peptide blend)",
             "mechanism_of_action": (
                 "Klow Blend stacks four complementary peptides into a single injection. "
-                "KPV (Lys-Pro-Val), the C-terminal tripeptide of α-MSH, suppresses NF-κB and "
-                "pro-inflammatory cytokines with antimicrobial properties. GHK-Cu, the "
-                "copper-binding tripeptide, drives collagen/elastin synthesis and antioxidant "
-                "defense. BPC-157 promotes angiogenesis, gut barrier repair and joint healing. "
-                "TB-500 (Thymosin Beta-4) accelerates cell migration and actin-dependent "
-                "tissue repair. Combined, the four create synergy for inflammatory conditions, "
-                "skin disorders and recovery from injury."
+                "GHK-Cu (50mg, the dominant component) is the copper-binding tripeptide that "
+                "drives collagen/elastin synthesis and antioxidant defense. KPV (Lys-Pro-Val), "
+                "the C-terminal tripeptide of α-MSH, suppresses NF-κB and pro-inflammatory "
+                "cytokines with antimicrobial properties. BPC-157 promotes angiogenesis, "
+                "gut barrier repair and joint healing. TB-500 (Thymosin Beta-4) accelerates "
+                "cell migration and actin-dependent tissue repair. Together, the four create "
+                "synergy for skin disorders, inflammatory conditions and recovery from injury."
             ),
             "considerations": (
                 "Single-vial 4-peptide blend — replaces 4 separate injections. Light blue "
                 "color after reconstitution is normal (copper from GHK-Cu). "
-                "Composition: KPV 30mg + GHK-Cu 30mg + BPC-157 10mg + TB-500 10mg = 80mg total."
+                "Composition: GHK-Cu 50mg + KPV 10mg + BPC-157 10mg + TB-500 10mg = 80mg total."
             ),
         },
         "benefits": [
@@ -121,17 +121,17 @@ UPDATES = {
                 {
                     "indication": "Maintenance / mild support",
                     "schedule": "1x per week, SC",
-                    "dose": "5 units (0.05 mL) — ≈ 500 mcg KPV + 500 mcg GHK-Cu + 167 mcg BPC-157 + 167 mcg TB-500",
+                    "dose": "5 units (0.05 mL) — ≈ 833 mcg GHK-Cu + 167 mcg KPV + 167 mcg BPC-157 + 167 mcg TB-500",
                 },
                 {
-                    "indication": "Standard anti-inflammatory / skin",
+                    "indication": "Standard skin / anti-inflammatory",
                     "schedule": "2-3x per week, SC",
-                    "dose": "10 units (0.10 mL) — ≈ 1 mg KPV + 1 mg GHK-Cu + 333 mcg BPC-157 + 333 mcg TB-500",
+                    "dose": "10 units (0.10 mL) — ≈ 1.67 mg GHK-Cu + 333 mcg KPV + 333 mcg BPC-157 + 333 mcg TB-500",
                 },
                 {
                     "indication": "Acute / aggressive protocol",
                     "schedule": "3x per week, SC",
-                    "dose": "15 units (0.15 mL) — ≈ 1.5 mg KPV + 1.5 mg GHK-Cu + 500 mcg BPC-157 + 500 mcg TB-500",
+                    "dose": "15 units (0.15 mL) — ≈ 2.5 mg GHK-Cu + 500 mcg KPV + 500 mcg BPC-157 + 500 mcg TB-500",
                 },
             ],
             "phases": [
@@ -144,7 +144,7 @@ UPDATES = {
                 "Reconstitute the 80 mg blend vial with 3 mL of bacteriostatic water "
                 "(final concentration 26.67 mg/mL total blend). "
                 "Standard dose 10 units (0.10 mL) delivers: "
-                "1 mg KPV + 1 mg GHK-Cu + 333 mcg BPC-157 + 333 mcg TB-500. "
+                "1.67 mg GHK-Cu + 333 mcg KPV + 333 mcg BPC-157 + 333 mcg TB-500. "
                 "Solution will appear light blue (copper from GHK-Cu) — this is normal. "
                 "Store at 2-8°C and protect from light. Stable for 30 days after reconstitution."
             ),
