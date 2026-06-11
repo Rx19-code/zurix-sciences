@@ -6,10 +6,11 @@ import { useCart } from '../context/CartContext';
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const isComingSoon = product.coming_soon === true;
+  const isOutOfStock = product.out_of_stock === true;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    if (isComingSoon) return;
+    if (isComingSoon || isOutOfStock) return;
     addToCart(product);
   };
 
@@ -23,6 +24,12 @@ const ProductCard = ({ product }) => {
       {isComingSoon && (
         <div className="absolute top-3 right-3 z-10 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md" data-testid="coming-soon-badge">
           Coming Soon
+        </div>
+      )}
+      {/* Out of Stock Ribbon */}
+      {!isComingSoon && isOutOfStock && (
+        <div className="absolute top-3 right-3 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md" data-testid="out-of-stock-badge">
+          Out of Stock
         </div>
       )}
 
@@ -86,6 +93,14 @@ const ProductCard = ({ product }) => {
               className="flex items-center space-x-2 bg-gray-100 text-gray-500 font-medium px-4 py-2 rounded-lg cursor-not-allowed border border-gray-200"
             >
               <span>Coming Soon</span>
+            </button>
+          ) : isOutOfStock ? (
+            <button
+              disabled
+              data-testid={`out-of-stock-${product.id}`}
+              className="flex items-center space-x-2 bg-red-50 text-red-600 font-medium px-4 py-2 rounded-lg cursor-not-allowed border border-red-200"
+            >
+              <span>Out of Stock</span>
             </button>
           ) : (
             <button
