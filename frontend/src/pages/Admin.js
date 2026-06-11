@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import PaymentsTab from './admin/PaymentsTab';
 import MaintenanceTab from './admin/MaintenanceTab';
 import UsersTab from './admin/UsersTab';
+import VerificationsTab from './admin/VerificationsTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -466,6 +467,7 @@ export default function Admin() {
             { id: 'leads', label: 'Leads', icon: '📊' },
             { id: 'payments', label: 'Payments', icon: '💰' },
             { id: 'users', label: 'Users', icon: '👥' },
+            { id: 'verifications', label: 'Verifications', icon: '🔐' },
             { id: 'maintenance', label: 'Maintenance', icon: '🚧' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
             { id: 'email', label: 'Email', icon: '✉️' },
@@ -921,6 +923,11 @@ export default function Admin() {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <UsersTab adminPassword={password} />
+        )}
+
+        {/* Verifications Tab */}
+        {activeTab === 'verifications' && (
+          <VerificationsTab adminPassword={password} />
         )}
 
         {/* Maintenance Tab */}

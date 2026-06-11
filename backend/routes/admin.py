@@ -205,6 +205,154 @@ async def get_admin_verification_logs(x_admin_password: str = Header(None), limi
     return {"logs": logs, "total": len(logs)}
 
 
+# ════════════════════════ VERIFICATIONS DASHBOARD ════════════════════════
+@router.get("/admin/verifications")
+async def get_verifications(
+    x_admin_password: str = Header(None),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    batch_number: Optional[str] = None,
+    code: Optional[str] = None,
+    limit: int = 100,
+    skip: int = 0,
+):
+    """List verifications with filters, pagination and aggregated stats."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    query: dict = {}
+    if start_date:
+        query.setdefault("timestamp", {})["$gte"] = start_date
+    if end_date:
+        query.setdefault("timestamp", {})["$lte"] = end_date + "T23:59:59"
+    if batch_number:
+        query["batch_number"] = batch_number.upper()
+    if code:
+        query["$or"] = [
+            {"code": {"$regex": code, "$options": "i"}},
+            {"verification_code": {"$regex": code, "$options": "i"}},
+        ]
+
+    total = await db.verification_logs.count_documents(query)
+    logs = (
+        await db.verification_logs.find(query, {"_id": 0})
+        .sort("timestamp", -1)
+        .skip(skip)
+        .limit(limit)
+        .to_list(limit)
+    )
+
+    # Aggregated stats (overall, not filtered)
+    from datetime import timedelta
+    now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    last_7d = (now - timedelta(days=7)).isoformat()
+    last_30d = (now - timedelta(days=30)).isoformat()
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+    year_start = now.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+
+    total_all = await db.verification_logs.count_documents({})
+    total_today = await db.verification_logs.count_documents({"timestamp": {"$gte": today_start.isoformat()}})
+    total_7d = await db.verification_logs.count_documents({"timestamp": {"$gte": last_7d}})
+    total_30d = await db.verification_logs.count_documents({"timestamp": {"$gte": last_30d}})
+    total_month = await db.verification_logs.count_documents({"timestamp": {"$gte": month_start}})
+    total_year = await db.verification_logs.count_documents({"timestamp": {"$gte": year_start}})
+
+    # Top 5 batches
+    top_batches = await db.verification_logs.aggregate([
+        {"$match": {"batch_number": {"$exists": True, "$ne": None}}},
+        {"$group": {"_id": "$batch_number", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 5},
+    ]).to_list(5)
+
+    return {
+        "logs": logs,
+        "total": total,
+        "showing": len(logs),
+        "skip": skip,
+        "has_more": skip + len(logs) < total,
+        "stats": {
+            "total_all": total_all,
+            "total_today": total_today,
+            "total_7d": total_7d,
+            "total_30d": total_30d,
+            "total_month": total_month,
+            "total_year": total_year,
+        },
+        "top_batches": [{"batch": b["_id"], "count": b["count"]} for b in top_batches],
+    }
+
+
+@router.get("/admin/verifications/export")
+async def export_verifications_csv(
+    x_admin_password: str = Header(None),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    batch_number: Optional[str] = None,
+):
+    """Export verifications as CSV with optional date range and batch filter."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    query: dict = {}
+    if start_date:
+        query.setdefault("timestamp", {})["$gte"] = start_date
+    if end_date:
+        query.setdefault("timestamp", {})["$lte"] = end_date + "T23:59:59"
+    if batch_number:
+        query["batch_number"] = batch_number.upper()
+
+    logs = await db.verification_logs.find(query, {"_id": 0}).sort("timestamp", -1).to_list(None)
+
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Timestamp",
+        "Code",
+        "Batch Number",
+        "Product Name",
+        "Verification #",
+        "Client IP",
+        "Country",
+        "City",
+        "Country Code",
+        "User Agent",
+        "Device ID",
+    ])
+    for log in logs:
+        ts = (log.get("timestamp") or "")[:19].replace("T", " ")
+        writer.writerow([
+            ts,
+            log.get("code", log.get("verification_code", "")),
+            log.get("batch_number", ""),
+            log.get("product_name", ""),
+            log.get("verification_number", ""),
+            log.get("client_ip", log.get("ip", "")),
+            log.get("country", ""),
+            log.get("city", ""),
+            log.get("country_code", ""),
+            log.get("user_agent", ""),
+            log.get("device_id", ""),
+        ])
+
+    output.seek(0)
+    filename_suffix = ""
+    if start_date and end_date:
+        filename_suffix = f"_{start_date}_to_{end_date}"
+    elif start_date:
+        filename_suffix = f"_from_{start_date}"
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=zurix_verifications{filename_suffix}.csv"},
+    )
+
+
 @router.delete("/admin/batch/{batch_number}")
 async def delete_batch(batch_number: str, x_admin_password: str = Header(None)):
     if x_admin_password != ADMIN_PASSWORD:
