@@ -21,6 +21,7 @@ from routes.admin import router as admin_router
 from routes.verification import router as verification_router
 from routes.library import router as library_router
 from routes.maintenance import router as maintenance_router
+from routes.wholesale import router as wholesale_router
 
 # Create app
 app = FastAPI()
@@ -68,6 +69,7 @@ app.include_router(admin_router)
 app.include_router(verification_router)
 app.include_router(library_router)
 app.include_router(maintenance_router)
+app.include_router(wholesale_router)
 
 # Middleware stack (order matters - last added = first executed)
 app.add_middleware(

@@ -1,0 +1,289 @@
+import React, { useState, useEffect } from 'react';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
+export default function WholesaleTab({ adminPassword }) {
+  const [customerName, setCustomerName] = useState('');
+  const [company, setCompany] = useState('');
+  const [email, setEmail] = useState('');
+  const [tier1, setTier1] = useState(30);
+  const [tier2, setTier2] = useState(35);
+  const [tier3, setTier3] = useState(40);
+  const [validDays, setValidDays] = useState(30);
+  const [includeComingSoon, setIncludeComingSoon] = useState(false);
+  const [includeOutOfStock, setIncludeOutOfStock] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState('');
+  const [history, setHistory] = useState([]);
+
+  const fetchHistory = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/wholesale/history?limit=20`, {
+        headers: { 'X-Admin-Password': adminPassword },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setHistory(data.history || []);
+      }
+    } catch (e) { /* ignore */ }
+  };
+
+  useEffect(() => { fetchHistory(); /* eslint-disable-next-line */ }, []);
+
+  const handleGenerate = async (e) => {
+    e.preventDefault();
+    setGenerating(true);
+    setError('');
+    try {
+      const payload = {
+        customer_name: customerName || null,
+        company: company || null,
+        email: email || null,
+        tier_1_pct: parseFloat(tier1) || 0,
+        tier_2_pct: parseFloat(tier2) || 0,
+        tier_3_pct: parseFloat(tier3) || 0,
+        valid_days: parseInt(validDays, 10) || 30,
+        include_coming_soon: includeComingSoon,
+        include_out_of_stock: includeOutOfStock,
+      };
+      const res = await fetch(`${API_URL}/api/admin/wholesale/generate-pdf`, {
+        method: 'POST',
+        headers: {
+          'X-Admin-Password': adminPassword,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`Failed to generate (HTTP ${res.status})`);
+      const blob = await res.blob();
+      // Try to read filename from header
+      const cd = res.headers.get('Content-Disposition') || '';
+      const match = cd.match(/filename="?([^"]+)"?/);
+      const filename = match ? match[1] : `Zurix_Wholesale_${Date.now()}.pdf`;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      // refresh history
+      fetchHistory();
+    } catch (e) {
+      setError(e.message || 'Generation failed');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const fmtTs = (iso) => {
+    if (!iso) return '—';
+    try {
+      return new Date(iso).toLocaleString('en-US', {
+        year: 'numeric', month: 'short', day: '2-digit',
+        hour: '2-digit', minute: '2-digit',
+      });
+    } catch { return iso.slice(0, 16); }
+  };
+
+  return (
+    <div className="space-y-6" data-testid="wholesale-tab">
+      <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <h2 className="text-xl font-bold text-white mb-1">Generate Wholesale Price List</h2>
+        <p className="text-sm text-gray-400 mb-6">
+          Branded PDF with retail price + 3 discount tiers by order value. All percentages are manual.
+        </p>
+
+        <form onSubmit={handleGenerate} className="space-y-5">
+          {/* Customer info */}
+          <fieldset className="border border-gray-700 rounded-xl p-4">
+            <legend className="text-xs text-amber-400 uppercase tracking-wider font-semibold px-2">Customer (optional)</legend>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs text-gray-400 uppercase mb-1">Name</label>
+                <input
+                  type="text"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder="Maria Silva"
+                  data-testid="wholesale-customer-name"
+                  className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 uppercase mb-1">Company</label>
+                <input
+                  type="text"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Med Distribuidora"
+                  data-testid="wholesale-company"
+                  className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 uppercase mb-1">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="maria@example.com"
+                  data-testid="wholesale-email"
+                  className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Tiers */}
+          <fieldset className="border border-gray-700 rounded-xl p-4">
+            <legend className="text-xs text-amber-400 uppercase tracking-wider font-semibold px-2">Discount tiers by order value (manual)</legend>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-700">
+                <p className="text-xs text-gray-400 mb-1">Tier 1 — Orders <span className="font-bold text-white">≤ $1,000</span></p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="0" max="99" step="0.1"
+                    value={tier1}
+                    onChange={(e) => setTier1(e.target.value)}
+                    data-testid="wholesale-tier1"
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-center font-bold text-lg focus:outline-none focus:border-blue-500"
+                  />
+                  <span className="text-2xl text-amber-400 font-bold">%</span>
+                </div>
+              </div>
+              <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-700">
+                <p className="text-xs text-gray-400 mb-1">Tier 2 — Orders <span className="font-bold text-white">$1,001 – $1,999</span></p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="0" max="99" step="0.1"
+                    value={tier2}
+                    onChange={(e) => setTier2(e.target.value)}
+                    data-testid="wholesale-tier2"
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-center font-bold text-lg focus:outline-none focus:border-blue-500"
+                  />
+                  <span className="text-2xl text-amber-400 font-bold">%</span>
+                </div>
+              </div>
+              <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-700">
+                <p className="text-xs text-gray-400 mb-1">Tier 3 — Orders <span className="font-bold text-white">≥ $2,000</span></p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="0" max="99" step="0.1"
+                    value={tier3}
+                    onChange={(e) => setTier3(e.target.value)}
+                    data-testid="wholesale-tier3"
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-center font-bold text-lg focus:outline-none focus:border-blue-500"
+                  />
+                  <span className="text-2xl text-amber-400 font-bold">%</span>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Options */}
+          <fieldset className="border border-gray-700 rounded-xl p-4">
+            <legend className="text-xs text-amber-400 uppercase tracking-wider font-semibold px-2">Options</legend>
+            <div className="flex flex-wrap gap-6 items-center">
+              <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeComingSoon}
+                  onChange={(e) => setIncludeComingSoon(e.target.checked)}
+                  data-testid="wholesale-include-coming-soon"
+                  className="w-4 h-4 accent-blue-600"
+                />
+                <span className="text-sm">Include Coming Soon products</span>
+              </label>
+              <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeOutOfStock}
+                  onChange={(e) => setIncludeOutOfStock(e.target.checked)}
+                  data-testid="wholesale-include-oos"
+                  className="w-4 h-4 accent-blue-600"
+                />
+                <span className="text-sm">Include Out of Stock</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-gray-300">Valid for</label>
+                <input
+                  type="number"
+                  min="1" max="365"
+                  value={validDays}
+                  onChange={(e) => setValidDays(e.target.value)}
+                  data-testid="wholesale-valid-days"
+                  className="w-20 px-2 py-1 bg-gray-900 border border-gray-700 rounded text-white text-center focus:outline-none focus:border-blue-500"
+                />
+                <span className="text-sm text-gray-300">days</span>
+              </div>
+            </div>
+          </fieldset>
+
+          {error && (
+            <div className="bg-red-900/40 border border-red-700 text-red-200 px-4 py-3 rounded-lg" data-testid="wholesale-error">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={generating}
+            data-testid="wholesale-generate-btn"
+            className="w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-lg rounded-xl transition shadow-lg"
+          >
+            {generating ? 'Generating PDF...' : '📄 Generate Wholesale PDF'}
+          </button>
+        </form>
+      </div>
+
+      {/* History */}
+      <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-700">
+          <h3 className="text-lg font-bold text-white">
+            Generation History
+            <span className="text-sm text-gray-400 font-normal ml-2">({history.length})</span>
+          </h3>
+        </div>
+        {history.length === 0 ? (
+          <div className="p-6 text-center text-gray-400" data-testid="wholesale-empty-history">
+            No PDFs generated yet. Fill the form above and click Generate.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm" data-testid="wholesale-history-table">
+              <thead className="bg-gray-900/60 text-gray-400 uppercase text-xs">
+                <tr>
+                  <th className="px-4 py-3 text-left">Reference</th>
+                  <th className="px-4 py-3 text-left">Customer</th>
+                  <th className="px-4 py-3 text-left">Email</th>
+                  <th className="px-4 py-3 text-center">Tiers (1/2/3)</th>
+                  <th className="px-4 py-3 text-center">Products</th>
+                  <th className="px-4 py-3 text-left">Generated</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-700">
+                {history.map((h) => (
+                  <tr key={h.id} className="text-gray-200 hover:bg-gray-700/40 transition" data-testid={`wholesale-row-${h.reference}`}>
+                    <td className="px-4 py-3 font-mono text-xs">{h.reference}</td>
+                    <td className="px-4 py-3">{h.customer_name || h.company || '—'}</td>
+                    <td className="px-4 py-3 text-xs">{h.email || '—'}</td>
+                    <td className="px-4 py-3 text-center font-mono text-xs">
+                      {h.tier_1_pct}% / {h.tier_2_pct}% / {h.tier_3_pct}%
+                    </td>
+                    <td className="px-4 py-3 text-center">{h.product_count}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400">{fmtTs(h.generated_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
