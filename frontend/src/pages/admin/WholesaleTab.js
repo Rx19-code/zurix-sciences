@@ -61,6 +61,50 @@ function PriceListSection({ adminPassword }) {
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
 
+  // Product selection
+  const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'custom'
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [productSearch, setProductSearch] = useState('');
+  const [selectedIds, setSelectedIds] = useState(new Set());
+
+  useEffect(() => {
+    if (selectionMode === 'custom' && products.length === 0 && !loadingProducts) {
+      setLoadingProducts(true);
+      fetch(`${API_URL}/api/products`)
+        .then((r) => r.ok ? r.json() : [])
+        .then((data) => setProducts(data || []))
+        .catch(() => {})
+        .finally(() => setLoadingProducts(false));
+    }
+    /* eslint-disable-next-line */
+  }, [selectionMode]);
+
+  const filteredProducts = useMemo(() => {
+    const q = productSearch.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter((p) =>
+      (p.name || '').toLowerCase().includes(q) ||
+      (p.category || '').toLowerCase().includes(q)
+    );
+  }, [products, productSearch]);
+
+  const toggleProduct = (id) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+  const selectAllFiltered = () => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      filteredProducts.forEach((p) => next.add(p.id));
+      return next;
+    });
+  };
+  const clearSelection = () => setSelectedIds(new Set());
+
   const fetchHistory = async () => {
     try {
       const res = await fetch(`${API_URL}/api/admin/wholesale/history?limit=20`, {
@@ -90,7 +134,13 @@ function PriceListSection({ adminPassword }) {
         valid_days: parseInt(validDays, 10) || 30,
         include_coming_soon: includeComingSoon,
         include_out_of_stock: includeOutOfStock,
+        product_ids: selectionMode === 'custom' ? Array.from(selectedIds) : null,
       };
+      if (selectionMode === 'custom' && selectedIds.size === 0) {
+        setError('Select at least one product or switch to "All products".');
+        setGenerating(false);
+        return;
+      }
       const res = await fetch(`${API_URL}/api/admin/wholesale/generate-pdf`, {
         method: 'POST',
         headers: {
@@ -179,6 +229,105 @@ function PriceListSection({ adminPassword }) {
               <TierInput label="Tier 2 — Orders $1,001 – $1,999" value={tier2} setter={setTier2} testid="wholesale-tier2" />
               <TierInput label="Tier 3 — Orders ≥ $2,000" value={tier3} setter={setTier3} testid="wholesale-tier3" />
             </div>
+          </fieldset>
+
+          <fieldset className="border border-gray-700 rounded-xl p-4">
+            <legend className="text-xs text-amber-400 uppercase tracking-wider font-semibold px-2">Products in list</legend>
+            <div className="flex flex-wrap gap-2 mb-3">
+              <button
+                type="button"
+                onClick={() => setSelectionMode('all')}
+                data-testid="pricelist-mode-all"
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                  selectionMode === 'all'
+                    ? 'bg-amber-500 text-gray-900'
+                    : 'bg-gray-900 text-gray-300 border border-gray-700 hover:border-amber-500/50'
+                }`}
+              >
+                All products
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectionMode('custom')}
+                data-testid="pricelist-mode-custom"
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                  selectionMode === 'custom'
+                    ? 'bg-amber-500 text-gray-900'
+                    : 'bg-gray-900 text-gray-300 border border-gray-700 hover:border-amber-500/50'
+                }`}
+              >
+                Choose specific products
+                {selectionMode === 'custom' && selectedIds.size > 0 && (
+                  <span className="ml-2 px-2 py-0.5 bg-gray-900/40 rounded text-xs">{selectedIds.size}</span>
+                )}
+              </button>
+            </div>
+
+            {selectionMode === 'custom' && (
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <input
+                    type="text" value={productSearch} onChange={(e) => setProductSearch(e.target.value)}
+                    placeholder="Search product..."
+                    data-testid="pricelist-product-search"
+                    className="flex-1 min-w-[200px] px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                  <button type="button" onClick={selectAllFiltered}
+                    data-testid="pricelist-select-all"
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition">
+                    Select all{productSearch ? ' (filtered)' : ''}
+                  </button>
+                  <button type="button" onClick={clearSelection}
+                    data-testid="pricelist-clear"
+                    className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white text-xs font-semibold rounded-lg transition">
+                    Clear ({selectedIds.size})
+                  </button>
+                </div>
+
+                {loadingProducts ? (
+                  <p className="text-gray-400 text-sm">Loading products...</p>
+                ) : (
+                  <div className="max-h-72 overflow-y-auto border border-gray-700 rounded-lg" data-testid="pricelist-product-list">
+                    {filteredProducts.length === 0 ? (
+                      <p className="px-4 py-6 text-center text-gray-500 text-sm">No products match search.</p>
+                    ) : (
+                      <ul className="divide-y divide-gray-700">
+                        {filteredProducts.map((p) => {
+                          const checked = selectedIds.has(p.id);
+                          return (
+                            <li key={p.id} className={`flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-700/30 ${checked ? 'bg-amber-500/10' : ''}`}
+                              onClick={() => toggleProduct(p.id)}>
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => toggleProduct(p.id)}
+                                onClick={(e) => e.stopPropagation()}
+                                data-testid={`pricelist-check-${p.id}`}
+                                className="w-4 h-4 accent-amber-500"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-gray-200 text-sm truncate">{p.name}</span>
+                                  {p.coming_soon && <span className="text-[10px] px-1.5 py-0.5 bg-blue-900/60 text-blue-300 rounded">SOON</span>}
+                                  {p.out_of_stock && <span className="text-[10px] px-1.5 py-0.5 bg-red-900/60 text-red-300 rounded">OOS</span>}
+                                </div>
+                                <div className="text-xs text-gray-500">{p.category || ''}</div>
+                              </div>
+                              <span className="text-xs font-mono text-gray-400">${parseFloat(p.price || 0).toFixed(2)}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
+                )}
+                <p className="text-xs text-gray-500">
+                  {selectedIds.size === 0
+                    ? 'No products selected. Click items above to include them in the PDF.'
+                    : `${selectedIds.size} product(s) will be included in the price list.`}
+                </p>
+              </div>
+            )}
           </fieldset>
 
           <fieldset className="border border-gray-700 rounded-xl p-4">
