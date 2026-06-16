@@ -217,9 +217,8 @@ def _build_pdf(products: list, req: WholesaleRequest, reference: str) -> bytes:
     # ─── Footer block ───
     story.append(Spacer(1, 20))
     story.append(Paragraph(
-        f"<b>Contact:</b> RxpeptidesHK@proton.me  •  <b>Web:</b> zurixsciences.com<br/>"
         f"Reference <b>{reference}</b> valid until {valid_until.strftime('%B %d, %Y')}.<br/>"
-        f"Prices in USDT. All products are for research use only.<br/>"
+        f"All products are for research use only.<br/>"
         f"Minimum order to qualify for tier discount applies on total purchase amount.",
         footer_style,
     ))
@@ -447,9 +446,8 @@ def _build_invoice_pdf(items: list, req: InvoiceRequest, invoice_number: str,
     # Footer
     story.append(Spacer(1, 30))
     story.append(Paragraph(
-        f"<b>Contact:</b> RxpeptidesHK@proton.me  •  <b>Web:</b> zurixsciences.com<br/>"
         f"Invoice <b>{invoice_number}</b> generated on {today.strftime('%B %d, %Y')}.<br/>"
-        f"Prices in USDT. All products are for research use only.",
+        f"All products are for research use only.",
         footer_style,
     ))
 
