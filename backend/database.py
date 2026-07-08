@@ -62,3 +62,13 @@ def get_cache(key):
 
 def set_cache(key, value, ttl=CACHE_TTL):
     _cache[key] = (value, time.time() + ttl)
+
+
+def clear_cache(prefix: str = ""):
+    """Clear all cache entries whose key starts with `prefix`. Empty prefix clears all."""
+    if not prefix:
+        _cache.clear()
+        return
+    for k in list(_cache.keys()):
+        if k.startswith(prefix):
+            del _cache[k]

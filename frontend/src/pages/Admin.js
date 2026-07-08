@@ -5,6 +5,7 @@ import MaintenanceTab from './admin/MaintenanceTab';
 import UsersTab from './admin/UsersTab';
 import VerificationsTab from './admin/VerificationsTab';
 import WholesaleTab from './admin/WholesaleTab';
+import ProductsTab from './admin/ProductsTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -462,6 +463,7 @@ export default function Admin() {
         <div className="flex gap-2 mb-6">
           {[
             { id: 'import', label: 'Import Codes', icon: '📥' },
+            { id: 'products', label: 'Products', icon: '🧪' },
             { id: 'labels', label: 'Labels', icon: '🏷️' },
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
@@ -935,6 +937,10 @@ export default function Admin() {
         {/* Wholesale Tab */}
         {activeTab === 'wholesale' && (
           <WholesaleTab adminPassword={password} />
+        )}
+
+        {activeTab === 'products' && (
+          <ProductsTab adminPassword={password} />
         )}
 
         {/* Maintenance Tab */}
