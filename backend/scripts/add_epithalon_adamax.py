@@ -23,25 +23,25 @@ from motor.motor_asyncio import AsyncIOMotorClient
 PRODUCTS = [
     {
         "id": str(uuid.uuid4()),
-        "name": "Epitalon 10mg",
+        "name": "Epithalon 10mg",
         "category": "Research Peptides",
-        "product_type": "Epitalon",
+        "product_type": "Epithalon",
         "purity": "≥99% HPLC",
         "dosage": "10mg",
         "description": (
-            "Epitalon (Epithalon) 10mg — tetrapeptide (Ala-Glu-Asp-Gly) researched for "
+            "Epithalon 10mg — tetrapeptide (Ala-Glu-Asp-Gly) researched for "
             "telomerase activation, circadian rhythm modulation, and longevity applications. "
             "For laboratory research use only."
         ),
         "price": 45.00,
-        "verification_code": "ZX-EPIT10",
+        "verification_code": "ZX-EPITH10",
         "storage_info": "Store lyophilized at -20°C. Stable 2-8°C for 30 days after reconstitution.",
-        "batch_number": "ZX-EPIT-B01",
+        "batch_number": "ZX-EPITH-B01",
         "manufacturing_date": "2026-01-15",
         "expiry_date": "2028-01-15",
-        "coa_url": "/coa/epitalon-10mg.pdf",
+        "coa_url": "/coa/epithalon-10mg.pdf",
         "featured": False,
-        "image_url": "/api/images/products/epitalon-10mg.png",
+        "image_url": "/api/images/products/epithalon-10mg.png",
         "coming_soon": False,
         "out_of_stock": False,
     },
