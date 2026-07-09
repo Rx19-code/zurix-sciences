@@ -33,7 +33,7 @@ PRODUCTS = [
             "telomerase activation, circadian rhythm modulation, and longevity applications. "
             "For laboratory research use only."
         ),
-        "price": 45.00,
+        "price": 90.00,
         "verification_code": "ZX-EPITH10",
         "storage_info": "Store lyophilized at -20°C. Stable 2-8°C for 30 days after reconstitution.",
         "batch_number": "ZX-EPITH-B01",
@@ -56,7 +56,7 @@ PRODUCTS = [
             "Adamax 10mg — research peptide for laboratory investigation. "
             "For laboratory research use only."
         ),
-        "price": 45.00,
+        "price": 90.00,
         "verification_code": "ZX-ADAM10",
         "storage_info": "Store lyophilized at -20°C. Stable 2-8°C for 30 days after reconstitution.",
         "batch_number": "ZX-ADAM-B01",
