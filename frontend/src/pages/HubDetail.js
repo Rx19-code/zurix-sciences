@@ -500,6 +500,20 @@ export default function HubDetail() {
 }
 
 function ProtocolModal({ protocol, hubSlug, onClose, index }) {
+  // Dilution preference — persisted in localStorage
+  const [dilution, setDilution] = useState(() => {
+    try {
+      const stored = localStorage.getItem('zurix_dilution_ml');
+      const n = parseInt(stored, 10);
+      return [1, 2, 3].includes(n) ? n : 3;
+    } catch { return 3; }
+  });
+
+  const updateDilution = (n) => {
+    setDilution(n);
+    try { localStorage.setItem('zurix_dilution_ml', String(n)); } catch (e) { /* ignore */ }
+  };
+
   // Close on Escape key
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose(); }
@@ -535,9 +549,37 @@ function ProtocolModal({ protocol, hubSlug, onClose, index }) {
           </ProtocolSection>
 
           <ProtocolSection icon={<Beaker className="w-4 h-4" />} title="Compounds">
+            {/* Dilution toggle */}
+            <div className="mb-3 bg-blue-50 border border-blue-200 rounded-lg p-3" data-testid="dilution-toggle">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="min-w-0">
+                  <div className="text-[11px] font-semibold text-blue-900 uppercase tracking-wider">Bacteriostatic water</div>
+                  <div className="text-xs text-blue-700 mt-0.5">
+                    Choose your dilution — UI values recalculate for {dilution}ml
+                  </div>
+                </div>
+                <div className="flex gap-1 bg-white rounded-lg p-1 border border-blue-200">
+                  {[1, 2, 3].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => updateDilution(n)}
+                      data-testid={`dilution-btn-${n}ml`}
+                      className={`px-3 py-1.5 rounded-md text-xs font-bold transition ${
+                        dilution === n
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'text-blue-700 hover:bg-blue-50'
+                      }`}
+                    >
+                      {n}ml
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
             <ul className="space-y-2">
               {(protocol.compounds || []).map(function(c, i) {
-                var uiInfo = calculateUI(c.name, c.dose);
+                var uiInfo = calculateUI(c.name, c.dose, dilution);
                 return (
                   <li key={i} className="text-sm bg-gray-50 px-3 py-2 rounded-lg">
                     <div className="flex items-start gap-2.5">
