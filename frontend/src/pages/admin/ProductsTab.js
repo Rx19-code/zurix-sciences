@@ -18,9 +18,12 @@ const EMPTY_FORM = {
   coa_url: '',
   featured: false,
   image_url: '',
+  images: [],
   coming_soon: false,
   out_of_stock: false,
 };
+
+const MAX_IMAGES = 6;
 
 export default function ProductsTab({ adminPassword }) {
   const [products, setProducts] = useState([]);
@@ -63,7 +66,11 @@ export default function ProductsTab({ adminPassword }) {
 
   const openEdit = (p) => {
     setEditing(p);
-    setForm({ ...EMPTY_FORM, ...p });
+    // Merge existing image_url into images array for editing
+    const imgs = (p.images && p.images.length > 0)
+      ? p.images
+      : (p.image_url ? [p.image_url] : []);
+    setForm({ ...EMPTY_FORM, ...p, images: imgs });
     setError('');
     setNotice('');
   };
@@ -87,7 +94,13 @@ export default function ProductsTab({ adminPassword }) {
         : `${API_URL}/api/admin/products/${editing.id}`;
       const method = isNew ? 'POST' : 'PUT';
 
-      const body = { ...form, price: parseFloat(form.price) || 0 };
+      const body = {
+        ...form,
+        price: parseFloat(form.price) || 0,
+        images: form.images || [],
+        // keep image_url in sync as backward-compat main image
+        image_url: (form.images && form.images.length > 0) ? form.images[0] : (form.image_url || null),
+      };
 
       const res = await fetch(url, {
         method,
@@ -193,9 +206,16 @@ export default function ProductsTab({ adminPassword }) {
                 <Field label="Batch number" value={form.batch_number} onChange={(v) => setField('batch_number', v)} testid="product-field-batch" />
                 <Field label="Manufacturing date" type="date" value={form.manufacturing_date} onChange={(v) => setField('manufacturing_date', v)} testid="product-field-mfg" />
                 <Field label="Expiry date" type="date" value={form.expiry_date} onChange={(v) => setField('expiry_date', v)} testid="product-field-exp" />
-                <Field label="Image URL" value={form.image_url} onChange={(v) => setField('image_url', v)} testid="product-field-image" placeholder="/api/images/products/name.png" />
                 <Field label="COA URL" value={form.coa_url} onChange={(v) => setField('coa_url', v)} testid="product-field-coa" placeholder="/coa/name.pdf" />
               </div>
+
+              {/* Image gallery */}
+              <ImageGallery
+                images={form.images}
+                onChange={(imgs) => setField('images', imgs)}
+                adminPassword={adminPassword}
+                onError={setError}
+              />
 
               <div>
                 <label className="block text-xs text-gray-400 uppercase mb-1">Description</label>
@@ -348,5 +368,156 @@ function Toggle({ label, checked, onChange, testid }) {
         className="w-4 h-4 accent-amber-500" />
       <span className="text-sm text-gray-300">{label}</span>
     </label>
+  );
+}
+
+function ImageGallery({ images, onChange, adminPassword, onError }) {
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = React.useRef(null);
+
+  const resolveSrc = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http') || url.startsWith('data:')) return url;
+    return `${API_URL}${url}`;
+  };
+
+  const uploadFiles = async (files) => {
+    const remainingSlots = MAX_IMAGES - images.length;
+    const list = Array.from(files).slice(0, remainingSlots);
+    if (list.length === 0) {
+      onError(`Maximum ${MAX_IMAGES} images per product.`);
+      return;
+    }
+
+    setUploading(true);
+    const uploaded = [];
+    for (const f of list) {
+      try {
+        const fd = new FormData();
+        fd.append('file', f);
+        const res = await fetch(`${API_URL}/api/admin/products/upload-image`, {
+          method: 'POST',
+          headers: { 'X-Admin-Password': adminPassword },
+          body: fd,
+        });
+        if (!res.ok) {
+          const t = await res.text();
+          throw new Error(`${f.name}: HTTP ${res.status} — ${t.slice(0, 120)}`);
+        }
+        const data = await res.json();
+        uploaded.push(data.url);
+      } catch (e) {
+        onError(e.message || 'Upload failed');
+      }
+    }
+    if (uploaded.length > 0) onChange([...images, ...uploaded]);
+    setUploading(false);
+  };
+
+  const onDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      uploadFiles(e.dataTransfer.files);
+    }
+  };
+
+  const removeAt = (idx) => {
+    const next = images.filter((_, i) => i !== idx);
+    onChange(next);
+  };
+
+  const move = (idx, dir) => {
+    const target = idx + dir;
+    if (target < 0 || target >= images.length) return;
+    const next = [...images];
+    [next[idx], next[target]] = [next[target], next[idx]];
+    onChange(next);
+  };
+
+  const canAddMore = images.length < MAX_IMAGES;
+
+  return (
+    <fieldset className="border border-gray-700 rounded-xl p-4" data-testid="product-image-gallery">
+      <legend className="text-xs text-amber-400 uppercase tracking-wider font-semibold px-2">
+        Product images ({images.length}/{MAX_IMAGES})
+      </legend>
+
+      {/* Grid of current images */}
+      {images.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+          {images.map((url, idx) => (
+            <div key={`${url}-${idx}`}
+              className={`relative group bg-gray-900 border-2 rounded-lg overflow-hidden ${idx === 0 ? 'border-amber-500' : 'border-gray-700'}`}
+              data-testid={`product-image-${idx}`}>
+              <div className="aspect-square flex items-center justify-center">
+                <img src={resolveSrc(url)} alt={`Product ${idx + 1}`} className="max-w-full max-h-full object-contain" />
+              </div>
+              {idx === 0 && (
+                <div className="absolute top-1 left-1 bg-amber-500 text-gray-900 text-[10px] px-2 py-0.5 rounded font-bold">
+                  MAIN
+                </div>
+              )}
+              <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                <button type="button" onClick={() => move(idx, -1)} disabled={idx === 0}
+                  className="w-6 h-6 bg-gray-800/90 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs rounded"
+                  data-testid={`product-image-up-${idx}`}
+                  title="Move left">◀</button>
+                <button type="button" onClick={() => move(idx, 1)} disabled={idx === images.length - 1}
+                  className="w-6 h-6 bg-gray-800/90 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs rounded"
+                  data-testid={`product-image-down-${idx}`}
+                  title="Move right">▶</button>
+                <button type="button" onClick={() => removeAt(idx)}
+                  className="w-6 h-6 bg-red-600/90 hover:bg-red-700 text-white text-xs rounded font-bold"
+                  data-testid={`product-image-remove-${idx}`}
+                  title="Remove">×</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Drop zone */}
+      {canAddMore && (
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+          data-testid="product-image-dropzone"
+          className={`cursor-pointer border-2 border-dashed rounded-lg p-6 text-center transition ${
+            dragOver
+              ? 'border-amber-500 bg-amber-500/10'
+              : 'border-gray-600 hover:border-amber-500/70 bg-gray-900/40'
+          }`}
+        >
+          {uploading ? (
+            <p className="text-gray-300 text-sm">Uploading...</p>
+          ) : (
+            <>
+              <p className="text-gray-200 text-sm font-semibold">
+                Drag &amp; drop images here — or click to browse
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                JPEG, PNG or WEBP • max 5MB each • {MAX_IMAGES - images.length} slot(s) remaining
+              </p>
+              <p className="text-amber-400/80 text-[10px] mt-2">
+                First image = main thumbnail on storefront
+              </p>
+            </>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
+            multiple
+            className="hidden"
+            onChange={(e) => e.target.files && uploadFiles(e.target.files)}
+            data-testid="product-image-input"
+          />
+        </div>
+      )}
+    </fieldset>
   );
 }

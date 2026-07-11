@@ -14,6 +14,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     fetchProduct();
@@ -81,18 +82,52 @@ const ProductDetail = () => {
                 Coming Soon
               </div>
             )}
-            <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} className="max-w-full max-h-full object-contain" />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-gray-300">
-                  <FlaskConical className="w-32 h-32" strokeWidth={1.25} />
-                  {product.coming_soon && (
-                    <span className="mt-3 text-sm text-gray-400 font-medium uppercase tracking-wider">Image Soon</span>
+            {(() => {
+              const gallery = (product.images && product.images.length > 0)
+                ? product.images
+                : (product.image_url ? [product.image_url] : []);
+              const idx = Math.min(selectedImage, Math.max(0, gallery.length - 1));
+              const current = gallery[idx];
+              const resolveSrc = (u) => u && !u.startsWith('http') ? `${BACKEND_URL}${u}` : u;
+              return (
+                <>
+                  <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
+                    {current ? (
+                      <img
+                        src={resolveSrc(current)}
+                        alt={product.name}
+                        className="max-w-full max-h-full object-contain"
+                        data-testid="product-detail-main-image"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-gray-300">
+                        <FlaskConical className="w-32 h-32" strokeWidth={1.25} />
+                        {product.coming_soon && (
+                          <span className="mt-3 text-sm text-gray-400 font-medium uppercase tracking-wider">Image Soon</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {gallery.length > 1 && (
+                    <div className="grid grid-cols-6 gap-2 mt-3" data-testid="product-detail-thumbnails">
+                      {gallery.map((url, i) => (
+                        <button
+                          key={`${url}-${i}`}
+                          type="button"
+                          onClick={() => setSelectedImage(i)}
+                          data-testid={`product-detail-thumb-${i}`}
+                          className={`aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition ${
+                            i === idx ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-400'
+                          }`}
+                        >
+                          <img src={resolveSrc(url)} alt={`View ${i + 1}`} className="w-full h-full object-contain" />
+                        </button>
+                      ))}
+                    </div>
                   )}
-                </div>
-              )}
-            </div>
+                </>
+              );
+            })()}
             <p className="text-xs text-gray-400 text-center mt-3 italic">
               *Illustrative image. Vial colors may vary by batch.
             </p>

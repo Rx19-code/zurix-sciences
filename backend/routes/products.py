@@ -2,7 +2,7 @@ from typing import List, Optional
 from pathlib import Path
 import uuid
 
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Header, UploadFile, File
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
@@ -28,6 +28,7 @@ class ProductCreate(BaseModel):
     coa_url: str = ""
     featured: bool = False
     image_url: Optional[str] = None
+    images: List[str] = []
     coming_soon: bool = False
     out_of_stock: bool = False
 
@@ -48,6 +49,7 @@ class ProductUpdate(BaseModel):
     coa_url: Optional[str] = None
     featured: Optional[bool] = None
     image_url: Optional[str] = None
+    images: Optional[List[str]] = None
     coming_soon: Optional[bool] = None
     out_of_stock: Optional[bool] = None
 
@@ -219,6 +221,47 @@ async def admin_delete_product(product_id: str, x_admin_password: str = Header(N
 
     clear_cache("products:")
     return {"success": True, "deleted": product_id}
+
+
+@router.post("/admin/products/upload-image")
+async def admin_upload_product_image(
+    file: UploadFile = File(...),
+    x_admin_password: str = Header(None),
+):
+    """Upload a single product image. Returns the public URL to use in Product.images."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    ALLOWED = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
+    MAX_BYTES = 5 * 1024 * 1024  # 5 MB
+
+    if file.content_type not in ALLOWED:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported file type '{file.content_type}'. Allowed: JPEG, PNG, WEBP.",
+        )
+
+    contents = await file.read()
+    if len(contents) > MAX_BYTES:
+        raise HTTPException(status_code=400, detail="File exceeds 5MB limit")
+
+    ext = Path(file.filename or "").suffix.lower() or {
+        "image/jpeg": ".jpg", "image/jpg": ".jpg",
+        "image/png": ".png", "image/webp": ".webp",
+    }.get(file.content_type, ".jpg")
+
+    safe_name = f"{uuid.uuid4().hex}{ext}"
+    dest = PRODUCT_IMG_DIR / safe_name
+    dest.write_bytes(contents)
+
+    public_url = f"/api/images/products/{safe_name}"
+    return {
+        "success": True,
+        "url": public_url,
+        "filename": safe_name,
+        "size": len(contents),
+        "content_type": file.content_type,
+    }
 
 
 @router.get("/admin/products/{product_id}/qr")

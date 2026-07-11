@@ -22,7 +22,9 @@ class Product(BaseModel):
     coa_url: str
     featured: bool = False
     image_url: Optional[str] = None
+    images: List[str] = Field(default_factory=list)
     coming_soon: bool = False
+    out_of_stock: bool = False
 
 
 class Representative(BaseModel):
