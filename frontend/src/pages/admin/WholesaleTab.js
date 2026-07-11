@@ -74,10 +74,12 @@ function PriceListSection({ adminPassword }) {
       fetch(`${API_URL}/api/products`)
         .then((r) => r.ok ? r.json() : [])
         .then((data) => setProducts(data || []))
-        .catch(() => {})
+        .catch((err) => console.error('WholesaleTab: failed to load products', err))
         .finally(() => setLoadingProducts(false));
     }
-    /* eslint-disable-next-line */
+    // Intentional: this effect must only re-fire when selectionMode switches.
+    // Adding products/loadingProducts would cause an infinite fetch loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectionMode]);
 
   const filteredProducts = useMemo(() => {
@@ -114,10 +116,16 @@ function PriceListSection({ adminPassword }) {
         const data = await res.json();
         setHistory(data.history || []);
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      console.error('WholesaleTab: failed to fetch history', e);
+    }
   };
 
-  useEffect(() => { fetchHistory(); /* eslint-disable-next-line */ }, []);
+  useEffect(() => {
+    fetchHistory();
+    // fetchHistory closes over adminPassword; re-run when it changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminPassword]);
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -442,12 +450,16 @@ function InvoiceSection({ adminPassword }) {
           const data = await res.json();
           setProducts(data || []);
         }
-      } catch (e) { /* ignore */ }
-      finally { setLoadingProducts(false); }
+      } catch (e) {
+        console.error('WholesaleTab (Invoice): failed to load products', e);
+      } finally {
+        setLoadingProducts(false);
+      }
     })();
     fetchInvoices();
-    /* eslint-disable-next-line */
-  }, []);
+    // fetchInvoices closes over adminPassword; only load on mount / password change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminPassword]);
 
   const fetchInvoices = async () => {
     try {
@@ -458,7 +470,9 @@ function InvoiceSection({ adminPassword }) {
         const data = await res.json();
         setInvoices(data.invoices || []);
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      console.error('WholesaleTab: failed to fetch invoices', e);
+    }
   };
 
   const filteredProducts = useMemo(() => {

@@ -9,7 +9,7 @@ Strategy:
 """
 import asyncio
 import os
-import random
+import secrets
 import uuid
 from datetime import datetime, timezone
 
@@ -19,6 +19,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SEED_PREFIX = "seed-bot-"
+
+# Non-security random source. `secrets.SystemRandom()` provides the same API
+# as the `random` module but backed by the OS CSPRNG — satisfying static
+# analysis while remaining suitable for demo/seed data generation.
+_rng = secrets.SystemRandom()
 
 
 def _generate_votes(target_avg: float, count: int) -> list[int]:
@@ -33,16 +38,15 @@ def _generate_votes(target_avg: float, count: int) -> list[int]:
         else:
             ideal = remaining / slots_left
             # Add some noise
-            noise = random.choice([-1, 0, 0, 0, 1])
+            noise = _rng.choice([-1, 0, 0, 0, 1])
             v = max(3, min(5, round(ideal + noise * 0.3)))
         votes.append(v)
         remaining -= v
-    random.shuffle(votes)
+    _rng.shuffle(votes)
     return votes
 
 
 async def main():
-    random.seed(42)  # deterministic results
     client = AsyncIOMotorClient(os.environ["MONGO_URL"])
     db = client[os.environ["DB_NAME"]]
 
@@ -65,16 +69,16 @@ async def main():
             # Solo-peptide protocols get fewer votes and slightly lower rating.
             if num_peptides >= 3:
                 # Triple+ stacks → top trending tier
-                count = random.randint(22, 32)
-                target = round(random.uniform(4.6, 4.9), 1)
+                count = _rng.randint(22, 32)
+                target = round(_rng.uniform(4.6, 4.9), 1)
             elif num_peptides == 2:
                 # Dual stacks → strong trending tier
-                count = random.randint(16, 24)
-                target = round(random.uniform(4.4, 4.7), 1)
+                count = _rng.randint(16, 24)
+                target = round(_rng.uniform(4.4, 4.7), 1)
             else:
                 # Solo peptide protocols → low/mid trending
-                count = random.randint(5, 11)
-                target = round(random.uniform(3.9, 4.4), 1)
+                count = _rng.randint(5, 11)
+                target = round(_rng.uniform(3.9, 4.4), 1)
 
             votes = _generate_votes(target, count)
             for stars in votes:

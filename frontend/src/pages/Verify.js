@@ -106,7 +106,8 @@ const Verify = () => {
           }
         }
       } catch (focusErr) {
-        // Focus adjustment is optional, ignore errors
+        // Focus adjustment is optional
+        console.debug('Camera focus adjustment failed (non-critical):', focusErr);
       }
     } catch (err) {
       console.error('Camera error:', err);

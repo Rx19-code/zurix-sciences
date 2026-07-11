@@ -41,11 +41,16 @@ export default function ProductsTab({ adminPassword }) {
     try {
       const res = await fetch(`${API_URL}/api/products`);
       if (res.ok) setProducts(await res.json());
-    } catch (e) { /* ignore */ }
-    finally { setLoading(false); }
+    } catch (e) {
+      console.error('ProductsTab: failed to fetch products list', e);
+    } finally { setLoading(false); }
   };
 
-  useEffect(() => { loadProducts(); }, []);
+  useEffect(() => {
+    loadProducts();
+    // loadProducts is stable (defined in scope, no external deps) — safe to omit
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
