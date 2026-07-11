@@ -6,6 +6,7 @@ import UsersTab from './admin/UsersTab';
 import VerificationsTab from './admin/VerificationsTab';
 import WholesaleTab from './admin/WholesaleTab';
 import ProductsTab from './admin/ProductsTab';
+import HealthTab from './admin/HealthTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -472,6 +473,7 @@ export default function Admin() {
             { id: 'users', label: 'Users', icon: '👥' },
             { id: 'verifications', label: 'Verifications', icon: '🔐' },
             { id: 'wholesale', label: 'Wholesale', icon: '💼' },
+            { id: 'health', label: 'Health', icon: '❤️' },
             { id: 'maintenance', label: 'Maintenance', icon: '🚧' },
             { id: 'logs', label: 'Verification Logs', icon: '📋' },
             { id: 'email', label: 'Email', icon: '✉️' },
@@ -941,6 +943,10 @@ export default function Admin() {
 
         {activeTab === 'products' && (
           <ProductsTab adminPassword={password} />
+        )}
+
+        {activeTab === 'health' && (
+          <HealthTab adminPassword={password} />
         )}
 
         {/* Maintenance Tab */}
