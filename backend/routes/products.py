@@ -113,10 +113,24 @@ async def serve_product_image(filename: str):
     file_path = PRODUCT_IMG_DIR / safe_filename
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="Image not found")
+
+    # Derive MIME type from the actual file extension.
+    # Previously hard-coded to image/png — served JPG/WEBP with wrong Content-Type,
+    # causing silent decode failure in the browser.
+    ext = file_path.suffix.lower()
+    media_type = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+        ".gif": "image/gif",
+        ".svg": "image/svg+xml",
+    }.get(ext, "application/octet-stream")
+
     return FileResponse(
         file_path,
-        media_type="image/png",
-        headers={"Cache-Control": "public, max-age=86400"}
+        media_type=media_type,
+        headers={"Cache-Control": "public, max-age=86400"},
     )
 
 
