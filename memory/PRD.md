@@ -37,16 +37,29 @@ Professional e-commerce site for peptide research products with:
 - [x] Admin Payments Dashboard (KPIs, Grant Access, Revoke, CSV export)
 - [x] Email preview routes (/api/auth/email-preview, /api/payment/email-preview)
 - [x] Nginx fix: removed `$uri/` from try_files (was causing 403 on /products)
+- [x] Multi-image gallery per product (drag-and-drop, up to 6 images), local hosting via /api/images/products/
+- [x] MIME type fix (JPG/WEBP served with correct content-type)
+- [x] Nginx 404 fix on /api/images: `location ^~ /api/` priority + full `systemctl restart nginx` (reload was not enough) — resolved 2026-06
+- [x] MongoDB auth enabled + automated daily backups (cron)
+- [x] Admin Health Dashboard (PM2, DB, disk, backups)
+- [x] Wholesale PDF invoice generator
+- [x] Dynamic dilution toggle (1ml/2ml/3ml) in HubDetail.js
+- [x] Epithalon 10mg + Adamax 10mg products; Thymosin Alpha-1/Epithalon/Adamax protocols enriched
 
 ## Pending Tasks
+- [ ] P1: Automated Invoice Email — send wholesale PDF via Resend on generation
+- [ ] P1: WhatsApp floating button pre-filled with current product
 - [ ] P1: E2E payment test with $1 USDT (script ready: scripts/e2e_payment_test.py)
-- [ ] P1: "Trending / Most Used" auto-sorting refinements
+- [ ] P2: Invoice status tracking (Pending/Paid/Canceled) + filters in Admin
+- [ ] P2: Video verification per product (video_url field + player on product page)
+- [ ] P2: SEO — dynamic meta tags, Schema.org, sitemap.xml, Open Graph
 - [ ] P2: Populate remaining 14 peptides in Free Library with detailed data
-- [ ] P2: Dynamic dilution toggle (1ml/2ml/3ml) in UI calculator
 - [ ] P2: Multi-currency support (BTC, ETH, USDC besides USDT-TRC20)
 - [ ] P2: Revenue chart in admin (last 30 days)
-- [ ] P3: Automated MongoDB backups
-- [ ] P3: MongoDB authentication
+- [ ] P3: Rate limiting on /api/verify and /api/auth/login
+- [ ] P3: Shopping cart & multi-product checkout
+- [ ] P3: JWT migration localStorage → httpOnly cookies
+- [ ] P3: Refactor Admin.js (1000+ lines) into sub-components
 - [ ] P3: Enable Njalla auto-renew (server paid until June 28, 2026)
 
 ## Key Routes
@@ -72,3 +85,4 @@ Professional e-commerce site for peptide research products with:
 
 ## Changelog
 - 2026-02-27: Added red "SITE UNDER UPDATE" top banner (UpdateNoticeBanner.js) above the yellow regulatory banner — non-dismissible, English copy, responsive, animated alert icons.
+- 2026-06: Fixed production 404 on /api/images/products/* — root cause: Nginx regex block `location ~* \.(png|jpg...)$` intercepting /api/ image URLs; fix: `location ^~ /api/` + full nginx restart (reload insufficient). Verified 200 image/png via curl on live domain.
