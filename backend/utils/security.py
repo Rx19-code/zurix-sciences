@@ -29,14 +29,37 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 
 class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
-    MAX_SIZE = 1_048_576
+    """Reject requests with oversized bodies.
+
+    The default limit protects JSON APIs from resource exhaustion.
+    File-upload routes are exempt — they enforce their own size check
+    (see routes/products.py `admin_upload_product_image` MAX_BYTES).
+    """
+    MAX_SIZE = 2_097_152  # 2 MB default (was 1MB — was rejecting normal image uploads)
+
+    # Paths that are allowed to receive large bodies (file uploads).
+    # Each route enforces its own size limit internally.
+    UPLOAD_PATH_PREFIXES = (
+        "/api/admin/products/upload-image",
+        "/api/admin/upload",
+    )
+    UPLOAD_MAX_SIZE = 26_214_400  # 25 MB hard ceiling for uploads
 
     async def dispatch(self, request, call_next):
+        path = request.url.path
+        is_upload = any(path.startswith(p) for p in self.UPLOAD_PATH_PREFIXES)
+        limit = self.UPLOAD_MAX_SIZE if is_upload else self.MAX_SIZE
+
         content_length = request.headers.get("content-length")
-        if content_length and int(content_length) > self.MAX_SIZE:
+        if content_length and int(content_length) > limit:
             return JSONResponse(
                 status_code=413,
-                content={"detail": "Request too large. Maximum size is 1MB."}
+                content={
+                    "detail": (
+                        f"Request too large. Maximum size for this endpoint is "
+                        f"{limit // (1024 * 1024)}MB."
+                    )
+                },
             )
         return await call_next(request)
 
