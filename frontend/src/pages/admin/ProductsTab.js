@@ -24,6 +24,14 @@ const EMPTY_FORM = {
 };
 
 const MAX_IMAGES = 6;
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB — matches backend limit
+const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
 
 export default function ProductsTab({ adminPassword }) {
   const [products, setProducts] = useState([]);
@@ -389,14 +397,39 @@ function ImageGallery({ images, onChange, adminPassword, onError }) {
 
   const uploadFiles = async (files) => {
     const remainingSlots = MAX_IMAGES - images.length;
-    const list = Array.from(files).slice(0, remainingSlots);
-    if (list.length === 0) {
-      onError(`Maximum ${MAX_IMAGES} images per product.`);
-      return;
+    const incoming = Array.from(files);
+    if (incoming.length === 0) return;
+
+    // Client-side validation — reject before we even touch the network
+    const rejections = [];
+    const accepted = [];
+    for (const f of incoming) {
+      if (!ACCEPTED_TYPES.includes(f.type)) {
+        rejections.push(`${f.name}: unsupported type (${f.type || 'unknown'}). Use JPG/PNG/WEBP.`);
+        continue;
+      }
+      if (f.size > MAX_FILE_SIZE_BYTES) {
+        rejections.push(
+          `${f.name}: ${formatBytes(f.size)} — exceeds ${formatBytes(MAX_FILE_SIZE_BYTES)} limit. Please compress the image (try tinypng.com or squoosh.app).`
+        );
+        continue;
+      }
+      accepted.push(f);
     }
+
+    if (rejections.length > 0) {
+      onError(rejections.join('  •  '));
+    }
+
+    const list = accepted.slice(0, remainingSlots);
+    if (list.length < accepted.length) {
+      onError(`Only ${remainingSlots} slot(s) remaining — extra files ignored.`);
+    }
+    if (list.length === 0) return;
 
     setUploading(true);
     const uploaded = [];
+    const uploadErrors = [];
     for (const f of list) {
       try {
         const fd = new FormData();
@@ -407,14 +440,39 @@ function ImageGallery({ images, onChange, adminPassword, onError }) {
           body: fd,
         });
         if (!res.ok) {
-          const t = await res.text();
-          throw new Error(`${f.name}: HTTP ${res.status} — ${t.slice(0, 120)}`);
+          // Try to parse JSON error; fall back to text
+          let bodyMsg = '';
+          try {
+            const asJson = await res.clone().json();
+            bodyMsg = asJson?.detail || JSON.stringify(asJson);
+          } catch {
+            const t = await res.text();
+            bodyMsg = t.slice(0, 200);
+          }
+
+          if (res.status === 413) {
+            uploadErrors.push(
+              `${f.name} (${formatBytes(f.size)}): server rejected — file too large. Contact server admin to increase Nginx client_max_body_size.`
+            );
+          } else if (res.status === 401) {
+            uploadErrors.push(`${f.name}: unauthorized. Session may have expired — reload the page.`);
+          } else if (res.status === 400) {
+            uploadErrors.push(`${f.name}: ${bodyMsg || 'invalid file'}`);
+          } else {
+            uploadErrors.push(`${f.name}: HTTP ${res.status} — ${bodyMsg}`);
+          }
+          continue;
         }
         const data = await res.json();
         uploaded.push(data.url);
       } catch (e) {
-        onError(e.message || 'Upload failed');
+        console.error('ImageGallery: upload failed for', f.name, e);
+        uploadErrors.push(`${f.name}: ${e.message || 'network error'}`);
       }
+    }
+
+    if (uploadErrors.length > 0) {
+      onError(uploadErrors.join('  •  '));
     }
     if (uploaded.length > 0) onChange([...images, ...uploaded]);
     setUploading(false);
@@ -505,7 +563,7 @@ function ImageGallery({ images, onChange, adminPassword, onError }) {
                 Drag &amp; drop images here — or click to browse
               </p>
               <p className="text-gray-500 text-xs mt-1">
-                JPEG, PNG or WEBP • max 5MB each • {MAX_IMAGES - images.length} slot(s) remaining
+                JPEG, PNG or WEBP • max {formatBytes(MAX_FILE_SIZE_BYTES)} each • {MAX_IMAGES - images.length} slot(s) remaining
               </p>
               <p className="text-amber-400/80 text-[10px] mt-2">
                 First image = main thumbnail on storefront

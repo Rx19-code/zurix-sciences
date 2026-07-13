@@ -1,0 +1,31 @@
+{
+  "summary": "Frontend testing of Admin Products image upload client-side validation (5MB / type check) and successful small-file upload flow. All 4 scenarios PASSED. Admin login, Products tab, Edit modal, and Image Gallery all functional.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "dropzone_hint_text": "PASS — 'JPEG, PNG or WEBP • max 5.00 MB each • 5 slot(s) remaining' displayed correctly",
+    "unsupported_type_rejection_txt": "PASS — zero network requests made when .txt file selected (client-side reject via ACCEPTED_TYPES check)",
+    "oversized_file_rejection_18MB_png": "PASS — visible error 'big.png: 17.90 MB — exceeds 5.00 MB limit. Please compress the image (try tinypng.com or squoosh.app)' shown; zero network requests",
+    "valid_small_png_upload": "PASS — exactly 1 network request to /api/admin/products/upload-image, image added as 2/6, MAIN badge on first tile, reorder (up-1, down-0) and remove-0 buttons present",
+    "413_code_path": "VERIFIED via source — line 455 of ProductsTab.js contains 'server rejected — file too large. Contact server admin to increase Nginx client_max_body_size.' (not exercised in dev preview since no Nginx front)",
+    "401_400_branches": "Present in source (lines 457-462) — not exercised"
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ProductsTab.js at 587 lines is close to the 700-line soft limit — consider extracting ImageGallery into its own file (e.g. /components/ImageGallery.js) for maintainability",
+    "Client-side validation is duplicated with backend logic — this is fine and intentional (defence in depth), but keep the 5MB constant and accepted-type list in sync manually if the backend limit ever changes"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only test)", "frontend": "100%"},
+  "test_credentials": "Admin password Rx050217! from review request — used successfully",
+  "seed_data_creation": "Created /tmp/testfiles/{test.txt, small.png (287 B), big.png (17.9 MB random pixels)} for validation tests",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Client-side pre-flight validation for image uploads is working end-to-end. .txt files and >5MB files are rejected before any network call. Small valid PNGs upload successfully and appear in the gallery with MAIN badge + reorder/remove controls. The 413 error path exists in code but cannot be exercised in the dev preview environment (no Nginx). Note: after adding a test image to Tirzepatide 10mg, the product now has 2/6 images — a red 100×100 solid-color PNG was appended. Main agent may want to remove it via UI if desired.",
+  "rca of the issue": "Original 413 was caused by production Nginx client_max_body_size limit (fixed separately on VPS). Frontend mitigation (client-side type+size validation with clear error message and compression tool suggestions) is fully implemented and working."
+}
