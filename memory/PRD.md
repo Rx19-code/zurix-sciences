@@ -86,3 +86,4 @@ Professional e-commerce site for peptide research products with:
 ## Changelog
 - 2026-02-27: Added red "SITE UNDER UPDATE" top banner (UpdateNoticeBanner.js) above the yellow regulatory banner — non-dismissible, English copy, responsive, animated alert icons.
 - 2026-06: Fixed production 404 on /api/images/products/* — root cause: Nginx regex block `location ~* \.(png|jpg...)$` intercepting /api/ image URLs; fix: `location ^~ /api/` + full nginx restart (reload insufficient). Verified 200 image/png via curl on live domain.
+- 2026-06: Wholesale price list — Tier 3 relabeled to "$2,000 – $4,000"; added highlighted callout box in PDF: orders over $4,000 → "High-volume orders may qualify for exclusive commercial conditions. Please contact our sales team for a personalized quotation." Updated tier labels in WholesaleTab.js and invoice _detect_tier. Verified via curl + pypdf text extraction.

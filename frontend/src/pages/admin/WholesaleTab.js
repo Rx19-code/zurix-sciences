@@ -235,7 +235,10 @@ function PriceListSection({ adminPassword }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <TierInput label="Tier 1 — Orders ≤ $1,000" value={tier1} setter={setTier1} testid="wholesale-tier1" />
               <TierInput label="Tier 2 — Orders $1,001 – $1,999" value={tier2} setter={setTier2} testid="wholesale-tier2" />
-              <TierInput label="Tier 3 — Orders ≥ $2,000" value={tier3} setter={setTier3} testid="wholesale-tier3" />
+              <TierInput label="Tier 3 — Orders $2,000 – $4,000" value={tier3} setter={setTier3} testid="wholesale-tier3" />
+            </div>
+            <div className="mt-3 text-xs text-slate-400 bg-slate-800/60 border border-amber-500/20 rounded-lg px-3 py-2" data-testid="wholesale-highvolume-note">
+              Orders over <span className="text-amber-400 font-semibold">$4,000</span>: the PDF will show a note — "High-volume orders may qualify for exclusive commercial conditions. Please contact our sales team for a personalized quotation."
             </div>
           </fieldset>
 
@@ -519,7 +522,7 @@ function InvoiceSection({ adminPassword }) {
     }
     if (subtotal <= 1000) return { tierLabel: 'Tier 1 (≤ $1,000)', discountPct: parseFloat(tier1) || 0 };
     if (subtotal < 2000) return { tierLabel: 'Tier 2 ($1,001 – $1,999)', discountPct: parseFloat(tier2) || 0 };
-    return { tierLabel: 'Tier 3 (≥ $2,000)', discountPct: parseFloat(tier3) || 0 };
+    return { tierLabel: 'Tier 3 ($2,000 – $4,000)', discountPct: parseFloat(tier3) || 0 };
   }, [subtotal, useOverride, overridePct, tier1, tier2, tier3]);
 
   const discountValue = subtotal * (discountPct / 100);
@@ -708,7 +711,7 @@ function InvoiceSection({ adminPassword }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <TierInput label="Tier 1 — ≤ $1,000" value={tier1} setter={setTier1} testid="invoice-tier1" />
               <TierInput label="Tier 2 — $1,001 – $1,999" value={tier2} setter={setTier2} testid="invoice-tier2" />
-              <TierInput label="Tier 3 — ≥ $2,000" value={tier3} setter={setTier3} testid="invoice-tier3" />
+              <TierInput label="Tier 3 — $2,000 – $4,000" value={tier3} setter={setTier3} testid="invoice-tier3" />
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <label className="flex items-center gap-2 text-gray-300 cursor-pointer">

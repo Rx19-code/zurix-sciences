@@ -30,7 +30,7 @@ class WholesaleRequest(BaseModel):
     email: Optional[str] = None
     tier_1_pct: float = 30.0  # ≤ $1,000
     tier_2_pct: float = 35.0  # $1,001 - $1,999
-    tier_3_pct: float = 40.0  # ≥ $2,000
+    tier_3_pct: float = 40.0  # $2,000 - $4,000
     include_coming_soon: bool = False
     include_out_of_stock: bool = False
     valid_days: int = 30
@@ -137,7 +137,8 @@ def _build_pdf(products: list, req: WholesaleRequest, reference: str) -> bytes:
         f"<font color='#475569' size='9'>Discount tiers by order value: "
         f"<b>≤ $1,000 → {req.tier_1_pct:g}% OFF</b>  •  "
         f"<b>$1,001 – $1,999 → {req.tier_2_pct:g}% OFF</b>  •  "
-        f"<b>≥ $2,000 → {req.tier_3_pct:g}% OFF</b></font>"
+        f"<b>$2,000 – $4,000 → {req.tier_3_pct:g}% OFF</b>  •  "
+        f"<b>&gt; $4,000 → Contact sales</b></font>"
     )
     story.append(Paragraph(tier_text, styles["Normal"]))
     story.append(Spacer(1, 10))
@@ -159,7 +160,7 @@ def _build_pdf(products: list, req: WholesaleRequest, reference: str) -> bytes:
             "Retail",
             f"≤ $1,000\n(-{req.tier_1_pct:g}%)",
             f"$1,001 – $1,999\n(-{req.tier_2_pct:g}%)",
-            f"≥ $2,000\n(-{req.tier_3_pct:g}%)",
+            f"$2,000 – $4,000\n(-{req.tier_3_pct:g}%)",
         ]
         rows = [header]
         for p in sorted(by_cat[cat_name], key=lambda x: x.get("name", "")):
@@ -213,6 +214,27 @@ def _build_pdf(products: list, req: WholesaleRequest, reference: str) -> bytes:
         tbl.setStyle(TableStyle(tbl_style))
         story.append(tbl)
         story.append(Spacer(1, 4))
+
+    # ─── High-volume callout ───
+    story.append(Spacer(1, 14))
+    callout = Table(
+        [[Paragraph(
+            "<font color='#9A3412' size='10'><b>HIGH-VOLUME ORDERS (over $4,000)</b></font><br/>"
+            "<font color='#7C2D12' size='9'>High-volume orders may qualify for exclusive commercial conditions. "
+            "Please contact our sales team for a personalized quotation.</font>",
+            styles["Normal"],
+        )]],
+        colWidths=[165 * mm],
+    )
+    callout.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#FFF7ED")),
+        ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#FDBA74")),
+        ("LEFTPADDING", (0, 0), (-1, -1), 12),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+        ("TOPPADDING", (0, 0), (-1, -1), 10),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+    ]))
+    story.append(callout)
 
     # ─── Footer block ───
     story.append(Spacer(1, 20))
@@ -294,7 +316,7 @@ def _detect_tier(subtotal: float, t1: float, t2: float, t3: float) -> tuple:
         return ("Tier 1 (≤ $1,000)", t1)
     if subtotal < 2000:
         return ("Tier 2 ($1,001 – $1,999)", t2)
-    return ("Tier 3 (≥ $2,000)", t3)
+    return ("Tier 3 ($2,000 – $4,000)", t3)
 
 
 def _build_invoice_pdf(items: list, req: InvoiceRequest, invoice_number: str,
