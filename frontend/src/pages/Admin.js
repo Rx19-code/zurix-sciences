@@ -7,6 +7,7 @@ import VerificationsTab from './admin/VerificationsTab';
 import WholesaleTab from './admin/WholesaleTab';
 import ProductsTab from './admin/ProductsTab';
 import HealthTab from './admin/HealthTab';
+import GenerateCodesPanel from './admin/GenerateCodesPanel';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -37,6 +38,7 @@ export default function Admin() {
   const [leadsFilter, setLeadsFilter] = useState('');
   const [loadingLeads, setLoadingLeads] = useState(false);
   const [activeTab, setActiveTab] = useState('import');
+  const [importMode, setImportMode] = useState('generate');
   const [searchCode, setSearchCode] = useState('');
   const [searching, setSearching] = useState(false);
   const [codesTotal, setCodesTotal] = useState(0);
@@ -495,8 +497,35 @@ export default function Admin() {
         {/* Import Tab */}
         {activeTab === 'import' && (
           <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-            <h2 className="text-xl font-bold text-white mb-6">Import Verification Codes</h2>
-            
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+              <h2 className="text-xl font-bold text-white">
+                {importMode === 'generate' ? 'Generate Verification Codes' : 'Import Verification Codes'}
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setImportMode('generate')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${importMode === 'generate' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-white'}`}
+                  data-testid="mode-generate-btn"
+                >
+                  ⚡ Generate Automatically
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setImportMode('manual')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${importMode === 'manual' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-white'}`}
+                  data-testid="mode-manual-btn"
+                >
+                  📋 Paste Manually
+                </button>
+              </div>
+            </div>
+
+            {importMode === 'generate' && (
+              <GenerateCodesPanel password={password} apiUrl={API_URL} products={products} onGenerated={() => loadData(password)} />
+            )}
+
+            {importMode === 'manual' && (
             <form onSubmit={handleImport} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -591,6 +620,7 @@ export default function Admin() {
                 {loading ? 'Importing...' : 'Import Codes'}
               </button>
             </form>
+            )}
           </div>
         )}
         

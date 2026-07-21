@@ -113,6 +113,16 @@ class ImportCodesRequest(BaseModel):
     expiry_date: Optional[str] = None
 
 
+class GenerateCodesRequest(BaseModel):
+    product_id: str
+    product_name: str
+    product_code: str
+    sequence: int = 1
+    fab_date: str
+    quantity: int
+    purity: Optional[str] = "≥99%"
+
+
 class UpdateBatchRequest(BaseModel):
     batch_number: str
     purity: Optional[str] = None

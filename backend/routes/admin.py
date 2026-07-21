@@ -1,9 +1,11 @@
 import logging
 import io
 import base64
+import re
+import secrets
 import uuid
 from typing import Optional
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from fastapi import APIRouter, HTTPException, Header, File, UploadFile, Request
 from fastapi.responses import FileResponse
@@ -11,7 +13,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 
 from database import db, ADMIN_PASSWORD, PDF_STORAGE_DIR
-from models import AdminLoginRequest, ImportCodesRequest, UpdateBatchRequest, TestEmailRequest
+from models import AdminLoginRequest, ImportCodesRequest, GenerateCodesRequest, UpdateBatchRequest, TestEmailRequest
 from routes.protocols import PROTOCOL_DEFINITIONS
 from utils.email import send_protocol_email
 
@@ -71,6 +73,95 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
         "imported": len(new_codes),
         "duplicates": len(existing_codes),
         "import_batch_id": import_batch_id
+    }
+
+
+@router.get("/admin/batch-suggestion")
+async def batch_suggestion(product_id: str, x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    doc = await db.unique_codes.find_one(
+        {"product_id": product_id},
+        {"_id": 0, "batch_number": 1},
+        sort=[("created_at", -1)],
+    )
+    if not doc:
+        return {"found": False, "product_code": None, "next_sequence": 1}
+
+    m = re.match(r"^ZX-\d{6}-(.+)-(\d+)$", doc["batch_number"])
+    if not m:
+        return {"found": False, "product_code": None, "next_sequence": 1}
+
+    product_code, last_seq = m.group(1), int(m.group(2))
+    return {"found": True, "product_code": product_code, "next_sequence": last_seq + 1, "last_batch": doc["batch_number"]}
+
+
+@router.post("/admin/generate-codes")
+async def generate_codes(request: GenerateCodesRequest, x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    if not 1 <= request.quantity <= 5000:
+        raise HTTPException(status_code=400, detail="Quantity must be between 1 and 5000")
+
+    product_code = re.sub(r"[^A-Z0-9]", "", request.product_code.strip().upper())
+    if not product_code:
+        raise HTTPException(status_code=400, detail="Invalid product code")
+
+    try:
+        fab = date.fromisoformat(request.fab_date)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid fab_date, expected YYYY-MM-DD")
+
+    # Same formula as spreadsheet: DATE(YEAR; MONTH+24; 1)
+    expiry = date(fab.year + 2, fab.month, 1)
+    batch_number = f"ZX-{fab.strftime('%y%m%d')}-{product_code}-{request.sequence}"
+    prefix = f"ZX{product_code}{request.sequence}"
+
+    codes = set()
+    for _ in range(request.quantity * 20):
+        if len(codes) >= request.quantity:
+            break
+        codes.add(f"{prefix}{secrets.token_hex(3).upper()}")
+    codes = list(codes)
+
+    existing = await db.unique_codes.find({"code": {"$in": codes}}, {"code": 1}).to_list(len(codes))
+    existing_set = {doc["code"] for doc in existing}
+    codes = [c for c in codes if c not in existing_set]
+    while len(codes) < request.quantity:
+        candidate = f"{prefix}{secrets.token_hex(3).upper()}"
+        if candidate not in codes and not await db.unique_codes.find_one({"code": candidate}, {"_id": 1}):
+            codes.append(candidate)
+
+    now = datetime.now(timezone.utc).isoformat()
+    import_batch_id = f"GEN-{uuid.uuid4().hex[:8].upper()}"
+    documents = [{
+        "id": str(uuid.uuid4()),
+        "code": code,
+        "batch_number": batch_number,
+        "product_id": request.product_id,
+        "product_name": request.product_name,
+        "purity": request.purity or "≥99%",
+        "expiry_date": expiry.isoformat(),
+        "verification_count": 0,
+        "first_verified_at": None,
+        "last_verified_at": None,
+        "created_at": now,
+        "import_batch_id": import_batch_id,
+    } for code in codes]
+
+    await db.unique_codes.insert_many(documents)
+
+    return {
+        "success": True,
+        "message": f"Generated {len(codes)} codes for batch {batch_number}",
+        "generated": len(codes),
+        "batch_number": batch_number,
+        "fab_date": fab.isoformat(),
+        "expiry_date": expiry.isoformat(),
+        "import_batch_id": import_batch_id,
+        "codes": [{"code": c, "url": f"https://zurixsciences.com/verify?code={c}"} for c in codes],
     }
 
 
