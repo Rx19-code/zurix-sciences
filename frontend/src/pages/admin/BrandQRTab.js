@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function BrandQRTab({ password, apiUrl }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [downloading, setDownloading] = useState(null);
+  const [transparent, setTransparent] = useState(false);
 
   useEffect(() => {
     let objectUrl = null;
@@ -19,11 +20,11 @@ export default function BrandQRTab({ password, apiUrl }) {
   const download = async (size, label) => {
     setDownloading(size);
     try {
-      const res = await fetch(`${apiUrl}/api/admin/brand-qr?size=${size}`, { headers: { 'x-admin-password': password } });
+      const res = await fetch(`${apiUrl}/api/admin/brand-qr?size=${size}${transparent ? '&transparent=true' : ''}`, { headers: { 'x-admin-password': password } });
       const blob = await res.blob();
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `zurix-brand-qr-${label}.png`;
+      a.download = `zurix-brand-qr-${label}${transparent ? '-transparent' : ''}.png`;
       a.click();
       URL.revokeObjectURL(a.href);
     } catch {}
@@ -49,6 +50,15 @@ export default function BrandQRTab({ password, apiUrl }) {
 
         <div className="space-y-3 flex-1">
           <h3 className="text-white font-semibold">Download for print</h3>
+          <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer select-none" data-testid="brand-qr-transparent-toggle">
+            <input
+              type="checkbox"
+              checked={transparent}
+              onChange={(e) => setTransparent(e.target.checked)}
+              className="w-4 h-4 accent-blue-600"
+            />
+            Transparent background (PNG with alpha — for colored boxes/artwork)
+          </label>
           {[
             { size: 1000, label: '1000px', desc: 'Small prints — stickers, keychains (~3cm)' },
             { size: 2000, label: '2000px', desc: 'Product boxes, packaging (~8cm)' },

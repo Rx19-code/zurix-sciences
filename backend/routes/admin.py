@@ -880,7 +880,7 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
 
 
 @router.get("/admin/brand-qr")
-async def brand_qr(size: int = 2000, x_admin_password: str = Header(None)):
+async def brand_qr(size: int = 2000, transparent: bool = False, x_admin_password: str = Header(None)):
     """Fixed brand QR pointing to the website, with ZX center badge. Deterministic: always identical."""
     if x_admin_password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -933,11 +933,19 @@ async def brand_qr(size: int = 2000, x_admin_password: str = Header(None)):
     draw.text((start_x - z_box[0], text_y), "Z", fill="black", font=font)
     draw.text((start_x + (z_box[2] - z_box[0]) + gap - x_box[0], text_y), "X", fill="#3e68b0", font=font)
 
+    if transparent:
+        import numpy as np
+        rgba = np.array(img.convert("RGBA"))
+        white_mask = (rgba[:, :, 0] > 245) & (rgba[:, :, 1] > 245) & (rgba[:, :, 2] > 245)
+        rgba[white_mask, 3] = 0
+        img = Image.fromarray(rgba)
+
     buf = io.BytesIO()
     img.save(buf, format="PNG", dpi=(300, 300))
     from fastapi.responses import Response
+    suffix = "-transparent" if transparent else ""
     return Response(content=buf.getvalue(), media_type="image/png",
-                    headers={"Content-Disposition": f"inline; filename=zurix-brand-qr-{size}px.png"})
+                    headers={"Content-Disposition": f"inline; filename=zurix-brand-qr-{size}px{suffix}.png"})
 
 
 @router.get("/admin/download-stacks-pdf")
