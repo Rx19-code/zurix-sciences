@@ -934,11 +934,9 @@ async def brand_qr(size: int = 2000, transparent: bool = False, x_admin_password
     draw.text((start_x + (z_box[2] - z_box[0]) + gap - x_box[0], text_y), "X", fill="#3e68b0", font=font)
 
     if transparent:
-        import numpy as np
-        rgba = np.array(img.convert("RGBA"))
-        white_mask = (rgba[:, :, 0] > 245) & (rgba[:, :, 1] > 245) & (rgba[:, :, 2] > 245)
-        rgba[white_mask, 3] = 0
-        img = Image.fromarray(rgba)
+        img = img.convert("RGBA")
+        alpha = img.convert("L").point(lambda v: 0 if v > 245 else 255)
+        img.putalpha(alpha)
 
     buf = io.BytesIO()
     img.save(buf, format="PNG", dpi=(300, 300))
