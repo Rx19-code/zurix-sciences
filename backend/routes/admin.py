@@ -901,7 +901,7 @@ async def brand_qr(size: int = 2000, x_admin_password: str = Header(None)):
     img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
     img = img.resize((size, size), Image.NEAREST)
 
-    # Center badge with "ZX"
+    # Center badge with "ZX" (logo style: Z black, X blue, bold italic)
     badge = int(size * 0.22)
     draw = ImageDraw.Draw(img)
     bx0 = (size - badge) // 2
@@ -910,20 +910,28 @@ async def brand_qr(size: int = 2000, x_admin_password: str = Header(None)):
 
     font = None
     for path in [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBoldOblique.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
     ]:
         try:
-            font = ImageFont.truetype(path, int(badge * 0.5))
+            font = ImageFont.truetype(path, int(badge * 0.48))
             break
         except OSError:
             continue
     if font is None:
         font = ImageFont.load_default()
 
-    bbox = draw.textbbox((0, 0), "ZX", font=font)
-    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    draw.text((bx0 + (badge - tw) / 2 - bbox[0], by0 + (badge - th) / 2 - bbox[1]), "ZX", fill="black", font=font)
+    z_box = draw.textbbox((0, 0), "Z", font=font)
+    x_box = draw.textbbox((0, 0), "X", font=font)
+    gap = int(badge * 0.04)
+    total_w = (z_box[2] - z_box[0]) + gap + (x_box[2] - x_box[0])
+    th = max(z_box[3] - z_box[1], x_box[3] - x_box[1])
+    start_x = bx0 + (badge - total_w) / 2
+    text_y = by0 + (badge - th) / 2 - z_box[1]
+    draw.text((start_x - z_box[0], text_y), "Z", fill="black", font=font)
+    draw.text((start_x + (z_box[2] - z_box[0]) + gap - x_box[0], text_y), "X", fill="#3e68b0", font=font)
 
     buf = io.BytesIO()
     img.save(buf, format="PNG", dpi=(300, 300))
