@@ -879,6 +879,59 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
     return {"labels": labels, "count": len(labels)}
 
 
+@router.get("/admin/brand-qr")
+async def brand_qr(size: int = 2000, x_admin_password: str = Header(None)):
+    """Fixed brand QR pointing to the website, with ZX center badge. Deterministic: always identical."""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    if not 200 <= size <= 6000:
+        raise HTTPException(status_code=400, detail="Size must be between 200 and 6000")
+
+    import qrcode
+    from PIL import Image, ImageDraw, ImageFont
+
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=2,
+    )
+    qr.add_data("https://zurixsciences.com")
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+    img = img.resize((size, size), Image.NEAREST)
+
+    # Center badge with "ZX"
+    badge = int(size * 0.22)
+    draw = ImageDraw.Draw(img)
+    bx0 = (size - badge) // 2
+    by0 = (size - badge) // 2
+    draw.rounded_rectangle([bx0, by0, bx0 + badge, by0 + badge], radius=int(badge * 0.18), fill="white", outline="black", width=max(2, size // 500))
+
+    font = None
+    for path in [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    ]:
+        try:
+            font = ImageFont.truetype(path, int(badge * 0.5))
+            break
+        except OSError:
+            continue
+    if font is None:
+        font = ImageFont.load_default()
+
+    bbox = draw.textbbox((0, 0), "ZX", font=font)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    draw.text((bx0 + (badge - tw) / 2 - bbox[0], by0 + (badge - th) / 2 - bbox[1]), "ZX", fill="black", font=font)
+
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", dpi=(300, 300))
+    from fastapi.responses import Response
+    return Response(content=buf.getvalue(), media_type="image/png",
+                    headers={"Content-Disposition": f"inline; filename=zurix-brand-qr-{size}px.png"})
+
+
 @router.get("/admin/download-stacks-pdf")
 async def download_stacks_pdf(password: str = None, x_admin_password: str = Header(None)):
     pw = x_admin_password or password

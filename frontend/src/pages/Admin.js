@@ -8,6 +8,7 @@ import WholesaleTab from './admin/WholesaleTab';
 import ProductsTab from './admin/ProductsTab';
 import HealthTab from './admin/HealthTab';
 import GenerateCodesPanel from './admin/GenerateCodesPanel';
+import BrandQRTab from './admin/BrandQRTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -468,6 +469,7 @@ export default function Admin() {
             { id: 'import', label: 'Import Codes', icon: '📥' },
             { id: 'products', label: 'Products', icon: '🧪' },
             { id: 'labels', label: 'Labels', icon: '🏷️' },
+            { id: 'brandqr', label: 'Brand QR', icon: '📱' },
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
             { id: 'leads', label: 'Leads', icon: '📊' },
@@ -627,6 +629,11 @@ export default function Admin() {
         {/* Labels Tab */}
         {activeTab === 'labels' && (
           <LabelsTab password={password} apiUrl={API_URL} codes={codes} batches={batches} lastImportBatchId={lastImportBatchId} />
+        )}
+
+        {/* Brand QR Tab */}
+        {activeTab === 'brandqr' && (
+          <BrandQRTab password={password} apiUrl={API_URL} />
         )}
         
         {/* Codes Tab */}
