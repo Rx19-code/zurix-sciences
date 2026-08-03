@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
@@ -76,19 +77,28 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
     setGenerating(false);
   };
 
-  const downloadCSV = () => {
+  const downloadExcel = () => {
     if (!result) return;
-    const rows = [
-      ['Fab. Date', 'Batch ID', 'Expiry', 'Product', 'Code', 'Verification URL (QR)'],
-      ...result.codes.map(c => [result.fab_date, result.batch_number, result.expiry_date, productName, c.code, c.url]),
-    ];
-    const csv = '\uFEFF' + rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `${result.batch_number}_codes.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    const rows = result.codes.map(c => {
+      const line1 = c.code.slice(0, -6);
+      const line2 = c.code.slice(-6);
+      return {
+        'Fab. Date': result.fab_date,
+        'Batch ID': result.batch_number,
+        'Expiry': result.expiry_date,
+        'Product': productName,
+        'Code': c.code,
+        'Code Line 1': line1,
+        'Code Line 2': line2,
+        'Code (2 lines)': `${line1}\n${line2}`,
+        'Verification URL (QR)': c.url,
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(rows);
+    ws['!cols'] = [{ wch: 11 }, { wch: 20 }, { wch: 11 }, { wch: 22 }, { wch: 18 }, { wch: 12 }, { wch: 9 }, { wch: 14 }, { wch: 48 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Codes');
+    XLSX.writeFile(wb, `${result.batch_number}_codes.xlsx`);
   };
 
   const inputCls = "w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500";
@@ -159,8 +169,8 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
         <div className="p-4 rounded-lg border bg-green-900/50 border-green-500" data-testid="generate-result">
           <p className="text-green-400 font-medium">✅ {result.generated} codes generated — batch <span className="font-mono">{result.batch_number}</span></p>
           <p className="text-green-300/70 text-sm mt-1">Expiry: {result.expiry_date} • Sample: <span className="font-mono">{result.codes[0]?.code}</span></p>
-          <button type="button" onClick={downloadCSV} className="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-lg transition" data-testid="download-csv-btn">
-            ⬇️ Download CSV ({result.generated} codes + QR URLs)
+          <button type="button" onClick={downloadExcel} className="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-lg transition" data-testid="download-csv-btn">
+            ⬇️ Download Excel ({result.generated} codes + QR URLs)
           </button>
         </div>
       )}

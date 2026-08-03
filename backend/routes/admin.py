@@ -853,11 +853,15 @@ async def generate_labels(request: Request, x_admin_password: str = Header(None)
 
         draw.text((text_x, qr_y + 5), "ZURIX", fill="black", font=font_brand)
 
-        # Draw the code in small wrapped text
-        short_code = code_str.replace("ZX-", "")
-        parts = short_code.split("-")
-        line1 = "-".join(parts[:2]) if len(parts) >= 2 else short_code[:12]
-        line2 = "-".join(parts[2:]) if len(parts) > 2 else ""
+        # Draw the code in two lines: prefix + last 6 chars (fits small labels)
+        if "-" in code_str:
+            short_code = code_str.replace("ZX-", "")
+            parts = short_code.split("-")
+            line1 = "-".join(parts[:2]) if len(parts) >= 2 else short_code[:12]
+            line2 = "-".join(parts[2:]) if len(parts) > 2 else ""
+        else:
+            line1 = code_str[:-6] if len(code_str) > 6 else code_str
+            line2 = code_str[-6:] if len(code_str) > 6 else ""
 
         draw.text((text_x, qr_y + 25), line1, fill="#333333", font=font_code)
         if line2:
