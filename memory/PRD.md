@@ -47,8 +47,10 @@ Professional e-commerce site for peptide research products with:
 - [x] Epithalon 10mg + Adamax 10mg products; Thymosin Alpha-1/Epithalon/Adamax protocols enriched
 
 ## Pending Tasks
-- [ ] P1: Automated Invoice Email — send wholesale PDF via Resend on generation
-- [ ] P1: WhatsApp floating button pre-filled with current product
+- [ ] P1: Labels tab exports (Export Excel / Download All CSV) — apply 2-line code format (user requested)
+- [ ] P1: Print Shop Labels PDF (50x50mm art + 10mm QR) — awaiting user choice: text below vs around QR; grid 42/sheet vs 1/page
+- [ ] P1: WhatsApp/Telegram floating button with reseller selector — awaiting reseller data
+- [ ] P1: New products to add: Orforglipron 6mg, Vitamin B12 10.000mcg (+1 more TBD)
 - [ ] P1: E2E payment test with $1 USDT (script ready: scripts/e2e_payment_test.py)
 - [ ] P2: Invoice status tracking (Pending/Paid/Canceled) + filters in Admin
 - [ ] P2: Video verification per product (video_url field + player on product page)
@@ -57,10 +59,10 @@ Professional e-commerce site for peptide research products with:
 - [ ] P2: Multi-currency support (BTC, ETH, USDC besides USDT-TRC20)
 - [ ] P2: Revenue chart in admin (last 30 days)
 - [ ] P3: Rate limiting on /api/verify and /api/auth/login
-- [ ] P3: Shopping cart & multi-product checkout
 - [ ] P3: JWT migration localStorage → httpOnly cookies
 - [ ] P3: Refactor Admin.js (1000+ lines) into sub-components
 - [ ] P3: Enable Njalla auto-renew (server paid until June 28, 2026)
+- REJECTED by user (do not propose again): automated wholesale invoice email via Resend; shopping cart / multi-product checkout (no shipping operations)
 
 ## Key Routes
 - `GET /api/hubs` & `GET /api/hubs/{slug}` & `GET /api/hubs/hero-image/{slug}`
