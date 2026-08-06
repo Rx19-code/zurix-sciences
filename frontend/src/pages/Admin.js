@@ -1119,8 +1119,13 @@ function LabelsTab({ password, apiUrl, codes, batches, lastImportBatchId }) {
     
     var rows = codesToExport.map(function(c) {
       var codeRaw = c.code.replace(/-/g, '');
+      var line1 = codeRaw.length > 6 ? codeRaw.slice(0, -6) : codeRaw;
+      var line2 = codeRaw.length > 6 ? codeRaw.slice(-6) : '';
       return {
         'Code': c.code,
+        'Code Line 1': line1,
+        'Code Line 2': line2,
+        'Code (2 lines)': line2 ? line1 + '\n' + line2 : line1,
         'Verification URL': 'https://zurixsciences.com/verify?code=' + codeRaw,
         'Product': c.product_name || '',
         'Batch': c.batch_number || ''
@@ -1132,6 +1137,9 @@ function LabelsTab({ password, apiUrl, codes, batches, lastImportBatchId }) {
     // Auto-size columns
     ws['!cols'] = [
       { wch: 30 },  // Code
+      { wch: 14 },  // Code Line 1
+      { wch: 10 },  // Code Line 2
+      { wch: 16 },  // Code (2 lines)
       { wch: 60 },  // Verification URL
       { wch: 25 },  // Product
       { wch: 25 },  // Batch

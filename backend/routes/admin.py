@@ -765,6 +765,8 @@ async def export_all_codes_csv(x_admin_password: str = Header(None)):
     writer = csv.writer(output)
     writer.writerow([
         "Code",
+        "Code Line 1",
+        "Code Line 2",
         "Verification URL",
         "Product",
         "Batch",
@@ -776,8 +778,12 @@ async def export_all_codes_csv(x_admin_password: str = Header(None)):
 
     for c in codes:
         code_raw = (c.get("code") or "").replace("-", "")
+        line1 = code_raw[:-6] if len(code_raw) > 6 else code_raw
+        line2 = code_raw[-6:] if len(code_raw) > 6 else ""
         writer.writerow([
             c.get("code", ""),
+            line1,
+            line2,
             f"https://zurixsciences.com/verify?code={code_raw}",
             c.get("product_name", ""),
             c.get("batch_number", ""),
