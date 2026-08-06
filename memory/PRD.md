@@ -47,9 +47,8 @@ Professional e-commerce site for peptide research products with:
 - [x] Epithalon 10mg + Adamax 10mg products; Thymosin Alpha-1/Epithalon/Adamax protocols enriched
 
 ## Pending Tasks
-- [ ] P1: Labels tab exports (Export Excel / Download All CSV) — apply 2-line code format (user requested)
-- [ ] P1: Print Shop Labels PDF (50x50mm art + 10mm QR) — awaiting user choice: text below vs around QR; grid 42/sheet vs 1/page
-- [ ] P1: WhatsApp/Telegram floating button with reseller selector — awaiting reseller data
+- [ ] P1: Labels tab exports (Export Excel / Download All CSV) — apply 2-line code format (user requested) — DONE 2026-06
+- [ ] P1: Print Shop Labels PDF (50x50mm art + 10mm QR) — DEFERRED to future by user (QR 10mm approved; pending: text below vs around QR; grid vs 1/page)
 - [ ] P1: New products to add: Orforglipron 6mg, Vitamin B12 10.000mcg (+1 more TBD)
 - [ ] P1: E2E payment test with $1 USDT (script ready: scripts/e2e_payment_test.py)
 - [ ] P2: Invoice status tracking (Pending/Paid/Canceled) + filters in Admin
@@ -95,5 +94,5 @@ Professional e-commerce site for peptide research products with:
 - 2026-06: Generate Codes export switched CSV → Excel (.xlsx via xlsx lib) for Niimbot compatibility. Code split in 2 lines (prefix ZXGHK1003 + suffix D746DC): columns Code Line 1, Code Line 2, and Code (2 lines) with embedded newline. Labels tab PNGs also split compact codes into 2 lines. Verified via openpyxl read of downloaded file.
 - 2026-06: Labels tab exports updated with 2-line split — Export Excel (client XLSX) got Code Line 1/2 + Code (2 lines) columns; Download All CSV (backend /api/admin/codes/export-all) got Code Line 1/2 columns. Verified: curl CSV + real Excel download via UI + openpyxl.
 - 2026-06: New products pending user registration (descriptions provided): Orforglipron 6mg 30 tabs (GLP-1 Analogs) and Vitamin B12 Cyanocobalamin 10,000mcg liquid (storage 2-8°C protect from light). User to add via Products tab or send prices for agent to insert.
-- DEFERRED: Print Shop Labels PDF → future. Reseller floating button: 2-3 contacts = Paraguay (WhatsApp), USA (WhatsApp), Switzerland (Threema — threema.id links); awaiting contact data.
+- 2026-06: Floating reseller contact widget (FloatingContact.js, mounted in App.js Layout — hidden on admin/login). Green FAB bottom-right → panel with 3 reps from /api/representatives (Paraguay & USA WhatsApp wa.me links, Switzerland Threema threema.id/2D9DAD9R). On /products/:id the WhatsApp message is pre-filled with product name + URL ("About: {product}" shown in header). Verified via screenshot on catalog + product page.
 - PENDING DECISION (user): Print Shop Labels PDF (Option 1 - variable data): QR 10mm bottom-right on 50x50mm label art from /tmp/zurix_labels.pdf (user uploaded "Zurix Label Bags.pdf", vector, ~41 product labels grid 1200x1000pt). User approved 10mm size; choosing between text below QR (aligned w/ EXP) vs text around QR; grid sheets (42/sheet) vs 1-label-per-page; auto-update Batch/EXP text in art.

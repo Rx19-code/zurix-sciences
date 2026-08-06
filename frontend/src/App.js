@@ -6,6 +6,7 @@ import RegulatoryBanner from './components/RegulatoryBanner';
 import UpdateNoticeBanner from './components/UpdateNoticeBanner';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingContact from './components/FloatingContact';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -51,6 +52,7 @@ function Layout({ children }) {
         {children}
       </main>
       <Footer />
+      <FloatingContact />
     </div>
   );
 }
