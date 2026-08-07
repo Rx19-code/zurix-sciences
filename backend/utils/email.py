@@ -59,14 +59,16 @@ async def get_geolocation(ip: str) -> dict:
 
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.get(f"http://ip-api.com/json/{ip}?fields=status,country,countryCode,city")
+            response = await client.get(f"http://ip-api.com/json/{ip}?fields=status,country,countryCode,city,lat,lon")
             if response.status_code == 200:
                 data = response.json()
                 if data.get('status') == 'success':
                     result = {
                         "country": data.get('country', 'Unknown'),
                         "city": data.get('city', 'Unknown'),
-                        "country_code": data.get('countryCode', 'XX')
+                        "country_code": data.get('countryCode', 'XX'),
+                        "lat": data.get('lat'),
+                        "lon": data.get('lon')
                     }
                     geo_cache[ip] = result
                     return result

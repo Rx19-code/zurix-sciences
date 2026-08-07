@@ -165,6 +165,54 @@ async def generate_codes(request: GenerateCodesRequest, x_admin_password: str = 
     }
 
 
+@router.get("/admin/verifications/geo-stats")
+async def verification_geo_stats(x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    pipeline = [
+        {"$match": {"country": {"$nin": [None, "", "Local", "Unknown"]}}},
+        {"$group": {
+            "_id": {"country": "$country", "country_code": "$country_code", "city": "$city"},
+            "count": {"$sum": 1},
+            "last_scan": {"$max": "$timestamp"},
+            "lat": {"$max": "$lat"},
+            "lon": {"$max": "$lon"},
+        }},
+        {"$sort": {"count": -1}},
+    ]
+    groups = await db.verification_logs.aggregate(pipeline).to_list(None)
+
+    cities = []
+    countries: dict = {}
+    for g in groups:
+        k = g["_id"]
+        cities.append({
+            "country": k.get("country"),
+            "country_code": k.get("country_code"),
+            "city": k.get("city"),
+            "count": g["count"],
+            "last_scan": g.get("last_scan"),
+            "lat": g.get("lat"),
+            "lon": g.get("lon"),
+        })
+        cc = k.get("country_code") or "XX"
+        if cc not in countries:
+            countries[cc] = {"country": k.get("country"), "country_code": cc, "count": 0, "last_scan": g.get("last_scan")}
+        countries[cc]["count"] += g["count"]
+        if g.get("last_scan") and g["last_scan"] > (countries[cc]["last_scan"] or ""):
+            countries[cc]["last_scan"] = g["last_scan"]
+
+    total = await db.verification_logs.count_documents({})
+    located = sum(c["count"] for c in cities)
+    return {
+        "total_scans": total,
+        "located_scans": located,
+        "countries": sorted(countries.values(), key=lambda x: -x["count"]),
+        "cities": cities,
+    }
+
+
 @router.put("/admin/batch/update")
 async def update_batch_info(request: UpdateBatchRequest, x_admin_password: str = Header(None)):
     if x_admin_password != ADMIN_PASSWORD:

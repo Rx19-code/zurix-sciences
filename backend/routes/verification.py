@@ -76,7 +76,9 @@ async def verify_product(request: Request, body: VerifyProductRequest):
             "user_agent": user_agent,
             "country": geo.get('country', 'Unknown'),
             "city": geo.get('city', 'Unknown'),
-            "country_code": geo.get('country_code', 'XX')
+            "country_code": geo.get('country_code', 'XX'),
+            "lat": geo.get('lat'),
+            "lon": geo.get('lon')
         }
         await db.verification_logs.insert_one(log_entry)
 
@@ -180,7 +182,9 @@ async def verify_scan(request: Request, body: VerifyScanRequest):
                 "user_agent": user_agent,
                 "country": geo.get('country', 'Unknown'),
                 "city": geo.get('city', 'Unknown'),
-                "country_code": geo.get('country_code', 'XX')
+                "country_code": geo.get('country_code', 'XX'),
+                "lat": geo.get('lat'),
+                "lon": geo.get('lon')
             }
             await db.verification_logs.insert_one(log_entry)
 

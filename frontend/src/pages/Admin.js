@@ -9,6 +9,7 @@ import ProductsTab from './admin/ProductsTab';
 import HealthTab from './admin/HealthTab';
 import GenerateCodesPanel from './admin/GenerateCodesPanel';
 import BrandQRTab from './admin/BrandQRTab';
+import ScanMapTab from './admin/ScanMapTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -476,6 +477,7 @@ export default function Admin() {
             { id: 'payments', label: 'Payments', icon: '💰' },
             { id: 'users', label: 'Users', icon: '👥' },
             { id: 'verifications', label: 'Verifications', icon: '🔐' },
+            { id: 'scanmap', label: 'Scan Map', icon: '🌍' },
             { id: 'wholesale', label: 'Wholesale', icon: '💼' },
             { id: 'health', label: 'Health', icon: '❤️' },
             { id: 'maintenance', label: 'Maintenance', icon: '🚧' },
@@ -634,6 +636,11 @@ export default function Admin() {
         {/* Brand QR Tab */}
         {activeTab === 'brandqr' && (
           <BrandQRTab password={password} apiUrl={API_URL} />
+        )}
+
+        {/* Scan Map Tab */}
+        {activeTab === 'scanmap' && (
+          <ScanMapTab password={password} apiUrl={API_URL} />
         )}
         
         {/* Codes Tab */}
