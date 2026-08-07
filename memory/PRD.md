@@ -49,7 +49,8 @@ Professional e-commerce site for peptide research products with:
 ## Pending Tasks
 - [ ] P1: Labels tab exports (Export Excel / Download All CSV) — apply 2-line code format (user requested) — DONE 2026-06
 - [ ] P1: Print Shop Labels PDF (50x50mm art + 10mm QR) — DEFERRED to future by user (QR 10mm approved; pending: text below vs around QR; grid vs 1/page)
-- [ ] P1: New products to add: Orforglipron 6mg, Vitamin B12 10.000mcg (+1 more TBD)
+- [ ] P1: New products to add: Orforglipron 6mg, Vitamin B12 10.000mcg — DONE by user via Products tab (2026-06)
+- DEFERRED by user (2026-06): Invoice status tracking (Pending/Paid/Canceled); Counterfeit email alert on suspicious scans
 - [ ] P1: E2E payment test with $1 USDT (script ready: scripts/e2e_payment_test.py)
 - [ ] P2: Invoice status tracking (Pending/Paid/Canceled) + filters in Admin
 - [ ] P2: Video verification per product (video_url field + player on product page)
