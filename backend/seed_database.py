@@ -897,7 +897,7 @@ async def seed_representatives():
             "country": "United States",
             "region": "North America",
             "name": "Michael Johnson",
-            "whatsapp": "+13025808131",
+            "whatsapp": "+14027985248",
             "flag_emoji": "🇺🇸"
         }
     ]
