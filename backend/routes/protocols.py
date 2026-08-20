@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import FileResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from utils.security import get_real_ip
 
 from database import db, RESEND_API_KEY, SENDER_EMAIL, PDF_STORAGE_DIR
 from models import (
@@ -16,7 +17,7 @@ from models import (
 from utils.email import create_watermarked_pdf
 
 router = APIRouter(prefix="/api")
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_real_ip)
 
 # Protocol definitions
 PROTOCOL_DEFINITIONS = {

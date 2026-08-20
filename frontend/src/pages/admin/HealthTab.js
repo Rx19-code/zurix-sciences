@@ -96,6 +96,8 @@ export default function HealthTab({ adminPassword }) {
         <UptimeCard check={checks.uptime} />
         <ErrorsCard check={checks.errors} />
       </div>
+
+      <AdminAccessLog adminPassword={adminPassword} />
     </div>
   );
 }
@@ -248,5 +250,53 @@ function ErrorsCard({ check }) {
         <p className="text-xs text-gray-500 mt-2">No recent errors in log.</p>
       )}
     </Card>
+  );
+}
+
+function AdminAccessLog({ adminPassword }) {
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/admin/access-logs?limit=30`, { headers: { 'x-admin-password': adminPassword } })
+      .then((r) => r.json())
+      .then((d) => setLogs(d.logs || []))
+      .catch(() => {});
+  }, [adminPassword]);
+
+  return (
+    <div className="bg-gray-800 rounded-2xl p-5 border border-gray-700" data-testid="admin-access-log">
+      <h3 className="text-white font-bold mb-1">🔐 Admin Access Log</h3>
+      <p className="text-gray-500 text-xs mb-4">Every admin login attempt with IP and location. Watch for FAIL entries from unknown locations.</p>
+      {logs.length === 0 ? (
+        <p className="text-gray-500 text-sm">No access records yet.</p>
+      ) : (
+        <div className="overflow-x-auto max-h-72 overflow-y-auto">
+          <table className="w-full text-sm">
+            <thead className="text-gray-500 text-xs uppercase sticky top-0 bg-gray-800">
+              <tr>
+                <th className="text-left py-2 pr-4">Date/Time (UTC)</th>
+                <th className="text-left py-2 pr-4">IP</th>
+                <th className="text-left py-2 pr-4">Location</th>
+                <th className="text-left py-2">Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {logs.map((l) => (
+                <tr key={l.id} className="border-t border-gray-700/50">
+                  <td className="py-1.5 pr-4 text-gray-300 font-mono text-xs">{(l.timestamp || '').slice(0, 19).replace('T', ' ')}</td>
+                  <td className="py-1.5 pr-4 text-gray-300 font-mono text-xs">{l.ip}</td>
+                  <td className="py-1.5 pr-4 text-gray-400 text-xs">{l.city}, {l.country}</td>
+                  <td className="py-1.5">
+                    {l.success
+                      ? <span className="text-emerald-400 text-xs font-semibold">✓ OK</span>
+                      : <span className="text-red-400 text-xs font-semibold">✗ FAIL</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }

@@ -121,6 +121,7 @@ class GenerateCodesRequest(BaseModel):
     fab_date: str
     quantity: int
     purity: Optional[str] = "≥99%"
+    expiry_months: int = 24
 
 
 class UpdateBatchRequest(BaseModel):

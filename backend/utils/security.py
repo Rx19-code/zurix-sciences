@@ -16,6 +16,43 @@ ip_fail_tracker = defaultdict(lambda: {"count": 0, "blocked_until": 0})
 IP_BLOCK_THRESHOLD = 15
 IP_BLOCK_DURATION = 900
 
+LOCKOUT_MAX_ATTEMPTS = 5
+LOCKOUT_MINUTES = 15
+
+
+def get_real_ip(request) -> str:
+    """Resolve the real client IP behind Cloudflare/Nginx proxies."""
+    ip = request.headers.get("cf-connecting-ip", "")
+    if not ip:
+        xff = request.headers.get("x-forwarded-for", "")
+        ip = xff.split(",")[0].strip() if xff else ""
+    return ip or (request.client.host if request.client else "unknown")
+
+
+async def check_lockout(identifier: str):
+    doc = await db.login_attempts.find_one({"identifier": identifier})
+    if doc and doc.get("locked_until"):
+        locked_until = datetime.fromisoformat(doc["locked_until"])
+        if locked_until > datetime.now(timezone.utc):
+            remaining = int((locked_until - datetime.now(timezone.utc)).total_seconds() // 60) + 1
+            raise HTTPException(status_code=429, detail=f"Too many failed attempts. Try again in {remaining} minutes.")
+
+
+async def record_login_failure(identifier: str):
+    now = datetime.now(timezone.utc)
+    doc = await db.login_attempts.find_one({"identifier": identifier})
+    count = (doc.get("count", 0) if doc else 0) + 1
+    update = {"count": count, "updated_at": now.isoformat()}
+    if count >= LOCKOUT_MAX_ATTEMPTS:
+        update["locked_until"] = (now + timedelta(minutes=LOCKOUT_MINUTES)).isoformat()
+        update["count"] = 0
+        logging.warning(f"Lockout triggered for {identifier}")
+    await db.login_attempts.update_one({"identifier": identifier}, {"$set": update}, upsert=True)
+
+
+async def clear_login_failures(identifier: str):
+    await db.login_attempts.delete_one({"identifier": identifier})
+
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -66,7 +103,9 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
 
 class IPBlockMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        client_ip = request.headers.get("x-forwarded-for", "")
+        client_ip = request.headers.get("cf-connecting-ip", "")
+        if not client_ip:
+            client_ip = request.headers.get("x-forwarded-for", "")
         if client_ip and "," in client_ip:
             client_ip = client_ip.split(",")[0].strip()
         if not client_ip:

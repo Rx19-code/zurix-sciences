@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from utils.security import get_real_ip
 
 from database import db
 from models import (
@@ -16,7 +17,7 @@ from models import (
 from utils.email import get_geolocation
 
 router = APIRouter(prefix="/api")
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_real_ip)
 
 
 @router.post("/verify-product", response_model=VerifyProductResponse)
@@ -39,18 +40,13 @@ async def verify_product(request: Request, body: VerifyProductRequest):
             warning_level="none"
         )
 
-    # Search by exact code first, then try without hyphens
+    # Search by exact code first, then by normalized (hyphen-free) indexed field
     unique_code = await db.unique_codes.find_one({"code": code}, {"_id": 0})
     db_code = code  # Track the actual code stored in DB for updates
     if not unique_code:
-        # Try matching by removing hyphens from both sides
-        code_no_hyphens = code.replace("-", "")
-        all_codes = await db.unique_codes.find({}, {"_id": 0}).to_list(None)
-        for c in all_codes:
-            if c["code"].replace("-", "").upper() == code_no_hyphens:
-                unique_code = c
-                db_code = c["code"]  # Use the actual DB code for updates
-                break
+        unique_code = await db.unique_codes.find_one({"code_normalized": code.replace("-", "")}, {"_id": 0})
+        if unique_code:
+            db_code = unique_code["code"]
 
     if unique_code:
         current_count = unique_code.get('verification_count', 0)

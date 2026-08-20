@@ -11,6 +11,7 @@ from fastapi import APIRouter, HTTPException, Header, File, UploadFile, Request
 from fastapi.responses import FileResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from utils.security import get_real_ip, check_lockout, record_login_failure, clear_login_failures
 
 from database import db, ADMIN_PASSWORD, PDF_STORAGE_DIR
 from models import AdminLoginRequest, ImportCodesRequest, GenerateCodesRequest, UpdateBatchRequest, TestEmailRequest
@@ -18,16 +19,44 @@ from routes.protocols import PROTOCOL_DEFINITIONS
 from utils.email import send_protocol_email
 
 router = APIRouter(prefix="/api")
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_real_ip)
 
 
 @router.post("/admin/login")
 @limiter.limit("5/minute")
 async def admin_login(request: Request, body: AdminLoginRequest):
-    if body.password == ADMIN_PASSWORD:
+    ip = get_real_ip(request)
+    identifier = f"admin:{ip}"
+    await check_lockout(identifier)
+
+    from utils.email import get_geolocation
+    geo = await get_geolocation(ip)
+    success = body.password == ADMIN_PASSWORD
+    await db.admin_access_logs.insert_one({
+        "id": str(uuid.uuid4()),
+        "ip": ip,
+        "country": geo.get("country", "Unknown"),
+        "city": geo.get("city", "Unknown"),
+        "country_code": geo.get("country_code", "XX"),
+        "user_agent": request.headers.get("user-agent", "unknown")[:300],
+        "success": success,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    })
+
+    if success:
+        await clear_login_failures(identifier)
         return {"success": True, "message": "Login successful"}
-    logging.warning(f"Failed admin login attempt from {get_remote_address(request)}")
+    await record_login_failure(identifier)
+    logging.warning(f"Failed admin login attempt from {ip}")
     raise HTTPException(status_code=401, detail="Invalid password")
+
+
+@router.get("/admin/access-logs")
+async def get_admin_access_logs(x_admin_password: str = Header(None), limit: int = 50):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    logs = await db.admin_access_logs.find({}, {"_id": 0}).sort("timestamp", -1).limit(min(limit, 200)).to_list(None)
+    return {"logs": logs}
 
 
 @router.post("/admin/import-codes")
@@ -53,6 +82,7 @@ async def import_codes(request: ImportCodesRequest, x_admin_password: str = Head
         documents.append({
             "id": str(uuid.uuid4()),
             "code": code,
+            "code_normalized": code.replace("-", ""),
             "batch_number": request.batch_number.strip().upper(),
             "product_id": request.product_id,
             "product_name": request.product_name,
@@ -114,8 +144,11 @@ async def generate_codes(request: GenerateCodesRequest, x_admin_password: str = 
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid fab_date, expected YYYY-MM-DD")
 
-    # Same formula as spreadsheet: DATE(YEAR; MONTH+24; 1)
-    expiry = date(fab.year + 2, fab.month, 1)
+    # Same formula as spreadsheet: DATE(YEAR; MONTH+N; 1) — N configurable (pens have shorter shelf life)
+    if not 1 <= request.expiry_months <= 60:
+        raise HTTPException(status_code=400, detail="expiry_months must be between 1 and 60")
+    total_months = fab.month - 1 + request.expiry_months
+    expiry = date(fab.year + total_months // 12, total_months % 12 + 1, 1)
     batch_number = f"ZX-{fab.strftime('%y%m%d')}-{product_code}-{request.sequence}"
     prefix = f"ZX{product_code}{request.sequence}"
 
@@ -139,6 +172,7 @@ async def generate_codes(request: GenerateCodesRequest, x_admin_password: str = 
     documents = [{
         "id": str(uuid.uuid4()),
         "code": code,
+        "code_normalized": code.replace("-", ""),
         "batch_number": batch_number,
         "product_id": request.product_id,
         "product_name": request.product_name,

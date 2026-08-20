@@ -10,7 +10,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from database import db, client
-from utils.security import SecurityHeadersMiddleware, RequestSizeLimitMiddleware, IPBlockMiddleware
+from utils.security import SecurityHeadersMiddleware, RequestSizeLimitMiddleware, IPBlockMiddleware, get_real_ip
 
 # Import routers
 from routes.auth import router as auth_router
@@ -28,7 +28,7 @@ from routes.admin_health import router as admin_health_router
 app = FastAPI()
 
 # Rate limiter
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_real_ip)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -105,6 +105,14 @@ async def global_exception_handler(request, exc):
 async def create_indexes():
     try:
         await db.unique_codes.create_index("code", unique=True)
+        await db.unique_codes.create_index("code_normalized")
+        await db.login_attempts.create_index("identifier")
+        await db.admin_access_logs.create_index("timestamp")
+        # Backfill normalized codes for fast hyphen-free lookups
+        await db.unique_codes.update_many(
+            {"code_normalized": {"$exists": False}},
+            [{"$set": {"code_normalized": {"$replaceAll": {"input": "$code", "find": "-", "replacement": ""}}}}]
+        )
         await db.unique_codes.create_index("batch_number")
         await db.unique_codes.create_index("product_name")
         await db.products.create_index("name")

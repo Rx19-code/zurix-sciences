@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
+const EXPIRY_OPTIONS = [3, 6, 12, 18, 24, 36];
 
 export default function GenerateCodesPanel({ password, apiUrl, products, onGenerated }) {
   const [productId, setProductId] = useState('');
@@ -11,6 +12,7 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
   const [fabDate, setFabDate] = useState(todayStr());
   const [quantity, setQuantity] = useState(50);
   const [purity, setPurity] = useState('≥99%');
+  const [expiryMonths, setExpiryMonths] = useState(24);
   const [suggestion, setSuggestion] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState(null);
@@ -39,7 +41,13 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
   const yymmdd = fabDate ? fabDate.slice(2).replace(/-/g, '') : '';
   const batchPreview = cleanCode && fabDate ? `ZX-${yymmdd}-${cleanCode}-${sequence}` : '';
   const codePreview = cleanCode ? `ZX${cleanCode}${sequence}xxxxxx` : '';
-  const expiryPreview = fabDate ? `${parseInt(fabDate.slice(0, 4)) + 2}-${fabDate.slice(5, 7)}-01` : '';
+  const expiryPreview = (() => {
+    if (!fabDate) return '';
+    const y = parseInt(fabDate.slice(0, 4));
+    const m = parseInt(fabDate.slice(5, 7)) - 1;
+    const total = m + (parseInt(expiryMonths) || 24);
+    return `${y + Math.floor(total / 12)}-${String((total % 12) + 1).padStart(2, '0')}-01`;
+  })();
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -62,6 +70,7 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
           fab_date: fabDate,
           quantity: parseInt(quantity),
           purity,
+          expiry_months: parseInt(expiryMonths) || 24,
         })
       });
       const data = await res.json();
@@ -153,11 +162,21 @@ export default function GenerateCodesPanel({ password, apiUrl, products, onGener
         </div>
       </div>
 
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div>
+          <label className="block text-gray-400 text-sm mb-2">Expiry (months after fab.)</label>
+          <select value={expiryMonths} onChange={(e) => setExpiryMonths(e.target.value)} className={inputCls} data-testid="generate-expiry-months">
+            {EXPIRY_OPTIONS.map(m => <option key={m} value={m}>{m} months</option>)}
+          </select>
+          <p className="text-gray-500 text-xs mt-1">Vials: 24 • Pens (liquid): shorter shelf life</p>
+        </div>
+      </div>
+
       {batchPreview && (
         <div className="bg-gray-900/60 border border-blue-500/30 rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm" data-testid="generate-preview">
           <div><span className="text-gray-500">Batch ID:</span> <span className="text-blue-400 font-mono">{batchPreview}</span></div>
           <div><span className="text-gray-500">Code format:</span> <span className="text-blue-400 font-mono">{codePreview}</span></div>
-          <div><span className="text-gray-500">Expiry (auto +24mo):</span> <span className="text-blue-400 font-mono">{expiryPreview}</span></div>
+          <div><span className="text-gray-500">Expiry (+{parseInt(expiryMonths) || 24}mo):</span> <span className="text-blue-400 font-mono">{expiryPreview}</span></div>
         </div>
       )}
 

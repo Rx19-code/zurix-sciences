@@ -9,10 +9,10 @@ from slowapi.util import get_remote_address
 
 from database import db, JWT_SECRET, JWT_ALGORITHM
 from models import UserRegisterRequest, UserLoginRequest
-from utils.security import hash_password, verify_password, create_jwt_token, get_current_user
+from utils.security import hash_password, verify_password, create_jwt_token, get_current_user, get_real_ip, check_lockout, record_login_failure, clear_login_failures
 
 router = APIRouter(prefix="/api")
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_real_ip)
 
 EMERGENT_AUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
 
@@ -55,16 +55,22 @@ async def register_user(request: Request, body: UserRegisterRequest):
 @router.post("/auth/login")
 @limiter.limit("10/minute")
 async def login_user(request: Request, body: UserLoginRequest):
+    identifier = f"{get_real_ip(request)}:{body.email.lower()}"
+    await check_lockout(identifier)
+
     user = await db.users.find_one({"email": body.email.lower()}, {"_id": 0})
     if not user:
+        await record_login_failure(identifier)
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     if not user.get("password_hash"):
         raise HTTPException(status_code=401, detail="This account uses Google login. Please sign in with Google.")
 
     if not verify_password(body.password, user["password_hash"]):
+        await record_login_failure(identifier)
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
+    await clear_login_failures(identifier)
     token = create_jwt_token(user["id"], user["email"])
 
     return {
