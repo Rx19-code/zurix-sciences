@@ -102,3 +102,4 @@ Professional e-commerce site for peptide research products with:
 - 2026-06: Configurable expiry on Generate Codes — expiry_months (3-36, default 24) selector for pens with shorter shelf life. Existing pen batches fixable via Batches tab edit (expiry_date).
 - 2026-06: Build fix — visual-edits babel plugin crashes on inline numeric-array .map() inside JSX; use module-level const (EXPIRY_OPTIONS). Avoid inline literal-array maps in JSX.
 - 2026-06: Server hardening commands delivered (UFW, fail2ban, unattended-upgrades, Nginx security headers). Cloudflare proxy confirmed active by user.
+- 2026-06: Maintenance mode fix — /verify route now ALWAYS accessible even with maintenance ON (customers scanning vial QR codes can verify authenticity during maintenance). One-line whitelist in App.js AppContent. Tested: maintenance ON → home shows "We'll be back soon", /verify?code= loads and pre-fills normally; toggled back OFF.

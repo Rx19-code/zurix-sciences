@@ -119,7 +119,8 @@ function AppContent() {
   }, []);
 
   if (!checked) return null;
-  if (maintenance && !bypassed && !legacyBypass) return <MaintenancePage />;
+  var verifyAlwaysOn = window.location.pathname === '/verify';
+  if (maintenance && !bypassed && !legacyBypass && !verifyAlwaysOn) return <MaintenancePage />;
 
   return (
     <Layout>
