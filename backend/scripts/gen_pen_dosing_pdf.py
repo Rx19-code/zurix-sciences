@@ -17,7 +17,6 @@ footer_style = ParagraphStyle("f", parent=styles["Normal"], textColor=colors.Hex
 
 PENS = [
     ("Retatrutide 40mg/3ml Pen", 40, [2.5, 5, 7.5, 10]),
-    ("Glow Blend 70mg/3ml Pen", 70, [2]),
     ("Tirzepatide 60mg/3ml Pen", 60, [2.5, 5, 7.5, 10, 12.5, 15]),
 ]
 TOTAL_CLICKS = 240
@@ -62,6 +61,44 @@ for name, total_mg, doses in PENS:
             tbl_style.append(("BACKGROUND", (0, i), (-1, i), ROW_ALT))
     tbl.setStyle(TableStyle(tbl_style))
     story.append(tbl)
+
+# ─── Glow Blend: dosed by GHK-Cu content, matching site protocols ───
+GHK_TOTAL, BPC_TOTAL, TB_TOTAL = 50.0, 10.0, 10.0
+BLEND_TOTAL = GHK_TOTAL + BPC_TOTAL + TB_TOTAL
+ghk_per_click = GHK_TOTAL / TOTAL_CLICKS
+story.append(Paragraph("GLOW BLEND 70MG/3ML PEN", section_style))
+story.append(Paragraph(
+    f"Composition: <b>GHK-Cu 50mg + BPC-157 10mg + TB-500 10mg</b> in 3ml &nbsp;•&nbsp; "
+    f"1 click = <b>{BLEND_TOTAL/TOTAL_CLICKS:.3f}mg blend</b> ({ghk_per_click:.3f}mg GHK-Cu) &nbsp;•&nbsp; Full pen = {TOTAL_CLICKS} clicks<br/>"
+    f"<i>Doses below target GHK-Cu content, following Zurix Stack Hub protocols (standard 2mg / beginner 1mg).</i>",
+    info_style))
+rows = [["Target GHK-Cu", "Clicks", "GHK-Cu", "BPC-157", "TB-500", "Doses per Pen"]]
+for target, label in [(1, "1 mg (beginner)"), (2, "2 mg (standard)")]:
+    clicks = round(target / ghk_per_click)
+    rows.append([
+        label,
+        f"{clicks} clicks",
+        f"{clicks * ghk_per_click:.2f} mg",
+        f"{clicks * BPC_TOTAL / TOTAL_CLICKS:.2f} mg",
+        f"{clicks * TB_TOTAL / TOTAL_CLICKS:.2f} mg",
+        f"~{int(TOTAL_CLICKS // clicks)}",
+    ])
+gt = Table(rows, colWidths=[34*mm, 26*mm, 25*mm, 25*mm, 25*mm, 27*mm])
+gt_style = [
+    ("BACKGROUND", (0, 0), (-1, 0), BRAND_PRIMARY),
+    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+    ("FONTSIZE", (0, 0), (-1, -1), 9),
+    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+    ("TOPPADDING", (0, 0), (-1, -1), 7),
+    ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+    ("LINEBELOW", (0, 1), (-1, -1), 0.3, colors.HexColor("#E2E8F0")),
+    ("TEXTCOLOR", (1, 1), (1, -1), BRAND_ACCENT),
+    ("FONTNAME", (1, 1), (1, -1), "Helvetica-Bold"),
+    ("BACKGROUND", (0, 2), (-1, 2), ROW_ALT),
+]
+gt.setStyle(TableStyle(gt_style))
+story.append(gt)
 
 story.append(Spacer(1, 18))
 story.append(Paragraph(
