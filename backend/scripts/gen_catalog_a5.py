@@ -1,31 +1,37 @@
-"""A5 professional product catalog (PT) — cover, 1 product/page, back cover."""
-import asyncio
+"""A5 professional product catalog (PT) — data pulled from the LIVE site API."""
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-from motor.motor_asyncio import AsyncIOMotorClient
+import httpx
 from PIL import Image as PILImage
 from reportlab.lib import colors
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas as rl_canvas
 
 BASE = Path(__file__).resolve().parent.parent
-load_dotenv(BASE / ".env")
+SITE = os.environ.get("CATALOG_SOURCE_URL", "https://zurixsciences.com")
 
 W, H = 148 * mm, 210 * mm
 NAVY = colors.HexColor("#0F224E")
 DARK = colors.HexColor("#101820")
 BLUE = colors.HexColor("#3e68b0")
+LIGHTBLUE = colors.HexColor("#EAF0FA")
 GRAY = colors.HexColor("#4B5563")
 LGRAY = colors.HexColor("#9CA3AF")
 PANEL = colors.HexColor("#F3F6FB")
-IMG_DIR = BASE / "product_images"
+SHADOW = colors.HexColor("#D7DEEA")
 COVER_BG = BASE / "scripts" / "assets" / "catalog_cover_bg.jpg"
+IMG_CACHE = BASE / "scripts" / "assets" / "img_cache"
 OUT = BASE.parent / "frontend" / "public" / "catalogo-zurix-a5.pdf"
 
 # key: (CHIP, description PT, [4 benefits PT])
 DATA = [
+    ("retatrutide 40mg/3ml pen", "WEIGHT LOSS", "A caneta pré-preenchida de Retatrutida entrega o triplo agonista (GLP-1, GIP e glucagon) em doses precisas por clicks — praticidade máxima para protocolos de pesquisa em perda de peso.",
+     ["Caneta multi-dose de 240 clicks", "Triplo agonista hormonal", "Dosagem precisa sem seringas", "40mg em 3ml com conservante"]),
+    ("glow blend 70mg/3ml pen", "SKIN & BEAUTY", "A fórmula Glow (GHK-Cu 50mg + BPC-157 10mg + TB-500 10mg) em caneta pré-preenchida: rejuvenescimento, firmeza e reparo da pele com dosagem por clicks.",
+     ["Fórmula 3-em-1 em caneta", "Pele radiante e firme", "Dosagem precisa por clicks", "~24 doses por caneta"]),
+    ("tirzepatide 60mg/3ml pen", "WEIGHT LOSS", "A caneta pré-preenchida de Tirzepatida (60mg/3ml) une o agonista duplo GIP + GLP-1 mais estudado do mundo à praticidade da dosagem por clicks.",
+     ["Caneta multi-dose de 240 clicks", "Ação dupla GIP + GLP-1", "Dosagem precisa sem seringas", "60mg em 3ml com conservante"]),
     ("orforglipron", "WEIGHT LOSS", "O Orforglipron é um agonista GLP-1 oral de nova geração em comprimidos, pesquisado para controle de apetite e regulação da glicose — sem necessidade de injeções.",
      ["Agonista GLP-1 100% oral", "Controle de apetite e saciedade", "Suporte ao metabolismo da glicose", "Praticidade: 30 comprimidos"]),
     ("tirzepatide", "WEIGHT LOSS", "A Tirzepatida é um peptídeo injetável de ação dupla que ativa os receptores GIP e GLP-1. É referência mundial em pesquisas de redução de peso e controle glicêmico.",
@@ -119,6 +125,11 @@ DATA = [
 FALLBACK = ("RESEARCH", "Peptídeo de pesquisa de alta pureza com autenticidade verificável por QR code.",
             ["Alta pureza certificada", "Verificação por QR code", "Qualidade suíça", "Envio discreto e seguro"])
 
+CHIP_PT = {"WEIGHT LOSS": "Emagrecimento", "GROWTH HORMONE": "Hormônio do Crescimento", "RECOVERY": "Recuperação & Reparo",
+           "MUSCLE": "Performance Muscular", "SKIN & BEAUTY": "Pele & Beleza", "HAIR": "Saúde Capilar",
+           "COGNITIVE": "Cognição & Foco", "LONGEVITY": "Longevidade", "IMMUNITY": "Imunidade",
+           "WELLNESS": "Bem-Estar", "SUPPLIES": "Suprimentos", "RESEARCH": "Pesquisa"}
+
 
 def get_data(name):
     n = name.lower()
@@ -131,20 +142,48 @@ def get_data(name):
 def presentation(name):
     n = name.lower()
     if "pen" in n:
-        return "PEN"
+        return "CANETA PRÉ-PREENCHIDA"
     if "tabs" in n or "orforglipron" in n or "5-amino" in n or "slu-pp" in n:
-        return "CAPS / TABS"
+        return "CÁPSULAS / COMPRIMIDOS"
     if "water" in n:
-        return "VIAL 3ML"
-    return "VIAL"
+        return "FRASCO 3ML"
+    if "b12" in n:
+        return "FRASCO LÍQUIDO"
+    return "FRASCO LIOFILIZADO"
 
 
-def local_img(p):
+def storage_pt(p):
+    s = (p.get("storage_info") or "").lower()
+    name = p["name"].lower()
+    if "tabs" in name or "tablet" in s or "dry place" in s:
+        return "Local fresco e seco"
+    if "pen" in name or "2-8" in s:
+        return "Refrigerado 2-8°C"
+    return "-20°C / 2-8°C reconstituído"
+
+
+def fetch_products():
+    r = httpx.get(f"{SITE}/api/products", timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+
+def get_image(p):
     imgs = p.get("images") or ([p["image_url"]] if p.get("image_url") else [])
     if not imgs:
         return None
-    f = IMG_DIR / imgs[0].split("/")[-1]
-    return f if f.exists() else None
+    fname = imgs[0].split("/")[-1]
+    IMG_CACHE.mkdir(parents=True, exist_ok=True)
+    f = IMG_CACHE / fname
+    if not f.exists():
+        try:
+            r = httpx.get(f"{SITE}/api/images/products/{fname}", timeout=30)
+            if r.status_code != 200:
+                return None
+            f.write_bytes(r.content)
+        except Exception:
+            return None
+    return f
 
 
 def wordmark(cv, x, y, on_dark=False, scale=1.0):
@@ -158,7 +197,6 @@ def wordmark(cv, x, y, on_dark=False, scale=1.0):
     cv.setFont("Helvetica", 6.2 * scale)
     cv.setFillColor(main)
     cv.drawString(x + 1, y - 3.2 * mm * scale, "S C I E N C E S")
-    # swiss flag + label
     fy = y - 7.2 * mm * scale
     s = 2.6 * mm * scale
     cv.setFillColor(colors.HexColor("#DA291C"))
@@ -211,64 +249,85 @@ def wrap_text(cv, text, font, size, max_w):
 
 def draw_product(cv, p, page_num):
     chip, desc, bens = get_data(p["name"])
+    # top accent line
+    cv.setFillColor(BLUE)
+    cv.rect(0, H - 1.6 * mm, W, 1.6 * mm, stroke=0, fill=1)
     # header
-    wordmark(cv, 12 * mm, H - 15 * mm)
+    wordmark(cv, 12 * mm, H - 16 * mm)
     chip_w = cv.stringWidth(chip, "Helvetica-Bold", 8) + 10 * mm
     cv.setFillColor(NAVY)
-    cv.roundRect(W - 12 * mm - chip_w, H - 17 * mm, chip_w, 7.5 * mm, 1.2 * mm, stroke=0, fill=1)
+    cv.roundRect(W - 12 * mm - chip_w, H - 18 * mm, chip_w, 7.5 * mm, 1.2 * mm, stroke=0, fill=1)
     cv.setFillColor(colors.white)
     cv.setFont("Helvetica-Bold", 8)
-    cv.drawCentredString(W - 12 * mm - chip_w / 2, H - 14.4 * mm, chip)
+    cv.drawCentredString(W - 12 * mm - chip_w / 2, H - 15.4 * mm, chip)
 
-    # product name
+    # product name + PT category subtitle
     name = p["name"]
-    fs = 21 if cv.stringWidth(name.upper(), "Helvetica-Bold", 21) <= W - 24 * mm else 16
+    fs = 20 if cv.stringWidth(name.upper(), "Helvetica-Bold", 20) <= W - 24 * mm else 15
     cv.setFillColor(BLUE)
     cv.setFont("Helvetica-Bold", fs)
-    cv.drawString(12 * mm, H - 34 * mm, name.upper())
+    cv.drawString(12 * mm, H - 33 * mm, name.upper())
+    cv.setFillColor(LGRAY)
+    cv.setFont("Helvetica-Bold", 7)
+    cv.drawString(12 * mm, H - 38 * mm, CHIP_PT.get(chip, chip).upper())
     cv.setStrokeColor(BLUE)
     cv.setLineWidth(1.3)
-    cv.line(12 * mm, H - 37.5 * mm, 34 * mm, H - 37.5 * mm)
+    cv.line(12 * mm, H - 41 * mm, 34 * mm, H - 41 * mm)
 
     # description
     cv.setFont("Helvetica", 8.6)
     cv.setFillColor(GRAY)
-    y = H - 45 * mm
+    y = H - 48 * mm
     for line in wrap_text(cv, desc, "Helvetica", 8.6, W - 26 * mm)[:5]:
         cv.drawString(12 * mm, y, line)
         y -= 4.3 * mm
 
-    # image panel + right block
-    panel_y, panel_h = H - 118 * mm, 52 * mm
+    # image panel with shadow + right spec block
+    panel_y, panel_h = H - 124 * mm, 54 * mm
+    cv.setFillColor(SHADOW)
+    cv.roundRect(13 * mm, panel_y - 1.2 * mm, 52 * mm, panel_h, 2.5 * mm, stroke=0, fill=1)
     cv.setFillColor(PANEL)
     cv.roundRect(12 * mm, panel_y, 52 * mm, panel_h, 2.5 * mm, stroke=0, fill=1)
-    img = local_img(p)
+    img = get_image(p)
     if img:
-        with PILImage.open(img) as im:
-            iw, ih = im.size
-        sc = min(44 * mm / iw, 46 * mm / ih)
-        cv.drawImage(str(img), 12 * mm + (52 * mm - iw * sc) / 2, panel_y + (panel_h - ih * sc) / 2,
-                     iw * sc, ih * sc, mask="auto")
+        try:
+            with PILImage.open(img) as im:
+                iw, ih = im.size
+            sc = min(44 * mm / iw, 48 * mm / ih)
+            cv.drawImage(str(img), 12 * mm + (52 * mm - iw * sc) / 2, panel_y + (panel_h - ih * sc) / 2,
+                         iw * sc, ih * sc, mask="auto")
+        except Exception:
+            pass
+
     rx = 70 * mm
-    cv.setFillColor(BLUE)
-    cv.setFont("Helvetica-Bold", 8)
-    base = p["name"].split()
+    base = p["name"].replace("/3ml Pen", "").replace(" Pen", "").split()
     dose = next((w_ for w_ in base if any(c.isdigit() for c in w_)), "")
     title = " ".join(w_ for w_ in base if w_ != dose)
-    cv.drawString(rx, panel_y + panel_h - 10 * mm, title.upper()[:28])
+    cv.setFillColor(BLUE)
+    cv.setFont("Helvetica-Bold", 8)
+    cv.drawString(rx, panel_y + panel_h - 8 * mm, title.upper()[:30])
     cv.setFillColor(NAVY)
     cv.setFont("Helvetica-Bold", 17)
-    cv.drawString(rx, panel_y + panel_h - 18 * mm, dose.upper())
-    cv.setFillColor(LGRAY)
-    cv.setFont("Helvetica", 7.5)
-    cv.drawString(rx, panel_y + panel_h - 23.5 * mm, presentation(p["name"]))
-    cv.setFillColor(GRAY)
-    cv.setFont("Helvetica", 7)
-    cv.drawString(rx, panel_y + 10 * mm, "Pureza ≥99%  •  Lote rastreável")
-    cv.drawString(rx, panel_y + 5.5 * mm, "Autenticidade via QR code")
+    cv.drawString(rx, panel_y + panel_h - 16 * mm, dose.upper())
+    # specs list
+    specs = [
+        ("PUREZA", p.get("purity") or "≥99%"),
+        ("APRESENTAÇÃO", presentation(p["name"])),
+        ("ARMAZENAMENTO", storage_pt(p)),
+        ("AUTENTICIDADE", "QR code único por unidade"),
+    ]
+    sy = panel_y + panel_h - 24 * mm
+    for label, val in specs:
+        cv.setFillColor(BLUE)
+        cv.setFont("Helvetica-Bold", 5.8)
+        cv.drawString(rx, sy, label)
+        cv.setFillColor(GRAY)
+        cv.setFont("Helvetica", 7.6)
+        cv.drawString(rx, sy - 3.4 * mm, str(val)[:42])
+        sy -= 8.6 * mm
 
     # benefits divider
-    by = panel_y - 10 * mm
+    by = panel_y - 9 * mm
     cv.setStrokeColor(BLUE)
     cv.setLineWidth(0.7)
     tw = cv.stringWidth("B E N E F Í C I O S", "Helvetica-Bold", 8)
@@ -278,24 +337,41 @@ def draw_product(cv, p, page_num):
     cv.setFont("Helvetica-Bold", 8)
     cv.drawCentredString(W / 2, by - 1 * mm, "B E N E F Í C I O S")
 
-    # 4 benefits: 2 cols x 2 rows with check circles
+    # 4 benefits: 2x2 with filled blue circles + white check
     col_w = (W - 24 * mm) / 2
-    positions = [(12 * mm, by - 12 * mm), (12 * mm + col_w, by - 12 * mm),
-                 (12 * mm, by - 26 * mm), (12 * mm + col_w, by - 26 * mm)]
+    positions = [(12 * mm, by - 11 * mm), (12 * mm + col_w, by - 11 * mm),
+                 (12 * mm, by - 23 * mm), (12 * mm + col_w, by - 23 * mm)]
     for (bx, byy), ben in zip(positions, bens[:4]):
-        cv.setStrokeColor(BLUE)
-        cv.setLineWidth(0.9)
-        cv.circle(bx + 3 * mm, byy - 1 * mm, 3 * mm, stroke=1, fill=0)
         cv.setFillColor(BLUE)
-        cv.setFont("ZapfDingbats", 7)
-        cv.drawCentredString(bx + 3 * mm, byy - 2.1 * mm, "4")
-        cv.setFillColor(GRAY)
-        cv.setFont("Helvetica", 7.6)
-        lines = wrap_text(cv, ben, "Helvetica", 7.6, col_w - 12 * mm)[:3]
-        ty = byy + (1.6 * mm if len(lines) > 1 else 0) - 0.2 * mm
+        cv.circle(bx + 3 * mm, byy - 1 * mm, 3 * mm, stroke=0, fill=1)
+        cv.setFillColor(colors.white)
+        cv.setFont("ZapfDingbats", 6.5)
+        cv.drawCentredString(bx + 3 * mm, byy - 2 * mm, "4")
+        cv.setFillColor(DARK)
+        cv.setFont("Helvetica-Bold", 7.6)
+        lines = wrap_text(cv, ben, "Helvetica-Bold", 7.6, col_w - 12 * mm)[:2]
+        ty = byy + (1.4 * mm if len(lines) > 1 else 0) - 0.2 * mm
         for ln in lines:
             cv.drawString(bx + 8 * mm, ty, ln)
-            ty -= 3.6 * mm
+            ty -= 3.7 * mm
+
+    # quality strip above footer
+    qy = 14 * mm
+    cv.setFillColor(LIGHTBLUE)
+    cv.rect(0, qy, W, 9 * mm, stroke=0, fill=1)
+    cv.setFillColor(NAVY)
+    cv.setFont("Helvetica-Bold", 6.6)
+    badges = ["PUREZA TESTADA", "QR DE AUTENTICIDADE", "SWISS STANDARDS"]
+    seg = W / 3
+    for i, b in enumerate(badges):
+        cv.setFillColor(BLUE)
+        cv.circle(seg * i + seg / 2 - cv.stringWidth(b, "Helvetica-Bold", 6.6) / 2 - 3.4 * mm, qy + 4.5 * mm, 1.6 * mm, stroke=0, fill=1)
+        cv.setFillColor(colors.white)
+        cv.setFont("ZapfDingbats", 4.5)
+        cv.drawCentredString(seg * i + seg / 2 - cv.stringWidth(b, "Helvetica-Bold", 6.6) / 2 - 3.4 * mm, qy + 3.8 * mm, "4")
+        cv.setFillColor(NAVY)
+        cv.setFont("Helvetica-Bold", 6.6)
+        cv.drawCentredString(seg * i + seg / 2 + 1 * mm, qy + 3.6 * mm, b)
 
     # footer bar
     cv.setFillColor(NAVY)
@@ -342,11 +418,10 @@ def draw_back(cv):
     cv.showPage()
 
 
-async def main():
-    db = AsyncIOMotorClient(os.environ["MONGO_URL"])[os.environ["DB_NAME"]]
+def main():
     chip_order = ["WEIGHT LOSS", "GROWTH HORMONE", "RECOVERY", "MUSCLE", "SKIN & BEAUTY", "HAIR",
                   "COGNITIVE", "LONGEVITY", "IMMUNITY", "WELLNESS", "SUPPLIES", "RESEARCH"]
-    products = await db.products.find({}, {"_id": 0}).to_list(None)
+    products = fetch_products()
     products.sort(key=lambda p: (chip_order.index(get_data(p["name"])[0]), p["name"].lower()))
 
     cv = rl_canvas.Canvas(str(OUT), pagesize=(W, H))
@@ -357,4 +432,5 @@ async def main():
     cv.save()
     print(f"Catalog created: {OUT} ({len(products)} products, {len(products)+2} pages)")
 
-asyncio.run(main())
+
+main()
