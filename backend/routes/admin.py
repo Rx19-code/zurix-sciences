@@ -12,6 +12,7 @@ from fastapi.responses import FileResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from utils.security import get_real_ip, check_lockout, record_login_failure, clear_login_failures
+from utils.storage import persist_bytes
 
 from database import db, ADMIN_PASSWORD, PDF_STORAGE_DIR
 from models import AdminLoginRequest, ImportCodesRequest, GenerateCodesRequest, UpdateBatchRequest, TestEmailRequest
@@ -568,8 +569,7 @@ async def upload_protocol_pdf(
     pdf_path = PDF_STORAGE_DIR / pdf_filename
 
     content = await pdf.read()
-    with open(pdf_path, "wb") as f:
-        f.write(content)
+    persist_bytes(pdf_path, content)
 
     return {"success": True, "message": f"PDF uploaded successfully for {protocol['title']} ({language.upper()})", "filename": pdf_filename}
 

@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from database import db, ADMIN_PASSWORD, PRODUCT_IMG_DIR, get_cache, set_cache, clear_cache
 from models import Product, Representative, UpdateProductImageRequest
+from utils.storage import persist_bytes
 
 router = APIRouter(prefix="/api")
 
@@ -266,7 +267,7 @@ async def admin_upload_product_image(
 
     safe_name = f"{uuid.uuid4().hex}{ext}"
     dest = PRODUCT_IMG_DIR / safe_name
-    dest.write_bytes(contents)
+    persist_bytes(dest, contents)
 
     public_url = f"/api/images/products/{safe_name}"
     return {

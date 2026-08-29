@@ -76,7 +76,7 @@ async def main():
     
     # Final report
     total_products = await db.products.count_documents({})
-    with_images = await db.products.count_documents({"image_url": {"$ne": None, "$ne": ""}})
+    with_images = await db.products.count_documents({"image_url": {"$nin": [None, ""]}})
     without_images = await db.products.count_documents({"$or": [{"image_url": None}, {"image_url": ""}, {"image_url": {"$exists": False}}]})
     
     print(f"\n{'='*50}")
