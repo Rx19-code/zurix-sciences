@@ -1,4 +1,4 @@
-"""Generate A5 product catalog PDF (cover + products with benefits, PT)."""
+"""A5 professional product catalog (PT) — cover, 1 product/page, back cover."""
 import asyncio
 import os
 from pathlib import Path
@@ -8,222 +8,353 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from PIL import Image as PILImage
 from reportlab.lib import colors
 from reportlab.lib.units import mm
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import (BaseDocTemplate, Frame, PageTemplate, Paragraph,
-                                Spacer, Table, TableStyle, Image, NextPageTemplate, PageBreak)
+from reportlab.pdfgen import canvas as rl_canvas
 
 BASE = Path(__file__).resolve().parent.parent
 load_dotenv(BASE / ".env")
 
-A5 = (148 * mm, 210 * mm)
+W, H = 148 * mm, 210 * mm
 NAVY = colors.HexColor("#0F224E")
+DARK = colors.HexColor("#101820")
 BLUE = colors.HexColor("#3e68b0")
-GRAY = colors.HexColor("#475569")
-LIGHT = colors.HexColor("#F1F5F9")
+GRAY = colors.HexColor("#4B5563")
+LGRAY = colors.HexColor("#9CA3AF")
+PANEL = colors.HexColor("#F3F6FB")
 IMG_DIR = BASE / "product_images"
-LOGO = BASE.parent / "frontend" / "public" / "logo.png"
+COVER_BG = BASE / "scripts" / "assets" / "catalog_cover_bg.jpg"
 OUT = BASE.parent / "frontend" / "public" / "catalogo-zurix-a5.pdf"
 
-BENEFITS = [
-    ("orforglipron", ["Agonista GLP-1 oral — praticidade em comprimidos", "Controle de apetite e saciedade em pesquisas", "Suporte ao metabolismo da glicose"]),
-    ("tirzepatide", ["Ação dupla GIP + GLP-1 — referência em pesquisas de peso", "Controle de apetite e saciedade prolongada", "Suporte ao metabolismo da glicose"]),
-    ("retatrutide", ["Triplo agonista GLP-1 + GIP + Glucagon", "Resultados robustos em pesquisas de redução de peso", "Aceleração do metabolismo e gasto energético"]),
-    ("semax + selank", ["Foco e clareza mental com equilíbrio emocional", "Sinergia nootrópica + ansiolítica em estudos", "Memória, aprendizado e humor"]),
-    ("semax", ["Foco, memória e clareza mental", "Neuroproteção e suporte cognitivo", "Desempenho mental sob estresse"]),
-    ("selank", ["Redução de estresse e ansiedade em estudos", "Equilíbrio do humor sem sedação", "Foco calmo e resiliência mental"]),
-    ("nad+", ["Energia celular e vitalidade", "Suporte antienvelhecimento e reparo do DNA", "Clareza mental e recuperação metabólica"]),
-    ("pt141", ["Suporte à libido e função sexual em pesquisas", "Ação central via receptores de melanocortina", "Estudado para ambos os sexos"]),
-    ("ghk-cu + kpv", ["Rejuvenescimento da pele + ação anti-inflamatória", "Estímulo ao colágeno com efeito calmante", "Sinergia para pele sensível e reativa"]),
-    ("ghk basic", ["Estímulo ao colágeno e elasticidade da pele", "Cicatrização e reparo cutâneo", "Opção acessível para protocolos de skin"]),
-    ("ghk-cu", ["Rejuvenescimento e firmeza da pele", "Estímulo à produção de colágeno", "Reparo capilar e cicatrização avançada"]),
-    ("ahk-cu", ["Crescimento e fortalecimento capilar", "Estímulo aos folículos em pesquisas", "Saúde do couro cabeludo"]),
-    ("kisspeptin", ["Regulação do eixo hormonal reprodutivo", "Suporte à produção natural de testosterona", "Estudado para fertilidade e libido"]),
-    ("tb-500", ["Recuperação acelerada de músculos e tendões", "Reparo de lesões e flexibilidade", "Mobilidade e regeneração tecidual"]),
-    ("hgh 176-191", ["Fragmento lipolítico do GH — foco em queima de gordura", "Ação em gordura teimosa em pesquisas", "Sem impacto relevante na glicose"]),
-    ("hgh", ["Suporte à massa magra e recuperação", "Vitalidade, pele e sono em pesquisas", "Referência clássica em performance"]),
-    ("igf-1", ["Crescimento e reparo muscular avançado", "Versão LR3 de ação prolongada", "Recuperação intensificada em pesquisas"]),
-    ("cjc-1295 + ipamorelin", ["Sinergia clássica para elevação de GH", "Massa magra, recuperação e sono profundo", "Protocolo mais pesquisado da categoria"]),
-    ("cjc1295", ["Elevação sustentada de GH (tecnologia DAC)", "Massa magra e recuperação contínua", "Sono profundo e vitalidade"]),
-    ("tesamorelin + ipamorelin", ["GHRH potente + liberação limpa de GH", "Redução de gordura visceral em pesquisas", "Definição com recuperação otimizada"]),
-    ("tesamorelin", ["Redução de gordura visceral em estudos clínicos", "GHRH de alta potência", "Definição abdominal em pesquisas"]),
-    ("ipamorelin", ["Liberação limpa e seletiva de GH", "Recuperação e qualidade do sono", "Sem impacto no cortisol ou apetite"]),
-    ("glow blend", ["Fórmula 3-em-1: GHK-Cu + BPC-157 + TB-500", "Pele radiante, firme e rejuvenescida", "Reparo e recuperação de dentro para fora"]),
-    ("klow blend", ["Fórmula completa: Glow + KPV anti-inflamatório", "Pele radiante com ação calmante", "Reparo, colágeno e imunidade cutânea"]),
-    ("kpv", ["Ação anti-inflamatória potente em pesquisas", "Saúde intestinal e da pele", "Suporte à imunidade"]),
-    ("cartalax", ["Bioregulador para cartilagens e articulações", "Suporte à mobilidade em pesquisas", "Regeneração do tecido conjuntivo"]),
-    ("bacteriostatic", ["Diluição segura de peptídeos liofilizados", "Conservante bacteriostático (álcool benzílico 0,9%)", "Multi-uso por até 30 dias"]),
-    ("oxytocin", ["Bem-estar, vínculo e relaxamento em estudos", "Suporte ao humor e conexão social", "O 'hormônio do abraço' em pesquisas"]),
-    ("aod-9604", ["Fragmento do GH focado em queima de gordura", "Metabolismo lipídico em pesquisas", "Sem efeitos no crescimento ou glicose"]),
-    ("bpc-157 + tb4", ["Dupla reparação: tendões, músculos e intestino", "Recuperação completa de lesões", "A sinergia mais estudada em regeneração"]),
-    ("bpc-157", ["Reparo de tendões, articulações e músculos", "Saúde intestinal comprovada em pesquisas", "Recuperação acelerada de lesões"]),
-    ("5-amino-1mq", ["Bloqueio da enzima NNMT em pesquisas", "Queima de gordura e energia celular", "Suporte ao metabolismo e longevidade"]),
-    ("mots-c", ["Peptídeo mitocondrial — energia e resistência", "Performance física em pesquisas", "Metabolismo da glicose otimizado"]),
-    ("slu-pp-332", ["Mimético de exercício em pesquisas", "Resistência e oxidação de gordura", "Ativação do metabolismo muscular"]),
-    ("glutathione", ["Antioxidante mestre do organismo", "Detox hepático e imunidade", "Clareamento e luminosidade da pele"]),
-    ("sermorelin", ["Estímulo natural à produção de GH", "Protocolo antienvelhecimento clássico", "Sono profundo e recuperação"]),
-    ("dsip", ["Indutor do sono delta profundo", "Recuperação noturna e descanso real", "Suporte ao estresse em pesquisas"]),
-    ("thymosin alpha", ["Modulação e fortalecimento imunológico", "Defesa antiviral em estudos clínicos", "Suporte à imunidade em pesquisas"]),
-    ("ace-031", ["Bloqueio da miostatina em pesquisas", "Potencial de crescimento muscular superior", "Força e massa magra"]),
-    ("foxo4", ["Senolítico — remoção de células envelhecidas", "Pesquisa de ponta em longevidade", "Rejuvenescimento celular"]),
-    ("ptd-dbm", ["Regeneração capilar via ativação Wnt", "Estímulo a novos folículos em pesquisas", "Alternativa inovadora para queda capilar"]),
-    ("epithalon", ["Ativação da telomerase em pesquisas", "Longevidade e ritmo circadiano", "O peptídeo da juventude celular"]),
-    ("adamax", ["Nootrópico avançado — neurogênese", "Foco, memória e plasticidade cerebral", "Evolução do Semax em pesquisas"]),
-    ("vitamin b12", ["Energia e disposição imediata", "Suporte ao sistema nervoso", "Alta concentração: 10.000mcg"]),
+# key: (CHIP, description PT, [4 benefits PT])
+DATA = [
+    ("orforglipron", "WEIGHT LOSS", "O Orforglipron é um agonista GLP-1 oral de nova geração em comprimidos, pesquisado para controle de apetite e regulação da glicose — sem necessidade de injeções.",
+     ["Agonista GLP-1 100% oral", "Controle de apetite e saciedade", "Suporte ao metabolismo da glicose", "Praticidade: 30 comprimidos"]),
+    ("tirzepatide", "WEIGHT LOSS", "A Tirzepatida é um peptídeo injetável de ação dupla que ativa os receptores GIP e GLP-1. É referência mundial em pesquisas de redução de peso e controle glicêmico.",
+     ["Redução expressiva de peso corporal", "Melhora da resistência à insulina", "Saciedade e controle de apetite", "Aplicação semanal"]),
+    ("retatrutide", "WEIGHT LOSS", "A Retatrutida é um peptídeo injetável que ativa três hormônios (GLP-1, GIP e glucagon). Foi desenvolvida para promover perda de peso mais potente em comparação aos medicamentos atuais em pesquisa.",
+     ["Triplo agonista hormonal", "Perda de peso superior em estudos", "Aceleração do gasto energético", "Melhora do perfil metabólico"]),
+    ("semax + selank", "COGNITIVE", "Combinação sinérgica dos dois nootrópicos peptídicos mais estudados: foco e memória (Semax) com equilíbrio emocional e redução de estresse (Selank).",
+     ["Foco e clareza mental", "Redução de estresse e ansiedade", "Memória e aprendizado", "Sinergia comprovada em pesquisas"]),
+    ("semax", "COGNITIVE", "O Semax é um peptídeo nootrópico pesquisado para desempenho cognitivo, com ação neuroprotetora e estimulante da memória, foco e clareza mental.",
+     ["Foco e concentração", "Memória e aprendizado", "Neuroproteção em estudos", "Desempenho sob estresse"]),
+    ("selank", "COGNITIVE", "O Selank é um peptídeo ansiolítico pesquisado para redução de estresse e ansiedade sem sedação, promovendo equilíbrio emocional e foco calmo.",
+     ["Redução de ansiedade", "Equilíbrio do humor", "Sem sedação ou dependência", "Foco calmo e resiliência"]),
+    ("nad+", "LONGEVITY", "O NAD+ é a coenzima central do metabolismo energético celular. Seus níveis caem com a idade, e a reposição é pesquisada para energia, reparo do DNA e longevidade.",
+     ["Energia celular e vitalidade", "Reparo do DNA em pesquisas", "Suporte antienvelhecimento", "Clareza mental"]),
+    ("pt141", "WELLNESS", "O PT-141 (Bremelanotida) é um peptídeo pesquisado para libido e função sexual, com ação central via receptores de melanocortina — estudado para ambos os sexos.",
+     ["Estímulo à libido", "Ação central (não vascular)", "Estudado em homens e mulheres", "Resposta em pesquisas clínicas"]),
+    ("ghk-cu + kpv", "SKIN & BEAUTY", "Blend que une o poder regenerador do GHK-Cu ao efeito anti-inflamatório do KPV — pesquisado para peles sensíveis, reativas e em recuperação.",
+     ["Colágeno + ação calmante", "Pele sensível e reativa", "Regeneração acelerada", "Redução de vermelhidão"]),
+    ("ghk basic", "SKIN & BEAUTY", "Versão acessível do peptídeo de cobre para protocolos de skin: estímulo ao colágeno, elasticidade e reparo cutâneo em pesquisas.",
+     ["Estímulo ao colágeno", "Elasticidade da pele", "Cicatrização e reparo", "Custo-benefício em protocolos"]),
+    ("ghk-cu", "SKIN & BEAUTY", "O GHK-Cu é o peptídeo de cobre mais estudado para rejuvenescimento: estimula colágeno e elastina, melhora firmeza e é pesquisado também para saúde capilar.",
+     ["Firmeza e rejuvenescimento", "Estímulo a colágeno e elastina", "Reparo e cicatrização", "Suporte à saúde capilar"]),
+    ("ahk-cu", "HAIR", "O AHK-Cu é um peptídeo de cobre pesquisado especificamente para crescimento capilar, fortalecimento dos fios e vitalidade dos folículos.",
+     ["Crescimento capilar", "Fortalecimento dos fios", "Estímulo aos folículos", "Saúde do couro cabeludo"]),
+    ("kisspeptin", "WELLNESS", "A Kisspeptina é o peptídeo regulador mestre do eixo hormonal reprodutivo, pesquisada para produção natural de testosterona, fertilidade e libido.",
+     ["Regulação do eixo hormonal", "Testosterona natural", "Pesquisada para fertilidade", "Suporte à libido"]),
+    ("tb-500", "RECOVERY", "O TB-500 (Timosina Beta-4) é um dos peptídeos mais usados em pesquisas de recuperação: reparo de músculos, tendões e ligamentos com melhora de flexibilidade.",
+     ["Recuperação de lesões", "Reparo de tendões e músculos", "Flexibilidade e mobilidade", "Regeneração tecidual"]),
+    ("hgh 176-191", "WEIGHT LOSS", "Fragmento do hormônio do crescimento que concentra apenas a ação lipolítica: pesquisado para queima de gordura teimosa sem impacto na glicose ou no crescimento.",
+     ["Foco total em queima de gordura", "Ação em gordura localizada", "Sem impacto na glicose", "Fragmento seguro do GH"]),
+    ("hgh", "GROWTH HORMONE", "Hormônio do crescimento humano recombinante de alta pureza — a referência clássica em pesquisas de composição corporal, recuperação e vitalidade.",
+     ["Massa magra e definição", "Recuperação acelerada", "Pele, sono e vitalidade", "Padrão-ouro em pesquisas"]),
+    ("igf-1", "GROWTH HORMONE", "O IGF-1 LR3 é a versão de longa ação do fator de crescimento semelhante à insulina, pesquisado para crescimento muscular e reparo avançado.",
+     ["Crescimento muscular", "Ação prolongada (LR3)", "Reparo e recuperação", "Sinergia com protocolos de GH"]),
+    ("cjc-1295 + ipamorelin", "GROWTH HORMONE", "A dupla mais pesquisada para elevação natural de GH: liberação sustentada (CJC-1295) com pulso limpo e seletivo (Ipamorelin).",
+     ["Elevação natural de GH", "Massa magra e recuperação", "Sono profundo", "Protocolo mais estudado"]),
+    ("cjc1295", "GROWTH HORMONE", "O CJC-1295 com DAC eleva os níveis de GH de forma sustentada por dias, pesquisado para massa magra, recuperação e qualidade do sono.",
+     ["Elevação sustentada de GH", "Tecnologia DAC (longa ação)", "Massa magra", "Sono e recuperação"]),
+    ("tesamorelin + ipamorelin", "GROWTH HORMONE", "Combinação do GHRH mais potente (Tesamorelin) com o secretagogo mais limpo (Ipamorelin) — pesquisada para redução de gordura visceral com recuperação otimizada.",
+     ["GHRH potente + pulso limpo", "Redução de gordura visceral", "Definição abdominal", "Recuperação e sono"]),
+    ("tesamorelin", "GROWTH HORMONE", "O Tesamorelin é o GHRH com maior evidência clínica na redução de gordura visceral abdominal, pesquisado também para composição corporal.",
+     ["Redução de gordura visceral", "Evidência clínica robusta", "Definição abdominal", "Suporte metabólico"]),
+    ("ipamorelin", "GROWTH HORMONE", "O Ipamorelin é o secretagogo de GH mais seletivo: eleva o hormônio do crescimento sem afetar cortisol ou apetite — pesquisado para recuperação e sono.",
+     ["Liberação limpa de GH", "Sem impacto no cortisol", "Recuperação e sono profundo", "Perfil seguro em pesquisas"]),
+    ("glow blend", "SKIN & BEAUTY", "Fórmula exclusiva 3-em-1 com GHK-Cu 50mg, BPC-157 10mg e TB-500 10mg: rejuvenescimento, firmeza e reparo da pele de dentro para fora.",
+     ["Fórmula 3-em-1 exclusiva", "Pele radiante e firme", "Colágeno + reparo tecidual", "Rejuvenescimento completo"]),
+    ("klow blend", "SKIN & BEAUTY", "A evolução do Glow: GHK-Cu, BPC-157, TB-500 + KPV anti-inflamatório. Fórmula completa para pele radiante com ação calmante e imunidade cutânea.",
+     ["Fórmula Glow + KPV", "Ação anti-inflamatória", "Pele radiante e calma", "Imunidade da pele"]),
+    ("kpv", "IMMUNITY", "O KPV é um tripeptídeo com potente ação anti-inflamatória em pesquisas, estudado para saúde intestinal, condições de pele e suporte imunológico.",
+     ["Anti-inflamatório potente", "Saúde intestinal", "Pele e cicatrização", "Suporte imunológico"]),
+    ("cartalax", "RECOVERY", "O Cartalax é um bioregulador peptídico pesquisado para saúde das cartilagens e articulações, com foco em mobilidade e regeneração do tecido conjuntivo.",
+     ["Saúde das cartilagens", "Mobilidade articular", "Regeneração conjuntiva", "Bioregulador de precisão"]),
+    ("bacteriostatic", "SUPPLIES", "Água bacteriostática estéril com álcool benzílico 0,9% para diluição segura de peptídeos liofilizados, permitindo múltiplos usos por até 30 dias.",
+     ["Diluição segura", "Conservante bacteriostático", "Multi-uso por 30 dias", "Padrão farmacêutico"]),
+    ("oxytocin", "WELLNESS", "A Ocitocina é o 'hormônio do vínculo', pesquisada para bem-estar, humor, conexão social e relaxamento.",
+     ["Bem-estar e humor", "Vínculo e conexão", "Relaxamento", "Pesquisas em ansiedade social"]),
+    ("aod-9604", "WEIGHT LOSS", "O AOD-9604 é um fragmento modificado do GH que preserva apenas a ação de queima de gordura, sem efeitos no crescimento ou na glicose.",
+     ["Queima de gordura", "Sem efeito no crescimento", "Sem impacto na glicose", "Metabolismo lipídico"]),
+    ("bpc-157 + tb4", "RECOVERY", "A sinergia mais estudada em regeneração: BPC-157 e TB-500 juntos para reparo completo de tendões, músculos, articulações e intestino.",
+     ["Dupla reparação sinérgica", "Tendões e articulações", "Recuperação completa", "Saúde intestinal"]),
+    ("bpc-157", "RECOVERY", "O BPC-157 é o peptídeo de reparo mais pesquisado do mundo: recuperação de tendões, articulações e músculos, com forte evidência em saúde intestinal.",
+     ["Reparo de tendões e músculos", "Saúde intestinal comprovada", "Recuperação de lesões", "O peptídeo mais estudado"]),
+    ("5-amino-1mq", "WEIGHT LOSS", "O 5-Amino-1MQ bloqueia a enzima NNMT, pesquisado para aumento do metabolismo, queima de gordura e energia celular — em cápsulas de uso prático.",
+     ["Bloqueio da enzima NNMT", "Queima de gordura", "Energia celular (NAD+)", "Suporte à longevidade"]),
+    ("mots-c", "LONGEVITY", "O MOTS-c é um peptídeo mitocondrial pesquisado para performance física, resistência e otimização do metabolismo da glicose.",
+     ["Energia mitocondrial", "Performance e resistência", "Metabolismo da glicose", "Pesquisas em longevidade"]),
+    ("slu-pp-332", "WEIGHT LOSS", "Conhecido como 'exercício em frasco', o SLU-PP-332 ativa os mesmos receptores do treino de resistência, pesquisado para oxidação de gordura e resistência física.",
+     ["Mimético de exercício", "Oxidação de gordura", "Resistência física", "Ativação muscular metabólica"]),
+    ("glutathione", "SKIN & BEAUTY", "A Glutationa é o antioxidante mestre do organismo, pesquisada para detox hepático, imunidade e clareamento e luminosidade da pele.",
+     ["Antioxidante mestre", "Detox hepático", "Clareamento da pele", "Suporte imunológico"]),
+    ("sermorelin", "GROWTH HORMONE", "O Sermorelin estimula a produção natural de GH pela hipófise — protocolo clássico antienvelhecimento pesquisado para sono, recuperação e vitalidade.",
+     ["Estímulo natural de GH", "Protocolo antienvelhecimento", "Sono profundo", "Recuperação e vitalidade"]),
+    ("dsip", "WELLNESS", "O DSIP (peptídeo indutor do sono delta) é pesquisado para sono profundo e reparador, recuperação noturna e modulação do estresse.",
+     ["Sono delta profundo", "Recuperação noturna", "Modulação do estresse", "Descanso de qualidade"]),
+    ("thymosin alpha", "IMMUNITY", "A Timosina Alfa-1 é um dos imunomoduladores mais estudados do mundo, com uso clínico em diversos países para fortalecimento das defesas.",
+     ["Fortalecimento imunológico", "Defesa antiviral em estudos", "Uso clínico internacional", "Modulação imune de precisão"]),
+    ("ace-031", "MUSCLE", "O ACE-031 bloqueia a miostatina — a proteína que limita o crescimento muscular — sendo pesquisado para ganhos de massa e força além do natural.",
+     ["Bloqueio da miostatina", "Potencial muscular superior", "Força e massa magra", "Pesquisa de ponta"]),
+    ("foxo4", "LONGEVITY", "O FOXO4-DRI é um peptídeo senolítico de pesquisa avançada: induz a remoção seletiva de células senescentes ('células zumbis') ligadas ao envelhecimento.",
+     ["Senolítico seletivo", "Remove células senescentes", "Pesquisa de longevidade", "Rejuvenescimento celular"]),
+    ("ptd-dbm", "HAIR", "O PTD-DBM ativa a via Wnt/β-catenina, pesquisado para criação de novos folículos capilares — abordagem inovadora contra a queda capilar.",
+     ["Ativação da via Wnt", "Estímulo a novos folículos", "Abordagem inovadora", "Pesquisas em alopecia"]),
+    ("epithalon", "LONGEVITY", "O Epithalon é pesquisado para ativação da telomerase — a enzima que protege os telômeros — sendo um dos peptídeos centrais em protocolos de longevidade.",
+     ["Ativação da telomerase", "Proteção dos telômeros", "Ritmo circadiano", "Protocolo de longevidade"]),
+    ("adamax", "COGNITIVE", "O Adamax é a evolução do Semax: nootrópico peptídico de nova geração pesquisado para neurogênese, plasticidade cerebral, foco e memória.",
+     ["Neurogênese em pesquisas", "Plasticidade cerebral", "Foco e memória", "Nova geração nootrópica"]),
+    ("vitamin b12", "WELLNESS", "Vitamina B12 (Cianocobalamina) líquida em alta concentração de 10.000mcg, pesquisada para energia, metabolismo e saúde do sistema nervoso.",
+     ["Energia e disposição", "Alta concentração 10.000mcg", "Sistema nervoso", "Metabolismo celular"]),
 ]
 
+FALLBACK = ("RESEARCH", "Peptídeo de pesquisa de alta pureza com autenticidade verificável por QR code.",
+            ["Alta pureza certificada", "Verificação por QR code", "Qualidade suíça", "Envio discreto e seguro"])
 
-def get_benefits(name: str):
+
+def get_data(name):
     n = name.lower()
-    for key, bens in BENEFITS:
+    for key, chip, desc, bens in DATA:
         if key in n:
-            return bens
-    return ["Peptídeo de pesquisa de alta pureza", "Qualidade farmacêutica certificada", "Verificação de autenticidade via QR code"]
+            return chip, desc, bens
+    return FALLBACK
 
 
-styles = getSampleStyleSheet()
-name_style = ParagraphStyle("n", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=11.5, textColor=NAVY, leading=13)
-cat_style = ParagraphStyle("c", parent=styles["Normal"], fontName="Helvetica", fontSize=6.5, textColor=BLUE, leading=8)
-ben_style = ParagraphStyle("b", parent=styles["Normal"], fontName="Helvetica", fontSize=8.5, textColor=GRAY, leading=11.5, leftIndent=7, bulletIndent=0)
+def presentation(name):
+    n = name.lower()
+    if "pen" in n:
+        return "PEN"
+    if "tabs" in n or "orforglipron" in n or "5-amino" in n or "slu-pp" in n:
+        return "CAPS / TABS"
+    if "water" in n:
+        return "VIAL 3ML"
+    return "VIAL"
 
 
 def local_img(p):
     imgs = p.get("images") or ([p["image_url"]] if p.get("image_url") else [])
     if not imgs:
         return None
-    fname = imgs[0].split("/")[-1]
-    f = IMG_DIR / fname
+    f = IMG_DIR / imgs[0].split("/")[-1]
     return f if f.exists() else None
 
 
-def fitted_image(path, max_w, max_h):
-    with PILImage.open(path) as im:
-        w, h = im.size
-    scale = min(max_w / w, max_h / h)
-    return Image(str(path), width=w * scale, height=h * scale)
-
-
-def product_card(p):
-    img_file = local_img(p)
-    img = fitted_image(img_file, 34 * mm, 52 * mm) if img_file else Spacer(34 * mm, 40 * mm)
-    bens = get_benefits(p["name"])
-    right = [
-        Paragraph(p.get("category", "").upper(), cat_style),
-        Paragraph(p["name"], name_style),
-        Spacer(1, 4),
-    ]
-    for b in bens:
-        right.append(Paragraph(f"• {b}", ben_style))
-    card = Table([[img, right]], colWidths=[38 * mm, 86 * mm])
-    card.setStyle(TableStyle([
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("BACKGROUND", (0, 0), (-1, -1), colors.white),
-        ("BOX", (0, 0), (-1, -1), 0.6, colors.HexColor("#DBE3EF")),
-        ("LEFTPADDING", (0, 0), (0, 0), 6),
-        ("RIGHTPADDING", (1, 0), (1, 0), 8),
-        ("TOPPADDING", (0, 0), (-1, -1), 6),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-        ("ROUNDEDCORNERS", [6, 6, 6, 6]),
-    ]))
-    return card
-
-
-def draw_cover(cv, doc):
-    w, h = A5
-    cv.saveState()
-    cv.setFillColor(NAVY)
-    cv.rect(0, 0, w, h, stroke=0, fill=1)
+def wordmark(cv, x, y, on_dark=False, scale=1.0):
+    main = colors.white if on_dark else DARK
+    cv.setFont("Helvetica-BoldOblique", 17 * scale)
+    cv.setFillColor(main)
+    cv.drawString(x, y, "Zuri")
+    zw = cv.stringWidth("Zuri", "Helvetica-BoldOblique", 17 * scale)
     cv.setFillColor(BLUE)
-    cv.rect(0, 58 * mm, w, 1.2 * mm, stroke=0, fill=1)
-    if LOGO.exists():
-        cv.drawImage(str(LOGO), w / 2 - 16 * mm, h - 72 * mm, 32 * mm, 32 * mm, mask="auto", preserveAspectRatio=True)
+    cv.drawString(x + zw, y, "x")
+    cv.setFont("Helvetica", 6.2 * scale)
+    cv.setFillColor(main)
+    cv.drawString(x + 1, y - 3.2 * mm * scale, "S C I E N C E S")
+    # swiss flag + label
+    fy = y - 7.2 * mm * scale
+    s = 2.6 * mm * scale
+    cv.setFillColor(colors.HexColor("#DA291C"))
+    cv.rect(x + 1, fy, s, s, stroke=0, fill=1)
     cv.setFillColor(colors.white)
-    cv.setFont("Helvetica-Bold", 27)
-    cv.drawCentredString(w / 2, h - 90 * mm, "ZURIX SCIENCES")
-    cv.setFont("Helvetica", 13)
-    cv.setFillColor(colors.HexColor("#9DB6E0"))
-    cv.drawCentredString(w / 2, h - 100 * mm, "Catálogo de Produtos")
-    cv.setFont("Helvetica", 9)
-    cv.drawCentredString(w / 2, h - 108 * mm, "Peptídeos de pesquisa de alta pureza")
-    cv.setFont("Helvetica-Bold", 10)
+    cv.rect(x + 1 + s * 0.42, fy + s * 0.18, s * 0.16, s * 0.64, stroke=0, fill=1)
+    cv.rect(x + 1 + s * 0.18, fy + s * 0.42, s * 0.64, s * 0.16, stroke=0, fill=1)
+    cv.setFont("Helvetica-Bold", 5.4 * scale)
+    cv.setFillColor(main if on_dark else GRAY)
+    cv.drawString(x + 1 + s + 1.6 * mm, fy + s * 0.22, "SWISS STANDARDS")
+
+
+def draw_cover(cv):
+    cv.drawImage(str(COVER_BG), 0, 0, W, H, preserveAspectRatio=False)
+    wordmark(cv, 14 * mm, H - 26 * mm, on_dark=True, scale=1.35)
     cv.setFillColor(colors.white)
-    cv.drawCentredString(w / 2, 42 * mm, "zurixsciences.com")
+    cv.setFont("Helvetica-Bold", 30)
+    cv.drawString(14 * mm, H - 96 * mm, "PEPTIDE")
+    cv.drawString(14 * mm, H - 107 * mm, "THERAPY")
+    cv.setFont("Helvetica-Bold", 21)
+    cv.setFillColor(BLUE)
+    cv.drawString(14 * mm, H - 122 * mm, "C A T A L O G")
+    cv.setStrokeColor(BLUE)
+    cv.setLineWidth(1.1)
+    cv.line(14 * mm, H - 126 * mm, 62 * mm, H - 126 * mm)
+    cv.setFont("Helvetica-Bold", 8.5)
+    cv.setFillColor(colors.white)
+    cv.drawString(14 * mm, H - 134 * mm, "ADVANCED FORMULAS FOR RESEARCH")
+    cv.setFont("Helvetica-Bold", 8)
+    cv.drawCentredString(W / 2, 20 * mm, "—   R E S E A R C H   U S E   O N L Y   —")
+    cv.setFont("Helvetica-Bold", 9)
+    cv.setFillColor(BLUE)
+    cv.drawCentredString(W / 2, 13 * mm, "zurixsciences.com")
+    cv.showPage()
+
+
+def wrap_text(cv, text, font, size, max_w):
+    words, lines, cur = text.split(), [], ""
+    for w_ in words:
+        t = (cur + " " + w_).strip()
+        if cv.stringWidth(t, font, size) <= max_w:
+            cur = t
+        else:
+            lines.append(cur)
+            cur = w_
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def draw_product(cv, p, page_num):
+    chip, desc, bens = get_data(p["name"])
+    # header
+    wordmark(cv, 12 * mm, H - 15 * mm)
+    chip_w = cv.stringWidth(chip, "Helvetica-Bold", 8) + 10 * mm
+    cv.setFillColor(NAVY)
+    cv.roundRect(W - 12 * mm - chip_w, H - 17 * mm, chip_w, 7.5 * mm, 1.2 * mm, stroke=0, fill=1)
+    cv.setFillColor(colors.white)
+    cv.setFont("Helvetica-Bold", 8)
+    cv.drawCentredString(W - 12 * mm - chip_w / 2, H - 14.4 * mm, chip)
+
+    # product name
+    name = p["name"]
+    fs = 21 if cv.stringWidth(name.upper(), "Helvetica-Bold", 21) <= W - 24 * mm else 16
+    cv.setFillColor(BLUE)
+    cv.setFont("Helvetica-Bold", fs)
+    cv.drawString(12 * mm, H - 34 * mm, name.upper())
+    cv.setStrokeColor(BLUE)
+    cv.setLineWidth(1.3)
+    cv.line(12 * mm, H - 37.5 * mm, 34 * mm, H - 37.5 * mm)
+
+    # description
+    cv.setFont("Helvetica", 8.6)
+    cv.setFillColor(GRAY)
+    y = H - 45 * mm
+    for line in wrap_text(cv, desc, "Helvetica", 8.6, W - 26 * mm)[:5]:
+        cv.drawString(12 * mm, y, line)
+        y -= 4.3 * mm
+
+    # image panel + right block
+    panel_y, panel_h = H - 118 * mm, 52 * mm
+    cv.setFillColor(PANEL)
+    cv.roundRect(12 * mm, panel_y, 52 * mm, panel_h, 2.5 * mm, stroke=0, fill=1)
+    img = local_img(p)
+    if img:
+        with PILImage.open(img) as im:
+            iw, ih = im.size
+        sc = min(44 * mm / iw, 46 * mm / ih)
+        cv.drawImage(str(img), 12 * mm + (52 * mm - iw * sc) / 2, panel_y + (panel_h - ih * sc) / 2,
+                     iw * sc, ih * sc, mask="auto")
+    rx = 70 * mm
+    cv.setFillColor(BLUE)
+    cv.setFont("Helvetica-Bold", 8)
+    base = p["name"].split()
+    dose = next((w_ for w_ in base if any(c.isdigit() for c in w_)), "")
+    title = " ".join(w_ for w_ in base if w_ != dose)
+    cv.drawString(rx, panel_y + panel_h - 10 * mm, title.upper()[:28])
+    cv.setFillColor(NAVY)
+    cv.setFont("Helvetica-Bold", 17)
+    cv.drawString(rx, panel_y + panel_h - 18 * mm, dose.upper())
+    cv.setFillColor(LGRAY)
+    cv.setFont("Helvetica", 7.5)
+    cv.drawString(rx, panel_y + panel_h - 23.5 * mm, presentation(p["name"]))
+    cv.setFillColor(GRAY)
     cv.setFont("Helvetica", 7)
-    cv.setFillColor(colors.HexColor("#7B93C4"))
-    cv.drawCentredString(w / 2, 34 * mm, "Autenticidade verificável por QR code em cada frasco")
-    cv.drawCentredString(w / 2, 14 * mm, "For laboratory research use only")
-    cv.restoreState()
+    cv.drawString(rx, panel_y + 10 * mm, "Pureza ≥99%  •  Lote rastreável")
+    cv.drawString(rx, panel_y + 5.5 * mm, "Autenticidade via QR code")
 
-
-def draw_footer(cv, doc):
-    w = A5[0]
-    cv.saveState()
-    cv.setFont("Helvetica", 6.5)
-    cv.setFillColor(colors.HexColor("#94A3B8"))
-    cv.drawString(12 * mm, 8 * mm, "zurixsciences.com")
-    cv.drawCentredString(w / 2, 8 * mm, "For laboratory research use only")
-    cv.drawRightString(w - 12 * mm, 8 * mm, str(cv.getPageNumber() - 1))
+    # benefits divider
+    by = panel_y - 10 * mm
+    cv.setStrokeColor(BLUE)
+    cv.setLineWidth(0.7)
+    tw = cv.stringWidth("B E N E F Í C I O S", "Helvetica-Bold", 8)
+    cv.line(12 * mm, by, W / 2 - tw / 2 - 4 * mm, by)
+    cv.line(W / 2 + tw / 2 + 4 * mm, by, W - 12 * mm, by)
     cv.setFillColor(NAVY)
     cv.setFont("Helvetica-Bold", 8)
-    cv.drawString(12 * mm, A5[1] - 10 * mm, "ZURIX SCIENCES")
-    cv.setFillColor(BLUE)
-    cv.rect(12 * mm, A5[1] - 12 * mm, 22 * mm, 0.6 * mm, stroke=0, fill=1)
-    cv.restoreState()
+    cv.drawCentredString(W / 2, by - 1 * mm, "B E N E F Í C I O S")
 
+    # 4 benefits: 2 cols x 2 rows with check circles
+    col_w = (W - 24 * mm) / 2
+    positions = [(12 * mm, by - 12 * mm), (12 * mm + col_w, by - 12 * mm),
+                 (12 * mm, by - 26 * mm), (12 * mm + col_w, by - 26 * mm)]
+    for (bx, byy), ben in zip(positions, bens[:4]):
+        cv.setStrokeColor(BLUE)
+        cv.setLineWidth(0.9)
+        cv.circle(bx + 3 * mm, byy - 1 * mm, 3 * mm, stroke=1, fill=0)
+        cv.setFillColor(BLUE)
+        cv.setFont("ZapfDingbats", 7)
+        cv.drawCentredString(bx + 3 * mm, byy - 2.1 * mm, "4")
+        cv.setFillColor(GRAY)
+        cv.setFont("Helvetica", 7.6)
+        lines = wrap_text(cv, ben, "Helvetica", 7.6, col_w - 12 * mm)[:3]
+        ty = byy + (1.6 * mm if len(lines) > 1 else 0) - 0.2 * mm
+        for ln in lines:
+            cv.drawString(bx + 8 * mm, ty, ln)
+            ty -= 3.6 * mm
 
-def draw_back(cv, doc):
-    w, h = A5
-    cv.saveState()
+    # footer bar
     cv.setFillColor(NAVY)
-    cv.rect(0, 0, w, h, stroke=0, fill=1)
-    if LOGO.exists():
-        cv.drawImage(str(LOGO), w / 2 - 12 * mm, h - 60 * mm, 24 * mm, 24 * mm, mask="auto", preserveAspectRatio=True)
+    cv.rect(0, 0, W, 11 * mm, stroke=0, fill=1)
     cv.setFillColor(colors.white)
-    cv.setFont("Helvetica-Bold", 15)
-    cv.drawCentredString(w / 2, h - 74 * mm, "Verifique a autenticidade")
-    cv.setFont("Helvetica", 9)
+    cv.setFont("Helvetica-Bold", 7.5)
+    cv.drawString(12 * mm, 4.4 * mm, "RESEARCH USE ONLY")
+    cv.setFont("Helvetica", 7)
     cv.setFillColor(colors.HexColor("#9DB6E0"))
-    cv.drawCentredString(w / 2, h - 82 * mm, "Todo produto Zurix possui código único de verificação.")
-    cv.drawCentredString(w / 2, h - 88 * mm, "Escaneie o QR do frasco ou acesse:")
-    cv.setFont("Helvetica-Bold", 12)
+    cv.drawCentredString(W / 2, 4.4 * mm, "zurixsciences.com")
+    cv.drawRightString(W - 12 * mm, 4.4 * mm, f"{page_num:02d}")
+    cv.showPage()
+
+
+def draw_back(cv):
+    cv.drawImage(str(COVER_BG), 0, 0, W, H, preserveAspectRatio=False)
+    cv.setFillColor(colors.Color(0.04, 0.08, 0.16, alpha=0.55))
+    cv.rect(0, 0, W, H, stroke=0, fill=1)
+    wordmark(cv, W / 2 - 13 * mm, H - 60 * mm, on_dark=True, scale=1.2)
     cv.setFillColor(colors.white)
-    cv.drawCentredString(w / 2, h - 98 * mm, "zurixsciences.com/verify")
-    cv.setFont("Helvetica-Bold", 10)
-    cv.drawCentredString(w / 2, 60 * mm, "Representantes oficiais")
+    cv.setFont("Helvetica-Bold", 16)
+    cv.drawCentredString(W / 2, H - 90 * mm, "VERIFIQUE A AUTENTICIDADE")
+    cv.setStrokeColor(BLUE)
+    cv.setLineWidth(1)
+    cv.line(W / 2 - 24 * mm, H - 94 * mm, W / 2 + 24 * mm, H - 94 * mm)
     cv.setFont("Helvetica", 8.5)
-    cv.setFillColor(colors.HexColor("#9DB6E0"))
-    cv.drawCentredString(w / 2, 52 * mm, "Paraguai  •  Estados Unidos  •  Suíça")
-    cv.drawCentredString(w / 2, 46 * mm, "Contatos em zurixsciences.com/representatives")
+    cv.setFillColor(colors.HexColor("#B9CBE8"))
+    cv.drawCentredString(W / 2, H - 102 * mm, "Todo produto Zurix possui código único de verificação.")
+    cv.drawCentredString(W / 2, H - 108 * mm, "Escaneie o QR code do frasco ou acesse:")
+    cv.setFont("Helvetica-Bold", 12)
+    cv.setFillColor(BLUE)
+    cv.drawCentredString(W / 2, H - 118 * mm, "zurixsciences.com/verify")
+    cv.setFont("Helvetica-Bold", 10)
+    cv.setFillColor(colors.white)
+    cv.drawCentredString(W / 2, 62 * mm, "REPRESENTANTES OFICIAIS")
+    cv.setFont("Helvetica", 8.5)
+    cv.setFillColor(colors.HexColor("#B9CBE8"))
+    cv.drawCentredString(W / 2, 55 * mm, "Paraguai   •   Estados Unidos   •   Suíça")
+    cv.drawCentredString(W / 2, 49 * mm, "zurixsciences.com/representatives")
     cv.setFont("Helvetica", 6.5)
     cv.setFillColor(colors.HexColor("#7B93C4"))
-    cv.drawCentredString(w / 2, 16 * mm, "Todos os produtos destinam-se exclusivamente a pesquisa laboratorial.")
-    cv.drawCentredString(w / 2, 11 * mm, "Não destinados a consumo humano. © Zurix Sciences")
-    cv.restoreState()
+    cv.drawCentredString(W / 2, 15 * mm, "Todos os produtos destinam-se exclusivamente a pesquisa laboratorial.")
+    cv.drawCentredString(W / 2, 11 * mm, "Não destinados a consumo humano.  ©  Zurix Sciences")
+    cv.showPage()
 
 
 async def main():
     db = AsyncIOMotorClient(os.environ["MONGO_URL"])[os.environ["DB_NAME"]]
-    cat_order = {"GLP-1 Analogs": 0, "Research Peptides": 1, "Cognitive Enhancers": 2, "Coenzymes": 3}
+    chip_order = ["WEIGHT LOSS", "GROWTH HORMONE", "RECOVERY", "MUSCLE", "SKIN & BEAUTY", "HAIR",
+                  "COGNITIVE", "LONGEVITY", "IMMUNITY", "WELLNESS", "SUPPLIES", "RESEARCH"]
     products = await db.products.find({}, {"_id": 0}).to_list(None)
-    products.sort(key=lambda p: (cat_order.get(p.get("category"), 9), p["name"].lower()))
+    products.sort(key=lambda p: (chip_order.index(get_data(p["name"])[0]), p["name"].lower()))
 
-    doc = BaseDocTemplate(str(OUT), pagesize=A5, leftMargin=10 * mm, rightMargin=10 * mm,
-                          topMargin=18 * mm, bottomMargin=14 * mm)
-    frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id="f")
-    doc.addPageTemplates([
-        PageTemplate(id="cover", frames=[frame], onPage=draw_cover),
-        PageTemplate(id="body", frames=[frame], onPage=draw_footer),
-        PageTemplate(id="back", frames=[frame], onPage=draw_back),
-    ])
-
-    story = [NextPageTemplate("body"), PageBreak()]
-    for i, p in enumerate(products):
-        story.append(product_card(p))
-        story.append(Spacer(1, 5 * mm))
-    story.append(NextPageTemplate("back"))
-    story.append(PageBreak())
-    story.append(Spacer(1, 1))
-
-    doc.build(story)
-    print(f"Catalog created: {OUT} ({len(products)} products)")
+    cv = rl_canvas.Canvas(str(OUT), pagesize=(W, H))
+    draw_cover(cv)
+    for i, p in enumerate(products, start=1):
+        draw_product(cv, p, i)
+    draw_back(cv)
+    cv.save()
+    print(f"Catalog created: {OUT} ({len(products)} products, {len(products)+2} pages)")
 
 asyncio.run(main())
