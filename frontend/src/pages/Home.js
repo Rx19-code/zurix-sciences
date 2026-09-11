@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Users, Bitcoin, TrendingUp, Beaker, Brain, Pill } from 'lucide-react';
+import { ArrowRight, Shield, Users, Bitcoin, TrendingUp, Beaker, Brain, Pill, ChevronLeft, ChevronRight, ShieldCheck, Layers } from 'lucide-react';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 
@@ -10,6 +10,39 @@ const API = `${BACKEND_URL}/api`;
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [slide, setSlide] = useState(0);
+
+  const slides = [
+    {
+      bg: 'https://images.unsplash.com/photo-1773984203485-8ac6e4ddadfa?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600',
+      badge: null,
+      title: 'Premium Research Compounds',
+      subtitle: 'High-purity peptides, GLP-1 analogs, and research chemicals for scientific studies and laboratory research.',
+      primary: { label: 'Browse Products', to: '/products', icon: ArrowRight },
+      secondary: { label: 'Verify Product', to: '/verify', icon: ShieldCheck },
+    },
+    {
+      bg: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600',
+      badge: 'Anti-Counterfeit Technology',
+      title: 'Verified Authenticity',
+      subtitle: 'Every vial ships with a unique QR code. Scan it to instantly confirm your product is genuine Zurix Sciences.',
+      primary: { label: 'Verify a Product', to: '/verify', icon: ShieldCheck },
+      secondary: { label: 'Browse Products', to: '/products', icon: ArrowRight },
+    },
+    {
+      bg: 'https://images.unsplash.com/photo-1637929476734-bd7f5f78e40a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600',
+      badge: 'Lifetime Access',
+      title: 'Clinical Stack Protocols',
+      subtitle: 'Evidence-based dosing, cycles and synergies for every peptide — curated by our research team in the Stack Library.',
+      primary: { label: 'Explore Protocols', to: '/protocols', icon: Layers },
+      secondary: { label: 'Browse Products', to: '/products', icon: ArrowRight },
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => setSlide((s) => (s + 1) % slides.length), 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -78,44 +111,90 @@ const Home = () => {
 
   return (
     <div data-testid="home-page">
-      {/* Hero Section */}
+      {/* Hero Slider */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden" data-testid="hero-section">
-        {/* Background Image with Opacity - Molecular Structure */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-[0.13]"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1740666387475-548de5c37691?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwyfHxwZXB0aWRlJTIwc3RydWN0dXJlfGVufDB8fHx8MTc3MDA3NTg5Mnww&ixlib=rb-4.1.0&q=85')",
-            backgroundBlendMode: 'overlay'
-          }}
-        />
-        
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="hero-title">
-              Premium Research Compounds
-            </h1>
-            <p className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              High-purity peptides, GLP-1 analogs, and research chemicals for scientific studies and laboratory research.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/products"
-                data-testid="browse-products-btn"
-                className="inline-flex items-center space-x-2 bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+        {slides.map((s, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+            style={{ backgroundImage: `url('${s.bg}')`, opacity: i === slide ? 0.16 : 0, backgroundBlendMode: 'overlay' }}
+          />
+        ))}
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 min-h-[420px] sm:min-h-[480px] flex items-center">
+          {slides.map((s, i) => {
+            const PIcon = s.primary.icon;
+            const SIcon = s.secondary.icon;
+            return (
+              <div
+                key={i}
+                data-testid={`hero-slide-${i}`}
+                className={`w-full text-center transition-all duration-700 ${i === slide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none absolute inset-x-0'}`}
+                aria-hidden={i !== slide}
               >
-                <span>Browse Products</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/verify"
-                data-testid="verify-product-btn"
-                className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
-              >
-                <span>Verify Product</span>
-              </Link>
-            </div>
-          </div>
+                {s.badge && (
+                  <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-5 rounded-full bg-white/10 border border-white/20 text-blue-100 text-sm font-medium backdrop-blur-sm">
+                    <ShieldCheck className="w-4 h-4" /> {s.badge}
+                  </span>
+                )}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid={i === slide ? 'hero-title' : undefined}>
+                  {s.title}
+                </h1>
+                <p className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                  {s.subtitle}
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Link
+                    to={s.primary.to}
+                    data-testid={`hero-primary-btn-${i}`}
+                    className="inline-flex items-center space-x-2 bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+                  >
+                    <span>{s.primary.label}</span>
+                    <PIcon className="w-5 h-5" />
+                  </Link>
+                  <Link
+                    to={s.secondary.to}
+                    data-testid={`hero-secondary-btn-${i}`}
+                    className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+                  >
+                    <span>{s.secondary.label}</span>
+                    <SIcon className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Arrows */}
+        <button
+          onClick={() => setSlide((slide - 1 + slides.length) % slides.length)}
+          data-testid="hero-prev-btn"
+          aria-label="Previous slide"
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-colors"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => setSlide((slide + 1) % slides.length)}
+          data-testid="hero-next-btn"
+          aria-label="Next slide"
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-colors"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlide(i)}
+              data-testid={`hero-dot-${i}`}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-2.5 rounded-full transition-all ${i === slide ? 'w-8 bg-white' : 'w-2.5 bg-white/40 hover:bg-white/70'}`}
+            />
+          ))}
         </div>
       </section>
 

@@ -26,8 +26,13 @@ Professional e-commerce site for peptide research products with:
 - Hub hero images: `/var/www/zurix/backend/product_images/hubs/`
 
 ## Implemented (Jun 11, 2026)
-- [x] **Products page performance**: images were ~110KB PNG × 46 loaded at once (~5MB). Added (1) `loading="lazy"` + `decoding="async"` on ProductCard `<img>`, (2) on-the-fly WebP thumbnail endpoint `GET /api/images/products/{file}?w=400` (disk-cached in `_thumbs/`, ~6.7KB vs 110KB = 94% smaller), ProductCard now requests `?w=400`, (3) Cache-Control bumped to 7 days. Needs prod deploy (git pull + pm2 restart + yarn build); thumb cache dir auto-creates.
+- [x] **Home hero slider** (3 slides, auto-play 6s + arrows + dots, crossfade): S1 "Premium Research Compounds", S2 "Verified Authenticity" QR anti-counterfeit, S3 "Clinical Stack Protocols" Lifetime Access. testids: hero-slide-{i}, hero-dot-{i}, hero-prev/next-btn, hero-primary/secondary-btn-{i}.
+- [x] **Product detail image WebP**: main image `?w=800` (~10.7KB vs 110KB), thumbnails `?w=160` + lazy loading.
+- [x] **Products page performance**: images were ~110KB PNG × 46 loaded at once (~5MB). Added (1) `loading="lazy"` + `decoding="async"` on ProductCard `<img>`, (2) on-the-fly WebP thumbnail endpoint `GET /api/images/products/{file}?w=400` (disk-cached in `_thumbs/`, ~6.7KB vs 110KB = 94% smaller), ProductCard now requests `?w=400`, (3) Cache-Control bumped to 7 days. thumb cache dir auto-creates.
 - [x] Product → Stack Hub deep-link badge on ProductDetail: `GET /api/products/{id}/hub` matches product name to hub (peptide_name/peptide_slug, longest-match), renders "View protocols for this peptide →" linking to `/stacks/{slug}`. Returns null when no hub matches (e.g. Bacteriostatic Water).
+
+### Analysis: products without a Stack Hub (Jun 11, 2026)
+26/47 products already open a hub. 21 without hub; only Bacteriostatic Water needs none. **20 peptides missing a protocol hub** (user chose to create later, auto-generate in existing pattern): HGH 10iu, HGH 176-191, Sermorelin, NAD+, 5-Amino-1MQ, MOTS-c, SLU-PP-332, Epithalon, FOXO4, KPV, AHK-Cu, GHK Basic, Klow Blend, Glutathione, PTD-DBM, Kisspeptin, Oxytocin, Cartalax, ACE-031, Adamax.
 
 ## Implemented (May 26, 2026 deployment)
 - [x] 41 products + 13 Stack Hubs + 130 protocols seeded in prod
