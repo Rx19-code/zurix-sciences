@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle, FlaskConical } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Package, Calendar, FileText, Thermometer, AlertCircle, FlaskConical, BookOpen, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 
@@ -12,6 +12,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
+  const [hub, setHub] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -28,6 +29,12 @@ const ProductDetail = () => {
       console.error('Error fetching product:', error);
     } finally {
       setLoading(false);
+    }
+    try {
+      const hubRes = await axios.get(`${API}/products/${id}/hub`);
+      setHub(hubRes.data?.hub || null);
+    } catch (error) {
+      setHub(null);
     }
   };
 
@@ -146,6 +153,25 @@ const ProductDetail = () => {
               </h1>
 
               <p className="text-gray-600 mb-6">{product.description}</p>
+
+              {hub && (
+                <a
+                  href={`/stacks/${hub.slug}`}
+                  data-testid="product-hub-link"
+                  className="group flex items-center justify-between gap-3 mb-6 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 transition-all hover:border-blue-400 hover:shadow-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white">
+                      <BookOpen className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">View protocols for this peptide</p>
+                      <p className="text-xs text-blue-700">{hub.title}</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-blue-600 transition-transform group-hover:translate-x-1" />
+                </a>
+              )}
 
               {/* Specifications */}
               <div className="space-y-3 mb-6">

@@ -94,6 +94,36 @@ async def get_product(product_id: str):
     return product
 
 
+def _norm_match(s: str) -> str:
+    import re
+    return re.sub(r'[^a-z0-9]', '', (s or '').lower())
+
+
+@router.get("/products/{product_id}/hub")
+async def get_product_hub(product_id: str):
+    """Return the Stack Hub matching this product's peptide, if any."""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "name": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    pname = _norm_match(product.get("name"))
+    hubs = await db.stack_hubs.find(
+        {}, {"_id": 0, "slug": 1, "peptide_name": 1, "peptide_slug": 1, "title": 1}
+    ).to_list(200)
+    best, best_len = None, 0
+    for h in hubs:
+        for key in (h.get("peptide_name"), h.get("peptide_slug")):
+            k = _norm_match(key)
+            if k and k in pname and len(k) > best_len:
+                best, best_len = h, len(k)
+    if not best:
+        return {"hub": None}
+    return {"hub": {
+        "slug": best["slug"],
+        "title": best.get("title"),
+        "peptide_name": best.get("peptide_name"),
+    }}
+
+
 @router.get("/products/code/{verification_code}", response_model=Product)
 async def get_product_by_code(verification_code: str):
     product = await db.products.find_one({"verification_code": verification_code}, {"_id": 0})

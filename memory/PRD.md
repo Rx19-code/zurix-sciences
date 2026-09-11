@@ -25,6 +25,9 @@ Professional e-commerce site for peptide research products with:
 - Product images: `/var/www/zurix/assets/images/products/`
 - Hub hero images: `/var/www/zurix/backend/product_images/hubs/`
 
+## Implemented (Jun 11, 2026)
+- [x] Product → Stack Hub deep-link badge on ProductDetail: `GET /api/products/{id}/hub` matches product name to hub (peptide_name/peptide_slug, longest-match), renders "View protocols for this peptide →" linking to `/stacks/{slug}`. Returns null when no hub matches (e.g. Bacteriostatic Water).
+
 ## Implemented (May 26, 2026 deployment)
 - [x] 41 products + 13 Stack Hubs + 130 protocols seeded in prod
 - [x] 13 unique cinematic hero images per hub (Gemini Nano Banana)
