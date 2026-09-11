@@ -31,8 +31,11 @@ Professional e-commerce site for peptide research products with:
 - [x] **Products page performance**: images were ~110KB PNG × 46 loaded at once (~5MB). Added (1) `loading="lazy"` + `decoding="async"` on ProductCard `<img>`, (2) on-the-fly WebP thumbnail endpoint `GET /api/images/products/{file}?w=400` (disk-cached in `_thumbs/`, ~6.7KB vs 110KB = 94% smaller), ProductCard now requests `?w=400`, (3) Cache-Control bumped to 7 days. thumb cache dir auto-creates.
 - [x] Product → Stack Hub deep-link badge on ProductDetail: `GET /api/products/{id}/hub` matches product name to hub (peptide_name/peptide_slug, longest-match), renders "View protocols for this peptide →" linking to `/stacks/{slug}`. Returns null when no hub matches (e.g. Bacteriostatic Water).
 
-### Analysis: products without a Stack Hub (Jun 11, 2026)
-26/47 products already open a hub. 21 without hub; only Bacteriostatic Water needs none. **20 peptides missing a protocol hub** (user chose to create later, auto-generate in existing pattern): HGH 10iu, HGH 176-191, Sermorelin, NAD+, 5-Amino-1MQ, MOTS-c, SLU-PP-332, Epithalon, FOXO4, KPV, AHK-Cu, GHK Basic, Klow Blend, Glutathione, PTD-DBM, Kisspeptin, Oxytocin, Cartalax, ACE-031, Adamax.
+### Analysis: products without a Stack Hub (Jun 11, 2026) — RESOLVED
+- [x] Created 20 new Stack Hubs via `backend/scripts/seed_missing_hubs.py` (auto-generated, same schema/pattern, premium gating inherited automatically). Total hubs 17 → **37**. Now **46/47 products** open a hub (only Bacteriostatic Water has none, as intended).
+- Hubs added: hgh, hgh-176-191, sermorelin, nad, 5-amino-1mq, mots-c, slu-pp-332, epithalon, foxo4, kpv, ahk-cu, ghk-basic, klow-blend, glutathione, ptd-dbm, kisspeptin, oxytocin, cartalax, ace-031, adamax.
+- Matcher edge cases verified: HGH 10iu→hgh vs HGH 176-191→hgh-176-191 (longest-match), GHK Basic→ghk-basic (not ghk-cu), GHK-Cu+KPV Blend stays ghk-cu.
+- NOTE: seed script must be run against PROD DB after deploy (`cd backend && python3 scripts/seed_missing_hubs.py`).
 
 ## Implemented (May 26, 2026 deployment)
 - [x] 41 products + 13 Stack Hubs + 130 protocols seeded in prod
