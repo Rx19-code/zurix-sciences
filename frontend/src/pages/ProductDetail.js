@@ -96,13 +96,21 @@ const ProductDetail = () => {
               const idx = Math.min(selectedImage, Math.max(0, gallery.length - 1));
               const current = gallery[idx];
               const resolveSrc = (u) => u && !u.startsWith('http') ? `${BACKEND_URL}${u}` : u;
+              const optimized = (u, w) => {
+                const src = resolveSrc(u);
+                if (src && src.includes('/api/images/products/')) {
+                  return `${src}${src.includes('?') ? '&' : '?'}w=${w}`;
+                }
+                return src;
+              };
               return (
                 <>
                   <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
                     {current ? (
                       <img
-                        src={resolveSrc(current)}
+                        src={optimized(current, 800)}
                         alt={product.name}
+                        decoding="async"
                         className="max-w-full max-h-full object-contain"
                         data-testid="product-detail-main-image"
                       />
@@ -127,7 +135,7 @@ const ProductDetail = () => {
                             i === idx ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-400'
                           }`}
                         >
-                          <img src={resolveSrc(url)} alt={`View ${i + 1}`} className="w-full h-full object-contain" />
+                          <img src={optimized(url, 160)} alt={`View ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-contain" />
                         </button>
                       ))}
                     </div>
