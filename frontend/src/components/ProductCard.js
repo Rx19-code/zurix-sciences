@@ -14,6 +14,10 @@ const ProductCard = ({ product }) => {
     addToCart(product);
   };
 
+  const thumbSrc = product.image_url && product.image_url.includes('/api/images/products/')
+    ? `${product.image_url}${product.image_url.includes('?') ? '&' : '?'}w=400`
+    : product.image_url;
+
   return (
     <Link
       to={`/products/${product.id}`}
@@ -36,7 +40,7 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
       <div className="h-56 bg-white overflow-hidden flex items-center justify-center p-4">
         {product.image_url ? (
-          <img src={product.image_url} alt={product.name} className="h-48 w-auto object-contain" />
+          <img src={thumbSrc} alt={product.name} loading="lazy" decoding="async" className="h-48 w-auto object-contain" />
         ) : (
           <div className="flex flex-col items-center justify-center text-gray-300">
             <FlaskConical className="w-20 h-20" strokeWidth={1.25} />

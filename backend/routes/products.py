@@ -2,7 +2,7 @@ from typing import List, Optional
 from pathlib import Path
 import uuid
 
-from fastapi import APIRouter, HTTPException, Header, UploadFile, File
+from fastapi import APIRouter, HTTPException, Header, UploadFile, File, Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
@@ -11,6 +11,8 @@ from models import Product, Representative, UpdateProductImageRequest
 from utils.storage import persist_bytes
 
 router = APIRouter(prefix="/api")
+
+THUMB_CACHE_DIR = PRODUCT_IMG_DIR / "_thumbs"
 
 
 class ProductCreate(BaseModel):
@@ -139,11 +141,31 @@ async def get_categories():
 
 
 @router.get("/images/products/{filename}")
-async def serve_product_image(filename: str):
+async def serve_product_image(filename: str, w: Optional[int] = Query(None, ge=32, le=2000)):
     safe_filename = Path(filename).name
     file_path = PRODUCT_IMG_DIR / safe_filename
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="Image not found")
+
+    # Optional on-the-fly resized WebP thumbnail (cached to disk).
+    if w:
+        THUMB_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        thumb_path = THUMB_CACHE_DIR / f"{safe_filename}.{w}.webp"
+        if not thumb_path.exists() or thumb_path.stat().st_mtime < file_path.stat().st_mtime:
+            try:
+                from PIL import Image
+                with Image.open(file_path) as im:
+                    im = im.convert("RGBA") if im.mode in ("P", "LA") else im.convert("RGB") if im.mode != "RGBA" else im
+                    im.thumbnail((w, w * 4), Image.LANCZOS)
+                    im.save(thumb_path, "WEBP", quality=82, method=6)
+            except Exception:
+                thumb_path = None
+        if thumb_path and thumb_path.exists():
+            return FileResponse(
+                thumb_path,
+                media_type="image/webp",
+                headers={"Cache-Control": "public, max-age=604800"},
+            )
 
     # Derive MIME type from the actual file extension.
     # Previously hard-coded to image/png — served JPG/WEBP with wrong Content-Type,
@@ -161,7 +183,7 @@ async def serve_product_image(filename: str):
     return FileResponse(
         file_path,
         media_type=media_type,
-        headers={"Cache-Control": "public, max-age=86400"},
+        headers={"Cache-Control": "public, max-age=604800"},
     )
 
 
