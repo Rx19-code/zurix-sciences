@@ -82,14 +82,25 @@ export default function FloatingContact() {
           </div>
         </div>
       )}
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-105"
-        aria-label="Contact us"
-        data-testid="floating-contact-btn"
-      >
-        {open ? <X size={26} /> : <MessageCircle size={26} />}
-      </button>
+      <div className="flex items-center gap-3">
+        {!open && (
+          <button
+            onClick={() => setOpen(true)}
+            className="bg-white text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow animate-pulse-slow"
+            data-testid="floating-contact-cta"
+          >
+            Talk to a Specialist
+          </button>
+        )}
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-105 flex-shrink-0"
+          aria-label="Contact us"
+          data-testid="floating-contact-btn"
+        >
+          {open ? <X size={26} /> : <MessageCircle size={26} />}
+        </button>
+      </div>
     </div>
   );
 }
