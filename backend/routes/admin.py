@@ -200,6 +200,62 @@ async def generate_codes(request: GenerateCodesRequest, x_admin_password: str = 
     }
 
 
+# ═══════════════ LOT (BATCH) VERIFICATION MANAGEMENT ═══════════════
+def _norm_lot(s: str) -> str:
+    return re.sub(r"[^A-Z0-9]", "", (s or "").upper())
+
+
+@router.get("/admin/lot-batches")
+async def list_lot_batches(x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    lots = await db.product_lots.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return {"lots": lots, "total": len(lots)}
+
+
+@router.post("/admin/lot-batches")
+async def create_lot_batch(request: Request, x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    body = await request.json()
+    product_id = (body.get("product_id") or "").strip()
+    lot_number = (body.get("lot_number") or "").strip().upper()
+    if not product_id or not lot_number:
+        raise HTTPException(status_code=400, detail="product_id and lot_number are required")
+
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "name": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    lot_normalized = _norm_lot(lot_number)
+    existing = await db.product_lots.find_one({"lot_normalized": lot_normalized}, {"_id": 0, "id": 1})
+    doc = {
+        "id": existing["id"] if existing else str(uuid.uuid4()),
+        "lot_number": lot_number,
+        "lot_normalized": lot_normalized,
+        "product_id": product_id,
+        "product_name": product.get("name", ""),
+        "manufacturing_date": (body.get("manufacturing_date") or "").strip(),
+        "expiry_date": (body.get("expiry_date") or "").strip(),
+        "purity": (body.get("purity") or "").strip(),
+        "active": True,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.product_lots.replace_one({"lot_normalized": lot_normalized}, doc, upsert=True)
+    return {"success": True, "lot": doc, "updated": bool(existing)}
+
+
+@router.delete("/admin/lot-batches/{lot_id}")
+async def delete_lot_batch(lot_id: str, x_admin_password: str = Header(None)):
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    result = await db.product_lots.delete_one({"id": lot_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    return {"success": True, "deleted": lot_id}
+
+
+
 @router.get("/admin/verifications/geo-stats")
 async def verification_geo_stats(x_admin_password: str = Header(None)):
     if x_admin_password != ADMIN_PASSWORD:

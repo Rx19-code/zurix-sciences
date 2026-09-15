@@ -10,6 +10,7 @@ import HealthTab from './admin/HealthTab';
 import GenerateCodesPanel from './admin/GenerateCodesPanel';
 import BrandQRTab from './admin/BrandQRTab';
 import ScanMapTab from './admin/ScanMapTab';
+import LotVerifyTab from './admin/LotVerifyTab';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
@@ -473,6 +474,7 @@ export default function Admin() {
             { id: 'brandqr', label: 'Brand QR', icon: '📱' },
             { id: 'codes', label: 'All Codes', icon: '🔑' },
             { id: 'batches', label: 'Batches', icon: '📦' },
+            { id: 'lotverify', label: 'Lot Verify', icon: '🧴' },
             { id: 'leads', label: 'Leads', icon: '📊' },
             { id: 'payments', label: 'Payments', icon: '💰' },
             { id: 'users', label: 'Users', icon: '👥' },
@@ -641,6 +643,10 @@ export default function Admin() {
         {/* Scan Map Tab */}
         {activeTab === 'scanmap' && (
           <ScanMapTab password={password} apiUrl={API_URL} />
+        )}
+
+        {activeTab === 'lotverify' && (
+          <LotVerifyTab adminPassword={password} />
         )}
         
         {/* Codes Tab */}

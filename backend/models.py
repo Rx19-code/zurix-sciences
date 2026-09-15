@@ -53,6 +53,7 @@ class VerifyProductResponse(BaseModel):
     batch_number: Optional[str] = None
     purity: Optional[str] = None
     expiry_date: Optional[str] = None
+    lot_verified: bool = False
 
 
 class Protocol(BaseModel):

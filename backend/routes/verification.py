@@ -113,6 +113,43 @@ async def verify_product(request: Request, body: VerifyProductRequest):
             warning_level="none"
         )
 
+    # Lot / batch verification: a whole batch shares one lot number (e.g. sprays).
+    # Registered lots always authenticate as genuine and are never flagged.
+    lot = await db.product_lots.find_one(
+        {"lot_normalized": code.replace("-", ""), "active": True}, {"_id": 0}
+    )
+    if lot:
+        now = datetime.now(timezone.utc).isoformat()
+        product = await db.products.find_one({"id": lot.get("product_id")}, {"_id": 0})
+        await db.verification_logs.insert_one({
+            "id": str(uuid.uuid4()),
+            "code": lot.get("lot_number", code),
+            "lot_number": lot.get("lot_number", ""),
+            "batch_number": lot.get("lot_number", ""),
+            "product_name": lot.get("product_name", ""),
+            "timestamp": now,
+            "verification_type": "lot",
+            "client_ip": client_ip,
+            "user_agent": user_agent,
+            "country": geo.get("country", "Unknown"),
+            "city": geo.get("city", "Unknown"),
+            "country_code": geo.get("country_code", "XX"),
+            "lat": geo.get("lat"),
+            "lon": geo.get("lon"),
+        })
+        return VerifyProductResponse(
+            success=True,
+            product=product,
+            message="Product Authenticated! This is a genuine Zurix Sciences product.",
+            verification_count=0,
+            warning_level="none",
+            product_name=lot.get("product_name"),
+            batch_number=lot.get("lot_number"),
+            purity=lot.get("purity"),
+            expiry_date=lot.get("expiry_date"),
+            lot_verified=True,
+        )
+
     return VerifyProductResponse(
         success=False,
         message="Code not found. This product may be COUNTERFEIT. Please contact support immediately.",
