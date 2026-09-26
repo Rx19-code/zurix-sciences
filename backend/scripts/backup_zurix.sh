@@ -42,11 +42,25 @@ ls -1t "$BACKUP_ROOT"/zurix-backup-*.tar.gz 2>/dev/null | tail -n +$((KEEP+1)) |
 echo "✅ Backup ready: $OUT ($(du -h "$OUT" | cut -f1))"
 
 # ─────────────────────────────────────────────────────────────
-# OFF-SITE COPY (uncomment ONE option so backups survive server loss):
-#
-# Option A — push to a cloud remote via rclone (recommended, fully automatic):
-#   rclone copy "$OUT" myremote:zurix-backups/
-#
-# Option B — push to a second server via scp:
-#   scp "$OUT" user@backup-host:/backups/
-# ─────────────────────────────────────────────────────────────
+# OFF-SITE COPY (Backblaze B2 via rclone).
+# Reads the destination from /etc/zurix-backup.conf so it is NOT tracked in git
+# and survives every git pull. Create that file with a single line, e.g.:
+#     RCLONE_DEST="b2:zurix-backups"
+# If the file/rclone is missing, the local backup still succeeds.
+OFFSITE_CONF="/etc/zurix-backup.conf"
+if [ -f "$OFFSITE_CONF" ]; then
+  # shellcheck disable=SC1090
+  . "$OFFSITE_CONF"
+  if [ -n "${RCLONE_DEST:-}" ] && command -v rclone >/dev/null 2>&1; then
+    echo "→ Uploading off-site to $RCLONE_DEST ..."
+    if rclone copy "$OUT" "$RCLONE_DEST" --transfers=1; then
+      echo "✅ Off-site upload complete: $RCLONE_DEST"
+      # keep only the last 30 backups in the cloud bucket
+      rclone delete "$RCLONE_DEST" --min-age 30d --include "zurix-backup-*.tar.gz" 2>/dev/null || true
+    else
+      echo "⚠️  Off-site upload FAILED — local backup kept at $OUT"
+    fi
+  fi
+else
+  echo "ℹ️  No off-site config ($OFFSITE_CONF) — local backup only."
+fi
